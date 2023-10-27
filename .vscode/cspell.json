@@ -1,6 +1,7 @@
 {
     "language": "en,en-GB",
     "words": [
+        "Autoencoder",
         "circuitsvis",
         "colab",
         "cuda",
