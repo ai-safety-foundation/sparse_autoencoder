@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "project_name"
+name = "sparse_autoencoder"
 version = "0.0.0"  
-description = "Project Description"
+description = "Sparse Autoencoder for Mechanistic Interpretability"
 authors = ["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
-include = ["src"]
+include = ["sparse_autoencoder"]
 
 [tool.poetry.dependencies]
 python = ">=3.9, <3.13"
