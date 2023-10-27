@@ -8,11 +8,9 @@ readme = "README.md"
 include = ["sparse_autoencoder"]
 
 [tool.poetry.dependencies]
-python = ">=3.9, <3.13"
+python = ">=3.10, <3.13"
 einops = ">=0.6"
-circuitsvis = ">=1"
 torch = ">=2.1"
-transformer-lens = "^1.9.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7"
@@ -24,8 +22,9 @@ isort = ">=5"
 black = ">=23"
 autoflake = "^2.2.1"
 
-[tool.poetry.group.jupyter.dependencies]
+[tool.poetry.group.demos.dependencies]
 jupyterlab = ">=3"
+transformer-lens = "^1.9.0"
 
 [build-system]
 requires = ["poetry-core"]
