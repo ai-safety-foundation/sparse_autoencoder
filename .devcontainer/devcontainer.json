@@ -1,0 +1,57 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.238.1/containers/python-3
+{
+	"name": "Python 3",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			"USERNAME": "user"
+		}
+	},
+	"runArgs": [
+		"--gpus",
+		"all"
+	],
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"mypy.dmypyExecutable": "dmypy"
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"christian-kohler.path-intellisense",
+				"davidanson.vscode-markdownlint",
+				"donjayamanne.githistory",
+				"donjayamanne.python-extension-pack",
+				"github.copilot",
+				"github.vscode-github-actions",
+				"github.vscode-pull-request-github",
+				"ionutvmi.path-autocomplete",
+				"matangover.mypy",
+				"mikoz.autoflake-extension",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-python.pylint",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-toolsai.jupyter-keymap",
+				"ms-toolsai.jupyter-renderers",
+				"ms-toolsai.jupyter",
+				"ms-vsliveshare.vsliveshare-pack",
+				"njpwerner.autodocstring",
+				"richie5um2.vscode-sort-json",
+				"stkb.rewrap",
+				"streetsidesoftware.code-spell-checker-british-english",
+				"streetsidesoftware.code-spell-checker",
+				"tushortz.python-extended-snippets",
+				"yzhang.markdown-all-in-one"
+			]
+		}
+	},
+	"containerUser": "user",
+	// Install any dependencies
+	"postCreateCommand": "poetry env use 3.11 && poetry install --with dev,jupyter"
+}

@@ -1,0 +1,80 @@
+[tool.poetry]
+name = "project_name"
+version = "0.0.0"  
+description = "Project Description"
+authors = ["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+include = ["src"]
+
+[tool.poetry.dependencies]
+python = ">=3.9, <3.13"
+einops = ">=0.6"
+circuitsvis = ">=1"
+torch = ">=2.1"
+transformer-lens = "^1.9.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7"
+pytest-cov = ">=4"
+mypy = ">=0.991"
+jupyter = ">=1"
+plotly = ">=5"
+isort = ">=5"
+black = ">=23"
+autoflake = "^2.2.1"
+
+[tool.poetry.group.jupyter.dependencies]
+jupyterlab = ">=3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS FLOAT_CMP"
+filterwarnings = [
+    "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
+    # Ignore numpy.distutils deprecation warning caused by pandas
+    # More info: https://numpy.org/doc/stable/reference/distutils.html#module-numpy.distutils
+    "ignore:distutils Version classes are deprecated:DeprecationWarning"
+]
+addopts = """--jaxtyping-packages=transformer_lens,beartype.beartype \ 
+-W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \ 
+--deselect transformer_lens/utils.py::test_prompt \
+--doctest-modules --doctest-plus \
+--nbval"""
+
+[tool.isort]
+profile = "black"
+extend_skip = ["__init__.py", ".venv/"]
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.black]
+# Exclude snapshot tests & .venv
+exclude = '''
+(
+/snapshots/
+| .venv/
+)
+'''
+
+[tool.pylint]
+    [tool.pylint.TYPECHECK]
+    # Fix for Pytorch member existence checks
+    generated-members = "torch.*"
+
+    [tool.pylint.DESIGN]
+    max-args = 10
+    max-locals = 30
+
+    [tool.pylint."MESSAGES CONTROL"]
+    disable = "redefined-builtin" # Disable redefined builtin functions
+
+    [tool.pylint.'MASTER']
+    disable = [
+        "C0103", # Disable invalid file name (as we use PascalCase for classes)
+    ]

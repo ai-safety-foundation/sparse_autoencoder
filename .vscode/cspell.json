@@ -1,0 +1,17 @@
+{
+    "language": "en,en-GB",
+    "words": [
+        "circuitsvis",
+        "colab",
+        "cuda",
+        "cudnn",
+        "devcontainer",
+        "devel",
+        "interpretability",
+        "ndarray",
+        "pyproject",
+        "transformer_lens",
+        "venv",
+        "virtualenv"
+    ]
+}
