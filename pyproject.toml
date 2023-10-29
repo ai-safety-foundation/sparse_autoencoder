@@ -31,18 +31,15 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS FLOAT_CMP"
 filterwarnings = [
     "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
     # Ignore numpy.distutils deprecation warning caused by pandas
     # More info: https://numpy.org/doc/stable/reference/distutils.html#module-numpy.distutils
     "ignore:distutils Version classes are deprecated:DeprecationWarning"
 ]
-addopts = """--jaxtyping-packages=transformer_lens,beartype.beartype \ 
+addopts = """--jaxtyping-packages=sparse_autoencoder,beartype.beartype \ 
 -W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \ 
---deselect transformer_lens/utils.py::test_prompt \
---doctest-modules --doctest-plus \
---nbval"""
+--doctest-modules"""
 
 [tool.isort]
 profile = "black"

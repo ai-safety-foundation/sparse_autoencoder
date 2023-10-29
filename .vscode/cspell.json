@@ -1,6 +1,7 @@
 {
     "language": "en,en-GB",
     "words": [
+        "allclose",
         "Autoencoder",
         "circuitsvis",
         "colab",
@@ -8,7 +9,10 @@
         "cudnn",
         "devcontainer",
         "devel",
+        "dtype",
+        "Hobbhahn",
         "interpretability",
+        "jaxtyping",
         "ndarray",
         "pyproject",
         "transformer_lens",
