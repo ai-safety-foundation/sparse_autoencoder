@@ -18,4 +18,4 @@ def test_encoded_decoded_shape_same():
     input_tensor = torch.tensor([[2.0, 3.0, 4.0], [5.0, 6.0, 7.0]])
     output = model(input_tensor)
 
-    assert output.shape == input_tensor.shape
+    assert output[1].shape == input_tensor.shape

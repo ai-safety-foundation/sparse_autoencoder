@@ -49,17 +49,34 @@ class SparseAutoencoder(Module):
         self.initialize_tied_parameters()
 
         # Create the network
-        self.network = Sequential(
+        self.encoder = Sequential(
             PreEncoderBias(self.tied_bias),
             Linear(n_input_features, n_learned_features),
             ReLU(),
+        )
+
+        self.decoder = Sequential(
             Linear(n_learned_features, n_input_features),
             PostEncoderBias(self.tied_bias),
         )
 
-    def forward(self, input: Tensor) -> Tensor:
-        """Forward Pass."""
-        return self.network(input)
+    def forward(
+        self, input: Float[Tensor, "batch input_activations"]
+    ) -> tuple[
+        Float[Tensor, "batch learned_activations"],
+        Float[Tensor, "batch input_activations"],
+    ]:
+        """Forward Pass.
+
+        Args:
+            input: Input activations (e.g. activations from an MLP layer in a transformer model).
+
+        Returns:
+            Tuple of learned activations and decoded activations.
+        """
+        learned_activations = self.encoder(input)
+        decoded_activations = self.decoder(learned_activations)
+        return learned_activations, decoded_activations
 
     def initialize_tied_parameters(self) -> None:
         """Initialize the tied parameters."""
