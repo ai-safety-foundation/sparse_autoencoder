@@ -12,6 +12,7 @@ python = ">=3.10, <3.13"
 einops = ">=0.6"
 torch = ">=2.1"
 zstandard = "^0.21.0"
+wandb = "^0.15.12"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7"

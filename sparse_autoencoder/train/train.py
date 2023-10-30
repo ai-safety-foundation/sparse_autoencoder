@@ -1,4 +1,6 @@
 """Training Pipeline."""
+from dataclasses import dataclass
+
 import torch
 import transformer_lens
 from jaxtyping import Float
@@ -7,7 +9,8 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder.activations.ActivationBuffer import ActivationBuffer
+import wandb
+from sparse_autoencoder.activations.ActivationBuffer import ListPointerGPUBuffer
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
@@ -23,16 +26,29 @@ def resample_neurons():
     pass
 
 
+@dataclass
+class TrainChunkSteps:
+    """Training Statistics."""
+
+    reconstruction_loss: float
+    l1_loss: float
+    total_loss: float
+    steps: int
+
+
 def train(
     autoencoder: SparseAutoencoder,
-    activation_buffer: ActivationBuffer,
+    activation_buffer: ListPointerGPUBuffer,
     l1_coefficient: float,
     min_buffer: int = 100,
-):
+) -> TrainChunkSteps:
     """Train the Sparse AutoEncoder"""
     optimizer = Adam(autoencoder.parameters())
 
-    for _ in range(len(activation_buffer) - min_buffer):
+    steps = len(activation_buffer) - min_buffer
+
+    for _ in range(steps):
+        print("step", _)
         sample_batch = activation_buffer.sample_without_replace(4)
 
         # Forward pass
@@ -52,6 +68,13 @@ def train(
         # Zero the gradients
         optimizer.zero_grad()
 
+    return TrainChunkSteps(
+        reconstruction_loss=reconstruction_loss_mse.sum().item(),
+        l1_loss=l1_loss_learned_activations.sum().item(),
+        total_loss=total_loss.item(),
+        steps=steps,
+    )
+
 
 def pipeline(
     src_model: HookedTransformer,
@@ -68,10 +91,24 @@ def pipeline(
     autoencoder.to(device)
 
     # Create the activation buffer
-    activation_buffer = ActivationBuffer()
+    activation_buffer = ListPointerGPUBuffer()
     buffer_size: int = len(activation_buffer)
 
-    # TODO: Hook the transformer to get just the cache item we want
+    # TODO: Hook the transformer to get just the cache item we want. Also kill any later layers as
+    # we don't need the logits
+
+    # Setup wandb
+    wandb.init(
+        config={
+            "input_features": autoencoder.n_input_features,
+            "learned_features": autoencoder.n_learned_features,
+            "activation_hook_point": activation_hook_point,
+            "min_buffer": min_buffer,
+            "max_buffer": max_buffer,
+            "l1_coefficient": l1_coefficient,
+        }
+    )
+    steps: int = 0
 
     # Whilst there is still data
     while True:
@@ -89,13 +126,18 @@ def pipeline(
                     ]
 
                     # For each batch item, get the non padded tokens
+                    tokens_added: int = 0
                     for batch_idx, batch_item in enumerate(activations):
                         non_padded_tokens: Float[
                             Tensor, "pos activations"
                         ] = batch_item[attention_mask[batch_idx] == 1]
 
+                        tokens_added += len(non_padded_tokens)
+
                         # Store the activations in the buffer
                         activation_buffer.append(non_padded_tokens)
+
+                    wandb.log({"tokens_added": tokens_added}, steps)
 
                 # Move on once we have enough
                 if idx >= needed:
@@ -106,4 +148,15 @@ def pipeline(
                 break
 
         # Whilst the buffer is less than the minimum, train the autoencoder
-        train(autoencoder, activation_buffer, l1_coefficient, min_buffer)
+        print("training autoencoder")
+        stats = train(autoencoder, activation_buffer, l1_coefficient, min_buffer)
+        steps += stats.steps
+
+        wandb.log(
+            {
+                "reconstruction_loss": stats.reconstruction_loss,
+                "l1_loss": stats.l1_loss,
+                "total_loss": stats.total_loss,
+            },
+            steps,
+        )

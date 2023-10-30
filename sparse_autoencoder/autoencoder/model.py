@@ -31,6 +31,12 @@ class SparseAutoencoder(Module):
     The same bias is used pre-encoder and post-decoder.
     """
 
+    n_input_features: int
+    """Number of Input Features."""
+
+    n_learned_features: int
+    """Number of Learned Features."""
+
     def __init__(
         self,
         n_input_features: int,
@@ -38,6 +44,9 @@ class SparseAutoencoder(Module):
         geometric_median_dataset: Float[Tensor, "input_activations"],
     ) -> None:
         super().__init__()
+
+        self.n_input_features = n_input_features
+        self.n_learned_features = n_learned_features
 
         # Store the geometric median of the dataset (so that we can reset parameters). This is not a
         # parameter itself (the tied bias parameter is used for that), so gradients are disabled.

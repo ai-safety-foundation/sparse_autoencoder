@@ -1,6 +1,7 @@
 {
     "language": "en,en-GB",
     "words": [
+        "aiofiles",
         "allclose",
         "Autoencoder",
         "circuitsvis",
@@ -17,6 +18,7 @@
         "monosemantic",
         "ndarray",
         "neel",
+        "numel",
         "optim",
         "polysemantic",
         "polysemantically",
