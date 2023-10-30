@@ -1,7 +1,11 @@
 """Loss Function Tests."""
 import torch
 
-from sparse_autoencoder.autoencoder.loss import loss
+from sparse_autoencoder.autoencoder.loss import (
+    l1_loss,
+    reconstruction_loss,
+    sae_training_loss,
+)
 
 
 def test_loss() -> None:
@@ -22,11 +26,11 @@ def test_loss() -> None:
 
     expected: float = mse + l1_penalty
 
-    result = loss(
-        torch.tensor(input_activations),
-        torch.tensor(learned_activations),
-        torch.tensor(output_activations),
-        torch.tensor(l1_coefficient),
+    # Compute the reconstruction_loss, l1_loss, and sae_training_loss
+    mse_tensor = reconstruction_loss(
+        torch.tensor(input_activations), torch.tensor(output_activations)
     )
+    l1_tensor = l1_loss(torch.tensor(learned_activations))
+    result = sae_training_loss(mse_tensor, l1_tensor, l1_coefficient)
 
     assert torch.allclose(result, torch.tensor([expected]))
