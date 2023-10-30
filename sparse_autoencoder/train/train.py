@@ -1,11 +1,11 @@
-from functools import partial
-
+"""Training Pipeline."""
 import torch
+import transformer_lens
 from jaxtyping import Float
 from torch import Tensor
 from torch.optim import Adam
+from torch.utils.data import DataLoader
 from transformer_lens import HookedTransformer
-from transformers import AutoTokenizer
 
 from sparse_autoencoder.activations.ActivationBuffer import ActivationBuffer
 from sparse_autoencoder.autoencoder.loss import (
@@ -14,7 +14,6 @@ from sparse_autoencoder.autoencoder.loss import (
     sae_training_loss,
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.dataset.dataloader import collate_pile, create_dataloader
 
 
 def resample_neurons():
@@ -34,7 +33,7 @@ def train(
     optimizer = Adam(autoencoder.parameters())
 
     for _ in range(len(activation_buffer) - min_buffer):
-        sample_batch = activation_buffer.sample_without_replace(8192)
+        sample_batch = activation_buffer.sample_without_replace(4)
 
         # Forward pass
         learned_activations, reconstructed_activations = autoencoder(sample_batch)
@@ -58,19 +57,15 @@ def pipeline(
     src_model: HookedTransformer,
     autoencoder: SparseAutoencoder,
     activation_hook_point: str,
+    prompts_dataloader: DataLoader,
     min_buffer: int = 100,
     max_buffer: int = 200,
     l1_coefficient: float = 0.006,
 ):
     """Full pipeline for training the Sparse AutoEncoder"""
-
-    # Create the prompts dataloader
-    tokenizer = src_model.tokenizer
-    collate_fn = partial(collate_pile, tokenizer=tokenizer)
-    prompts_dataloader = create_dataloader(
-        "monology/pile-uncopyrighted",
-        collate_fn,
-    )
+    device = transformer_lens.utils.get_device()
+    src_model.to(device)
+    autoencoder.to(device)
 
     # Create the activation buffer
     activation_buffer = ActivationBuffer()
@@ -78,8 +73,8 @@ def pipeline(
 
     # TODO: Hook the transformer to get just the cache item we want
 
-    # Whilst there are batches available
-    while buffer_size > 0:
+    # Whilst there is still data
+    while True:
         # Whilst the buffer size is not full
         if buffer_size <= max_buffer:
             needed = max_buffer - buffer_size
@@ -88,7 +83,7 @@ def pipeline(
             for idx, (input_ids, attention_mask) in enumerate(prompts_dataloader):
                 # Run a forward pass and get the activations
                 with torch.no_grad():
-                    _logits, cache = src_model.run_with_cache(input_ids)
+                    _logits, cache = src_model.run_with_cache(input_ids.to(device))
                     activations: Float[Tensor, "batch pos activations"] = cache[
                         activation_hook_point  # TODO: Flatten if e.g. 4 axis (from head_idx)
                     ]
@@ -106,11 +101,9 @@ def pipeline(
                 if idx >= needed:
                     break
 
-            # Update the buffer size
-            buffer_size = len(activation_buffer)
+            # Stop if we no longer add any more
+            if len(activation_buffer) == 0:
+                break
 
         # Whilst the buffer is less than the minimum, train the autoencoder
         train(autoencoder, activation_buffer, l1_coefficient, min_buffer)
-
-        # Update the buffer size
-        buffer_size = len(activation_buffer)
