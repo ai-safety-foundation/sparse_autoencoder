@@ -1,11 +1,22 @@
 """Create a DataLoader with pre-processed data."""
 from typing import Callable
 
+import torch
 from datasets import IterableDataset, load_dataset
 from jaxtyping import Int
 from torch import Tensor
 from torch.utils.data import DataLoader
 from transformers import PreTrainedTokenizerBase
+
+
+def collate_neel_c4_tokenized(
+    batch: list[dict[str, str]],
+) -> tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]:
+    """Collate Function for the Neel C4 Tokenized dataset."""
+    tokens = [i["tokens"] for i in batch]
+    tokenized = torch.tensor(tokens)
+    mask = torch.ones_like(tokenized)
+    return tokenized, mask
 
 
 def collate_pile(
@@ -15,14 +26,16 @@ def collate_pile(
 
     To be used as a :class:`torch.DataLoader` collate function.
 
+    TODO: Fix this so it uses the full length of the strings.
+
     Examples:
 
     You can create a collate function for :func:`create_dataloader` as follows:
 
-        >>> from transformers import AutoTokenizer
-        >>> from functools import partial
-        >>> tokenizer = AutoTokenizer.from_pretrained("gpt2", pad_token="<|endoftext|>")
-        >>> collate_fn = partial(collate_pile, tokenizer=tokenizer)
+    >>> from transformers import AutoTokenizer
+    >>> from functools import partial
+    >>> tokenizer = AutoTokenizer.from_pretrained("gpt2", pad_token="<|endoftext|>")
+    >>> collate_fn = partial(collate_pile, tokenizer=tokenizer)
 
     Args:
         batch: Batch of data from the Pile dataset.
@@ -33,8 +46,9 @@ def collate_pile(
             for padding tokens).
     """
     texts = [item["text"] for item in batch]
-    tokenized = tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
-
+    tokenized = tokenizer(
+        texts, return_tensors="pt", padding=True, truncation=True, max_length=512
+    )
     return tokenized.input_ids, tokenized.attention_mask
 
 
@@ -44,7 +58,7 @@ def create_dataloader(
         [list], tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]
     ],
     dataset_split: str = "train",
-    batch_size: int = 1024,
+    batch_size: int = 512,
     shuffle_buffer_size: int = 10_000,
     random_seed: int = 0,
     num_workers: int = 2,
@@ -70,7 +84,7 @@ def create_dataloader(
     ...     random_seed=0
     ... )
     >>> print(next(iter(dataloader))[0].shape)
-    torch.Size([1024, 1024])
+    torch.Size([512, 512])
 
     Args:
         dataset_name: HuggingFace dataset name.
@@ -90,7 +104,9 @@ def create_dataloader(
         DataLoader with tokenized data & attention masks.
     """
     dataset: IterableDataset = load_dataset(
-        dataset_name, streaming=True, split=dataset_split
+        dataset_name,
+        streaming=True,
+        split=dataset_split,
     )
 
     # This dataset fills a buffer with buffer_size elements, then randomly samples elements from
