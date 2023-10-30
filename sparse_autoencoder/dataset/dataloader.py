@@ -10,7 +10,7 @@ from transformers import PreTrainedTokenizerBase
 
 def collate_pile(
     batch: list[dict[str, str]], tokenizer: PreTrainedTokenizerBase
-) -> Int[Tensor, "batch pos"]:
+) -> tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]:
     """Collate Function for the Pile dataset.
 
     To be used as a :class:`torch.DataLoader` collate function.
@@ -29,17 +29,20 @@ def collate_pile(
         tokenizer: HuggingFace tokenizer to use.
 
     Returns:
-        Batch of tokenized prompts.
+        Batch of tokenized prompts, along with their attention masks (1s for tokens to keep and 0s
+            for padding tokens).
     """
     texts = [item["text"] for item in batch]
-    return tokenizer(texts, return_tensors="pt", padding=True, truncation=True)[
-        "input_ids"
-    ]
+    tokenized = tokenizer(texts, return_tensors="pt", padding=True, truncation=True)
+
+    return tokenized.input_ids, tokenized.attention_mask
 
 
 def create_dataloader(
     dataset_name: str,
-    collate_fn: Callable[[list], Int[Tensor, "batch pos"]],
+    collate_fn: Callable[
+        [list], tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]
+    ],
     dataset_split: str = "train",
     batch_size: int = 1024,
     shuffle_buffer_size: int = 10_000,
@@ -54,7 +57,7 @@ def create_dataloader(
 
     Examples:
 
-    You can create a dataloader with the GPT2 tokenizer and pile uncopyright dataset as follows:
+    You can create a dataloader with the GPT2 tokenizer and pile uncopyrighted dataset as follows:
 
     >>> from transformers import AutoTokenizer
     >>> from functools import partial
@@ -66,25 +69,25 @@ def create_dataloader(
     ...     shuffle_buffer_size=2, # In practice this should be 10_000 or more.
     ...     random_seed=0
     ... )
-    >>> print(next(iter(dataloader)).shape)
+    >>> print(next(iter(dataloader))[0].shape)
     torch.Size([1024, 1024])
 
     Args:
         dataset_name: HuggingFace dataset name.
         collate_fn: Function to process a batch of data from the dataset & return a batch of
             tokenized prompts. See :func:`collate_pile` for an example.
+        dataset_split: HuggingFace dataset split to use (e.g. `train`).
         batch_size: Number of prompts to process at once.
         shuffle_buffer_size: Minimum number of prompts to shuffle at once. The DataLoader will
-            download this many prompts first and then keep at least this number in memory so
-            that there are sufficient numbers of prompts available to shuffle. If the
-            HuggingFace dataset is sharded, the DataLoader will also shuffle the shard order.
+            download this many prompts first and then keep at least this number in memory so that
+            there are sufficient numbers of prompts available to shuffle. If the HuggingFace dataset
+            is sharded, the DataLoader will also shuffle the shard order.
         random_seed: Random seed used for shuffling prompts.
-        num_workers: Number of CPU workers used for loading data. This should be greater than 1
-            and less than the number of CPU cores available.
-
+        num_workers: Number of CPU workers used for loading data. This should be greater than 1 and
+            less than the number of CPU cores available.
 
     Returns:
-        DataLoader with tokenized data.
+        DataLoader with tokenized data & attention masks.
     """
     dataset: IterableDataset = load_dataset(
         dataset_name, streaming=True, split=dataset_split
