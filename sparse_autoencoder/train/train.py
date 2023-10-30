@@ -65,7 +65,7 @@ def pipeline(
     """Full pipeline for training the Sparse AutoEncoder"""
 
     # Create the prompts dataloader
-    tokenizer = AutoTokenizer.from_pretrained("gpt2", pad_token="<|endoftext|>")
+    tokenizer = src_model.tokenizer
     collate_fn = partial(collate_pile, tokenizer=tokenizer)
     prompts_dataloader = create_dataloader(
         "monology/pile-uncopyrighted",
