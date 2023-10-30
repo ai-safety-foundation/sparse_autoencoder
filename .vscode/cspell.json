@@ -16,6 +16,7 @@
         "jaxtyping",
         "monosemantic",
         "ndarray",
+        "optim",
         "polysemantic",
         "polysemantically",
         "pyproject",
