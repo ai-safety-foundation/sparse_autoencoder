@@ -10,6 +10,7 @@
         "cudnn",
         "devcontainer",
         "devel",
+        "docstrings",
         "dtype",
         "dunder",
         "endoftext",

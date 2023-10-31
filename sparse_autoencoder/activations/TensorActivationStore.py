@@ -169,7 +169,17 @@ class TensorActivationStore(ActivationStore):
         >>> store.append(torch.ones(5))
         >>> store[1]
         tensor([1., 1., 1., 1., 1.], dtype=torch.float16)
+
+        Args:
+            item: The item to append to the dataset.
+
+        Raises:
+            IndexError: If there is no space remaining.
         """
+        # Check we have space
+        if self.items_stored + 1 >= len(self):
+            raise IndexError("No space left in the activation store")
+
         self._data[self.items_stored] = item.to(
             self._data.device, dtype=self._data.dtype
         )
@@ -185,7 +195,17 @@ class TensorActivationStore(ActivationStore):
         >>> store.extend(torch.zeros(2, 5))
         >>> store.items_stored
         2
+
+        Args:
+            batch: The batch to append to the dataset.
+
+        Raises:
+            IndexError: If there is no space remaining.
         """
+        # Check we have space
+        if self.items_stored + batch.shape[0] >= len(self):
+            raise IndexError("No space left in the activation store")
+
         n_items = batch.shape[0]
         self._data[self.items_stored : self.items_stored + n_items] = batch.to(
             self._data.device, dtype=self._data.dtype
