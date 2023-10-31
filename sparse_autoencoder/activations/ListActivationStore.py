@@ -16,8 +16,11 @@ from sparse_autoencoder.activations.ActivationStore import (
 class ListActivationStore(ActivationStore):
     """List Activation Store.
 
-    Stores pointers to activation vectors in a list (in-memory). Multiprocess safe if the
-    `multiprocessing_enabled` argument is set to `True`.
+    Stores pointers to activation vectors in a list (in-memory). This is primarily of use for quick
+    experiments where you don't want to calculate how much memory you need in advance (otherwise
+    :class:`sparse_autoencoder.activations.TensorActivationStore` is recommended).
+
+    Multiprocess safe if the `multiprocessing_enabled` argument is set to `True`.
 
     Extends the `torch.utils.data.Dataset` class to provide a list-based activation store, with
     additional :meth:`append` and :meth:`extend` methods (the latter of which is non-blocking).
@@ -62,9 +65,9 @@ class ListActivationStore(ActivationStore):
         data: Data to initialize the dataset with.
         device: Device to store the activation vectors on.
         dtype: Data type to store the activation vectors as.
-        multiprocessing_enabled: Support reading/writing to the dataset with multiple
-            GPU workers. This creates significant overhead, so you should only enable it if you
-            have multiple GPUs (and experiment with enabling/disabling it).
+        multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU workers.
+            This creates significant overhead, so you should only enable it if you have multiple
+            GPUs (and experiment with enabling/disabling it).
         num_workers: Number of CPU workers to use for non-blocking writes to the dataset (so that
             the model can keep running whilst it writes the previous activations to memory). This
             should be less than the number of CPU cores available. You don't need multiple GPUs to
