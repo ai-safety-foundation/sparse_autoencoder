@@ -1,5 +1,6 @@
 """Activation Store Base Class."""
 from abc import abstractmethod
+from concurrent.futures import Future
 
 from jaxtyping import Float
 from torch import Tensor
@@ -27,6 +28,6 @@ class ActivationStore(Dataset):
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: ActivationStoreBatch) -> None:
+    def extend(self, batch: ActivationStoreBatch) -> Future:
         """Add a batch to the store"""
         raise NotImplementedError

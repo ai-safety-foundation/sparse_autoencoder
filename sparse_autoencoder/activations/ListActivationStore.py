@@ -1,6 +1,6 @@
 """List Activation Store."""
 import random
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import Future, ThreadPoolExecutor
 from multiprocessing import Manager
 from multiprocessing.managers import ListProxy
 
@@ -39,8 +39,8 @@ class ListActivationStore(ActivationStore):
     Add a batch of activation vectors to the dataset (non-blocking):
 
         >>> batch = torch.randn(10, 100)
-        >>> store.extend(batch)
-        >>> store.finalize() # Wait for all non-blocking writes to complete
+        >>> future = store.extend(batch)
+        >>> future.result() # Wait for the write to complete
         >>> len(store)
         11
 
@@ -160,6 +160,7 @@ class ListActivationStore(ActivationStore):
 
         This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.
         """
+        self.wait_for_writes_to_complete()
         random.shuffle(self._data)
 
     def append(self, item: ActivationStoreItem) -> None:
@@ -185,7 +186,7 @@ class ListActivationStore(ActivationStore):
 
         self._data.extend(items)
 
-    def extend(self, batch: ActivationStoreBatch) -> None:
+    def extend(self, batch: ActivationStoreBatch) -> Future:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:
@@ -193,24 +194,27 @@ class ListActivationStore(ActivationStore):
             >>> import torch
             >>> store = ListActivationStore()
             >>> batch = torch.randn(10, 100)
-            >>> store.extend(batch)
-            >>> store.finalize() # Wait for all non-blocking writes to complete
+            >>> future = store.extend(batch)
+            >>> future.result() # Wait for the write to complete
             >>> len(store)
             10
 
         Args:
             items: A list of items to add to the dataset.
         """
-        self._thread_pool.submit(self._extend, batch)
+        return self._thread_pool.submit(self._extend, batch)
 
-    def finalize(self):
-        """Finalize the Dataset.
+    def wait_for_writes_to_complete(self):
+        """Wait for Writes to Complete
 
-        Call this method when you have finished adding items to the dataset. This will wait for all
-        non-blocking writes to complete before returning.
+        Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.
         """
-        self._thread_pool.shutdown(wait=True)
+        # Submit a dummy task to the thread pool
+        sentinel = object()
+        future = self._thread_pool.submit(lambda: sentinel)
+        future.result()
 
     def __del__(self):
         """Delete Dunder Method."""
-        self.finalize()
+        # Shutdown the thread pool (don't wait as we won't be able to use the resulting dataset)
+        self._thread_pool.shutdown(wait=False, cancel_futures=True)
