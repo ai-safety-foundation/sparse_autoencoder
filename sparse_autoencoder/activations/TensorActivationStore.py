@@ -123,7 +123,16 @@ class TensorActivationStore(ActivationStore):
 
         Returns:
             The activation store item at the given index.
+
+        Raises:
+            IndexError: If the index is out of range.
         """
+        # Check in range
+        if index >= self.items_stored:
+            raise IndexError(
+                f"Index {index} out of range (only {self.items_stored} items stored)"
+            )
+
         return self._data[index]
 
     def shuffle(self):
