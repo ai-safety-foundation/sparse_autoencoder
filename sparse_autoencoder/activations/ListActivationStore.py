@@ -16,6 +16,9 @@ from sparse_autoencoder.activations.ActivationStore import (
 class ListActivationStore(ActivationStore):
     """List Activation Store.
 
+    Stores pointers to activation vectors in a list (in-memory). Multiprocess safe if the
+    `multiprocessing_enabled` argument is set to `True`.
+
     Extends the `torch.utils.data.Dataset` class to provide a list-based activation store, with
     additional :meth:`append` and :meth:`extend` methods (the latter of which is non-blocking).
 
@@ -114,12 +117,12 @@ class ListActivationStore(ActivationStore):
 
         Example:
 
-            >>> import torch
-            >>> store = ListActivationStore()
-            >>> store.append(torch.randn(100))
-            >>> store.append(torch.randn(100))
-            >>> len(store)
-            2
+        >>> import torch
+        >>> store = ListActivationStore()
+        >>> store.append(torch.randn(100))
+        >>> store.append(torch.randn(100))
+        >>> len(store)
+        2
         """
         return len(self._data)
 
@@ -147,6 +150,15 @@ class ListActivationStore(ActivationStore):
     def __getitem__(self, index: int) -> ActivationStoreItem:
         """Get Item Dunder Method.
 
+        Example:
+
+        >>> import torch
+        >>> store = ListActivationStore()
+        >>> store.append(torch.zeros(5))
+        >>> store.append(torch.ones(5))
+        >>> store[1]
+        tensor([1., 1., 1., 1., 1.], dtype=torch.float16)
+
         Args:
             index: The index of the tensor to fetch.
 
@@ -159,6 +171,20 @@ class ListActivationStore(ActivationStore):
         """Shuffle the Data In-Place.
 
         This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.
+
+        Example:
+
+        >>> import torch
+        >>> import random
+        >>> random.seed(42)
+        >>> store = ListActivationStore()
+        >>> store.append(torch.tensor([1.]))
+        >>> store.append(torch.tensor([2.]))
+        >>> store.append(torch.tensor([3.]))
+        >>> store.shuffle()
+        >>> [store[i].item() for i in range(len(store))]
+        [2.0, 1.0, 3.0]
+
         """
         self.wait_for_writes_to_complete()
         random.shuffle(self._data)
@@ -167,6 +193,15 @@ class ListActivationStore(ActivationStore):
         """Append a single item to the dataset.
 
         Note **append is blocking**. For better performance use extend instead with batches.
+
+        Example:
+
+        >>> import torch
+        >>> store = ListActivationStore()
+        >>> store.append(torch.randn(100))
+        >>> store.append(torch.randn(100))
+        >>> len(store)
+        2
 
         Args:
             item: The item to append to the dataset.
@@ -208,6 +243,18 @@ class ListActivationStore(ActivationStore):
         """Wait for Writes to Complete
 
         Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.
+
+        Example:
+
+        >>> import torch
+        >>> store = ListActivationStore()
+        >>> _future = store.extend(torch.randn(3, 100))
+        >>> len(store) # The writes haven't completed yet
+        0
+
+        >>> store.wait_for_writes_to_complete()
+        >>> len(store)
+        3
         """
         # Submit a dummy task to the thread pool
         sentinel = object()

@@ -28,6 +28,6 @@ class ActivationStore(Dataset):
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: ActivationStoreBatch) -> Future:
+    def extend(self, batch: ActivationStoreBatch):
         """Add a batch to the store"""
         raise NotImplementedError

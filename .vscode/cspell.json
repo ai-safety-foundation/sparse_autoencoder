@@ -27,6 +27,7 @@
         "polysemantically",
         "pyproject",
         "randn",
+        "randperm",
         "sharded",
         "transformer_lens",
         "uncopyrighted",
