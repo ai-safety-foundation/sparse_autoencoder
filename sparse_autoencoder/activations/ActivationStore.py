@@ -17,12 +17,34 @@ class ActivationStore(Dataset, ABC):
 
     Extends the `torch.utils.data.Dataset` class to provide an activation store, with additional
     :meth:`append` and :meth:`extend` methods (the latter of which should typically be
-    non-blocking).
+    non-blocking). The resulting activation store can be used with a `torch.utils.data.DataLoader`
+    to iterate over the dataset.
 
-    Extend this class if you want to create a new activation store.
+    Extend this class if you want to create a new activation store (noting you also need to create
+    `__getitem__` and `__len__` methods from the underlying `torch.utils.data.Dataset` class).
 
-    The resulting activation store can be used with a `torch.utils.data.DataLoader` to iterate over
-    the dataset.
+    Example:
+
+    >>> class MyActivationStore(ActivationStore):
+    ...     def __init__(self):
+    ...         super().__init__()
+    ...         self._data = []
+    ...
+    ...     def append(self, item: ActivationStoreItem) -> None:
+    ...         self._data.append(item)
+    ...
+    ...     def extend(self, batch: ActivationStoreBatch):
+    ...         self._data.extend(batch)
+    ...
+    ...     def __getitem__(self, index: int) -> ActivationStoreItem:
+    ...         return self._data[index]
+    ...
+    ...     def __len__(self) -> int:
+    ...         return len(self._data)
+    ...
+    >>> store = MyActivationStore()
+    >>> print(len(store))
+    0
     """
 
     @abstractmethod
