@@ -28,6 +28,7 @@ autoflake = "^2.2.1"
 [tool.poetry.group.demos.dependencies]
 jupyterlab = ">=3"
 transformer-lens = "^1.9.0"
+pandas = "^2.1.2"
 
 [build-system]
 requires = ["poetry-core"]
