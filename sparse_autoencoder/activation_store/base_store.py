@@ -76,6 +76,16 @@ class ActivationStore(Dataset, ABC):
         """Empty the Store."""
         raise NotImplementedError
 
+    @abstractmethod
+    def __len__(self) -> int:
+        """Get the Length of the Store."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def __getitem__(self, index: int) -> ActivationStoreItem:
+        """Get an Item from the Store."""
+        raise NotImplementedError
+
 
 class StoreFullError(IndexError):
     """Exception raised when the activation store is full."""
