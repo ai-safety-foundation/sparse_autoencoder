@@ -28,13 +28,16 @@ class ActivationStore(Dataset, ABC):
     >>> class MyActivationStore(ActivationStore):
     ...     def __init__(self):
     ...         super().__init__()
-    ...         self._data = []
+    ...         self._data = [] # In this example, we just store in a list
     ...
     ...     def append(self, item: ActivationStoreItem) -> None:
     ...         self._data.append(item)
     ...
     ...     def extend(self, batch: ActivationStoreBatch):
     ...         self._data.extend(batch)
+    ...
+    ...     def empty(self):
+    ...         self._data = []
     ...
     ...     def __getitem__(self, index: int) -> ActivationStoreItem:
     ...         return self._data[index]
@@ -43,16 +46,22 @@ class ActivationStore(Dataset, ABC):
     ...         return len(self._data)
     ...
     >>> store = MyActivationStore()
+    >>> store.append(torch.randn(100))
     >>> print(len(store))
-    0
+    1
     """
 
     @abstractmethod
     def append(self, item: ActivationStoreItem) -> None:
-        """Add a single item to the store"""
+        """Add a Single Item to the Store."""
         raise NotImplementedError
 
     @abstractmethod
     def extend(self, batch: ActivationStoreBatch):
-        """Add a batch to the store"""
+        """Add a Batch to the Store."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def empty(self):
+        """Empty the Store."""
         raise NotImplementedError

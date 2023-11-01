@@ -211,3 +211,20 @@ class TensorActivationStore(ActivationStore):
             self._data.device, dtype=self._data.dtype
         )
         self.items_stored += n_items
+
+    def empty(self) -> None:
+        """Empty the store.
+
+        Example:
+
+        >>> import torch
+        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
+        >>> store.extend(torch.zeros(2, 5))
+        >>> store.items_stored
+        2
+        >>> store.empty()
+        >>> store.items_stored
+        0
+        """
+        # We don't need to zero the data, just reset the number of items stored
+        self.items_stored = 0

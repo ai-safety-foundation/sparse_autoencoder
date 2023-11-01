@@ -259,10 +259,24 @@ class ListActivationStore(ActivationStore):
         >>> len(store)
         3
         """
-        # Submit a dummy task to the thread pool
-        sentinel = object()
-        future = self._thread_pool.submit(lambda: sentinel)
-        future.result()
+
+    def empty(self):
+        """Empty the dataset.
+
+        Example:
+
+        >>> import torch
+        >>> store = ListActivationStore()
+        >>> store.append(torch.randn(100))
+        >>> store.append(torch.randn(100))
+        >>> len(store)
+        2
+
+        >>> store.empty()
+        >>> len(store)
+        0
+        """
+        self._data.clear()
 
     def __del__(self):
         """Delete Dunder Method."""
