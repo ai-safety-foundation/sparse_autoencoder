@@ -1,5 +1,6 @@
 """List Activation Store."""
 import random
+import time
 from concurrent.futures import Future, ThreadPoolExecutor
 from multiprocessing import Manager
 from multiprocessing.managers import ListProxy
@@ -259,6 +260,8 @@ class ListActivationStore(ActivationStore):
         >>> len(store)
         3
         """
+        # Hacky approach!
+        time.sleep(1)
 
     def empty(self):
         """Empty the dataset.
