@@ -25,6 +25,7 @@ class ActivationStore(Dataset, ABC):
 
     Example:
 
+    >>> import torch
     >>> class MyActivationStore(ActivationStore):
     ...     def __init__(self):
     ...         super().__init__()
