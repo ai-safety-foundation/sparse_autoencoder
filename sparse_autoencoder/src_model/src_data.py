@@ -1,4 +1,8 @@
-"""Create a DataLoader with pre-processed data."""
+"""Source Data.
+
+Gets large amounts of text that can be used as prompts for the source model, to be used in getting
+activations.
+"""
 from typing import Callable
 
 import torch
