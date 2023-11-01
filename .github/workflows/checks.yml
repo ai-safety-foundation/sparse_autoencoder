@@ -1,0 +1,57 @@
+name: Checks
+
+on:
+  push:
+    branches: 
+      - main
+    paths-ignore:
+      - '.devcontainer/**'
+      - '.vscode/**'
+      - '.gitignore'
+      - 'README.md'
+  pull_request:
+    branches: 
+      - main
+    paths-ignore:
+      - '.devcontainer/**'
+      - '.vscode/**'
+      - '.gitignore'
+      - 'README.md'
+  # Allow this workflow to be called from other workflows
+  workflow_call:
+    inputs:
+      #  Requires at least one input to be valid, but in practice we don't need any
+      dummy:
+        type: string
+        required: false
+
+jobs:
+  checs:
+    name: Checks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'poetry'
+    - name: Install dependencies
+      run: poetry install --with dev
+    - name: Pytest
+      run: poetry run pytest
+    - name: Type check
+      run: poetry run mypy sparse_autoencoder
+    - name: Lint
+      run: poetry run pylint sparse_autoencoder
+    - name: Black
+      run: poetry run black --check sparse_autoencoder
+    - name: Build check
+      run: poetry build

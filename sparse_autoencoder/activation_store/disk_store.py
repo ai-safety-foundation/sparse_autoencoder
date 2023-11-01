@@ -212,7 +212,7 @@ class DiskActivationStore(ActivationStore):
     @property
     def _all_filenames(self) -> list[Path]:
         """Return a List of All Activation Vector Filenames."""
-        return [path for path in self._storage_path.glob("*.pt")]
+        return list(self._storage_path.glob("*.pt"))
 
     def empty(self):
         """Empty the Store.
