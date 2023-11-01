@@ -72,8 +72,11 @@ class DiskActivationStore(ActivationStore):
     _thread_pool: ThreadPoolExecutor
     """Threadpool for non-blocking writes to the file system."""
 
-    _disk_n_activation_vectors: ValueProxy[int] | None = None
-    """Length of the Store (on disk)."""
+    _disk_n_activation_vectors: ValueProxy[int]
+    """Length of the Store (on disk).
+    
+    Minus 1 signifies not calculated yet.
+    """
 
     def __init__(
         self,
@@ -90,16 +93,17 @@ class DiskActivationStore(ActivationStore):
         # Setup the storage directory
         self._storage_path = storage_path
         self._storage_path.mkdir(parents=True, exist_ok=True)
-        if empty_dir:
-            self.empty()
 
         # Setup the Cache
         manager = Manager()
         self._cache = manager.list()
         self._max_cache_size = max_cache_size
         self._cache_lock = manager.Lock()
+        self._disk_n_activation_vectors = manager.Value("i", -1)
+
+        # Empty the directory if needed
         if empty_dir:
-            self._disk_n_activation_vectors = manager.Value("i", 0)
+            self.empty()
 
         # Create a threadpool for non-blocking writes to the cache
         self._thread_pool = ThreadPoolExecutor(num_workers)
@@ -124,7 +128,7 @@ class DiskActivationStore(ActivationStore):
             del self._cache[0:size_to_get]
 
             # Update the length cache
-            if self._disk_n_activation_vectors is not None:
+            if not self._disk_n_activation_vectors.value == -1:
                 self._disk_n_activation_vectors.value += len(activations)
 
         stacked_activations = torch.stack(activations).to(dtype=self._dtype)
@@ -231,8 +235,7 @@ class DiskActivationStore(ActivationStore):
         """
         for file in self._all_filenames:
             file.unlink()
-        if self._disk_n_activation_vectors:
-            self._disk_n_activation_vectors.value = 0
+        self._disk_n_activation_vectors.value = 0
 
     def __getitem__(self, index: int) -> ActivationStoreItem:
         """Get Item Dunder Method.
@@ -261,7 +264,7 @@ class DiskActivationStore(ActivationStore):
         0
         """
         # Calculate the length if not cached
-        if self._disk_n_activation_vectors is None:
+        if self._disk_n_activation_vectors.value is None:
             cache_size: int = 0
             for file in self._all_filenames:
                 cache_size += len(torch.load(file))
