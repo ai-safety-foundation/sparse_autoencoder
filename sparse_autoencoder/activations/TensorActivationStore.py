@@ -116,7 +116,7 @@ class TensorActivationStore(ActivationStore):
         Example:
 
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
+        >>> store = TensorActivationStore(max_items=2, num_neurons=5)
         >>> store.append(torch.zeros(5))
         >>> store.append(torch.ones(5))
         >>> store[1]
@@ -181,7 +181,7 @@ class TensorActivationStore(ActivationStore):
             IndexError: If there is no space remaining.
         """
         # Check we have space
-        if self.items_stored + 1 >= self._max_items:
+        if self.items_stored + 1 > self._max_items:
             raise IndexError("No space left in the activation store")
 
         self._data[self.items_stored] = item.to(
@@ -207,7 +207,7 @@ class TensorActivationStore(ActivationStore):
             IndexError: If there is no space remaining.
         """
         # Check we have space
-        if self.items_stored + batch.shape[0] >= self._max_items:
+        if self.items_stored + batch.shape[0] > self._max_items:
             raise IndexError("No space left in the activation store")
 
         n_items = batch.shape[0]

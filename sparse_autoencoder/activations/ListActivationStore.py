@@ -243,7 +243,7 @@ class ListActivationStore(ActivationStore):
         """
         return self._thread_pool.submit(self._extend, batch)
 
-    def wait_for_writes_to_complete(self):
+    def wait_for_writes_to_complete(self) -> None:
         """Wait for Writes to Complete
 
         Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.
@@ -279,7 +279,10 @@ class ListActivationStore(ActivationStore):
         >>> len(store)
         0
         """
-        self._data.clear()
+        if isinstance(self._data, list):
+            self._data.clear()
+        else:
+            self._data = Manager().list()
 
     def __del__(self):
         """Delete Dunder Method."""

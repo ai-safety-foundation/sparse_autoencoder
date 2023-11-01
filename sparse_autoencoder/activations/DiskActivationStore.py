@@ -1,9 +1,10 @@
 """Disk Activation Store."""
 import tempfile
 from concurrent.futures import Future, ThreadPoolExecutor
-from multiprocessing import Lock, Queue, Value
-from multiprocessing.sharedctypes import Synchronized, SynchronizedBase
+from multiprocessing import Manager
+from multiprocessing.managers import ListProxy, ValueProxy
 from pathlib import Path
+from threading import Lock
 
 import torch
 
@@ -38,10 +39,10 @@ class DiskActivationStore(ActivationStore):
         empty_dir: Whether to empty the directory before writing. Generally you want to set this to
             `True` as otherwise the directory may contain stale activation vectors from previous
             runs.
-        max_queue_size: The maximum number of activation vectors to buffer in memory before writing
-            to disk.
-        num_workers: Number of CPU workers to use for non-blocking writes to the file system (so that
-            the model can keep running whilst it writes the previous activations to disk). This
+        max_cache_size: The maximum number of activation vectors to cache in memory before writing
+            to disk. Note this is only followed approximately.
+        num_workers: Number of CPU workers to use for non-blocking writes to the file system (so
+            that the model can keep running whilst it writes the previous activations to disk). This
             should be less than the number of CPU cores available. You don't need multiple GPUs to
             take advantage of this feature.
     """
@@ -49,82 +50,91 @@ class DiskActivationStore(ActivationStore):
     _storage_path: Path
     """Path to the Directory where the Activation Vectors are Stored."""
 
-    _queue: Queue
-    """Queue to Buffer Activation Vectors in Memory.
+    _dtype: torch.dtype
+    """Data Type used for Storage."""
+
+    _cache: ListProxy
+    """Cache for Activation Vectors.
     
-    Activation vectors are buffered in memory until the queue is full, at which point they are
+    Activation vectors are buffered in memory until the cache is full, at which point they are
     written to disk.
     """
 
-    _queue_size: Synchronized
-    """Number of Activation Vectors in the Queue."""
+    _cache_lock: Lock
+    """Lock for the Cache."""
 
-    _max_queue_size: int
-    """Maximum Number of Activation Vectors to Buffer in Memory.
-    
-    Note this is approximately respected, as multiprocessing doesn't have strict guarantees.
-    """
-
-    length_cache: int | None = None
-    """Cache of the Length of the Store.
-    
-    This is cached as it's expensive to calculate.
-    """
+    _max_cache_size: int
+    """Maximum Number of Activation Vectors to cache in Memory."""
 
     _thread_pool: ThreadPoolExecutor
     """Threadpool for non-blocking writes to the file system."""
+
+    _disk_n_activation_vectors: ValueProxy[int] | None = None
+    """Length of the Store (on disk)."""
 
     def __init__(
         self,
         storage_path: Path = DEFAULT_DISK_ACTIVATION_STORE_PATH,
         empty_dir: bool = False,
-        max_queue_size: int = 10_000,
+        dtype: torch.dtype = torch.float16,
+        max_cache_size: int = 10_000,
         num_workers: int = 6,
     ):
         super().__init__()
+
+        self._dtype = dtype
 
         # Setup the storage directory
         self._storage_path = storage_path
         self._storage_path.mkdir(parents=True, exist_ok=True)
         if empty_dir:
             self.empty()
-            self.length_cache = 0
 
-        # Setup the Queue
-        # Note we don't explicitly set the maxsize of the queue, as we want to allow it to grow
-        # beyond the max_queue_size if the workers are slow to write to disk (as this will block
-        # the model from running otherwise).
-        self._queue = Queue()
-        self._queue_size: Synchronized = Value("i", 0)  # type: ignore
-        self._queue_size_lock = Lock()
-        self._max_queue_size = max_queue_size
+        # Setup the Cache
+        manager = Manager()
+        self._cache = manager.list()
+        self._max_cache_size = max_cache_size
+        self._cache_lock = manager.Lock()
+        if empty_dir:
+            self._disk_n_activation_vectors = manager.Value("i", 0)
 
-        # Create a threadpool for non-blocking writes to the dataset
+        # Create a threadpool for non-blocking writes to the cache
         self._thread_pool = ThreadPoolExecutor(num_workers)
 
-    def _write_to_disk(self) -> None:
-        """Write the contents of the queue to disk."""
-        all_queue_items = []
-        for _ in range(self._queue_size.value):
-            item = self._queue.get(block=True)
-            all_queue_items.append(item)
-            with self._queue_size_lock:
-                self._queue_size.value -= 1
+    def _write_to_disk(self, wait_for_max: bool = False) -> None:
+        """Write the contents of the queue to disk.
 
-        stacked_activation_vectors = torch.stack(all_queue_items)
+        Args:
+            wait_for_max: Whether to wait until the cache is full before writing to disk.
+        """
+        with self._cache_lock:
+            # Check we have enough items
+            if len(self._cache) == 0:
+                return
+
+            size_to_get = min(self._max_cache_size, len(self._cache))
+            if wait_for_max and size_to_get < self._max_cache_size:
+                return
+
+            # Get the activations from the cache and delete them
+            activations = self._cache[0:size_to_get]
+            del self._cache[0:size_to_get]
+
+            # Update the length cache
+            if self._disk_n_activation_vectors is not None:
+                self._disk_n_activation_vectors.value += len(activations)
+
+        stacked_activations = torch.stack(activations).to(dtype=self._dtype)
+
         filename = f"{self.__len__}.pt"
-        torch.save(stacked_activation_vectors, self._storage_path / filename)
-
-        # Update the length
-        if self.length_cache is not None:
-            self.length_cache += len(stacked_activation_vectors)
+        torch.save(stacked_activations, self._storage_path / filename)
 
     def append(self, item: ActivationStoreItem) -> Future | None:
         """Add a Single Item to the Store.
 
         Example:
 
-        >>> store = DiskActivationStore(max_queue_size=1, empty_dir=True)
+        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
         >>> future = store.append(torch.randn(100))
         >>> future.result()
         >>> print(len(store))
@@ -137,30 +147,59 @@ class DiskActivationStore(ActivationStore):
             Future that completes when the activation vector has queued to be written to disk, and
             if needed, written to disk.
         """
-        self._queue.put(item)
-        with self._queue_size_lock:
-            self._queue_size.value += 1
+        with self._cache_lock:
+            self._cache.append(item)
 
-        # Write to disk if needed
-        if self._queue_size.value >= self._max_queue_size:
-            return self._thread_pool.submit(self._write_to_disk)
+            # Write to disk if needed
+            if len(self._cache) >= self._max_cache_size:
+                return self._thread_pool.submit(self._write_to_disk, wait_for_max=True)
+
         return None  # Keep mypy happy
 
-    def extend(self, batch: ActivationStoreBatch) -> None:
+    def extend(self, batch: ActivationStoreBatch) -> Future | None:
         """Add a Batch to the Store.
+
+        Example:
+
+        >>> store = DiskActivationStore(max_cache_size=10, empty_dir=True)
+        >>> future = store.extend(torch.randn(10, 100))
+        >>> future.result()
+        >>> print(len(store))
+        10
 
         Args:
             batch: Batch of activation vectors to add to the store.
-        """
-        for item in batch:
-            self.append(item)
 
-    def close(self):
-        """Close the Store (Make Sure All Activation Vectors are Written to Disk).
-
-        This should be called after the last batch has been added to the store.
+        Returns:
+            Future that completes when the activation vectors have queued to be written to disk, and
+            if needed, written to disk.
         """
-        if not self._queue.empty():
+        items = batch.unbind(0)
+
+        with self._cache_lock:
+            self._cache.extend(items)
+
+            # Write to disk if needed
+            if len(self._cache) >= self._max_cache_size:
+                return self._thread_pool.submit(self._write_to_disk, wait_for_max=True)
+
+        return None  # Keep mypy happy
+
+    def wait_for_writes_to_complete(self) -> None:
+        """Wait for Writes to Complete.
+
+        This should be called after the last batch has been added to the store. It will wait for
+        all activation vectors to be written to disk.
+
+        Example:
+
+        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+        >>> future = store.append(torch.randn(100))
+        >>> store.wait_for_writes_to_complete()
+        >>> print(len(store))
+        1
+        """
+        while len(self._cache) > 0:
             self._write_to_disk()
 
     @property
@@ -174,12 +213,23 @@ class DiskActivationStore(ActivationStore):
         Warning:
 
         This will delete all .pt files in the top level of the storage directory.
+
+        Example:
+
+        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+        >>> future = store.append(torch.randn(100))
+        >>> future.result()
+        >>> print(len(store))
+        1
+
+        >>> store.empty()
+        >>> print(len(store))
+        0
         """
         for file in self._all_filenames:
             file.unlink()
-
-        # Reset the length
-        self.length_cache = 0
+        if self._disk_n_activation_vectors:
+            self._disk_n_activation_vectors.value = 0
 
     def __getitem__(self, index: int) -> ActivationStoreItem:
         """Get Item Dunder Method.
@@ -191,27 +241,33 @@ class DiskActivationStore(ActivationStore):
             The activation store item at the given index.
         """
         # Find the file containing the activation vector
-        file_index = index // self._max_queue_size
+        file_index = index // self._max_cache_size
         file = self._storage_path / f"{file_index}.pt"
 
         # Load the file and return the activation vector
         activation_vectors = torch.load(file)
-        return activation_vectors[index % self._max_queue_size]
+        return activation_vectors[index % self._max_cache_size]
 
     def __len__(self) -> int:
         """Length Dunder Method.
 
         Example:
 
-        >>> store = DiskActivationStore(max_queue_size=1, empty_dir=True)
+        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
         >>> print(len(store))
         0
         """
         # Calculate the length if not cached
-        if self.length_cache is None:
+        if self._disk_n_activation_vectors is None:
             cache_size: int = 0
             for file in self._all_filenames:
                 cache_size += len(torch.load(file))
-            self.length_cache = cache_size
+            self._disk_n_activation_vectors.value = cache_size
 
-        return self.length_cache
+        return self._disk_n_activation_vectors.value
+
+    def __del__(self):
+        """Delete Dunder Method."""
+        # Shutdown the thread pool after everything is complete
+        self._thread_pool.shutdown(wait=True, cancel_futures=False)
+        self.wait_for_writes_to_complete()
