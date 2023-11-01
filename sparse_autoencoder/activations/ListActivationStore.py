@@ -3,7 +3,7 @@ import random
 import time
 from concurrent.futures import Future, ThreadPoolExecutor
 from multiprocessing import Manager
-from multiprocessing.managers import ListProxy
+from multiprocessing.managers import ListProxy, SyncManager
 
 import torch
 
@@ -87,6 +87,8 @@ class ListActivationStore(ActivationStore):
     _thread_pool: ThreadPoolExecutor
     """Threadpool for non-blocking writes to the dataset."""
 
+    _multiprocessing_manager: SyncManager | None = None
+
     def __init__(
         self,
         data: list[ActivationStoreItem] | None = None,
@@ -102,8 +104,8 @@ class ListActivationStore(ActivationStore):
         # If multiprocessing is enabled, use a multiprocessing manager to create a shared list
         # between processes. Otherwise, just use a normal list.
         if multiprocessing_enabled:
-            manager = Manager()
-            self._data = manager.list(data)
+            self._multiprocessing_manager = Manager()
+            self._data = self._multiprocessing_manager.list(data)
         else:
             self._data = data
 
@@ -281,8 +283,8 @@ class ListActivationStore(ActivationStore):
         """
         if isinstance(self._data, list):
             self._data.clear()
-        else:
-            self._data = Manager().list()
+        elif isinstance(self._multiprocessing_manager, SyncManager):
+            self._data = self._multiprocessing_manager.list()
 
     def __del__(self):
         """Delete Dunder Method."""
