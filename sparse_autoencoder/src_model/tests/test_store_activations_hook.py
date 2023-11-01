@@ -13,11 +13,11 @@ def test_hook_stores_activations():
     model = HookedTransformer.from_pretrained("tiny-stories-1M")
 
     model.add_hook(
-        "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
+        "blocks.1.mlp.hook_post", partial(store_activations_hook, store=store)
     )
 
     tokens = model.to_tokens("Hello world")
-    model.forward(tokens)
+    model.forward(tokens, stop_at_layer=2)
 
     number_of_tokens = tokens.numel()
     mlp_size: int = model.cfg.d_mlp

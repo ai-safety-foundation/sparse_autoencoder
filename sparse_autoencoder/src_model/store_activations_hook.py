@@ -26,13 +26,21 @@ def store_activations_hook(
     >>> model = HookedTransformer.from_pretrained("tiny-stories-1M")
     Loaded pretrained model tiny-stories-1M into HookedTransformer
 
-    Next we can add the hook to specific neurons (in this case the first MLP neurons), and do a
-    forward pass.
+    Next we can add the hook to specific neurons (in this case the first MLP neurons), and create
+    the tokens for a forward pass.
 
     >>> model.add_hook(
     ...     "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
     ... )
-    >>> _logits = model.forward("Hello world") # "Hello world" is 3 tokens
+    >>> tokens = model.to_tokens("Hello world")
+    >>> tokens.shape
+    torch.Size([1, 3])
+
+    Then when we run the model, we should get one activation vector for each token (as we just have
+    one batch item). Note we also set `stop_at_layer=1` as we don't need the logits or any other
+    activations after the hook point that we've specified (in this case the first MLP layer).
+
+    >>> _output = model.forward("Hello world", stop_at_layer=1) # Change this layer as required
     >>> len(store)
     3
 
