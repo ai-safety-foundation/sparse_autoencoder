@@ -12,6 +12,7 @@
         "docstrings",
         "dtype",
         "dunder",
+        "einops",
         "endoftext",
         "Hobbhahn",
         "interpretability",

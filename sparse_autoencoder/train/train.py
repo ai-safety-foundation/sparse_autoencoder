@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from transformer_lens import HookedTransformer
 
 import wandb
-from sparse_autoencoder.activations.ListActivationStore import ListActivationStore
+from sparse_autoencoder.activation_store.list_store import ListActivationStore
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,

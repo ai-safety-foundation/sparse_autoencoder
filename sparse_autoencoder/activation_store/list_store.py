@@ -7,10 +7,13 @@ from multiprocessing.managers import ListProxy
 
 import torch
 
-from sparse_autoencoder.activations.ActivationStore import (
+from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     ActivationStoreBatch,
     ActivationStoreItem,
+)
+from sparse_autoencoder.activation_store.utils.extend_resize import (
+    resize_to_list_vectors,
 )
 
 
@@ -236,9 +239,7 @@ class ListActivationStore(ActivationStore):
         """
         try:
             # Unstack to a list of tensors
-            items: list[ActivationStoreItem] = batch.to(
-                self._device, self._dtype
-            ).unbind(0)
+            items: list[ActivationStoreItem] = resize_to_list_vectors(batch)
 
             self._data.extend(items)
         except Exception as e:  # pylint: disable=broad-except

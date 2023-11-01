@@ -6,10 +6,19 @@ from torch import Tensor
 from torch.utils.data import Dataset
 
 ActivationStoreItem = Float[Tensor, "neuron"]
-"""Activation Store Dataset Item Type."""
+"""Activation Store Dataset Item Type.
 
-ActivationStoreBatch = Float[Tensor, "batch neuron"]
-"""Activation Store Dataset Batch Type."""
+A single vector containing activations. For example this could be the activations from a specific
+MLP layer, for a specific position and batch item.
+"""
+
+ActivationStoreBatch = Float[Tensor, "*any neuron"]
+"""Activation Store Dataset Batch Type.
+
+This can be e.g. a [batch, pos, neurons] tensor, containing activations from a specific MLP layer
+in a transformer. Alternatively, it could be e.g. a [batch, pos, head_idx, neurons] tensor from an
+attention layer.
+"""
 
 
 class ActivationStore(Dataset, ABC):

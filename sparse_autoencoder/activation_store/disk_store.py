@@ -8,10 +8,13 @@ from threading import Lock
 
 import torch
 
-from sparse_autoencoder.activations.ActivationStore import (
+from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     ActivationStoreBatch,
     ActivationStoreItem,
+)
+from sparse_autoencoder.activation_store.utils.extend_resize import (
+    resize_to_list_vectors,
 )
 
 DEFAULT_DISK_ACTIVATION_STORE_PATH = Path(tempfile.gettempdir()) / "activation_store"
@@ -174,7 +177,7 @@ class DiskActivationStore(ActivationStore):
             Future that completes when the activation vectors have queued to be written to disk, and
             if needed, written to disk.
         """
-        items = batch.unbind(0)
+        items: list[ActivationStoreItem] = resize_to_list_vectors(batch)
 
         with self._cache_lock:
             self._cache.extend(items)

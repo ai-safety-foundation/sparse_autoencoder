@@ -3,10 +3,13 @@ import torch
 from jaxtyping import Float
 from torch import Tensor
 
-from sparse_autoencoder.activations.ActivationStore import (
+from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     ActivationStoreBatch,
     ActivationStoreItem,
+)
+from sparse_autoencoder.activation_store.utils.extend_resize import (
+    resize_to_single_item_dimension,
 )
 
 TensorActivationStoreData = Float[Tensor, "item neuron"]
@@ -35,12 +38,13 @@ class TensorActivationStore(ActivationStore):
         >>> len(store)
         1
 
-    Add a batch of activation vectors to the dataset:
+    Add a [batch, pos, neurons] activation tensor to the dataset:
 
-        >>> batch = torch.randn(10, 100)
+        >>> store.empty()
+        >>> batch = torch.randn(10, 10, 100)
         >>> store.extend(batch)
         >>> len(store)
-        11
+        100
 
     Shuffle the dataset **before passing it to the DataLoader**:
 
@@ -192,7 +196,7 @@ class TensorActivationStore(ActivationStore):
     def extend(self, batch: ActivationStoreBatch) -> None:
         """Add a batch to the store.
 
-        Example:
+        Examples:
 
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, num_neurons=5)
@@ -200,18 +204,27 @@ class TensorActivationStore(ActivationStore):
         >>> store.items_stored
         2
 
+        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
+        >>> store.extend(torch.zeros(3, 3, 5))
+        >>> store.items_stored
+        9
+
         Args:
             batch: The batch to append to the dataset.
 
         Raises:
             IndexError: If there is no space remaining.
         """
+        reshaped: Float[Tensor, "subset_item neuron"] = resize_to_single_item_dimension(
+            batch
+        )
+
         # Check we have space
-        if self.items_stored + batch.shape[0] > self._max_items:
+        if self.items_stored + reshaped.shape[0] > self._max_items:
             raise IndexError("No space left in the activation store")
 
-        n_items = batch.shape[0]
-        self._data[self.items_stored : self.items_stored + n_items] = batch.to(
+        n_items = reshaped.shape[0]
+        self._data[self.items_stored : self.items_stored + n_items] = reshaped.to(
             self._data.device, dtype=self._data.dtype
         )
         self.items_stored += n_items
