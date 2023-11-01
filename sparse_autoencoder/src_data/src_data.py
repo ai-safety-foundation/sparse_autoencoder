@@ -2,65 +2,36 @@
 
 Gets large amounts of text that can be used as prompts for the source model, to be used in getting
 activations.
+
+Note that for shared types, we include the shape in the docstring, as code hints aren't supported 
+by jaxtyping.
 """
 from typing import Callable
 
-import torch
 from datasets import IterableDataset, load_dataset
 from jaxtyping import Int
 from torch import Tensor
 from torch.utils.data import DataLoader
-from transformers import PreTrainedTokenizerBase
+
+CollateResponseMask = Int[Tensor, "batch pos"]
+"""Collate Response Mask Type.
+
+Shape [batch, pos].
+"""
+
+CollateResponseTokens = Int[Tensor, "batch pos"]
+"""Collate Response Tokens Type.
+
+Shape [batch, pos].
+"""
+
+CollateResponse = tuple[CollateResponseMask, CollateResponseTokens]
+"""Collate Response Type."""
 
 
-def collate_neel_c4_tokenized(
-    batch: list[dict[str, str]],
-) -> tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]:
-    """Collate Function for the Neel C4 Tokenized dataset."""
-    tokens = [i["tokens"] for i in batch]
-    tokenized = torch.tensor(tokens)
-    mask = torch.ones_like(tokenized)
-    return tokenized, mask
-
-
-def collate_pile(
-    batch: list[dict[str, str]], tokenizer: PreTrainedTokenizerBase
-) -> tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]:
-    """Collate Function for the Pile dataset.
-
-    To be used as a :class:`torch.DataLoader` collate function.
-
-    TODO: Fix this so it uses the full length of the strings.
-
-    Examples:
-
-    You can create a collate function for :func:`create_dataloader` as follows:
-
-    >>> from transformers import AutoTokenizer
-    >>> from functools import partial
-    >>> tokenizer = AutoTokenizer.from_pretrained("gpt2", pad_token="<|endoftext|>")
-    >>> collate_fn = partial(collate_pile, tokenizer=tokenizer)
-
-    Args:
-        batch: Batch of data from the Pile dataset.
-        tokenizer: HuggingFace tokenizer to use.
-
-    Returns:
-        Batch of tokenized prompts, along with their attention masks (1s for tokens to keep and 0s
-            for padding tokens).
-    """
-    texts = [item["text"] for item in batch]
-    tokenized = tokenizer(
-        texts, return_tensors="pt", padding=True, truncation=True, max_length=512
-    )
-    return tokenized.input_ids, tokenized.attention_mask
-
-
-def create_dataloader(
+def create_src_dataloader(
     dataset_name: str,
-    collate_fn: Callable[
-        [list], tuple[Int[Tensor, "batch pos"], Int[Tensor, "batch pos"]]
-    ],
+    collate_fn: Callable[[list], CollateResponse],
     dataset_split: str = "train",
     batch_size: int = 512,
     shuffle_buffer_size: int = 10_000,
@@ -79,16 +50,15 @@ def create_dataloader(
 
     >>> from transformers import AutoTokenizer
     >>> from functools import partial
-    >>> tokenizer = AutoTokenizer.from_pretrained("gpt2", pad_token="<|endoftext|>")
-    >>> collate_fn = partial(collate_pile, tokenizer=tokenizer)
-    >>> dataloader = create_dataloader(
-    ...     "monology/pile-uncopyrighted",
-    ...     collate_fn,
-    ...     shuffle_buffer_size=2, # In practice this should be 10_000 or more.
+    >>> from sparse_autoencoder.src_data.datasets.neel_c4_tokenized import collate_neel_c4_tokenized
+    >>> dataloader = create_src_dataloader(
+    ...     "NeelNanda/c4-code-tokenized-2b",
+    ...     collate_fn=collate_neel_c4_tokenized,
+    ...     shuffle_buffer_size=512, # In practice this should be 10_000 or more.
     ...     random_seed=0
     ... )
     >>> print(next(iter(dataloader))[0].shape)
-    torch.Size([512, 512])
+    torch.Size([512, 1024])
 
     Args:
         dataset_name: HuggingFace dataset name.
