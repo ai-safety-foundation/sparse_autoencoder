@@ -13,25 +13,16 @@ from jaxtyping import Int
 from torch import Tensor
 from torch.utils.data import DataLoader
 
-CollateResponseMask = Int[Tensor, "batch pos"]
-"""Collate Response Mask Type.
-
-Shape [batch, pos].
-"""
-
 CollateResponseTokens = Int[Tensor, "batch pos"]
 """Collate Response Tokens Type.
 
 Shape [batch, pos].
 """
 
-CollateResponse = tuple[CollateResponseMask, CollateResponseTokens]
-"""Collate Response Type."""
-
 
 def create_src_dataloader(
     dataset_name: str,
-    collate_fn: Callable[[list], CollateResponse],
+    collate_fn: Callable[[list], CollateResponseTokens],
     dataset_split: str = "train",
     batch_size: int = 512,
     shuffle_buffer_size: int = 10_000,
@@ -48,8 +39,6 @@ def create_src_dataloader(
 
     You can create a dataloader with the GPT2 tokenizer and pile uncopyrighted dataset as follows:
 
-    >>> from transformers import AutoTokenizer
-    >>> from functools import partial
     >>> from sparse_autoencoder.src_data.datasets.neel_c4_tokenized import collate_neel_c4_tokenized
     >>> dataloader = create_src_dataloader(
     ...     "NeelNanda/c4-code-tokenized-2b",
@@ -57,7 +46,7 @@ def create_src_dataloader(
     ...     shuffle_buffer_size=512, # In practice this should be 10_000 or more.
     ...     random_seed=0
     ... )
-    >>> print(next(iter(dataloader))[0].shape)
+    >>> print(next(iter(dataloader)).shape)
     torch.Size([512, 1024])
 
     Args:
@@ -75,7 +64,7 @@ def create_src_dataloader(
             less than the number of CPU cores available.
 
     Returns:
-        DataLoader with tokenized data & attention masks.
+        DataLoader with tokenized data
     """
     dataset: IterableDataset = load_dataset(
         dataset_name,

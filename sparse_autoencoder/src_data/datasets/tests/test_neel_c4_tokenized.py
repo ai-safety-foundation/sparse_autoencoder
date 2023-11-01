@@ -19,9 +19,7 @@ def test_collate_neel_c4_tokenized():
     dataset_iter = iter(dataset)
     first_item = next(dataset_iter)
 
-    tokens, mask = collate_neel_c4_tokenized([first_item])
-
-    assert tokens.shape == mask.shape
+    tokens = collate_neel_c4_tokenized([first_item])
 
     # The dataset is all 1024 tokens per batch item
     assert tokens.shape[1] == 1024

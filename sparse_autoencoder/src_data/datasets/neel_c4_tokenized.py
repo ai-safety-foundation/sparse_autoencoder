@@ -8,16 +8,12 @@ has exactly the same number of tokens, which makes for easy parsing.
 
 import torch
 
-from sparse_autoencoder.src_data.src_data import (
-    CollateResponse,
-    CollateResponseMask,
-    CollateResponseTokens,
-)
+from sparse_autoencoder.src_data.src_data import CollateResponseTokens
 
 
 def collate_neel_c4_tokenized(
     batch: list[dict[str, list[int]]],
-) -> CollateResponse:
+) -> CollateResponseTokens:
     """Collate Function for Neel's C4 Tokenized dataset.
 
     Args:
@@ -31,7 +27,4 @@ def collate_neel_c4_tokenized(
     tokens: list[list[int]] = [i["tokens"] for i in batch]
     tokenized: CollateResponseTokens = torch.tensor(tokens)
 
-    # In this dataset there are no padding tokens, so the mask is just a tensor of 1s.
-    mask: CollateResponseMask = torch.ones_like(tokenized)
-
-    return tokenized, mask
+    return tokenized
