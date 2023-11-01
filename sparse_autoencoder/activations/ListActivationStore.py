@@ -18,8 +18,7 @@ class ListActivationStore(ActivationStore):
     """List Activation Store.
 
     Stores pointers to activation vectors in a list (in-memory). This is primarily of use for quick
-    experiments where you don't want to calculate how much memory you need in advance (otherwise
-    :class:`sparse_autoencoder.activations.TensorActivationStore` is recommended).
+    experiments where you don't want to calculate how much memory you need in advance.
 
     Multiprocess safe if the `multiprocessing_enabled` argument is set to `True`.
 
