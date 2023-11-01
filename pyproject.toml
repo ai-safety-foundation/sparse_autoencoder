@@ -21,8 +21,9 @@ mypy = ">=0.991"
 jupyter = ">=1"
 plotly = ">=5"
 isort = ">=5"
-black = ">=23"
+black = {extras = ["jupyter"], version = "^23.10.1"}
 autoflake = ">=2.2.1"
+pylint = "^3.0.2"
 
 [tool.poetry.group.demos.dependencies]
 jupyterlab = ">=3"
@@ -69,7 +70,6 @@ exclude = '''
 
     [tool.pylint.DESIGN]
     max-args = 10
-    max-locals = 30
 
     [tool.pylint."MESSAGES CONTROL"]
     disable = "redefined-builtin" # Disable redefined builtin functions
