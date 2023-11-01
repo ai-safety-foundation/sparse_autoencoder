@@ -51,6 +51,7 @@ extend_skip = ["__init__.py", ".venv/"]
 [tool.mypy]
 ignore_missing_imports = true
 check_untyped_defs = true
+explicit_package_bases = true
 
 [tool.black]
 # Exclude snapshot tests & .venv
