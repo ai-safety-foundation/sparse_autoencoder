@@ -7,6 +7,7 @@ from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     ActivationStoreBatch,
     ActivationStoreItem,
+    StoreFullError,
 )
 from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_single_item_dimension,
@@ -186,7 +187,7 @@ class TensorActivationStore(ActivationStore):
         """
         # Check we have space
         if self.items_stored + 1 > self._max_items:
-            raise IndexError("No space left in the activation store")
+            raise StoreFullError()
 
         self._data[self.items_stored] = item.to(
             self._data.device, dtype=self._data.dtype
@@ -221,7 +222,7 @@ class TensorActivationStore(ActivationStore):
 
         # Check we have space
         if self.items_stored + reshaped.shape[0] > self._max_items:
-            raise IndexError("No space left in the activation store")
+            raise StoreFullError()
 
         n_items = reshaped.shape[0]
         self._data[self.items_stored : self.items_stored + n_items] = reshaped.to(

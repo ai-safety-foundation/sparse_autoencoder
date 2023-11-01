@@ -75,3 +75,10 @@ class ActivationStore(Dataset, ABC):
     def empty(self):
         """Empty the Store."""
         raise NotImplementedError
+
+
+class StoreFullError(IndexError):
+    """Exception raised when the activation store is full."""
+
+    def __init__(self, message="Activation store is full"):
+        super().__init__(message)
