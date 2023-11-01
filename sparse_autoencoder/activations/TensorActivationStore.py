@@ -66,6 +66,9 @@ class TensorActivationStore(ActivationStore):
     items_stored: int = 0
     """Number of items stored."""
 
+    max_items: int
+    """Maximum Number of Items to Store."""
+
     def __init__(
         self,
         max_items: int,
@@ -75,6 +78,7 @@ class TensorActivationStore(ActivationStore):
     ) -> None:
         # Initialise the datastore
         self._data = torch.empty((max_items, num_neurons), device=device, dtype=dtype)
+        self._max_items = max_items
 
     def __len__(self) -> int:
         """Length Dunder Method.
@@ -177,7 +181,7 @@ class TensorActivationStore(ActivationStore):
             IndexError: If there is no space remaining.
         """
         # Check we have space
-        if self.items_stored + 1 >= len(self):
+        if self.items_stored + 1 >= self._max_items:
             raise IndexError("No space left in the activation store")
 
         self._data[self.items_stored] = item.to(
@@ -203,7 +207,7 @@ class TensorActivationStore(ActivationStore):
             IndexError: If there is no space remaining.
         """
         # Check we have space
-        if self.items_stored + batch.shape[0] >= len(self):
+        if self.items_stored + batch.shape[0] >= self._max_items:
             raise IndexError("No space left in the activation store")
 
         n_items = batch.shape[0]

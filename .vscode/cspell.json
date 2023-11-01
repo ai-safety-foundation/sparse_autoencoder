@@ -32,6 +32,7 @@
         "sharded",
         "transformer_lens",
         "uncopyrighted",
+        "unsqueeze",
         "venv",
         "virtualenv"
     ]
