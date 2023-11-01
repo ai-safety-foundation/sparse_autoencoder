@@ -13,7 +13,6 @@ einops = ">=0.6"
 torch = ">=2.1"
 zstandard = "^0.21.0"
 wandb = "^0.15.12"
-aiofiles = "^23.2.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7"
@@ -23,12 +22,12 @@ jupyter = ">=1"
 plotly = ">=5"
 isort = ">=5"
 black = ">=23"
-autoflake = "^2.2.1"
+autoflake = ">=2.2.1"
 
 [tool.poetry.group.demos.dependencies]
 jupyterlab = ">=3"
 transformer-lens = "^1.9.0"
-pandas = "^2.1.2"
+pandas = ">=2.1.2"
 
 [build-system]
 requires = ["poetry-core"]

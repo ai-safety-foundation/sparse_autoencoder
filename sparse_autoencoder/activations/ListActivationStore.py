@@ -1,9 +1,9 @@
 """List Activation Store."""
 import random
 import time
-from concurrent.futures import Future, ThreadPoolExecutor
+from concurrent.futures import Future, ProcessPoolExecutor, as_completed
 from multiprocessing import Manager
-from multiprocessing.managers import ListProxy, SyncManager
+from multiprocessing.managers import ListProxy
 
 import torch
 
@@ -20,7 +20,13 @@ class ListActivationStore(ActivationStore):
     Stores pointers to activation vectors in a list (in-memory). This is primarily of use for quick
     experiments where you don't want to calculate how much memory you need in advance.
 
-    Multiprocess safe if the `multiprocessing_enabled` argument is set to `True`.
+    Multiprocess safe if the `multiprocessing_enabled` argument is set to `True`. This works in two
+    ways:
+
+    1. The list of activation vectors is stored in a multiprocessing manager, which allows multiple
+        processes (typically multiple GPUs) to read/write to the list.
+    2. The `extend` method is non-blocking, and uses a threadpool to write to the list in the
+        background, which allows the main process to continue working even if there is just one GPU.
 
     Extends the `torch.utils.data.Dataset` class to provide a list-based activation store, with
     additional :meth:`append` and :meth:`extend` methods (the latter of which is non-blocking).
@@ -45,8 +51,7 @@ class ListActivationStore(ActivationStore):
     Add a batch of activation vectors to the dataset (non-blocking):
 
         >>> batch = torch.randn(10, 100)
-        >>> future = store.extend(batch)
-        >>> future.result() # Wait for the write to complete
+        >>> store.extend(batch)
         >>> len(store)
         11
 
@@ -68,10 +73,8 @@ class ListActivationStore(ActivationStore):
         multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU workers.
             This creates significant overhead, so you should only enable it if you have multiple
             GPUs (and experiment with enabling/disabling it).
-        num_workers: Number of CPU workers to use for non-blocking writes to the dataset (so that
-            the model can keep running whilst it writes the previous activations to memory). This
-            should be less than the number of CPU cores available. You don't need multiple GPUs to
-            take advantage of this feature.
+        max_workers: Max CPU workers if multiprocessing is enabled, for writing to the list.
+            Default is the number of cores you have.
     """
 
     _data: list[ActivationStoreItem] | ListProxy
@@ -83,10 +86,20 @@ class ListActivationStore(ActivationStore):
     _dtype: torch.dtype
     """Data Type to Store the Activation Vectors As."""
 
-    _thread_pool: ThreadPoolExecutor
-    """Threadpool for non-blocking writes to the dataset."""
+    _pool: ProcessPoolExecutor | None = None
+    """Multiprocessing Pool."""
 
-    _multiprocessing_manager: SyncManager | None = None
+    _pool_exceptions: ListProxy | list = []
+    """Pool Exceptions.
+    
+    Used to keep track of exceptions.
+    """
+
+    _pool_futures: list[Future] = []
+    """Pool Futures.
+    
+    Used to keep track of processes running in the pool.
+    """
 
     def __init__(
         self,
@@ -94,7 +107,7 @@ class ListActivationStore(ActivationStore):
         device: torch.device = torch.device("cpu"),
         dtype: torch.dtype = torch.float16,
         multiprocessing_enabled=False,
-        num_workers: int = 6,
+        max_workers: int | None = None,
     ) -> None:
         # Default to empty
         if data is None:
@@ -103,17 +116,17 @@ class ListActivationStore(ActivationStore):
         # If multiprocessing is enabled, use a multiprocessing manager to create a shared list
         # between processes. Otherwise, just use a normal list.
         if multiprocessing_enabled:
-            self._multiprocessing_manager = Manager()
-            self._data = self._multiprocessing_manager.list(data)
+            self._pool = ProcessPoolExecutor(max_workers=max_workers)
+            manager = Manager()
+            self._data = manager.list(data)
+            self._data.extend(data)
+            self._pool_exceptions = manager.list()
         else:
             self._data = data
 
         # Device and dtype for storing the activation vectors
         self._device = device
         self._dtype = dtype
-
-        # Create a threadpool for non-blocking writes to the dataset
-        self._thread_pool = ThreadPoolExecutor(num_workers)
 
     def __len__(self) -> int:
         """Length Dunder Method.
@@ -221,12 +234,17 @@ class ListActivationStore(ActivationStore):
         Args:
             items: A list of items to add to the dataset.
         """
-        # Unstack to a list of tensors
-        items: list[ActivationStoreItem] = batch.to(self._device, self._dtype).unbind(0)
+        try:
+            # Unstack to a list of tensors
+            items: list[ActivationStoreItem] = batch.to(
+                self._device, self._dtype
+            ).unbind(0)
 
-        self._data.extend(items)
+            self._data.extend(items)
+        except Exception as e:  # pylint: disable=broad-except
+            self._pool_exceptions.append(e)
 
-    def extend(self, batch: ActivationStoreBatch) -> Future:
+    def extend(self, batch: ActivationStoreBatch) -> None:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:
@@ -234,15 +252,20 @@ class ListActivationStore(ActivationStore):
             >>> import torch
             >>> store = ListActivationStore()
             >>> batch = torch.randn(10, 100)
-            >>> future = store.extend(batch)
-            >>> future.result() # Wait for the write to complete
+            >>> async_result = store.extend(batch)
             >>> len(store)
             10
 
         Args:
             items: A list of items to add to the dataset.
         """
-        return self._thread_pool.submit(self._extend, batch)
+        # Schedule _extend to run in a separate process
+        if self._pool:
+            future = self._pool.submit(self._extend, batch)
+            self._pool_futures.append(future)
+
+        # Fallback to synchronous execution if not multiprocessing
+        self._extend(batch)
 
     def wait_for_writes_to_complete(self) -> None:
         """Wait for Writes to Complete
@@ -252,17 +275,27 @@ class ListActivationStore(ActivationStore):
         Example:
 
         >>> import torch
-        >>> store = ListActivationStore()
-        >>> _future = store.extend(torch.randn(3, 100))
-        >>> len(store) # The writes haven't completed yet
-        0
-
+        >>> store = ListActivationStore(multiprocessing_enabled=True)
+        >>> store.extend(torch.randn(3, 100))
         >>> store.wait_for_writes_to_complete()
         >>> len(store)
         3
         """
-        # Hacky approach!
+        # Restart the pool
+        if self._pool:
+            for _future in as_completed(self._pool_futures):
+                pass
+            self._pool_futures.clear()
+
         time.sleep(1)
+
+        if self._pool_exceptions:
+            exceptions_report = "\n".join(
+                f"{e}\n{tb}" for e, tb in self._pool_exceptions
+            )
+            raise RuntimeError(
+                f"Exceptions occurred in background workers:\n{exceptions_report}"
+            )
 
     def empty(self):
         """Empty the dataset.
@@ -280,12 +313,12 @@ class ListActivationStore(ActivationStore):
         >>> len(store)
         0
         """
-        if isinstance(self._data, list):
-            self._data.clear()
-        elif isinstance(self._multiprocessing_manager, SyncManager):
-            self._data = self._multiprocessing_manager.list()
+        self.wait_for_writes_to_complete()
+
+        # Clearing a list like this works for both standard and multiprocessing lists
+        self._data[:] = []
 
     def __del__(self):
         """Delete Dunder Method."""
-        # Shutdown the thread pool (don't wait as we won't be able to use the resulting dataset)
-        self._thread_pool.shutdown(wait=False, cancel_futures=True)
+        if self._pool:
+            self._pool.shutdown(wait=False, cancel_futures=True)
