@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from transformer_lens import HookedTransformer
 
 import wandb
-from sparse_autoencoder.activations.ActivationBuffer import ListPointerGPUBuffer
+from sparse_autoencoder.activations.ListActivationStore import ListActivationStore
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
@@ -38,7 +38,7 @@ class TrainChunkSteps:
 
 def train(
     autoencoder: SparseAutoencoder,
-    activation_buffer: ListPointerGPUBuffer,
+    activation_buffer: ListActivationStore,
     l1_coefficient: float,
     min_buffer: int = 100,
 ) -> TrainChunkSteps:
@@ -91,7 +91,7 @@ def pipeline(
     autoencoder.to(device)
 
     # Create the activation buffer
-    activation_buffer = ListPointerGPUBuffer()
+    activation_buffer = ListActivationStore()
     buffer_size: int = len(activation_buffer)
 
     # TODO: Hook the transformer to get just the cache item we want. Also kill any later layers as

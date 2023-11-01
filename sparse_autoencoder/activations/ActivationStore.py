@@ -53,7 +53,7 @@ class ActivationStore(Dataset, ABC):
     """
 
     @abstractmethod
-    def append(self, item: ActivationStoreItem) -> None:
+    def append(self, item: ActivationStoreItem):
         """Add a Single Item to the Store."""
         raise NotImplementedError
 
