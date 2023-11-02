@@ -1,9 +1,6 @@
 """Sweep Config."""
 from dataclasses import dataclass, field
 
-from sparse_autoencoder.train.utils.results_dataclass import (
-    convert_parameters_to_results_type,
-)
 from sparse_autoencoder.train.utils.wandb_sweep_types import (
     Method,
     Parameter,
@@ -12,6 +9,7 @@ from sparse_autoencoder.train.utils.wandb_sweep_types import (
 )
 
 
+# NOTE: This must be kept in sync with SweepParametersRuntime
 @dataclass
 class SweepParameterConfig(Parameters):
     """Sweep Parameter Config."""
@@ -49,6 +47,8 @@ class SweepParameterConfig(Parameters):
     Weight decay (L2 penalty).
     """
 
+    batch_size: Parameter[int] = field(default_factory=lambda: Parameter(value=8192))
+
     l1_coefficient: Parameter[float] = field(
         default_factory=lambda: Parameter(value=[0.001, 0.004, 0.006, 0.008, 1])
     )
@@ -62,13 +62,25 @@ class SweepParameterConfig(Parameters):
     paper](https://transformer-circuits.pub/2023/monosemantic-features/index.html).
     """
 
-    width_multiplier: Parameter[int] = field(
-        default_factory=lambda: Parameter(value=8, min=1, max=256)
-    )
-    """Source-to-Trained Activations Width Multiplier."""
 
+# NOTE: This must be kept in sync with SweepParameterConfig
+@dataclass
+class SweepParametersRuntime(dict):
+    """Sweep parameter runtime values."""
 
-SweepRunParameters = convert_parameters_to_results_type(SweepParameterConfig)
+    lr: float
+
+    adam_beta_1: float
+
+    adam_beta_2: float
+
+    adam_epsilon: float
+
+    adam_weight_decay: float
+
+    batch_size: int
+
+    l1_coefficient: float
 
 
 @dataclass
