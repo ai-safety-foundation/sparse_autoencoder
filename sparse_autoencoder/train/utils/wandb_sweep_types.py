@@ -183,13 +183,16 @@ class Parameter(Generic[ParamType]):
     parameters: dict[str, "Parameter"] | None = None
 
 
+Parameters = dict[str, Parameter]
+
+
 @dataclass
 class WandbSweepConfig:
     """Weights & Biases Sweep Configuration."""
 
-    method: Method
+    parameters: Parameters
 
-    parameters: dict[str, Parameter]
+    method: Method
 
     apiVersion: str | None = None
 

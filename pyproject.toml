@@ -70,6 +70,7 @@ exclude = '''
 
     [tool.pylint.DESIGN]
     max-args = 10
+    max-attributes = 20
 
     [tool.pylint."MESSAGES CONTROL"]
     disable = "redefined-builtin" # Disable redefined builtin functions
