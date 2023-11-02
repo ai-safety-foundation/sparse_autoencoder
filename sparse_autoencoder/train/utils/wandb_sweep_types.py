@@ -190,9 +190,9 @@ Parameters = dict[str, Parameter]
 class WandbSweepConfig:
     """Weights & Biases Sweep Configuration."""
 
-    method: Method
-
     parameters: Parameters
+
+    method: Method
 
     apiVersion: str | None = None
 
