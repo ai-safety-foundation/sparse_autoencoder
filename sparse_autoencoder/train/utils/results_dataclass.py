@@ -19,7 +19,9 @@ def convert_parameters_to_results_type(config_dataclass: Type) -> Type:
     ...
     ...     lr: Parameter[float] = field(default_factory=lambda: Parameter(value=0.001))
     ...
-    ...     lr_list: Parameter[float] = field(default_factory=lambda: Parameter(value=[0.002, 0.004]))
+    ...     lr_list: Parameter[float] = field(
+    ...         default_factory=lambda: Parameter(value=[0.002, 0.004])
+    ...     )
     ...
     >>> SweepParameterResults = convert_parameters_to_results_type(SweepParameterConfig)
     >>> SweepParameterResults.__annotations__['lr']
