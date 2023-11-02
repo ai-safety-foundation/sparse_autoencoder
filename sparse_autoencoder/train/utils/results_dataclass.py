@@ -50,7 +50,9 @@ def convert_parameters_to_results_type(config_dataclass: Type) -> Type:
             # If the contained type is a list, go one level deeper
             if get_origin(contained_type) == list:
                 list_contained_type = get_args(contained_type)[0]
-                new_fields.append((f.name, list[list_contained_type], default_value))
+                new_fields.append(
+                    (f.name, list[list_contained_type], default_value)  # type: ignore
+                )
             else:
                 new_fields.append((f.name, contained_type, default_value))
         else:
