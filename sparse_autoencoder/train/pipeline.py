@@ -1,4 +1,5 @@
 """Training Pipeline."""
+import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -21,6 +22,7 @@ def pipeline(
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),
+    device: torch.device = torch.device("cpu"),
 ):
     """Full pipeline for training the sparse autoEncoder.
 
@@ -39,9 +41,10 @@ def pipeline(
             This is repeated until the src_dataloader is exhausted.
         autoencoder: The autoencoder to train.
         sweep_parameters: Parameter config to use.
+        device: Device to run pipeline on.
     """
     # Initialise wandb sweep
-    wandb.init(project="sparse-autoencoder", config=sweep_parameters)
+    # wandb.init(project="sparse-autoencoder", config=sweep_parameters)
 
     # Get hyperparameters
     optimizer = Adam(
@@ -53,10 +56,8 @@ def pipeline(
     )
 
     # Run loop until data is exhausted:
-    with tqdm(desc="Number of generate-train loops") as progress_bar:
+    with tqdm(desc="Generate/Train Cycles") as progress_bar:
         while True:
-            progress_bar.update(1)
-
             # Add activations to the store
             generate_activations(
                 src_model,
@@ -64,7 +65,8 @@ def pipeline(
                 src_model_activation_hook_point,
                 activation_store,
                 src_dataloader,
-                num_activations_before_training,
+                device=device,
+                num_items=num_activations_before_training,
             )
             if len(activation_store) == 0:
                 break
@@ -80,7 +82,15 @@ def pipeline(
             )
 
             # Train the autoencoder
-            train_autoencoder(dataloader, autoencoder, optimizer, sweep_parameters)
+            train_autoencoder(
+                activations_dataloader=dataloader,
+                autoencoder=autoencoder,
+                optimizer=optimizer,
+                sweep_parameters=sweep_parameters,
+                device=device,
+            )
 
             # Empty the store so we can fill it up again
             activation_store.empty()
+
+            progress_bar.update(1)
