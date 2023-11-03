@@ -221,14 +221,20 @@ class TensorActivationStore(ActivationStore):
         )
 
         # Check we have space
-        if self.items_stored + reshaped.shape[0] > self._max_items:
+        num_activation_tensors: int = reshaped.shape[0]
+        if self.items_stored + num_activation_tensors > self._max_items:
+            if reshaped.shape[0] > self._max_items:
+                raise ValueError(
+                    f"Single batch of {num_activation_tensors} activations is larger \
+                        than the total maximum in the store of {self._max_items}."
+                )
+
             raise StoreFullError()
 
-        n_items = reshaped.shape[0]
-        self._data[self.items_stored : self.items_stored + n_items] = reshaped.to(
-            self._data.device, dtype=self._data.dtype
-        )
-        self.items_stored += n_items
+        self._data[
+            self.items_stored : self.items_stored + num_activation_tensors
+        ] = reshaped.to(self._data.device, dtype=self._data.dtype)
+        self.items_stored += num_activation_tensors
 
     def empty(self) -> None:
         """Empty the store.
