@@ -3,6 +3,7 @@ from functools import partial
 
 import torch
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import (
@@ -19,6 +20,8 @@ def generate_activations(
     store: ActivationStore,
     dataloader: DataLoader,
     num_items: int,
+    device: torch.device = torch.device("cpu"),
+    log_interval: int = 10,
 ) -> None:
     """Generate activations for training a Sparse Autoencoder.
 
@@ -48,21 +51,33 @@ def generate_activations(
         dataloader: Dataloader containing source model input tokens.
         num_items: Number of activation vectors to generate. This is an approximate rather
             than strict limit.
+        device: Device to run the model on.
+        log_interval: How often to log progress.
     """
+    model = model.to(device)
+
     # Add the hook to the model (will automatically store the activations every time the model runs)
     model.remove_all_hook_fns()
     hook = partial(store_activations_hook, store=store)
     model.add_hook(hook_name, hook)
 
-    with torch.no_grad():
-        # Loop through the dataloader until the store reaches the desired size
-        for input_ids in dataloader:
-            try:
-                _output = model.forward(input_ids, stop_at_layer=layer + 1)
+    with tqdm(
+        desc="Generate Activations", leave=False, total=num_items
+    ) as progress_bar:
+        with torch.no_grad():
+            # Loop through the dataloader until the store reaches the desired size
+            for input_ids in dataloader:
+                try:
+                    input_ids = input_ids.to(device)
+                    model.forward(input_ids, stop_at_layer=layer + 1)
 
-            # Break the loop if the store is full
-            except StoreFullError:
-                break
+                    # Update the progress bar
+                    if len(store) % log_interval == 0:
+                        progress_bar.update(len(store))
 
-            if len(store) >= num_items:
-                break
+                # Break the loop if the store is full
+                except StoreFullError:
+                    break
+
+                if len(store) >= num_items:
+                    return
