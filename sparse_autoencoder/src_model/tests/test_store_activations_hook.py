@@ -17,10 +17,11 @@ def test_hook_stores_activations():
     )
 
     tokens = model.to_tokens("Hello world")
-    model.forward(tokens, stop_at_layer=2)
+    logits = model.forward(tokens, stop_at_layer=2)
 
     number_of_tokens = tokens.numel()
     mlp_size: int = model.cfg.d_mlp
 
     assert len(store) == number_of_tokens
     assert store[0].shape[0] == mlp_size
+    assert logits  # Check the forward pass completed
