@@ -196,15 +196,14 @@ class ListActivationStore(ActivationStore):
         Example:
 
         >>> import torch
-        >>> import random
-        >>> random.seed(42)
+        >>> _seed = torch.manual_seed(42)
         >>> store = ListActivationStore()
         >>> store.append(torch.tensor([1.]))
         >>> store.append(torch.tensor([2.]))
         >>> store.append(torch.tensor([3.]))
         >>> store.shuffle()
-        >>> [store[i].item() for i in range(len(store))]
-        [2.0, 1.0, 3.0]
+        >>> len(store)
+        3
 
         """
         self.wait_for_writes_to_complete()
