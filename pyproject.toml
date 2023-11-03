@@ -7,6 +7,9 @@ license = "MIT"
 readme = "README.md"
 include = ["sparse_autoencoder"]
 
+[tool.poetry.scripts]
+checks = "scripts.checks:run_checks"
+
 [tool.poetry.dependencies]
 python = ">=3.10, <3.13"
 einops = ">=0.6"
