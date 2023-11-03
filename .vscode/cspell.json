@@ -53,6 +53,7 @@
         "resid",
         "runcap",
         "sharded",
+        "tqdm",
         "transformer_lens",
         "uncopyrighted",
         "unsqueeze",
