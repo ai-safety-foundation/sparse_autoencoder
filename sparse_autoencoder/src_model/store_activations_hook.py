@@ -10,7 +10,7 @@ def store_activations_hook(
     value: Float[Tensor, "*any neuron"],
     hook: HookPoint,  # pylint: disable=unused-argument
     store: ActivationStore,
-):
+) -> Float[Tensor, "*any neuron"]:
     """Store Activations Hook.
 
     Useful for getting just the specific activations wanted, rather than the full cache.
@@ -50,3 +50,6 @@ def store_activations_hook(
         store: The activation store. This should be pre-initialised with `functools.partial`.
     """
     store.extend(value)
+
+    # Return the unmodified value
+    return value
