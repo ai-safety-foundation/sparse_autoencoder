@@ -4,7 +4,6 @@ from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 
-import wandb
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
@@ -12,6 +11,7 @@ from sparse_autoencoder.autoencoder.loss import (
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
+import wandb
 
 
 def train_autoencoder(

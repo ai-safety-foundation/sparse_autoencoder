@@ -1,6 +1,6 @@
 """Dummy dataset for testing/examples."""
-import torch
 from jaxtyping import Int
+import torch
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 

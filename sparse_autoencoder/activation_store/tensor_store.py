@@ -1,6 +1,6 @@
 """Tensor Activation Store."""
-import torch
 from jaxtyping import Float
+import torch
 from torch import Tensor
 
 from sparse_autoencoder.activation_store.base_store import (

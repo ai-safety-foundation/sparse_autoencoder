@@ -80,8 +80,8 @@
     required-version="0.1.4"
     select=["ALL"]
 
-    [tool.ruff.isort]
-        combine-as-imports=true
+    [tool.ruff.lint.isort]
+        force-sort-within-sections=true
         lines-after-imports=2
 
     [tool.ruff.lint.pydocstyle]

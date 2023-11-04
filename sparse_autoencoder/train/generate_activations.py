@@ -1,8 +1,8 @@
 """Generate activations for training a Sparse Autoencoder."""
 from functools import partial
 
-import torch
 from jaxtyping import Int
+import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
