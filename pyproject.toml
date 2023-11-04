@@ -21,7 +21,7 @@
         pyright=">=1.1.334"
         pytest=">=7"
         pytest-cov=">=4"
-        ruff=">=0.1.4"
+        ruff="=0.1.4"
 
     [tool.poetry.group.demos.dependencies]
         jupyterlab=">=3"
@@ -75,9 +75,10 @@
         "COM812",
         "ISC001",
     ]
+    ignore-init-module-imports=true
     line-length=100
+    required-version="0.1.4"
     select=["ALL"]
-    target-version="py310"
 
     [tool.ruff.isort]
         combine-as-imports=true
