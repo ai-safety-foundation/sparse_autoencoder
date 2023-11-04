@@ -2,6 +2,7 @@
     "language": "en,en-GB",
     "words": [
         "allclose",
+        "autocast",
         "Autoencoder",
         "categoricalwprobabilities",
         "circuitsvis",

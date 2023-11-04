@@ -62,7 +62,6 @@ class TensorActivationStore(ActivationStore):
         max_items: Maximum number of items to store (individual activation vectors)
         num_neurons: Number of neurons in each activation vector.
         device: Device to store the activation vectors on.
-        dtype: Data type to store the activation vectors as.
     """
 
     _data: TensorActivationStoreData
@@ -79,10 +78,9 @@ class TensorActivationStore(ActivationStore):
         max_items: int,
         num_neurons: int,
         device: torch.device = torch.device("cpu"),
-        dtype: torch.dtype = torch.float16,
     ) -> None:
         # Initialise the datastore
-        self._data = torch.empty((max_items, num_neurons), device=device, dtype=dtype)
+        self._data = torch.empty((max_items, num_neurons), device=device)
         self._max_items = max_items
 
     def __len__(self) -> int:
@@ -111,7 +109,7 @@ class TensorActivationStore(ActivationStore):
         >>> import torch
         >>> store = TensorActivationStore(max_items=2, num_neurons=100)
         >>> store.__sizeof__() # Pre-allocated tensor of 2x100
-        400
+        800
         """
         return self._data.element_size() * self._data.nelement()
 
@@ -125,7 +123,7 @@ class TensorActivationStore(ActivationStore):
         >>> store.append(torch.zeros(5))
         >>> store.append(torch.ones(5))
         >>> store[1]
-        tensor([1., 1., 1., 1., 1.], dtype=torch.float16)
+        tensor([1., 1., 1., 1., 1.])
 
         Args:
             index: The index of the tensor to fetch.
@@ -177,7 +175,7 @@ class TensorActivationStore(ActivationStore):
         >>> store.append(torch.zeros(5))
         >>> store.append(torch.ones(5))
         >>> store[1]
-        tensor([1., 1., 1., 1., 1.], dtype=torch.float16)
+        tensor([1., 1., 1., 1., 1.])
 
         Args:
             item: The item to append to the dataset.
@@ -190,7 +188,7 @@ class TensorActivationStore(ActivationStore):
             raise StoreFullError()
 
         self._data[self.items_stored] = item.to(
-            self._data.device, dtype=self._data.dtype
+            self._data.device,
         )
         self.items_stored += 1
 
@@ -233,7 +231,7 @@ class TensorActivationStore(ActivationStore):
 
         self._data[
             self.items_stored : self.items_stored + num_activation_tensors
-        ] = reshaped.to(self._data.device, dtype=self._data.dtype)
+        ] = reshaped.to(self._data.device)
         self.items_stored += num_activation_tensors
 
     def empty(self) -> None:

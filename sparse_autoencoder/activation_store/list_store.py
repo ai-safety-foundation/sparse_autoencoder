@@ -72,7 +72,6 @@ class ListActivationStore(ActivationStore):
     Args:
         data: Data to initialize the dataset with.
         device: Device to store the activation vectors on.
-        dtype: Data type to store the activation vectors as.
         multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU workers.
             This creates significant overhead, so you should only enable it if you have multiple
             GPUs (and experiment with enabling/disabling it).
@@ -85,9 +84,6 @@ class ListActivationStore(ActivationStore):
 
     _device: torch.device
     """Device to Store the Activation Vectors On."""
-
-    _dtype: torch.dtype
-    """Data Type to Store the Activation Vectors As."""
 
     _pool: ProcessPoolExecutor | None = None
     """Multiprocessing Pool."""
@@ -108,7 +104,6 @@ class ListActivationStore(ActivationStore):
         self,
         data: list[ActivationStoreItem] | None = None,
         device: torch.device = torch.device("cpu"),
-        dtype: torch.dtype = torch.float16,
         multiprocessing_enabled=False,
         max_workers: int | None = None,
     ) -> None:
@@ -127,9 +122,8 @@ class ListActivationStore(ActivationStore):
         else:
             self._data = data
 
-        # Device and dtype for storing the activation vectors
+        # Device for storing the activation vectors
         self._device = device
-        self._dtype = dtype
 
     def __len__(self) -> int:
         """Length Dunder Method.
@@ -178,7 +172,7 @@ class ListActivationStore(ActivationStore):
         >>> store.append(torch.zeros(5))
         >>> store.append(torch.ones(5))
         >>> store[1]
-        tensor([1., 1., 1., 1., 1.], dtype=torch.float16)
+        tensor([1., 1., 1., 1., 1.])
 
         Args:
             index: The index of the tensor to fetch.
@@ -226,7 +220,7 @@ class ListActivationStore(ActivationStore):
         Args:
             item: The item to append to the dataset.
         """
-        self._data.append(item.to(self._device, self._dtype))
+        self._data.append(item.to(self._device))
 
     def _extend(self, batch: ActivationStoreBatch) -> None:
         """Extend threadpool method.

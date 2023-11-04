@@ -53,9 +53,6 @@ class DiskActivationStore(ActivationStore):
     _storage_path: Path
     """Path to the Directory where the Activation Vectors are Stored."""
 
-    _dtype: torch.dtype
-    """Data Type used for Storage."""
-
     _cache: ListProxy
     """Cache for Activation Vectors.
     
@@ -82,13 +79,10 @@ class DiskActivationStore(ActivationStore):
         self,
         storage_path: Path = DEFAULT_DISK_ACTIVATION_STORE_PATH,
         empty_dir: bool = False,
-        dtype: torch.dtype = torch.float16,
         max_cache_size: int = 10_000,
         num_workers: int = 6,
     ):
         super().__init__()
-
-        self._dtype = dtype
 
         # Setup the storage directory
         self._storage_path = storage_path
@@ -131,7 +125,7 @@ class DiskActivationStore(ActivationStore):
             if not self._disk_n_activation_vectors.value == -1:
                 self._disk_n_activation_vectors.value += len(activations)
 
-        stacked_activations = torch.stack(activations).to(dtype=self._dtype)
+        stacked_activations = torch.stack(activations)
 
         filename = f"{self.__len__}.pt"
         torch.save(stacked_activations, self._storage_path / filename)
