@@ -54,30 +54,29 @@ def generate_activations(
         device: Device to run the model on.
         log_interval: How often to log progress.
     """
-    model = model.to(device)
+    model.to(device, print_details=False)
 
     # Add the hook to the model (will automatically store the activations every time the model runs)
     model.remove_all_hook_fns()
     hook = partial(store_activations_hook, store=store)
     model.add_hook(hook_name, hook)
 
-    with tqdm(
-        desc="Generate Activations", leave=False, total=num_items
-    ) as progress_bar:
-        with torch.no_grad():
-            # Loop through the dataloader until the store reaches the desired size
-            for input_ids in dataloader:
-                try:
-                    input_ids = input_ids.to(device)
-                    model.forward(input_ids, stop_at_layer=layer + 1)
+    with torch.no_grad():
+        # Loop through the dataloader until the store reaches the desired size
+        for input_ids in tqdm(
+            dataloader,
+            desc="Generate Activations",
+            leave=False,
+            total=num_items // dataloader.batch_size,
+            unit_scale=dataloader.batch_size,
+        ):
+            try:
+                input_ids = input_ids.to(device)
+                model.forward(input_ids, stop_at_layer=layer + 1)
 
-                    # Update the progress bar
-                    if len(store) % log_interval == 0:
-                        progress_bar.update(len(store))
+            # Break the loop if the store is full
+            except StoreFullError:
+                break
 
-                # Break the loop if the store is full
-                except StoreFullError:
-                    break
-
-                if len(store) >= num_items:
-                    return
+            if len(store) >= num_items:
+                return
