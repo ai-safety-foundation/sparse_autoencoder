@@ -5,6 +5,7 @@ from jaxtyping import Float
 from torch import Tensor
 from torch.utils.data import Dataset
 
+
 ActivationStoreItem = Float[Tensor, "neuron"]
 """Activation Store Dataset Item Type.
 

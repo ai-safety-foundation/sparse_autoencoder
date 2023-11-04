@@ -82,7 +82,7 @@ def generate_activations(
             for input_ids in dataloader:
                 try:
                     input_ids = input_ids.to(device)
-                    model.forward(input_ids, stop_at_layer=layer + 1)
+                    model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore
                     progress_bar.update(activations_per_batch)
 
                 # Break the loop if the store is full

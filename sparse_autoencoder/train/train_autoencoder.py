@@ -34,8 +34,6 @@ def train_autoencoder(
     n_dataset_items: int = len(activations_dataloader.dataset)  # type: ignore
     batch_size: int = activations_dataloader.batch_size  # type: ignore
 
-    torch.autograd.set_detect_anomaly(True)
-
     with torch.set_grad_enabled(True):
         with tqdm(
             desc="Train Autoencoder",

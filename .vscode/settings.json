@@ -8,11 +8,7 @@
   "editor.formatOnSave": true,
   "python.testing.pytestEnabled": true,
   "rewrap.wrappingColumn": 100,
-  "pylint.importStrategy": "useBundled",
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
-  },
-  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "editor.defaultFormatter": "charliermarsh.ruff",
 }

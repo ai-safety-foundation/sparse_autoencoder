@@ -13,6 +13,7 @@ from jaxtyping import Int
 from torch import Tensor
 from torch.utils.data import DataLoader
 
+
 CollateResponseTokens = Int[Tensor, "batch pos"]
 """Collate Response Tokens Type.
 
@@ -66,7 +67,7 @@ def create_src_dataloader(
     Returns:
         DataLoader with tokenized data
     """
-    dataset: IterableDataset = load_dataset(
+    dataset: IterableDataset = load_dataset(  # type: ignore
         dataset_name,
         streaming=True,
         split=dataset_split,
@@ -79,7 +80,7 @@ def create_src_dataloader(
     )
 
     return DataLoader(
-        shuffled_dataset,
+        shuffled_dataset,  # type: ignore # TODO: Consider using the dataset directly
         batch_size=batch_size,
         collate_fn=collate_fn,
         num_workers=num_workers,

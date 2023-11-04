@@ -47,11 +47,9 @@ jobs:
       run: poetry install --with dev
     - name: Pytest
       run: poetry run pytest
-    - name: Type check
-      run: poetry run mypy sparse_autoencoder
-    - name: Lint
-      run: poetry run pylint sparse_autoencoder
-    - name: Black
-      run: poetry run black --check sparse_autoencoder
+    - name: Pyright type check
+      run: poetry run pyright
+    - name: Ruff (lint & format)
+      run: poetry run ruff --check sparse_autoencoder
     - name: Build check
       run: poetry build

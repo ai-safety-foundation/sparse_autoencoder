@@ -2,16 +2,11 @@
     "recommendations": [
         "davidanson.vscode-markdownlint",
         "donjayamanne.githistory",
-        "donjayamanne.python-extension-pack",
         "github.copilot",
         "github.vscode-github-actions",
         "github.vscode-pull-request-github",
         "ionutvmi.path-autocomplete",
         "littlefoxteam.vscode-python-test-adapter",
-        "mikoz.autoflake-extension",
-        "ms-python.black-formatter",
-        "ms-python.isort",
-        "ms-python.pylint",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter-keymap",
@@ -22,6 +17,8 @@
         "stkb.rewrap",
         "streetsidesoftware.code-spell-checker-british-english",
         "streetsidesoftware.code-spell-checker",
-        "yzhang.markdown-all-in-one"
+        "yzhang.markdown-all-in-one",
+        "kevinrose.vsc-python-indent",
+        "donjayamanne.python-environment-manager"
     ]
 }

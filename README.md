@@ -27,5 +27,7 @@ poetry install --with dev,demos
 Then to run all checks locally:
 
 ```shell
-poetry run checks
+poetry run ruff check sparse_autoencoder
+poetry run pyright
+poetry run pytest
 ```

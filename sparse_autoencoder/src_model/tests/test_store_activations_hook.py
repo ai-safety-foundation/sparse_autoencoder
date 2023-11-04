@@ -1,6 +1,7 @@
 """Store Activations Hook Tests."""
 from functools import partial
 
+import torch
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.list_store import ListActivationStore
@@ -17,11 +18,11 @@ def test_hook_stores_activations():
     )
 
     tokens = model.to_tokens("Hello world")
-    logits = model.forward(tokens, stop_at_layer=2)
+    logits = model.forward(tokens, stop_at_layer=2)  # type: ignore
 
     number_of_tokens = tokens.numel()
-    mlp_size: int = model.cfg.d_mlp
+    mlp_size: int = model.cfg.d_mlp  # type: ignore
 
     assert len(store) == number_of_tokens
     assert store[0].shape[0] == mlp_size
-    assert logits  # Check the forward pass completed
+    assert torch.is_tensor(logits)  # Check the forward pass completed

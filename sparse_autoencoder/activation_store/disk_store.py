@@ -17,6 +17,7 @@ from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
 )
 
+
 DEFAULT_DISK_ACTIVATION_STORE_PATH = Path(tempfile.gettempdir()) / "activation_store"
 
 

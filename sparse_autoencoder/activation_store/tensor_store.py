@@ -13,6 +13,7 @@ from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_single_item_dimension,
 )
 
+
 TensorActivationStoreData = Float[Tensor, "item neuron"]
 """Tensor Activation Store Dataset Item Type."""
 

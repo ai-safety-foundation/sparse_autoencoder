@@ -19,13 +19,13 @@ class SparseAutoencoder(Module):
         geometric_median_dataset: Estimated geometric median of the dataset.
     """
 
-    geometric_median_dataset: Float[Tensor, "input_activations"]
+    geometric_median_dataset: Float[Tensor, " input_activations"]
     """Estimated Geometric Median of the Dataset.
     
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: Float[Parameter, "input_activations"]
+    tied_bias: Float[Parameter, " input_activations"]
     """Tied Bias Parameter.
     
     The same bias is used pre-encoder and post-decoder.
@@ -41,7 +41,7 @@ class SparseAutoencoder(Module):
         self,
         n_input_features: int,
         n_learned_features: int,
-        geometric_median_dataset: Float[Tensor, "input_activations"],
+        geometric_median_dataset: Float[Tensor, " input_activations"],
     ) -> None:
         super().__init__()
 
@@ -70,7 +70,7 @@ class SparseAutoencoder(Module):
         )
 
     def forward(
-        self, input: Float[Tensor, "batch input_activations"]
+        self, x: Float[Tensor, "batch input_activations"]
     ) -> tuple[
         Float[Tensor, "batch learned_activations"],
         Float[Tensor, "batch input_activations"],
@@ -83,7 +83,7 @@ class SparseAutoencoder(Module):
         Returns:
             Tuple of learned activations and decoded activations.
         """
-        learned_activations = self.encoder(input)
+        learned_activations = self.encoder(x)
         decoded_activations = self.decoder(learned_activations)
         return learned_activations, decoded_activations
 
@@ -98,3 +98,25 @@ class SparseAutoencoder(Module):
         for module in self.network:
             if "reset_parameters" in dir(module):
                 module.reset_parameters()
+
+    def make_decoder_weights_and_grad_unit_norm(self) -> None:
+        """Make the decoder weights and gradients unit norm.
+
+        > Recall that we constrain our dictionary vectors to have unit norm. Our first naive
+        implementation simply reset all vectors to unit norm after each gradient step. This means
+        any gradient updates modifying the length of our vector are removed, creating a discrepancy
+        between the gradient used by the Adam optimizer and the true gradient. We find that instead
+        removing any gradient information parallel to our dictionary vectors before applying the
+        gradient step results in a small but real reduction in total loss.
+
+        TODO: Implement this.
+        """
+        raise NotImplementedError
+
+    def save_to_hf(self) -> None:
+        """Save the model to Hugging Face."""
+        raise NotImplementedError
+
+    def load_from_hf(self) -> None:
+        """Load the model from Hugging Face."""
+        raise NotImplementedError

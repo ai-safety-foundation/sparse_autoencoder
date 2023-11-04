@@ -18,11 +18,11 @@ class PreEncoderBias(Module):
             the dataset.
     """
 
-    bias: Float[Tensor, "input_activations"]
+    bias: Float[Tensor, " input_activations"]
 
     def __init__(
         self,
-        bias: Float[Tensor, "input_activations"],
+        bias: Float[Tensor, " input_activations"],
     ) -> None:
         """Initialize the bias layer."""
         super().__init__()
@@ -30,10 +30,10 @@ class PreEncoderBias(Module):
         self.bias = bias
 
     def forward(
-        self, input: Float[Tensor, "*batch input_activations"]
+        self, x: Float[Tensor, "*batch input_activations"]
     ) -> Float[Tensor, "*batch input_activations"]:
         """Forward Pass."""
-        return input - self.bias
+        return x - self.bias
 
 
 class PostEncoderBias(Module):
@@ -49,11 +49,11 @@ class PostEncoderBias(Module):
             the dataset.
     """
 
-    bias: Float[Tensor, "input_activations"]
+    bias: Float[Tensor, " input_activations"]
 
     def __init__(
         self,
-        bias: Float[Tensor, "input_activations"],
+        bias: Float[Tensor, " input_activations"],
     ) -> None:
         """Initialize the bias layer."""
         super().__init__()
@@ -61,7 +61,7 @@ class PostEncoderBias(Module):
         self.bias = bias
 
     def forward(
-        self, input: Float[Tensor, "*batch input_activations"]
+        self, x: Float[Tensor, "*batch input_activations"]
     ) -> Float[Tensor, "*batch input_activations"]:
         """Forward Pass."""
-        return input + self.bias
+        return x + self.bias

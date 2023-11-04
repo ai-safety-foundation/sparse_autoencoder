@@ -7,9 +7,6 @@ license = "MIT"
 readme = "README.md"
 include = ["sparse_autoencoder"]
 
-[tool.poetry.scripts]
-checks = "scripts.checks:run_checks"
-
 [tool.poetry.dependencies]
 python = ">=3.10, <3.13"
 einops = ">=0.6"
@@ -20,13 +17,11 @@ wandb = "^0.15.12"
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7"
 pytest-cov = ">=4"
-mypy = ">=0.991"
 jupyter = ">=1"
 plotly = ">=5"
-isort = ">=5"
-black = {extras = ["jupyter"], version = "^23.10.1"}
-autoflake = ">=2.2.1"
 pylint = "^3.0.2"
+ruff = "^0.1.4"
+pyright = "^1.1.334"
 
 [tool.poetry.group.demos.dependencies]
 jupyterlab = ">=3"
@@ -48,37 +43,22 @@ addopts = """--jaxtyping-packages=sparse_autoencoder,beartype.beartype \
 -W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \ 
 --doctest-modules"""
 
-[tool.isort]
-profile = "black"
-extend_skip = ["__init__.py", ".venv/"]
 
-[tool.mypy]
-ignore_missing_imports = true
-check_untyped_defs = true
-explicit_package_bases = true
+[tool.ruff]
+exclude = [
+    "/.venv",
+    "*/snapshots/",
+]
+select = ["E", "F", "I001"] # errors, flake8, isort equivalents
+ignore = ["E402", "E721", "E731", "E741", "F722"]
+ignore-init-module-imports = true
+fixable = ["I001", "F401"] # Auto-fix isort, unused variables
+line-length = 100
 
-[tool.black]
-# Exclude snapshot tests & .venv
-exclude = '''
-(
-/snapshots/
-| .venv/
-)
-'''
+[tool.ruff.isort]
+combine-as-imports = true # Combine imports from the same module
+lines-after-imports = 2
 
-[tool.pylint]
-    [tool.pylint.TYPECHECK]
-    # Fix for Pytorch member existence checks
-    generated-members = "torch.*"
-
-    [tool.pylint.DESIGN]
-    max-args = 10
-    max-attributes = 20
-
-    [tool.pylint."MESSAGES CONTROL"]
-    disable = "redefined-builtin" # Disable redefined builtin functions
-
-    [tool.pylint.'MASTER']
-    disable = [
-        "C0103", # Disable invalid file name (as we use PascalCase for classes)
-    ]
+[tool.pyright]
+reportIncompatibleMethodOverride = true
+include = ["sparse_autoencoder"]
