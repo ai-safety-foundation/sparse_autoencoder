@@ -8,7 +8,7 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 
 def store_activations_hook(
     value: Float[Tensor, "*any neuron"],
-    hook: HookPoint,  # pylint: disable=unused-argument
+    hook: HookPoint,  # noqa: ARG001 as needed by TransformerLens
     store: ActivationStore,
 ) -> Float[Tensor, "*any neuron"]:
     """Store Activations Hook.
@@ -16,7 +16,6 @@ def store_activations_hook(
     Useful for getting just the specific activations wanted, rather than the full cache.
 
     Example:
-
     First we'll need a source model from TransformerLens and an activation store.
 
     >>> from functools import partial

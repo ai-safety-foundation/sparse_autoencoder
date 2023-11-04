@@ -1,14 +1,16 @@
 {
-  "rewrap.autoWrap.enabled": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": true
-  },
-  "rewrap.reformat": false,
+  "[toml]": {"editor.defaultFormatter": "tamasfe.even-better-toml"},
+  "editor.codeActionsOnSave": {"source.fixAll.eslint": true,  "source.organizeImports": true},
+  "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.formatOnSave": true,
-  "python.testing.pytestEnabled": true,
-  "rewrap.wrappingColumn": 100,
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
-  "editor.defaultFormatter": "charliermarsh.ruff",
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.inlayHints.functionReturnTypes": false,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.testing.pytestEnabled": true,
+  "rewrap.autoWrap.enabled": true,
+  "rewrap.reformat": false,
+  "rewrap.wrappingColumn": 100
 }

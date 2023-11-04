@@ -16,13 +16,15 @@ def test_activations_generated() -> None:
     batch_size = 2
     dataloader = create_dummy_dataloader(num_samples, batch_size)
 
+    num_items = 2
+
     generate_activations(
         model=model,
         layer=1,
-        hook_name="blocks.1.mlp.hook_post",
+        cache_name="blocks.1.mlp.hook_post",
         store=store,
         dataloader=dataloader,
-        num_items=2,
+        num_items=num_items,
     )
 
-    assert len(store) >= 2
+    assert len(store) >= num_items

@@ -4,14 +4,14 @@ import torch
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 
 
-def test_initialize_tied_bias():
+def test_initialize_tied_bias() -> None:
     """Check the tied bias is initialised correctly."""
     geometric_median = torch.tensor([1.0, 2.0, 3.0])
     model = SparseAutoencoder(3, 6, geometric_median)
     assert torch.allclose(model.tied_bias, geometric_median)
 
 
-def test_encoded_decoded_shape_same():
+def test_encoded_decoded_shape_same() -> None:
     """Check the input and output are the same shape."""
     geometric_median = torch.tensor([1.0, 2.0, 3.0])
     model = SparseAutoencoder(3, 6, geometric_median)

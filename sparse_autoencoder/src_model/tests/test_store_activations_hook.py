@@ -8,13 +8,14 @@ from sparse_autoencoder.activation_store.list_store import ListActivationStore
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 
 
-def test_hook_stores_activations():
+def test_hook_stores_activations() -> None:
     """Test that the hook stores activations correctly."""
     store = ListActivationStore()
     model = HookedTransformer.from_pretrained("tiny-stories-1M")
 
     model.add_hook(
-        "blocks.1.mlp.hook_post", partial(store_activations_hook, store=store)
+        "blocks.1.mlp.hook_post",
+        partial(store_activations_hook, store=store),
     )
 
     tokens = model.to_tokens("Hello world")

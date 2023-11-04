@@ -3,7 +3,7 @@
 Gets large amounts of text that can be used as prompts for the source model, to be used in getting
 activations.
 
-Note that for shared types, we include the shape in the docstring, as code hints aren't supported 
+Note that for shared types, we include the shape in the docstring, as code hints aren't supported
 by jaxtyping.
 """
 from typing import Callable
@@ -37,7 +37,6 @@ def create_src_dataloader(
     Supports distributed training across GPUs with `torch.nn.DataParallel`, but not across nodes.
 
     Examples:
-
     You can create a dataloader with the GPT2 tokenizer and pile uncopyrighted dataset as follows:
 
     >>> from sparse_autoencoder.src_data.datasets.neel_c4_tokenized import collate_neel_c4_tokenized
@@ -76,11 +75,12 @@ def create_src_dataloader(
     # This dataset fills a buffer with buffer_size elements, then randomly samples elements from
     # this buffer, replacing the selected elements with new elements.
     shuffled_dataset = dataset.shuffle(
-        seed=random_seed, buffer_size=shuffle_buffer_size
+        seed=random_seed,
+        buffer_size=shuffle_buffer_size,
     )
 
     return DataLoader(
-        shuffled_dataset,  # type: ignore # TODO: Consider using the dataset directly
+        shuffled_dataset,  # type: ignore
         batch_size=batch_size,
         collate_fn=collate_fn,
         num_workers=num_workers,

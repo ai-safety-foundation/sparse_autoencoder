@@ -18,7 +18,6 @@ def reconstruction_loss(
     polysemantic and monosemantic representations of true features.
 
     Examples:
-
     >>> input_activations = torch.tensor([[3.0, 4]])
     >>> output_activations = torch.tensor([[1.0, 5]])
     >>> reconstruction_loss(input_activations, output_activations)
@@ -35,13 +34,12 @@ def reconstruction_loss(
 
 
 def l1_loss(learned_activations: Float[Tensor, "*batch learned_activations"]) -> Tensor:
-    """L1 Loss on Learned Activations
+    """L1 Loss on Learned Activations.
 
-    L1 loss penalty is the absolute sum of the learned activations. The L1 penality is this
+    L1 loss penalty is the absolute sum of the learned activations. The L1 penalty is this
     multiplied by the l1_coefficient (designed to encourage sparsity).
 
     Examples:
-
     >>> learned_activations = torch.tensor([[2.0, -3]])
     >>> l1_loss(learned_activations)
     tensor([5.])
@@ -68,7 +66,6 @@ def sae_training_loss(
     https://transformer-circuits.pub/2023/monosemantic-features/index.html#setup-autoencoder-motivation
 
     Examples:
-
     >>> reconstruction_loss_mse = torch.tensor([2.5000])
     >>> l1_loss_learned_activations = torch.tensor([1.])
     >>> l1_coefficient = 0.5

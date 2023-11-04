@@ -10,7 +10,7 @@ from sparse_autoencoder.activation_store.base_store import (
 
 
 def resize_to_list_vectors(
-    input: ActivationStoreBatch,
+    batched_tensor: ActivationStoreBatch,
 ) -> list[ActivationStoreItem]:
     """Resize Extend List Vectors.
 
@@ -18,7 +18,6 @@ def resize_to_list_vectors(
     the neurons dimension), and returns a list of vectors each of size [neurons].
 
     Examples:
-
     With 2 axis (e.g. pos neuron):
 
     >>> import torch
@@ -42,20 +41,21 @@ def resize_to_list_vectors(
     '27 items of shape torch.Size([100])'
 
     Args:
-        input: Input Activation Store Batch
+        batched_tensor: Input Activation Store Batch
 
     Returns:
         List of Activation Store Item Vectors
     """
     rearranged: Float[Tensor, "batch neuron"] = rearrange(
-        input, "... neurons -> (...) neurons"
+        batched_tensor,
+        "... neurons -> (...) neurons",
     )
     res = rearranged.unbind(0)
     return list(res)
 
 
 def resize_to_single_item_dimension(
-    input: ActivationStoreBatch,
+    batch_activations: ActivationStoreBatch,
 ) -> Float[Tensor, "item neuron"]:
     """Resize Extend Single Item Dimension.
 
@@ -63,7 +63,6 @@ def resize_to_single_item_dimension(
     the neurons dimension), and returns a single tensor of size [item, neurons].
 
     Examples:
-
     With 2 axis (e.g. pos neuron):
 
     >>> import torch
@@ -87,9 +86,9 @@ def resize_to_single_item_dimension(
     torch.Size([27, 100])
 
     Args:
-        input: Input Activation Store Batch
+        batch_activations: Input Activation Store Batch
 
     Returns:
         Single Tensor of Activation Store Items
     """
-    return rearrange(input, "... neurons -> (...) neurons")
+    return rearrange(batch_activations, "... neurons -> (...) neurons")

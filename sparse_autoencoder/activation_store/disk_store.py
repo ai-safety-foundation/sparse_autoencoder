@@ -30,25 +30,11 @@ class DiskActivationStore(ActivationStore):
     Multiprocess safe (supports writing from multiple GPU workers).
 
     Warning:
-
     Unless you want to keep and use existing .pt files in the storage directory when initialized,
     set `empty_dir` to `True`.
 
     Note also that :meth:`close` must be called to ensure all activation vectors are written to disk
     after the last batch has been added to the store.
-
-    Args:
-        storage_path: Path to the directory where the activation vectors will be stored. Defaults to
-            the OS temporary directory.
-        empty_dir: Whether to empty the directory before writing. Generally you want to set this to
-            `True` as otherwise the directory may contain stale activation vectors from previous
-            runs.
-        max_cache_size: The maximum number of activation vectors to cache in memory before writing
-            to disk. Note this is only followed approximately.
-        num_workers: Number of CPU workers to use for non-blocking writes to the file system (so
-            that the model can keep running whilst it writes the previous activations to disk). This
-            should be less than the number of CPU cores available. You don't need multiple GPUs to
-            take advantage of this feature.
     """
 
     _storage_path: Path
@@ -56,7 +42,7 @@ class DiskActivationStore(ActivationStore):
 
     _cache: ListProxy
     """Cache for Activation Vectors.
-    
+
     Activation vectors are buffered in memory until the cache is full, at which point they are
     written to disk.
     """
@@ -72,17 +58,32 @@ class DiskActivationStore(ActivationStore):
 
     _disk_n_activation_vectors: ValueProxy[int]
     """Length of the Store (on disk).
-    
+
     Minus 1 signifies not calculated yet.
     """
 
     def __init__(
         self,
         storage_path: Path = DEFAULT_DISK_ACTIVATION_STORE_PATH,
-        empty_dir: bool = False,
         max_cache_size: int = 10_000,
         num_workers: int = 6,
+        *,
+        empty_dir: bool = False,
     ):
+        """Initialize the Disk Activation Store.
+
+        Args:
+            storage_path: Path to the directory where the activation vectors will be stored.
+            max_cache_size: The maximum number of activation vectors to cache in memory before
+                writing to disk. Note this is only followed approximately.
+            num_workers: Number of CPU workers to use for non-blocking writes to the file system (so
+                that the model can keep running whilst it writes the previous activations to disk).
+                This should be less than the number of CPU cores available. You don't need multiple
+                GPUs to take advantage of this feature.
+            empty_dir: Whether to empty the directory before writing. Generally you want to set this
+                to `True` as otherwise the directory may contain stale activation vectors from
+                previous runs.
+        """
         super().__init__()
 
         # Setup the storage directory
@@ -103,7 +104,7 @@ class DiskActivationStore(ActivationStore):
         # Create a threadpool for non-blocking writes to the cache
         self._thread_pool = ThreadPoolExecutor(num_workers)
 
-    def _write_to_disk(self, wait_for_max: bool = False) -> None:
+    def _write_to_disk(self, *, wait_for_max: bool = False) -> None:
         """Write the contents of the queue to disk.
 
         Args:
@@ -123,7 +124,7 @@ class DiskActivationStore(ActivationStore):
             del self._cache[0:size_to_get]
 
             # Update the length cache
-            if not self._disk_n_activation_vectors.value == -1:
+            if self._disk_n_activation_vectors.value != -1:
                 self._disk_n_activation_vectors.value += len(activations)
 
         stacked_activations = torch.stack(activations)
@@ -135,7 +136,6 @@ class DiskActivationStore(ActivationStore):
         """Add a Single Item to the Store.
 
         Example:
-
         >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
         >>> future = store.append(torch.randn(100))
         >>> future.result()
@@ -162,7 +162,6 @@ class DiskActivationStore(ActivationStore):
         """Add a Batch to the Store.
 
         Example:
-
         >>> store = DiskActivationStore(max_cache_size=10, empty_dir=True)
         >>> future = store.extend(torch.randn(10, 100))
         >>> future.result()
@@ -194,7 +193,6 @@ class DiskActivationStore(ActivationStore):
         all activation vectors to be written to disk.
 
         Example:
-
         >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
         >>> future = store.append(torch.randn(100))
         >>> store.wait_for_writes_to_complete()
@@ -209,15 +207,13 @@ class DiskActivationStore(ActivationStore):
         """Return a List of All Activation Vector Filenames."""
         return list(self._storage_path.glob("*.pt"))
 
-    def empty(self):
+    def empty(self) -> None:
         """Empty the Store.
 
         Warning:
-
         This will delete all .pt files in the top level of the storage directory.
 
         Example:
-
         >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
         >>> future = store.append(torch.randn(100))
         >>> future.result()
@@ -253,7 +249,6 @@ class DiskActivationStore(ActivationStore):
         """Length Dunder Method.
 
         Example:
-
         >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
         >>> print(len(store))
         0

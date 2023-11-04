@@ -1,64 +1,90 @@
 [tool.poetry]
-name = "sparse_autoencoder"
-version = "0.0.0"  
-description = "Sparse Autoencoder for Mechanistic Interpretability"
-authors = ["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
-license = "MIT"
-readme = "README.md"
-include = ["sparse_autoencoder"]
+    authors=["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
+    description="Sparse Autoencoder for Mechanistic Interpretability"
+    include=["sparse_autoencoder"]
+    license="MIT"
+    name="sparse_autoencoder"
+    readme="README.md"
+    version="0.0.0"
 
-[tool.poetry.dependencies]
-python = ">=3.10, <3.13"
-einops = ">=0.6"
-torch = ">=2.1"
-zstandard = "^0.21.0"
-wandb = "^0.15.12"
+    [tool.poetry.dependencies]
+        einops=">=0.6"
+        python=">=3.10, <3.13"
+        torch=">=2.1"
+        wandb=">=0.15.12"
 
-[tool.poetry.group.dev.dependencies]
-pytest = ">=7"
-pytest-cov = ">=4"
-jupyter = ">=1"
-plotly = ">=5"
-pylint = "^3.0.2"
-ruff = "^0.1.4"
-pyright = "^1.1.334"
+    [tool.poetry.group.dev.dependencies]
+        jupyter=">=1"
+        plotly=">=5"
+        poethepoet=">=0.24.2"
+        pre-commit=">=3.5.0"
+        pyright=">=1.1.334"
+        pytest=">=7"
+        pytest-cov=">=4"
+        ruff=">=0.1.4"
 
-[tool.poetry.group.demos.dependencies]
-jupyterlab = ">=3"
-transformer-lens = "^1.9.0"
-pandas = ">=2.1.2"
+    [tool.poetry.group.demos.dependencies]
+        jupyterlab=">=3"
+        pandas=">=2.1.2"
+        transformer-lens=">=1.9.0"
+
+[tool.poe.tasks]
+    check=["format", "lint", "test", "typecheck"]
+    format="ruff format sparse_autoencoder"
+    lint="ruff check sparse_autoencoder --fix"
+    precommit="pre-commit run --all-files"
+    test="pytest"
+    typecheck="pyright"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+    build-backend="poetry.core.masonry.api"
+    requires=["poetry-core"]
 
-[tool.pytest.ini_options]
-filterwarnings = [
-    "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
-    # Ignore numpy.distutils deprecation warning caused by pandas
-    # More info: https://numpy.org/doc/stable/reference/distutils.html#module-numpy.distutils
-    "ignore:distutils Version classes are deprecated:DeprecationWarning"
-]
-addopts = """--jaxtyping-packages=sparse_autoencoder,beartype.beartype \ 
--W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \ 
---doctest-modules"""
+[tool.pytest]
 
-
-[tool.ruff]
-exclude = [
-    "/.venv",
-    "*/snapshots/",
-]
-select = ["E", "F", "I001"] # errors, flake8, isort equivalents
-ignore = ["E402", "E721", "E731", "E741", "F722"]
-ignore-init-module-imports = true
-fixable = ["I001", "F401"] # Auto-fix isort, unused variables
-line-length = 100
-
-[tool.ruff.isort]
-combine-as-imports = true # Combine imports from the same module
-lines-after-imports = 2
+    [tool.pytest.ini_options]
+        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype \
+    -W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \
+    --doctest-modules"""
+        filterwarnings=[
+            "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
+            # Ignore numpy.distutils deprecation warning caused by pandas
+            # More info: https://numpy.org/doc/stable/reference/distutils.html#module-numpy.distutils
+            "ignore:distutils Version classes are deprecated:DeprecationWarning",
+        ]
 
 [tool.pyright]
-reportIncompatibleMethodOverride = true
-include = ["sparse_autoencoder"]
+    include=["sparse_autoencoder"]
+    reportIncompatibleMethodOverride=true
+
+[tool.ruff]
+    exclude=["*/snapshots/", "/.venv"]
+    fixable=["ALL"]
+    ignore=[
+        "ANN101", # self type annotation (it's inferred)
+        "ANN204", # __init__() return type (it's inferred)
+        "E731",   # No lambdas (can be useful)
+        "F722",   # Forward annotations check (conflicts with jaxtyping)
+        "FA102",  # Annotations support (Python >= 3.9 is fine)
+        "FIX002", # TODO issue link (overkill)
+        "INP001", # __init__.py for all packages (Python >= 3.3 is fine)
+        "PGH003", # No general type: ignore (too strict)
+        "S101",   # Use of assert detected (it's needed for tests)
+        "TCH002", # Type checking imports (conflicts with beartype)
+        "TD00",   # TODO banned (we're in alpha)
+        # Rules that conflict with ruff format
+        "COM812",
+        "ISC001",
+    ]
+    line-length=100
+    select=["ALL"]
+
+    [tool.ruff.isort]
+        combine-as-imports=true
+        lines-after-imports=2
+
+    [tool.ruff.lint.pydocstyle]
+        convention="google"
+
+[tool.ruff.pylint]
+    max-args=10

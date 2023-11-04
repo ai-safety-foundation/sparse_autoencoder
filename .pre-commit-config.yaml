@@ -1,0 +1,36 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-toml
+    -   id: check-json
+    -   id: check-added-large-files
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: destroyed-symlinks
+    -   id: detect-private-key
+# - repo: local
+#   hooks:
+#   -   id: ruff_lint
+#       name: Ruff Lint
+#       entry: poetry run ruff check sparse_autoencoder
+#       language: system
+#       types: [python]
+#       require_serial: true
+#   -   id: ruff_format
+#       name: Ruff Format
+#       entry: poetry run ruff format sparse_autoencoder --check
+#       language: system
+#       types: [python]
+#       require_serial: true
+#   -   id: typecheck
+#       name: Pyright Type Check
+#       entry: poetry run pyright
+#       language: system
+#       types: [python]
+#       require_serial: true
