@@ -1,44 +1,44 @@
 [tool.poetry]
-    authors=["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
+    authors    =["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
     description="Sparse Autoencoder for Mechanistic Interpretability"
-    include=["sparse_autoencoder"]
-    license="MIT"
-    name="sparse_autoencoder"
-    readme="README.md"
-    version="0.0.0"
+    include    =["sparse_autoencoder"]
+    license    ="MIT"
+    name       ="sparse_autoencoder"
+    readme     ="README.md"
+    version    ="0.0.0"
 
     [tool.poetry.dependencies]
         einops=">=0.6"
         python=">=3.10, <3.13"
-        torch=">=2.1"
-        wandb=">=0.15.12"
+        torch =">=2.1"
+        wandb =">=0.15.12"
 
     [tool.poetry.group.dev.dependencies]
-        jupyter=">=1"
-        plotly=">=5"
+        jupyter   =">=1"
+        plotly    =">=5"
         poethepoet=">=0.24.2"
         pre-commit=">=3.5.0"
-        pyright=">=1.1.334"
-        pytest=">=7"
+        pyright   =">=1.1.334"
+        pytest    =">=7"
         pytest-cov=">=4"
-        ruff=">=0.1.4"
+        ruff      =">=0.1.4"
 
     [tool.poetry.group.demos.dependencies]
-        jupyterlab=">=3"
-        pandas=">=2.1.2"
+        jupyterlab      =">=3"
+        pandas          =">=2.1.2"
         transformer-lens=">=1.9.0"
 
 [tool.poe.tasks]
-    check=["format", "lint", "test", "typecheck"]
-    format="ruff format sparse_autoencoder"
-    lint="ruff check sparse_autoencoder --fix"
+    check    =["format", "lint", "test", "typecheck"]
+    format   ="ruff format sparse_autoencoder"
+    lint     ="ruff check sparse_autoencoder --fix"
     precommit="pre-commit run --all-files"
-    test="pytest"
+    test     ="pytest"
     typecheck="pyright"
 
 [build-system]
     build-backend="poetry.core.masonry.api"
-    requires=["poetry-core"]
+    requires     =["poetry-core"]
 
 [tool.pytest]
 
@@ -54,7 +54,7 @@
         ]
 
 [tool.pyright]
-    include=["sparse_autoencoder"]
+    include                         =["sparse_autoencoder"]
     reportIncompatibleMethodOverride=true
 
 [tool.ruff]
@@ -82,7 +82,7 @@
 
     [tool.ruff.lint.isort]
         force-sort-within-sections=true
-        lines-after-imports=2
+        lines-after-imports       =2
 
     [tool.ruff.lint.pydocstyle]
         convention="google"

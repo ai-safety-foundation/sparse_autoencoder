@@ -1,5 +1,5 @@
 """Training Pipeline."""
-import torch
+from torch import device, set_grad_enabled
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -20,7 +20,7 @@ def train_autoencoder(
     optimizer: Optimizer,
     sweep_parameters: SweepParametersRuntime,
     log_interval: int = 10,
-    device: torch.device | None = None,
+    device: device | None = None,
 ) -> None:
     """Sparse Autoencoder Training Loop.
 
@@ -35,7 +35,7 @@ def train_autoencoder(
     n_dataset_items: int = len(activations_dataloader.dataset)  # type: ignore
     batch_size: int = activations_dataloader.batch_size  # type: ignore
 
-    with torch.set_grad_enabled(True), tqdm(  # noqa: FBT003
+    with set_grad_enabled(True), tqdm(  # noqa: FBT003
         desc="Train Autoencoder",
         total=n_dataset_items,
         colour="green",
