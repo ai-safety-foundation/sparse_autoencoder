@@ -31,9 +31,16 @@ def train_autoencoder(
         sweep_parameters: The sweep parameters to use.
         log_interval: How often to log progress.
     """
-    autoencoder = autoencoder.to(device)
-    with tqdm(desc="Train Autoencoder", leave=False) as progress_bar:
-        for step, batch in enumerate(activations_dataloader):
+    torch.autograd.set_detect_anomaly(True)
+
+    with torch.set_grad_enabled(True):
+        for step, batch in tqdm(
+            enumerate(activations_dataloader),
+            desc="Train Autoencoder",
+            leave=False,
+            total=len(activations_dataloader.dataset) // activations_dataloader.batch_size,  # type: ignore,
+            unit_scale=activations_dataloader.batch_size,
+        ):
             # Zero the gradients
             optimizer.zero_grad()
 
@@ -41,9 +48,7 @@ def train_autoencoder(
             batch = batch.to(device)
 
             # Forward pass
-            learned_activations, reconstructed_activations = autoencoder(
-                batch.to(device)
-            )
+            learned_activations, reconstructed_activations = autoencoder(batch)
 
             # Get metrics
             reconstruction_loss_mse = reconstruction_loss(
@@ -67,9 +72,7 @@ def train_autoencoder(
             # TODO: Enable neuron resampling
 
             # Log
-            if step % log_interval == 0:
-                progress_bar.update(1)
-
+            if step % log_interval == 0 and wandb.run is not None:
                 wandb.log(
                     {
                         "reconstruction_loss": reconstruction_loss_mse,

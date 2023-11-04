@@ -42,8 +42,6 @@ class SweepParameterConfig(Parameters):
     Weight decay (L2 penalty).
     """
 
-    batch_size: Parameter[int] | None
-
     l1_coefficient: Parameter[float] | None
     """L1 Penalty Coefficient.
     
@@ -70,8 +68,6 @@ class SweepParametersRuntime(dict):
     adam_epsilon: float = 1e-8
 
     adam_weight_decay: float = 0.0
-
-    batch_size: int = 2
 
     l1_coefficient: float = 0.01
 
