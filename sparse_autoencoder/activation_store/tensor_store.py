@@ -222,7 +222,7 @@ class TensorActivationStore(ActivationStore):
 
             raise StoreFullError
 
-        self._data[self.items_stored : self.items_stored + num_activation_tensors] = reshaped.to(
+        self._data[self.items_stored: self.items_stored + num_activation_tensors] = reshaped.to(
             self._data.device
         )
         self.items_stored += num_activation_tensors
