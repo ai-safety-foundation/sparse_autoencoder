@@ -59,7 +59,6 @@
 
 [tool.ruff]
     exclude=["*/snapshots/", "/.venv"]
-    fixable=["ALL"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "ANN204", # __init__() return type (it's inferred)
@@ -78,6 +77,7 @@
     ]
     line-length=100
     select=["ALL"]
+    target-version="py310"
 
     [tool.ruff.isort]
         combine-as-imports=true
