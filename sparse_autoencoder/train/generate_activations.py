@@ -2,8 +2,10 @@
 from functools import partial
 
 import torch
+from jaxtyping import Float
+from torch import Tensor
 from torch.utils.data import DataLoader
-from tqdm import tqdm
+from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import (
@@ -21,7 +23,6 @@ def generate_activations(
     dataloader: DataLoader,
     num_items: int,
     device: torch.device = torch.device("cpu"),
-    log_interval: int = 10,
 ) -> None:
     """Generate activations for training a Sparse Autoencoder.
 
@@ -52,7 +53,6 @@ def generate_activations(
         num_items: Number of activation vectors to generate. This is an approximate rather
             than strict limit.
         device: Device to run the model on.
-        log_interval: How often to log progress.
     """
     model.to(device, print_details=False)
 
@@ -61,22 +61,35 @@ def generate_activations(
     hook = partial(store_activations_hook, store=store)
     model.add_hook(hook_name, hook)
 
+    # Get the input dimensions for logging
+    first_item: Float[Tensor, "batch pos"] = next(iter(dataloader))
+    batch_size: int = first_item.shape[0]
+    context_size: int = first_item.shape[1]
+    activations_per_batch: int = context_size * batch_size
+    total: int = num_items - num_items % activations_per_batch
+
     with torch.no_grad():
         # Loop through the dataloader until the store reaches the desired size
-        for input_ids in tqdm(
+        with tqdm(
             dataloader,
             desc="Generate Activations",
+            total=total,
+            colour="green",
+            position=1,
             leave=False,
-            total=num_items // dataloader.batch_size,
-            unit_scale=dataloader.batch_size,
-        ):
-            try:
-                input_ids = input_ids.to(device)
-                model.forward(input_ids, stop_at_layer=layer + 1)
+            dynamic_ncols=True,
+        ) as progress_bar:
+            for input_ids in dataloader:
+                try:
+                    input_ids = input_ids.to(device)
+                    model.forward(input_ids, stop_at_layer=layer + 1)
+                    progress_bar.update(activations_per_batch)
 
-            # Break the loop if the store is full
-            except StoreFullError:
-                break
+                # Break the loop if the store is full
+                except StoreFullError:
+                    break
 
-            if len(store) >= num_items:
-                return
+                if len(store) >= total:
+                    return
+
+            progress_bar.close()

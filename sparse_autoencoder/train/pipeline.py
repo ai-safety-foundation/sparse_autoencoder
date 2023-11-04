@@ -2,10 +2,10 @@
 import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from tqdm import tqdm
+from tqdm.auto import tqdm
+from tqdm.contrib.logging import logging_redirect_tqdm
 from transformer_lens import HookedTransformer
 
-import wandb
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.generate_activations import generate_activations
@@ -26,6 +26,8 @@ def pipeline(
 ):
     """Full pipeline for training the sparse autoEncoder.
 
+    The pipeline alternates between generating activations and training the autoencoder.
+
     Args:
         src_model: The model to get activations from.
         src_model_activation_hook_point: The hook point to get activations from.
@@ -36,17 +38,14 @@ def pipeline(
         activation_store: The store to buffer activations in once generated, before training the
             autoencoder.
         num_activations_before_training: The number of activations to generate before training the
-            autoencoder. Once this number is generated, training will start. Once the date is
-            exhausted, training will pause and the store will be filled again up to this number.
-            This is repeated until the src_dataloader is exhausted.
+            autoencoder. As a guide, 1 million activations, each of size 1024, will take up about
+            2GB of memory (assuming float16/bfloat16).
         autoencoder: The autoencoder to train.
         sweep_parameters: Parameter config to use.
         device: Device to run pipeline on.
     """
-    # Initialise wandb sweep
-    # wandb.init(project="sparse-autoencoder", config=sweep_parameters)
+    autoencoder.to(device)
 
-    # Get hyperparameters
     optimizer = Adam(
         autoencoder.parameters(),
         lr=sweep_parameters.lr,
@@ -55,42 +54,46 @@ def pipeline(
         weight_decay=sweep_parameters.adam_weight_decay,
     )
 
-    # Run loop until data is exhausted:
-    with tqdm(desc="Generate/Train Cycles") as progress_bar:
-        while True:
-            # Add activations to the store
-            generate_activations(
-                src_model,
-                src_model_activation_layer,
-                src_model_activation_hook_point,
-                activation_store,
-                src_dataloader,
-                device=device,
-                num_items=num_activations_before_training,
-            )
-            if len(activation_store) == 0:
-                break
+    # Run loop until source data is exhausted:
+    with logging_redirect_tqdm():
+        with tqdm(
+            desc="Generate/Train Cycles", position=0, dynamic_ncols=True
+        ) as progress_bar:
+            while True:
+                # Add activations to the store
+                generate_activations(
+                    src_model,
+                    src_model_activation_layer,
+                    src_model_activation_hook_point,
+                    activation_store,
+                    src_dataloader,
+                    device=device,
+                    num_items=num_activations_before_training,
+                )
+                if len(activation_store) == 0:
+                    break
 
-            # Shuffle the store if it has a shuffle method - it is often more efficient to create a
-            # shuffle method ourselves rather than get the DataLoader to shuffle
-            if hasattr(activation_store, "shuffle"):
-                activation_store.shuffle()
+                # Shuffle the store if it has a shuffle method - it is often more efficient to create a
+                # shuffle method ourselves rather than get the DataLoader to shuffle
+                if hasattr(activation_store, "shuffle"):
+                    activation_store.shuffle()
 
-            # Create a dataloader from the store
-            dataloader = DataLoader(
-                activation_store, batch_size=sweep_parameters.batch_size
-            )
+                # Create a dataloader from the store
+                dataloader = DataLoader(
+                    activation_store,
+                    batch_size=8192,
+                )
 
-            # Train the autoencoder
-            train_autoencoder(
-                activations_dataloader=dataloader,
-                autoencoder=autoencoder,
-                optimizer=optimizer,
-                sweep_parameters=sweep_parameters,
-                device=device,
-            )
+                # Train the autoencoder
+                train_autoencoder(
+                    activations_dataloader=dataloader,
+                    autoencoder=autoencoder,
+                    optimizer=optimizer,
+                    sweep_parameters=sweep_parameters,
+                    device=device,
+                )
 
-            # Empty the store so we can fill it up again
-            activation_store.empty()
+                # Empty the store so we can fill it up again
+                activation_store.empty()
 
-            progress_bar.update(1)
+                progress_bar.update(1)
