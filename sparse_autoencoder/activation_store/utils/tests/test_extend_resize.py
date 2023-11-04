@@ -46,7 +46,7 @@ class TestResizeListVectors:
         ]
         result = resize_to_list_vectors(ActivationStoreBatch(input_tensor))
 
-        for expected, output in zip(expected_output, result):
+        for expected, output in zip(expected_output, result, strict=True):
             assert torch.all(
                 torch.eq(expected, output),
             ), "Tensor values do not match expected"

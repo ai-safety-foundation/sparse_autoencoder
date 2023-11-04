@@ -16,7 +16,7 @@ def test_loss() -> None:
     l1_coefficient = 0.5
 
     squared_errors: float = 0.0
-    for i, o in zip(input_activations, output_activations):
+    for i, o in zip(input_activations, output_activations, strict=True):
         squared_errors += (i - o) ** 2
     mse = squared_errors / len(input_activations)
 

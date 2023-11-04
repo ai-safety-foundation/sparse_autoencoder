@@ -6,7 +6,7 @@ activations.
 Note that for shared types, we include the shape in the docstring, as code hints aren't supported
 by jaxtyping.
 """
-from typing import Callable
+from collections.abc import Callable
 
 from datasets import IterableDataset, load_dataset
 from jaxtyping import Int
