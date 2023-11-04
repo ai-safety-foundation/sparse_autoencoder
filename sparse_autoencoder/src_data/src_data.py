@@ -27,7 +27,7 @@ def create_src_dataloader(
     batch_size: int = 512,
     shuffle_buffer_size: int = 10_000,
     random_seed: int = 0,
-    num_workers: int = 2,
+    num_workers: int = 1,
 ) -> DataLoader:
     """Create a DataLoader with tokenized data.
 
