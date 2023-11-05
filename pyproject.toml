@@ -58,7 +58,7 @@
     reportIncompatibleMethodOverride=true
 
 [tool.ruff]
-    exclude=["*/snapshots/", "/.venv", "train_autoencoder"]
+    exclude=["*/snapshots/", "/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "ANN204", # __init__() return type (it's inferred)

@@ -49,7 +49,7 @@ jobs:
     - name: Pyright type check
       run: poetry run pyright
     - name: Ruff lint
-      run: poetry run ruff check sparse_autoencoder --output-format=github 
+      run: poetry run ruff check sparse_autoencoder --output-format=github
     - name: Ruff format
       run: poetry run ruff format sparse_autoencoder --check
     - name: Pytest
