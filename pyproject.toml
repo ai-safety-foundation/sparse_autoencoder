@@ -13,20 +13,21 @@
         torch=">=2.1"
         wandb=">=0.15.12"
 
-    [tool.poetry.group.dev.dependencies]
-        jupyter=">=1"
-        plotly=">=5"
-        poethepoet=">=0.24.2"
-        pre-commit=">=3.5.0"
-        pyright=">=1.1.334"
-        pytest=">=7"
-        pytest-cov=">=4"
-        ruff=">=0.1.4"
+    [tool.poetry.group]
+        [tool.poetry.group.dev.dependencies]
+            jupyter=">=1"
+            plotly=">=5"
+            poethepoet=">=0.24.2"
+            pre-commit=">=3.5.0"
+            pyright=">=1.1.334"
+            pytest=">=7"
+            pytest-cov=">=4"
+            ruff=">=0.1.4"
 
-    [tool.poetry.group.demos.dependencies]
-        jupyterlab=">=3"
-        pandas=">=2.1.2"
-        transformer-lens=">=1.9.0"
+        [tool.poetry.group.demos.dependencies]
+            jupyterlab=">=3"
+            pandas=">=2.1.2"
+            transformer-lens=">=1.9.0"
 
 [tool.poe.tasks]
     check=["format", "lint", "test", "typecheck"]
@@ -43,16 +44,6 @@
 [tool.pytest]
     [tool.pytest.ini_options]
         addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
-
-[tool.pyright]
-    deprecateTypingAliases=true
-    include=["sparse_autoencoder"]
-    reportIncompatibleMethodOverride=true
-    reportMissingTypeStubs="warning"
-    reportUnknownArgumentType="warning"
-    reportUnknownMemberType="warning"
-    reportUnknownVariableType="warning"
-    strict=true
 
 [tool.ruff]
     exclude=["*/snapshots/", "/.venv"]
@@ -89,3 +80,59 @@
 
         [tool.ruff.lint.pylint]
             max-args=10
+
+[tool.pyright]
+    deprecateTypingAliases=true
+    disableBytesTypePromotions=true
+    include=["sparse_autoencoder"]
+    reportAssertAlwaysTrue=true
+    reportConstantRedefinition=true
+    reportDeprecated=true
+    reportDuplicateImport=true
+    reportFunctionMemberAccess=true
+    reportGeneralTypeIssues=true
+    reportIncompatibleMethodOverride=true
+    reportIncompatibleVariableOverride=true
+    reportIncompleteStub=true
+    reportInconsistentConstructor=true
+    reportInvalidStringEscapeSequence=true
+    reportInvalidStubStatement=true
+    reportInvalidTypeVarUse=true
+    reportMatchNotExhaustive=true
+    reportMissingParameterType=true
+    reportMissingTypeArgument=true
+    reportOptionalCall=true
+    reportOptionalContextManager=true
+    reportOptionalIterable=true
+    reportOptionalMemberAccess=true
+    reportOptionalOperand=true
+    reportOptionalSubscript=true
+    reportOverlappingOverload=true
+    reportPrivateImportUsage=true
+    reportPrivateUsage=true
+    reportSelfClsParameterName=true
+    reportTypeCommentUsage=true
+    reportTypedDictNotRequiredAccess=true
+    reportUnboundVariable=true
+    reportUnknownLambdaType=true
+    reportUnknownParameterType=true
+    reportUnnecessaryCast=true
+    reportUnnecessaryComparison=true
+    reportUnnecessaryContains=true
+    reportUnnecessaryIsInstance=true
+    reportUnsupportedDunderAll=true
+    reportUntypedBaseClass=true
+    reportUntypedClassDecorator=true
+    reportUntypedFunctionDecorator=true
+    reportUntypedNamedTuple=true
+    reportUnusedClass=true
+    reportUnusedCoroutine=true
+    reportUnusedExpression=true
+    reportUnusedFunction=true
+    reportUnusedImport=true
+    reportUnusedVariable=true
+    reportWildcardImportFromLibrary=true
+    strictDictionaryInference=true
+    strictListInference=true
+    strictParameterNoneValue=true
+    strictSetInference=true
