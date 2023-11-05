@@ -1,14 +1,44 @@
 {
-  "rewrap.autoWrap.enabled": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.organizeImports": true
   },
-  "rewrap.reformat": false,
   "editor.formatOnSave": true,
-  "python.testing.pytestEnabled": true,
-  "rewrap.wrappingColumn": 100,
+  "evenBetterToml.formatter.alignComments": true,
+  "evenBetterToml.formatter.alignEntries": true,
+  "evenBetterToml.formatter.allowedBlankLines": 2,
+  "evenBetterToml.formatter.arrayAutoCollapse": true,
+  "evenBetterToml.formatter.arrayAutoExpand": true,
+  "evenBetterToml.formatter.arrayTrailingComma": true,
+  "evenBetterToml.formatter.columnWidth": 100,
+  "evenBetterToml.formatter.compactArrays": true,
+  "evenBetterToml.formatter.compactEntries": true,
+  "evenBetterToml.formatter.compactInlineTables": true,
+  "evenBetterToml.formatter.indentEntries": true,
+  "evenBetterToml.formatter.indentTables": true,
+  "evenBetterToml.formatter.inlineTableExpand": false,
+  "evenBetterToml.formatter.reorderArrays": true,
+  "evenBetterToml.formatter.reorderKeys": true,
+  "evenBetterToml.formatter.trailingNewline": true,
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
-  "editor.defaultFormatter": "charliermarsh.ruff",
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.inlayHints.functionReturnTypes": false,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.languageServer": "Pylance",
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.testing.pytestEnabled": true,
+  "rewrap.autoWrap.enabled": true,
+  "rewrap.reformat": true,
+  "rewrap.wrappingColumn": 100
 }

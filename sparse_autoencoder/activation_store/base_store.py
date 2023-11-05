@@ -1,5 +1,6 @@
 """Activation Store Base Class."""
 from abc import ABC, abstractmethod
+from concurrent.futures import Future
 
 from jaxtyping import Float
 from torch import Tensor
@@ -34,7 +35,6 @@ class ActivationStore(Dataset, ABC):
     `__getitem__` and `__len__` methods from the underlying `torch.utils.data.Dataset` class).
 
     Example:
-
     >>> import torch
     >>> class MyActivationStore(ActivationStore):
     ...     def __init__(self):
@@ -63,17 +63,17 @@ class ActivationStore(Dataset, ABC):
     """
 
     @abstractmethod
-    def append(self, item: ActivationStoreItem):
+    def append(self, item: ActivationStoreItem) -> Future | None:
         """Add a Single Item to the Store."""
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: ActivationStoreBatch):
+    def extend(self, batch: ActivationStoreBatch) -> Future | None:
         """Add a Batch to the Store."""
         raise NotImplementedError
 
     @abstractmethod
-    def empty(self):
+    def empty(self) -> None:
         """Empty the Store."""
         raise NotImplementedError
 
@@ -91,5 +91,10 @@ class ActivationStore(Dataset, ABC):
 class StoreFullError(IndexError):
     """Exception raised when the activation store is full."""
 
-    def __init__(self, message="Activation store is full"):
+    def __init__(self, message: str = "Activation store is full"):
+        """Initialise the exception.
+
+        Args:
+            message: Override the default message.
+        """
         super().__init__(message)

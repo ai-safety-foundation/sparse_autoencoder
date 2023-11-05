@@ -21,9 +21,9 @@ def pipeline(
     activation_store: ActivationStore,
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
-    sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),
-    device: torch.device = torch.device("cpu"),
-):
+    sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
+    device: torch.device | None = None,
+) -> None:
     """Full pipeline for training the sparse autoEncoder.
 
     The pipeline alternates between generating activations and training the autoencoder.
@@ -55,45 +55,46 @@ def pipeline(
     )
 
     # Run loop until source data is exhausted:
-    with logging_redirect_tqdm():
-        with tqdm(
-            desc="Generate/Train Cycles", position=0, dynamic_ncols=True
-        ) as progress_bar:
-            while True:
-                # Add activations to the store
-                generate_activations(
-                    src_model,
-                    src_model_activation_layer,
-                    src_model_activation_hook_point,
-                    activation_store,
-                    src_dataloader,
-                    device=device,
-                    num_items=num_activations_before_training,
-                )
-                if len(activation_store) == 0:
-                    break
+    with logging_redirect_tqdm(), tqdm(
+        desc="Generate/Train Cycles",
+        position=0,
+        dynamic_ncols=True,
+    ) as progress_bar:
+        while True:
+            # Add activations to the store
+            generate_activations(
+                src_model,
+                src_model_activation_layer,
+                src_model_activation_hook_point,
+                activation_store,
+                src_dataloader,
+                device=device,
+                num_items=num_activations_before_training,
+            )
+            if len(activation_store) == 0:
+                break
 
-                # Shuffle the store if it has a shuffle method - it is often more efficient to
-                # create a shuffle method ourselves rather than get the DataLoader to shuffle
-                if hasattr(activation_store, "shuffle"):
-                    activation_store.shuffle()  # type: ignore
+            # Shuffle the store if it has a shuffle method - it is often more efficient to
+            # create a shuffle method ourselves rather than get the DataLoader to shuffle
+            if hasattr(activation_store, "shuffle"):
+                activation_store.shuffle()  # type: ignore
 
-                # Create a dataloader from the store
-                dataloader = DataLoader(
-                    activation_store,
-                    batch_size=8192,
-                )
+            # Create a dataloader from the store
+            dataloader = DataLoader(
+                activation_store,
+                batch_size=8192,
+            )
 
-                # Train the autoencoder
-                train_autoencoder(
-                    activations_dataloader=dataloader,
-                    autoencoder=autoencoder,
-                    optimizer=optimizer,
-                    sweep_parameters=sweep_parameters,
-                    device=device,
-                )
+            # Train the autoencoder
+            train_autoencoder(
+                activations_dataloader=dataloader,
+                autoencoder=autoencoder,
+                optimizer=optimizer,
+                sweep_parameters=sweep_parameters,
+                device=device,
+            )
 
-                # Empty the store so we can fill it up again
-                activation_store.empty()
+            # Empty the store so we can fill it up again
+            activation_store.empty()
 
-                progress_bar.update(1)
+            progress_bar.update(1)

@@ -1,6 +1,6 @@
 """Tensor Activation Store."""
-import torch
 from jaxtyping import Float
+import torch
 from torch import Tensor
 
 from sparse_autoencoder.activation_store.base_store import (
@@ -28,7 +28,6 @@ class TensorActivationStore(ActivationStore):
     additional :meth:`append` and :meth:`extend` methods (the latter of which is non-blocking).
 
     Examples:
-
     Create an empty activation dataset:
 
         >>> import torch
@@ -58,11 +57,6 @@ class TensorActivationStore(ActivationStore):
         >>> next_item = next(iter(loader))
         >>> next_item.shape
         torch.Size([2, 100])
-
-    Args:
-        max_items: Maximum number of items to store (individual activation vectors)
-        num_neurons: Number of neurons in each activation vector.
-        device: Device to store the activation vectors on.
     """
 
     _data: TensorActivationStoreData
@@ -78,9 +72,15 @@ class TensorActivationStore(ActivationStore):
         self,
         max_items: int,
         num_neurons: int,
-        device: torch.device = torch.device("cpu"),
+        device: torch.device | None = None,
     ) -> None:
-        # Initialise the datastore
+        """Initialise the Tensor Activation Store.
+
+        Args:
+            max_items: Maximum number of items to store (individual activation vectors)
+            num_neurons: Number of neurons in each activation vector.
+            device: Device to store the activation vectors on.
+        """
         self._data = torch.empty((max_items, num_neurons), device=device)
         self._max_items = max_items
 
@@ -90,7 +90,6 @@ class TensorActivationStore(ActivationStore):
         Returns the number of activation vectors in the dataset.
 
         Example:
-
         >>> import torch
         >>> store = TensorActivationStore(max_items=10_000_000, num_neurons=100)
         >>> store.append(torch.randn(100))
@@ -106,7 +105,6 @@ class TensorActivationStore(ActivationStore):
         Returns the size of the underlying tensor in bytes.
 
         Example:
-
         >>> import torch
         >>> store = TensorActivationStore(max_items=2, num_neurons=100)
         >>> store.__sizeof__() # Pre-allocated tensor of 2x100
@@ -118,7 +116,6 @@ class TensorActivationStore(ActivationStore):
         """Get Item Dunder Method.
 
         Example:
-
         >>> import torch
         >>> store = TensorActivationStore(max_items=2, num_neurons=5)
         >>> store.append(torch.zeros(5))
@@ -137,19 +134,17 @@ class TensorActivationStore(ActivationStore):
         """
         # Check in range
         if index >= self.items_stored:
-            raise IndexError(
-                f"Index {index} out of range (only {self.items_stored} items stored)"
-            )
+            msg = f"Index {index} out of range (only {self.items_stored} items stored)"
+            raise IndexError(msg)
 
         return self._data[index]
 
-    def shuffle(self):
+    def shuffle(self) -> None:
         """Shuffle the Data In-Place.
 
         This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.
 
         Example:
-
         >>> import torch
         >>> _seed = torch.manual_seed(42)
         >>> store = TensorActivationStore(max_items=10, num_neurons=1)
@@ -170,7 +165,6 @@ class TensorActivationStore(ActivationStore):
         """Add a single item to the store.
 
         Example:
-
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, num_neurons=5)
         >>> store.append(torch.zeros(5))
@@ -186,7 +180,7 @@ class TensorActivationStore(ActivationStore):
         """
         # Check we have space
         if self.items_stored + 1 > self._max_items:
-            raise StoreFullError()
+            raise StoreFullError
 
         self._data[self.items_stored] = item.to(
             self._data.device,
@@ -197,7 +191,6 @@ class TensorActivationStore(ActivationStore):
         """Add a batch to the store.
 
         Examples:
-
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, num_neurons=5)
         >>> store.extend(torch.zeros(2, 5))
@@ -216,30 +209,28 @@ class TensorActivationStore(ActivationStore):
             IndexError: If there is no space remaining.
         """
         reshaped: Float[Tensor, "subset_item neuron"] = resize_to_single_item_dimension(
-            batch
+            batch,
         )
 
         # Check we have space
         num_activation_tensors: int = reshaped.shape[0]
         if self.items_stored + num_activation_tensors > self._max_items:
             if reshaped.shape[0] > self._max_items:
-                raise ValueError(
-                    f"Single batch of {num_activation_tensors} activations is larger \
-                        than the total maximum in the store of {self._max_items}."
-                )
+                msg = f"Single batch of {num_activation_tensors} activations is larger than the \
+                    total maximum in the store of {self._max_items}."
+                raise ValueError(msg)
 
-            raise StoreFullError()
+            raise StoreFullError
 
-        self._data[
-            self.items_stored : self.items_stored + num_activation_tensors
-        ] = reshaped.to(self._data.device)
+        self._data[self.items_stored : self.items_stored + num_activation_tensors] = reshaped.to(
+            self._data.device
+        )
         self.items_stored += num_activation_tensors
 
     def empty(self) -> None:
         """Empty the store.
 
         Example:
-
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, num_neurons=5)
         >>> store.extend(torch.zeros(2, 5))

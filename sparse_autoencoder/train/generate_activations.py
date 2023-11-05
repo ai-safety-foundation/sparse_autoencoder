@@ -1,8 +1,8 @@
 """Generate activations for training a Sparse Autoencoder."""
 from functools import partial
 
+from jaxtyping import Int
 import torch
-from jaxtyping import Float
 from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -18,18 +18,17 @@ from sparse_autoencoder.src_model.store_activations_hook import store_activation
 def generate_activations(
     model: HookedTransformer,
     layer: int,
-    hook_name: str,
+    cache_name: str,
     store: ActivationStore,
     dataloader: DataLoader,
     num_items: int,
-    device: torch.device = torch.device("cpu"),
+    device: torch.device | None = None,
 ) -> None:
     """Generate activations for training a Sparse Autoencoder.
 
     Generates activations and updates the activation store in place.
 
     Warning:
-
     This function is a little confusing as it uses side effects. The way it works is to add a hook
     to the model, which will automatically store activations every time the model runs. When it has
     filled up the store to the desired size, it will return `None`. Your activations will then be
@@ -54,42 +53,42 @@ def generate_activations(
             than strict limit.
         device: Device to run the model on.
     """
-    model.to(device, print_details=False)
+    if isinstance(device, torch.device):
+        model.to(device, print_details=False)
 
     # Add the hook to the model (will automatically store the activations every time the model runs)
     model.remove_all_hook_fns()
     hook = partial(store_activations_hook, store=store)
-    model.add_hook(hook_name, hook)
+    model.add_hook(cache_name, hook)
 
     # Get the input dimensions for logging
-    first_item: Float[Tensor, "batch pos"] = next(iter(dataloader))
+    first_item: Int[Tensor, "batch pos"] = next(iter(dataloader))
     batch_size: int = first_item.shape[0]
     context_size: int = first_item.shape[1]
     activations_per_batch: int = context_size * batch_size
     total: int = num_items - num_items % activations_per_batch
 
-    with torch.no_grad():
-        # Loop through the dataloader until the store reaches the desired size
-        with tqdm(
-            dataloader,
-            desc="Generate Activations",
-            total=total,
-            colour="green",
-            position=1,
-            leave=False,
-            dynamic_ncols=True,
-        ) as progress_bar:
-            for input_ids in dataloader:
-                try:
-                    input_ids = input_ids.to(device)
-                    model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore
-                    progress_bar.update(activations_per_batch)
+    # Loop through the dataloader until the store reaches the desired size
+    with torch.no_grad(), tqdm(
+        dataloader,
+        desc="Generate Activations",
+        total=total,
+        colour="green",
+        position=1,
+        leave=False,
+        dynamic_ncols=True,
+    ) as progress_bar:
+        for input_ids in dataloader:
+            try:
+                input_ids = input_ids.to(device)  # noqa: PLW2901
+                model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore
+                progress_bar.update(activations_per_batch)
 
-                # Break the loop if the store is full
-                except StoreFullError:
-                    break
+            # Break the loop if the store is full
+            except StoreFullError:
+                break
 
-                if len(store) >= total:
-                    return
+            if len(store) >= total:
+                return
 
-            progress_bar.close()
+        progress_bar.close()

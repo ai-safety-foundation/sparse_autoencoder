@@ -1,6 +1,6 @@
 """The Sparse Autoencoder Model."""
-import torch
 from jaxtyping import Float
+import torch
 from torch import Tensor
 from torch.nn import Linear, Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
@@ -9,25 +9,17 @@ from sparse_autoencoder.autoencoder.tied_bias import PostEncoderBias, PreEncoder
 
 
 class SparseAutoencoder(Module):
-    """Sparse Autoencoder Model.
-
-    Args:
-        n_input_features: Number of input features (e.g. `d_mlp` if training on MLP activations from
-            TransformerLens).
-        n_learned_features: Number of learned features. The initial paper experimented with 1× to
-            256× the number of input features, and primarily used 8x.
-        geometric_median_dataset: Estimated geometric median of the dataset.
-    """
+    """Sparse Autoencoder Model."""
 
     geometric_median_dataset: Float[Tensor, " input_activations"]
     """Estimated Geometric Median of the Dataset.
-    
+
     Used for initialising :attr:`tied_bias`.
     """
 
     tied_bias: Float[Parameter, " input_activations"]
     """Tied Bias Parameter.
-    
+
     The same bias is used pre-encoder and post-decoder.
     """
 
@@ -43,6 +35,15 @@ class SparseAutoencoder(Module):
         n_learned_features: int,
         geometric_median_dataset: Float[Tensor, " input_activations"],
     ) -> None:
+        """Initialize the Sparse Autoencoder Model.
+
+        Args:
+            n_input_features: Number of input features (e.g. `d_mlp` if training on MLP activations
+                from TransformerLens).
+            n_learned_features: Number of learned features. The initial paper experimented with 1 to
+                256 times the number of input features, and primarily used a multiple of 8.
+            geometric_median_dataset: Estimated geometric median of the dataset.
+        """
         super().__init__()
 
         self.n_input_features = n_input_features
@@ -70,7 +71,8 @@ class SparseAutoencoder(Module):
         )
 
     def forward(
-        self, x: Float[Tensor, "batch input_activations"]
+        self,
+        x: Float[Tensor, "batch input_activations"],
     ) -> tuple[
         Float[Tensor, "batch learned_activations"],
         Float[Tensor, "batch input_activations"],
@@ -78,7 +80,7 @@ class SparseAutoencoder(Module):
         """Forward Pass.
 
         Args:
-            input: Input activations (e.g. activations from an MLP layer in a transformer model).
+            x: Input activations (e.g. activations from an MLP layer in a transformer model).
 
         Returns:
             Tuple of learned activations and decoded activations.

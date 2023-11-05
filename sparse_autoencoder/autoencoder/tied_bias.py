@@ -30,7 +30,8 @@ class PreEncoderBias(Module):
         self.bias = bias
 
     def forward(
-        self, x: Float[Tensor, "*batch input_activations"]
+        self,
+        x: Float[Tensor, "*batch input_activations"],
     ) -> Float[Tensor, "*batch input_activations"]:
         """Forward Pass."""
         return x - self.bias
@@ -61,7 +62,8 @@ class PostEncoderBias(Module):
         self.bias = bias
 
     def forward(
-        self, x: Float[Tensor, "*batch input_activations"]
+        self,
+        x: Float[Tensor, "*batch input_activations"],
     ) -> Float[Tensor, "*batch input_activations"]:
         """Forward Pass."""
         return x + self.bias

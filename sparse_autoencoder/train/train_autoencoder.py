@@ -1,10 +1,10 @@
 """Training Pipeline."""
-import torch
+from torch import device, set_grad_enabled
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-
 import wandb
+
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
@@ -20,8 +20,8 @@ def train_autoencoder(
     optimizer: Optimizer,
     sweep_parameters: SweepParametersRuntime,
     log_interval: int = 10,
-    device: torch.device | None = None,
-):
+    device: device | None = None,
+) -> None:
     """Sparse Autoencoder Training Loop.
 
     Args:
@@ -30,60 +30,61 @@ def train_autoencoder(
         optimizer: The optimizer to use.
         sweep_parameters: The sweep parameters to use.
         log_interval: How often to log progress.
+        device: Decide to use.
     """
     n_dataset_items: int = len(activations_dataloader.dataset)  # type: ignore
     batch_size: int = activations_dataloader.batch_size  # type: ignore
 
-    with torch.set_grad_enabled(True):
-        with tqdm(
-            desc="Train Autoencoder",
-            total=n_dataset_items,
-            colour="green",
-            position=1,
-            leave=False,
-            dynamic_ncols=True,
-        ) as progress_bar:
-            for step, batch in enumerate(activations_dataloader):
-                # Zero the gradients
-                optimizer.zero_grad()
+    with set_grad_enabled(True), tqdm(  # noqa: FBT003
+        desc="Train Autoencoder",
+        total=n_dataset_items,
+        colour="green",
+        position=1,
+        leave=False,
+        dynamic_ncols=True,
+    ) as progress_bar:
+        for step, batch in enumerate(activations_dataloader):
+            # Zero the gradients
+            optimizer.zero_grad()
 
-                # Move the batch to the device (in place)
-                batch = batch.to(device)
+            # Move the batch to the device (in place)
+            batch = batch.to(device)  # noqa: PLW2901
 
-                # Forward pass
-                learned_activations, reconstructed_activations = autoencoder(batch)
+            # Forward pass
+            learned_activations, reconstructed_activations = autoencoder(batch)
 
-                # Get metrics
-                reconstruction_loss_mse = reconstruction_loss(
-                    batch, reconstructed_activations
+            # Get metrics
+            reconstruction_loss_mse = reconstruction_loss(
+                batch,
+                reconstructed_activations,
+            )
+            l1_loss_learned_activations = l1_loss(learned_activations)
+            total_loss = sae_training_loss(
+                reconstruction_loss_mse,
+                l1_loss_learned_activations,
+                sweep_parameters.l1_coefficient,
+            )
+            # TODO: Log dead neurons metric (get_frequencies in Neel's code)
+
+            # Backwards pass
+            total_loss.backward()
+
+            # TODO: Make decoder weights and grad unit norm
+
+            optimizer.step()
+
+            # TODO: Enable neuron resampling here
+
+            # Log
+            if step % log_interval == 0 and wandb.run is not None:
+                wandb.log(
+                    {
+                        "reconstruction_loss": reconstruction_loss_mse,
+                        "l1_loss": l1_loss_learned_activations,
+                        "loss": total_loss,
+                    },
                 )
-                l1_loss_learned_activations = l1_loss(learned_activations)
-                total_loss = sae_training_loss(
-                    reconstruction_loss_mse,
-                    l1_loss_learned_activations,
-                    sweep_parameters.l1_coefficient,
-                )
-                # TODO: Log dead neurons metric (get_frequencies in Neel's code)
 
-                # Backwards pass
-                total_loss.backward()
+            progress_bar.update(batch_size)
 
-                # TODO: Make decoder weights and grad unit norm
-
-                optimizer.step()
-
-                # TODO: Enable neuron resampling
-
-                # Log
-                if step % log_interval == 0 and wandb.run is not None:
-                    wandb.log(
-                        {
-                            "reconstruction_loss": reconstruction_loss_mse,
-                            "l1_loss": l1_loss_learned_activations,
-                            "loss": total_loss,
-                        }
-                    )
-
-                progress_bar.update(batch_size)
-
-            progress_bar.close()
+        progress_bar.close()

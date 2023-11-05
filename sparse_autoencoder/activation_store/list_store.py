@@ -1,9 +1,9 @@
 """List Activation Store."""
-import random
-import time
 from concurrent.futures import Future, ProcessPoolExecutor, as_completed
 from multiprocessing import Manager
 from multiprocessing.managers import ListProxy
+import random
+import time
 
 import torch
 
@@ -39,7 +39,6 @@ class ListActivationStore(ActivationStore):
     dataset to the loader and then set the DataLoader `shuffle` argument to `False`.
 
     Examples:
-
     Create an empty activation dataset:
 
         >>> import torch
@@ -68,45 +67,48 @@ class ListActivationStore(ActivationStore):
         >>> next_item = next(iter(loader))
         >>> next_item.shape
         torch.Size([2, 100])
-
-    Args:
-        data: Data to initialize the dataset with.
-        device: Device to store the activation vectors on.
-        multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU workers.
-            This creates significant overhead, so you should only enable it if you have multiple
-            GPUs (and experiment with enabling/disabling it).
-        max_workers: Max CPU workers if multiprocessing is enabled, for writing to the list.
-            Default is the number of cores you have.
     """
 
     _data: list[ActivationStoreItem] | ListProxy
     """Underlying List Data Store."""
 
-    _device: torch.device
+    _device: torch.device | None
     """Device to Store the Activation Vectors On."""
 
     _pool: ProcessPoolExecutor | None = None
     """Multiprocessing Pool."""
 
-    _pool_exceptions: ListProxy | list = []
+    _pool_exceptions: ListProxy | list
     """Pool Exceptions.
-    
+
     Used to keep track of exceptions.
     """
 
-    _pool_futures: list[Future] = []
+    _pool_futures: list[Future]
     """Pool Futures.
-    
+
     Used to keep track of processes running in the pool.
     """
 
     def __init__(
         self,
         data: list[ActivationStoreItem] | None = None,
-        device: torch.device = torch.device("cpu"),
-        multiprocessing_enabled=False,
+        device: torch.device | None = None,
         max_workers: int | None = None,
+        *,
+        multiprocessing_enabled: bool = False,
     ) -> None:
+        """Initialize the List Activation Store.
+
+        Args:
+            data: Data to initialize the dataset with.
+            device: Device to store the activation vectors on.
+            max_workers: Max CPU workers if multiprocessing is enabled, for writing to the list.
+                Default is the number of cores you have.
+            multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU
+                workers. This creates significant overhead, so you should only enable it if you have
+                multiple GPUs (and experiment with enabling/disabling it).
+        """
         # Default to empty
         if data is None:
             data = []
@@ -121,6 +123,9 @@ class ListActivationStore(ActivationStore):
             self._pool_exceptions = manager.list()
         else:
             self._data = data
+            self._pool_exceptions = []
+
+        self._pool_futures = []
 
         # Device for storing the activation vectors
         self._device = device
@@ -131,7 +136,6 @@ class ListActivationStore(ActivationStore):
         Returns the number of activation vectors in the dataset.
 
         Example:
-
         >>> import torch
         >>> store = ListActivationStore()
         >>> store.append(torch.randn(100))
@@ -166,7 +170,6 @@ class ListActivationStore(ActivationStore):
         """Get Item Dunder Method.
 
         Example:
-
         >>> import torch
         >>> store = ListActivationStore()
         >>> store.append(torch.zeros(5))
@@ -182,13 +185,12 @@ class ListActivationStore(ActivationStore):
         """
         return self._data[index]
 
-    def shuffle(self):
+    def shuffle(self) -> None:
         """Shuffle the Data In-Place.
 
         This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.
 
         Example:
-
         >>> import torch
         >>> _seed = torch.manual_seed(42)
         >>> store = ListActivationStore()
@@ -203,13 +205,12 @@ class ListActivationStore(ActivationStore):
         self.wait_for_writes_to_complete()
         random.shuffle(self._data)
 
-    def append(self, item: ActivationStoreItem) -> None:
+    def append(self, item: ActivationStoreItem) -> Future | None:
         """Append a single item to the dataset.
 
         Note **append is blocking**. For better performance use extend instead with batches.
 
         Example:
-
         >>> import torch
         >>> store = ListActivationStore()
         >>> store.append(torch.randn(100))
@@ -228,21 +229,20 @@ class ListActivationStore(ActivationStore):
         To be called by :meth:`extend`.
 
         Args:
-            items: A list of items to add to the dataset.
+            batch: A batch of items to add to the dataset.
         """
         try:
             # Unstack to a list of tensors
             items: list[ActivationStoreItem] = resize_to_list_vectors(batch)
 
             self._data.extend(items)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:  # noqa: BLE001
             self._pool_exceptions.append(e)
 
-    def extend(self, batch: ActivationStoreBatch) -> None:
+    def extend(self, batch: ActivationStoreBatch) -> Future | None:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:
-
             >>> import torch
             >>> store = ListActivationStore()
             >>> batch = torch.randn(10, 100)
@@ -251,7 +251,7 @@ class ListActivationStore(ActivationStore):
             10
 
         Args:
-            items: A list of items to add to the dataset.
+            batch: A batch of items to add to the dataset.
         """
         # Schedule _extend to run in a separate process
         if self._pool:
@@ -262,12 +262,11 @@ class ListActivationStore(ActivationStore):
         self._extend(batch)
 
     def wait_for_writes_to_complete(self) -> None:
-        """Wait for Writes to Complete
+        """Wait for Writes to Complete.
 
         Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.
 
         Example:
-
         >>> import torch
         >>> store = ListActivationStore(multiprocessing_enabled=True)
         >>> store.extend(torch.randn(3, 100))
@@ -284,18 +283,14 @@ class ListActivationStore(ActivationStore):
         time.sleep(1)
 
         if self._pool_exceptions:
-            exceptions_report = "\n".join(
-                f"{e}\n{tb}" for e, tb in self._pool_exceptions
-            )
-            raise RuntimeError(
-                f"Exceptions occurred in background workers:\n{exceptions_report}"
-            )
+            exceptions_report = "\n".join(f"{e}\n{tb}" for e, tb in self._pool_exceptions)
+            msg = f"Exceptions occurred in background workers:\n{exceptions_report}"
+            raise RuntimeError(msg)
 
-    def empty(self):
+    def empty(self) -> None:
         """Empty the dataset.
 
         Example:
-
         >>> import torch
         >>> store = ListActivationStore()
         >>> store.append(torch.randn(100))

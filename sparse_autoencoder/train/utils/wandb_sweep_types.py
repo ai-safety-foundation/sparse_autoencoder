@@ -2,6 +2,7 @@
 
 Weights & Biases just provide a JSON Schema, so we've converted here to dataclasses.
 """
+# ruff: noqa
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Generic, TypeVar
@@ -18,7 +19,7 @@ class ControllerType(Enum):
 class Controller:
     """Controller."""
 
-    type: ControllerType
+    type: ControllerType  # noqa: A003
 
 
 class HyperbandStoppingType(Enum):
@@ -35,25 +36,25 @@ class HyperbandStopping:
     than successful training runs.
     """
 
-    type: HyperbandStoppingType
+    type: HyperbandStoppingType  # noqa: A003
 
     eta: float | None = None
     """ETA.
-    
+
     At every eta^n steps, hyperband continues running the top 1/eta runs and stops all other
     runs.
     """
 
     maxiter: int | None = None
     """Max Iterations.
-    
+
     Set the last epoch to finish trimming runs, and hyperband will automatically calculate
     the prior epochs to trim runs.
     """
 
     miniter: int | None = None
     """Min Iterations.
-    
+
     Set the first epoch to start trimming runs, and hyperband will automatically calculate
     the subsequent epochs to trim runs.
     """
@@ -155,9 +156,9 @@ class Parameter(Generic[ParamType]):
 
     value: ParamType | list[ParamType]
 
-    max: ParamType | None = None
+    max: ParamType | None = None  # noqa: A003
 
-    min: ParamType | None = None
+    min: ParamType | None = None  # noqa: A003
 
     a: float | None = None
 
@@ -231,6 +232,6 @@ class WandbSweepConfig:
 
     runcap: int | None = None
     """Run Cap.
-    
+
     Sweep will run no more than this number of runs, across any number of agents.
     """
