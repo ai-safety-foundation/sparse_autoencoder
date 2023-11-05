@@ -82,6 +82,7 @@
             max-args=10
 
 [tool.pyright]
+    # Includes all rules in strict mode, with some set to warning
     deprecateTypingAliases=true
     disableBytesTypePromotions=true
     include=["sparse_autoencoder"]
