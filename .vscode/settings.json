@@ -36,7 +36,7 @@
   "python.analysis.autoFormatStrings": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.inlayHints.functionReturnTypes": false,
-  "python.analysis.typeCheckingMode": "strict",
+  "python.analysis.typeCheckingMode": "basic",
   "python.languageServer": "Pylance",
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.testing.pytestEnabled": true,

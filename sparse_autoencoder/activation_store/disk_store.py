@@ -262,7 +262,7 @@ class DiskActivationStore(ActivationStore):
 
         return self._disk_n_activation_vectors.value
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Delete Dunder Method."""
         # Shutdown the thread pool after everything is complete
         self._thread_pool.shutdown(wait=True, cancel_futures=False)

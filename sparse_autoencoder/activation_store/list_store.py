@@ -307,7 +307,7 @@ class ListActivationStore(ActivationStore):
         # Clearing a list like this works for both standard and multiprocessing lists
         self._data[:] = []
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Delete Dunder Method."""
         if self._pool:
             self._pool.shutdown(wait=False, cancel_futures=True)

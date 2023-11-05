@@ -49,13 +49,11 @@
     exclude=["*/snapshots/", "/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
-        "ANN204", # __init__() return type (it's inferred)
-        "E731",   # No lambdas (can be useful)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
         "FA102",  # Annotations support (Python >= 3.9 is fine)
         "FIX002", # TODO issue link (overkill)
         "INP001", # __init__.py for all packages (Python >= 3.3 is fine)
-        "PGH003", # No general type: ignore (too strict)
+        "PGH003", # No general type: ignore (not supported with pyright)
         "TCH002", # Type checking imports (conflicts with beartype)
         "TD00",   # TODO banned (we're in alpha)
         # Rules that conflict with ruff format
@@ -64,16 +62,18 @@
     ]
     ignore-init-module-imports=true
     line-length=100
-    required-version="0.1.4"
     select=["ALL"]
 
     [tool.ruff.lint]
-        [tool.ruff.lint.per-file-ignores]
-            "**/tests/*"=["S101"] # Assert is needed in PyTest
+        [tool.ruff.lint.flake8-annotations]
+            mypy-init-return=true
 
         [tool.ruff.lint.isort]
             force-sort-within-sections=true
             lines-after-imports=2
+
+        [tool.ruff.lint.per-file-ignores]
+            "**/tests/*"=["S101"] # Assert is needed in PyTest
 
         [tool.ruff.lint.pydocstyle]
             convention="google"
