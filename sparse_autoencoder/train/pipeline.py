@@ -1,5 +1,7 @@
 """Training Pipeline."""
+from jaxtyping import Int
 import torch
+from torch import Tensor
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -17,7 +19,7 @@ def pipeline(
     src_model: HookedTransformer,
     src_model_activation_hook_point: str,
     src_model_activation_layer: int,
-    src_dataloader: DataLoader,
+    src_dataloader: DataLoader[Int[Tensor, " pos"]],
     activation_store: ActivationStore,
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,

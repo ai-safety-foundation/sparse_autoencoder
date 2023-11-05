@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 import wandb
 
+from sparse_autoencoder.activation_store.base_store import ActivationStoreItem
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
@@ -15,7 +16,7 @@ from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
 def train_autoencoder(
-    activations_dataloader: DataLoader,
+    activations_dataloader: DataLoader[ActivationStoreItem],
     autoencoder: SparseAutoencoder,
     optimizer: Optimizer,
     sweep_parameters: SweepParametersRuntime,

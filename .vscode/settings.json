@@ -13,9 +13,7 @@
     "source.organizeImports": true
   },
   "editor.formatOnSave": true,
-  "evenBetterToml.formatter.alignComments": true,
-  "evenBetterToml.formatter.alignEntries": true,
-  "evenBetterToml.formatter.allowedBlankLines": 2,
+  "evenBetterToml.formatter.allowedBlankLines": 1,
   "evenBetterToml.formatter.arrayAutoCollapse": true,
   "evenBetterToml.formatter.arrayAutoExpand": true,
   "evenBetterToml.formatter.arrayTrailingComma": true,
@@ -24,11 +22,15 @@
   "evenBetterToml.formatter.compactEntries": true,
   "evenBetterToml.formatter.compactInlineTables": true,
   "evenBetterToml.formatter.indentEntries": true,
+  "evenBetterToml.formatter.indentString": "    ",
   "evenBetterToml.formatter.indentTables": true,
-  "evenBetterToml.formatter.inlineTableExpand": false,
+  "evenBetterToml.formatter.inlineTableExpand": true,
   "evenBetterToml.formatter.reorderArrays": true,
   "evenBetterToml.formatter.reorderKeys": true,
   "evenBetterToml.formatter.trailingNewline": true,
+  "evenBetterToml.schema.enabled": true,
+  "evenBetterToml.schema.links": true,
+  "evenBetterToml.syntax.semanticTokens": false,
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
   "python.analysis.autoFormatStrings": true,
@@ -40,5 +42,6 @@
   "python.testing.pytestEnabled": true,
   "rewrap.autoWrap.enabled": true,
   "rewrap.reformat": false,
-  "rewrap.wrappingColumn": 100
+  "rewrap.wrappingColumn": 100,
+  "python.analysis.diagnosticMode": "workspace"
 }

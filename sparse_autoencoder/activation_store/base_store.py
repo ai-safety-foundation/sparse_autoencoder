@@ -23,7 +23,7 @@ attention layer.
 """
 
 
-class ActivationStore(Dataset, ABC):
+class ActivationStore(Dataset[ActivationStoreItem], ABC):
     """Activation Store Abstract Class.
 
     Extends the `torch.utils.data.Dataset` class to provide an activation store, with additional

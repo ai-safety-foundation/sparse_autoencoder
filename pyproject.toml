@@ -1,74 +1,59 @@
 [tool.poetry]
-    authors    =["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
+    authors=["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
     description="Sparse Autoencoder for Mechanistic Interpretability"
-    include    =["sparse_autoencoder"]
-    license    ="MIT"
-    name       ="sparse_autoencoder"
-    readme     ="README.md"
-    version    ="0.0.0"
+    include=["sparse_autoencoder"]
+    license="MIT"
+    name="sparse_autoencoder"
+    readme="README.md"
+    version="0.0.0"
 
     [tool.poetry.dependencies]
         einops=">=0.6"
         python=">=3.10, <3.13"
-        torch =">=2.1"
-        wandb =">=0.15.12"
+        torch=">=2.1"
+        wandb=">=0.15.12"
 
-    [tool.poetry.group.dev.dependencies]
-        jupyter   =">=1"
-        plotly    =">=5"
-        poethepoet=">=0.24.2"
-        pre-commit=">=3.5.0"
-        pyright   =">=1.1.334"
-        pytest    =">=7"
-        pytest-cov=">=4"
-        ruff      =">=0.1.4"
+    [tool.poetry.group]
+        [tool.poetry.group.dev.dependencies]
+            jupyter=">=1"
+            plotly=">=5"
+            poethepoet=">=0.24.2"
+            pre-commit=">=3.5.0"
+            pyright=">=1.1.334"
+            pytest=">=7"
+            pytest-cov=">=4"
+            ruff=">=0.1.4"
 
-    [tool.poetry.group.demos.dependencies]
-        jupyterlab      =">=3"
-        pandas          =">=2.1.2"
-        transformer-lens=">=1.9.0"
+        [tool.poetry.group.demos.dependencies]
+            jupyterlab=">=3"
+            pandas=">=2.1.2"
+            transformer-lens=">=1.9.0"
 
 [tool.poe.tasks]
-    check    =["format", "lint", "test", "typecheck"]
-    format   ="ruff format sparse_autoencoder"
-    lint     ="ruff check sparse_autoencoder --fix"
+    check=["format", "lint", "test", "typecheck"]
+    format="ruff format sparse_autoencoder"
+    lint="ruff check sparse_autoencoder --fix"
     precommit="pre-commit run --all-files"
-    test     ="pytest"
+    test="pytest"
     typecheck="pyright"
 
 [build-system]
     build-backend="poetry.core.masonry.api"
-    requires     =["poetry-core"]
+    requires=["poetry-core"]
 
 [tool.pytest]
-
     [tool.pytest.ini_options]
-        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype \
-    -W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \
-    --doctest-modules"""
-        filterwarnings=[
-            "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
-            # Ignore numpy.distutils deprecation warning caused by pandas
-            # More info: https://numpy.org/doc/stable/reference/distutils.html#module-numpy.distutils
-            "ignore:distutils Version classes are deprecated:DeprecationWarning",
-        ]
-
-[tool.pyright]
-    include                         =["sparse_autoencoder"]
-    reportIncompatibleMethodOverride=true
+        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
 
 [tool.ruff]
     exclude=["*/snapshots/", "/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
-        "ANN204", # __init__() return type (it's inferred)
-        "E731",   # No lambdas (can be useful)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
         "FA102",  # Annotations support (Python >= 3.9 is fine)
         "FIX002", # TODO issue link (overkill)
         "INP001", # __init__.py for all packages (Python >= 3.3 is fine)
-        "PGH003", # No general type: ignore (too strict)
-        "S101",   # Use of assert detected (it's needed for tests)
+        "PGH003", # No general type: ignore (not supported with pyright)
         "TCH002", # Type checking imports (conflicts with beartype)
         "TD00",   # TODO banned (we're in alpha)
         # Rules that conflict with ruff format
@@ -77,15 +62,82 @@
     ]
     ignore-init-module-imports=true
     line-length=100
-    required-version="0.1.4"
     select=["ALL"]
 
-    [tool.ruff.lint.isort]
-        force-sort-within-sections=true
-        lines-after-imports       =2
+    [tool.ruff.lint]
+        [tool.ruff.lint.flake8-annotations]
+            mypy-init-return=true
 
-    [tool.ruff.lint.pydocstyle]
-        convention="google"
+        [tool.ruff.lint.isort]
+            force-sort-within-sections=true
+            lines-after-imports=2
 
-[tool.ruff.pylint]
-    max-args=10
+        [tool.ruff.lint.per-file-ignores]
+            "**/tests/*"=["S101"] # Assert is needed in PyTest
+
+        [tool.ruff.lint.pydocstyle]
+            convention="google"
+
+        [tool.ruff.lint.pylint]
+            max-args=10
+
+[tool.pyright]
+    # Includes all rules in strict mode, with some set to warning
+    deprecateTypingAliases=true
+    disableBytesTypePromotions=true
+    include=["sparse_autoencoder"]
+    reportAssertAlwaysTrue=true
+    reportConstantRedefinition=true
+    reportDeprecated=true
+    reportDuplicateImport=true
+    reportFunctionMemberAccess=true
+    reportGeneralTypeIssues=true
+    reportIncompatibleMethodOverride=true
+    reportIncompatibleVariableOverride=true
+    reportIncompleteStub=true
+    reportInconsistentConstructor=true
+    reportInvalidStringEscapeSequence=true
+    reportInvalidStubStatement=true
+    reportInvalidTypeVarUse=true
+    reportMatchNotExhaustive=true
+    reportMissingParameterType=true
+    reportMissingTypeArgument="warning"
+    reportMissingTypeStubs="warning"
+    reportOptionalCall=true
+    reportOptionalContextManager=true
+    reportOptionalIterable=true
+    reportOptionalMemberAccess=true
+    reportOptionalOperand=true
+    reportOptionalSubscript=true
+    reportOverlappingOverload=true
+    reportPrivateImportUsage=true
+    reportPrivateUsage=true
+    reportSelfClsParameterName=true
+    reportTypeCommentUsage=true
+    reportTypedDictNotRequiredAccess=true
+    reportUnboundVariable=true
+    reportUnknownArgumentType="warning"
+    reportUnknownLambdaType=true
+    reportUnknownMemberType="warning"
+    reportUnknownParameterType="warning"
+    reportUnknownVariableType="warning"
+    reportUnnecessaryCast=true
+    reportUnnecessaryComparison=true
+    reportUnnecessaryContains=true
+    reportUnnecessaryIsInstance=true
+    reportUnsupportedDunderAll=true
+    reportUntypedBaseClass=true
+    reportUntypedClassDecorator=true
+    reportUntypedFunctionDecorator=true
+    reportUntypedNamedTuple=true
+    reportUnusedClass=true
+    reportUnusedCoroutine=true
+    reportUnusedExpression=true
+    reportUnusedFunction=true
+    reportUnusedImport=true
+    reportUnusedVariable=true
+    reportWildcardImportFromLibrary=true
+    strictDictionaryInference=true
+    strictListInference=true
+    strictParameterNoneValue=true
+    strictSetInference=true

@@ -78,7 +78,7 @@ class ListActivationStore(ActivationStore):
     _pool: ProcessPoolExecutor | None = None
     """Multiprocessing Pool."""
 
-    _pool_exceptions: ListProxy | list
+    _pool_exceptions: ListProxy | list[Exception]
     """Pool Exceptions.
 
     Used to keep track of exceptions.
@@ -283,7 +283,7 @@ class ListActivationStore(ActivationStore):
         time.sleep(1)
 
         if self._pool_exceptions:
-            exceptions_report = "\n".join(f"{e}\n{tb}" for e, tb in self._pool_exceptions)
+            exceptions_report = "\n".join([str(e) for e in self._pool_exceptions])
             msg = f"Exceptions occurred in background workers:\n{exceptions_report}"
             raise RuntimeError(msg)
 
@@ -307,7 +307,7 @@ class ListActivationStore(ActivationStore):
         # Clearing a list like this works for both standard and multiprocessing lists
         self._data[:] = []
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Delete Dunder Method."""
         if self._pool:
             self._pool.shutdown(wait=False, cancel_futures=True)

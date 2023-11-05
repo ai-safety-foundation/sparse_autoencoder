@@ -1,12 +1,12 @@
 """Tied Biases (Pre-Encoder and Post-Decoder)."""
-from enum import StrEnum
+from enum import Enum
 
 from jaxtyping import Float
 from torch import Tensor
 from torch.nn import Module
 
 
-class TiedBiasPosition(StrEnum):
+class TiedBiasPosition(str, Enum):
     """Tied Bias Position."""
 
     PRE_ENCODER = "pre_encoder"
@@ -44,6 +44,8 @@ class TiedBias(Module):
         super().__init__()
 
         self._bias_reference = bias
+
+        # Support string literals as well as enums
         self._bias_position = position
 
     def forward(

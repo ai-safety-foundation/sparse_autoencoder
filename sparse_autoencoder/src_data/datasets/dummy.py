@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader, Dataset
 from sparse_autoencoder.src_data.src_data import CollateResponseTokens
 
 
-class RandomIntDataset(Dataset):
+class RandomIntDataset(Dataset[Int[Tensor, " pos"]]):
     """Dummy dataset for testing/examples."""
 
     def __init__(
@@ -60,7 +60,7 @@ def create_dummy_dataloader(
     batch_size: int,
     pos: int = 512,
     vocab_size: int = 50000,
-) -> DataLoader:
+) -> DataLoader[Int[Tensor, " pos"]]:
     """Create dummy dataloader."""
     dataset = RandomIntDataset(num_samples, batch_size, pos, vocab_size)
     return DataLoader(dataset, collate_fn=dummy_collate_fn)
