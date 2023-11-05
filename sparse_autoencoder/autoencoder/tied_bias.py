@@ -31,7 +31,7 @@ class TiedBias(Module):
     def __init__(
         self,
         bias: Float[Tensor, " input_activations"],
-        position: TiedBiasPosition,
+        position: TiedBiasPosition | str,
     ) -> None:
         """Initialize the bias layer.
 
@@ -39,11 +39,16 @@ class TiedBias(Module):
             bias: Tied bias parameter (initialised in the parent module), used for both the
                 pre-encoder and post-encoder bias. The original paper initialised this using the
                 geometric median of the dataset.
-            position: Whether this is the pre-encoder or post-encoder bias.
+            position: Whether this is the pre-encoder or post-encoder bias. Use
+                :class:`TiedBiasPosition` to set this.
         """
         super().__init__()
 
         self._bias_reference = bias
+
+        # Support string literals as well as enums
+        if not isinstance(position, TiedBiasPosition):
+            position = TiedBiasPosition(position)
         self._bias_position = position
 
     def forward(
