@@ -1,12 +1,12 @@
 """Tied Biases (Pre-Encoder and Post-Decoder)."""
-from enum import StrEnum
+from enum import Enum
 
 from jaxtyping import Float
 from torch import Tensor
 from torch.nn import Module
 
 
-class TiedBiasPosition(StrEnum):
+class TiedBiasPosition(str, Enum):
     """Tied Bias Position."""
 
     PRE_ENCODER = "pre_encoder"
@@ -31,7 +31,7 @@ class TiedBias(Module):
     def __init__(
         self,
         bias: Float[Tensor, " input_activations"],
-        position: TiedBiasPosition | str,
+        position: TiedBiasPosition,
     ) -> None:
         """Initialize the bias layer.
 
@@ -39,16 +39,13 @@ class TiedBias(Module):
             bias: Tied bias parameter (initialised in the parent module), used for both the
                 pre-encoder and post-encoder bias. The original paper initialised this using the
                 geometric median of the dataset.
-            position: Whether this is the pre-encoder or post-encoder bias. Use
-                :class:`TiedBiasPosition` to set this.
+            position: Whether this is the pre-encoder or post-encoder bias.
         """
         super().__init__()
 
         self._bias_reference = bias
 
         # Support string literals as well as enums
-        if not isinstance(position, TiedBiasPosition):
-            position = TiedBiasPosition(position)
         self._bias_position = position
 
     def forward(
