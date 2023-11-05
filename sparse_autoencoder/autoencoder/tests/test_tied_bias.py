@@ -1,7 +1,7 @@
 """Tied Bias Tests."""
 import torch
 
-from sparse_autoencoder.autoencoder.tied_bias import PostEncoderBias, PreEncoderBias
+from sparse_autoencoder.autoencoder.tied_bias import TiedBias, TiedBiasPosition
 
 
 def test_pre_encoder_subtracts_bias() -> None:
@@ -10,7 +10,7 @@ def test_pre_encoder_subtracts_bias() -> None:
     bias = torch.tensor([2.0, 4.0, 6.0])
     expected = encoder_input - bias
 
-    pre_encoder = PreEncoderBias(bias)
+    pre_encoder = TiedBias(bias, TiedBiasPosition.PRE_ENCODER)
     output = pre_encoder(encoder_input)
 
     assert torch.allclose(output, expected)
@@ -22,7 +22,7 @@ def test_post_encoder_adds_bias() -> None:
     bias = torch.tensor([2.0, 4.0, 6.0])
     expected = decoder_output + bias
 
-    post_encoder = PostEncoderBias(bias)
-    output = post_encoder(decoder_output)
+    post_decoder = TiedBias(bias, TiedBiasPosition.POST_DECODER)
+    output = post_decoder(decoder_output)
 
     assert torch.allclose(output, expected)

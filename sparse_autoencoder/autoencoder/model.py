@@ -5,7 +5,7 @@ from torch import Tensor
 from torch.nn import Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
 
-from sparse_autoencoder.autoencoder.tied_bias import PostEncoderBias, PreEncoderBias
+from sparse_autoencoder.autoencoder.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.unit_norm_linear import ConstrainedUnitNormLinear
 
 
@@ -61,14 +61,14 @@ class SparseAutoencoder(Module):
 
         # Create the network
         self.encoder = Sequential(
-            PreEncoderBias(self.tied_bias),
+            TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
             ConstrainedUnitNormLinear(n_input_features, n_learned_features),
             ReLU(),
         )
 
         self.decoder = Sequential(
             ConstrainedUnitNormLinear(n_learned_features, n_input_features, bias=False),
-            PostEncoderBias(self.tied_bias),
+            TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER),
         )
 
     def forward(
@@ -101,51 +101,6 @@ class SparseAutoencoder(Module):
         for module in self.network:
             if "reset_parameters" in dir(module):
                 module.reset_parameters()
-
-    def make_decoder_weights_and_grad_unit_norm(self) -> None:
-        """Make the decoder weights and gradients unit norm.
-
-        Unit norming the dictionary vectors, which are essentially the columns of the encoding and
-        decoding matrices, serves a few purposes:
-
-            1. It helps with numerical stability, by preventing the dictionary vectors from growing
-                too large.
-            2. It acts as a form of regularization, preventing overfitting by not allowing any one
-                feature to dominate the representation. It limits the capacity of the model by
-                forcing the dictionary vectors to live on the hypersphere of radius 1.
-            3. It encourages sparsity. Since the dictionary vectors have a fixed length, the model
-                must carefully select which features to activate in order to best reconstruct the
-                input.
-
-        Each input vector is a row of size `(1, n_input_features)`. The encoding matrix is then of
-        shape `(n_input_features, n_learned_features)`. The columns are the dictionary vectors, i.e.
-        each one projects the input vector onto a basis vector in the learned feature space.
-
-        Each decoding matrix is of shape `(n_learned_features, n_input_features)`, with the output
-        vectors as rows of size `(1, n_input_features)`. The columns of the decoding matrix are the
-        dictionary vectors that reconstruct the learned features in the input space.
-
-        Note that the *Towards Monosemanticity: Decomposing Language Models With Dictionary
-        Learning* paper found that removing the gradient information parallel to the dictionary
-        vectors before applying the gradient step, rather than resetting the dictionary vectors to
-        unit norm after each gradient step, [results in a small but real reduction in total
-        loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).
-
-        Approach:
-            The gradient with respect to the decoder weights is of shape `(n_learned_features,
-            n_input_features)` (and similarly for the encoder weights it's just the same shape as
-            the weights themselves). By subtracting the projection of the gradient onto the
-            dictionary vectors, we remove the component of the gradient that is parallel to the
-            dictionary vectors and just keep the component that is orthogonal to the dictionary
-            vectors (i.e. moving around the hypersphere). The result is that the gradient moves
-            around the hypersphere, but never moves towards or away from the center. Note this does
-            mean that we must assume
-
-        TODO: Implement this.
-
-        TODO: Consider creating a custom module to do this.
-        """
-        raise NotImplementedError
 
     def save_to_hf(self) -> None:
         """Save the model to Hugging Face."""
