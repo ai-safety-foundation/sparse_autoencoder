@@ -20,7 +20,7 @@ def generate_activations(
     layer: int,
     cache_name: str,
     store: ActivationStore,
-    dataloader: DataLoader,
+    dataloader: DataLoader[Int[Tensor, " pos"]],
     num_items: int,
     device: torch.device | None = None,
 ) -> None:

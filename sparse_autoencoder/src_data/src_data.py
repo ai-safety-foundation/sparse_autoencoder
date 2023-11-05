@@ -7,6 +7,7 @@ Note that for shared types, we include the shape in the docstring, as code hints
 by jaxtyping.
 """
 from collections.abc import Callable
+from typing import Any
 
 from datasets import IterableDataset, load_dataset
 from jaxtyping import Int
@@ -23,13 +24,13 @@ Shape [batch, pos].
 
 def create_src_dataloader(
     dataset_name: str,
-    collate_fn: Callable[[list], CollateResponseTokens],
+    collate_fn: Callable[[list[Any]], CollateResponseTokens],
     dataset_split: str = "train",
     batch_size: int = 512,
     shuffle_buffer_size: int = 10_000,
     random_seed: int = 0,
     num_workers: int = 1,
-) -> DataLoader:
+) -> DataLoader[Int[Tensor, "batch pos"]]:
     """Create a DataLoader with tokenized data.
 
     Creates a DataLoader with a [HuggingFace Dataset](https://huggingface.co/datasets).

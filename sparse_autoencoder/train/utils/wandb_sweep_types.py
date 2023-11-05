@@ -181,19 +181,22 @@ class Parameter(Generic[ParamType]):
     sigma: float | None = None
     """Std Dev for normal or lognormal distributions"""
 
-    parameters: dict[str, "Parameter"] | None = None
+    parameters: dict[str, "Parameter[ParamType]"] | None = None
 
 
-Parameters = dict[str, Parameter]
+Parameters = dict[str, Parameter[Any]]
 
 
 @dataclass
 class WandbSweepConfig:
     """Weights & Biases Sweep Configuration."""
 
-    parameters: Parameters
+    parameters: Parameters | Any
 
     method: Method
+
+    metric: Metric
+    """Metric to optimize"""
 
     apiVersion: str | None = None
 
@@ -217,9 +220,6 @@ class WandbSweepConfig:
     """Launch Job to run."""
 
     kind: Kind | None = None
-
-    metric: Metric | None = None
-    """Metric to optimize"""
 
     name: str | None = None
     """The name of the sweep, displayed in the W&B UI."""

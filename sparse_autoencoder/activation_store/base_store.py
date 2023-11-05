@@ -23,7 +23,7 @@ attention layer.
 """
 
 
-class ActivationStore(Dataset, ABC):
+class ActivationStore(Dataset[ActivationStoreItem], ABC):
     """Activation Store Abstract Class.
 
     Extends the `torch.utils.data.Dataset` class to provide an activation store, with additional
@@ -63,12 +63,12 @@ class ActivationStore(Dataset, ABC):
     """
 
     @abstractmethod
-    def append(self, item: ActivationStoreItem) -> Future | None:
+    def append(self, item: ActivationStoreItem) -> Future[None] | None:
         """Add a Single Item to the Store."""
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: ActivationStoreBatch) -> Future | None:
+    def extend(self, batch: ActivationStoreBatch) -> Future[None] | None:
         """Add a Batch to the Store."""
         raise NotImplementedError
 

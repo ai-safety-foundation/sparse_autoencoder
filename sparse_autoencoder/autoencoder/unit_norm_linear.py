@@ -70,13 +70,14 @@ class ConstrainedUnitNormLinear(Module):
             dtype: Data type to use.
         """
         # Create the linear layer as per the standard PyTorch linear layer
-        factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
         self.in_features = in_features
         self.out_features = out_features
-        self.weight = Parameter(torch.empty((out_features, in_features), **factory_kwargs))
+        self.weight = Parameter(
+            torch.empty((out_features, in_features), device=device, dtype=dtype)
+        )
         if bias:
-            self.bias = Parameter(torch.empty(out_features, **factory_kwargs))
+            self.bias = Parameter(torch.empty(out_features, device=device, dtype=dtype))
         else:
             self.register_parameter("bias", None)
         self.reset_parameters()

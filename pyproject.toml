@@ -1,61 +1,58 @@
 [tool.poetry]
-    authors    =["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
+    authors=["Alan Cooney <41682961+alan-cooney@users.noreply.github.com>"]
     description="Sparse Autoencoder for Mechanistic Interpretability"
-    include    =["sparse_autoencoder"]
-    license    ="MIT"
-    name       ="sparse_autoencoder"
-    readme     ="README.md"
-    version    ="0.0.0"
+    include=["sparse_autoencoder"]
+    license="MIT"
+    name="sparse_autoencoder"
+    readme="README.md"
+    version="0.0.0"
 
     [tool.poetry.dependencies]
         einops=">=0.6"
         python=">=3.10, <3.13"
-        torch =">=2.1"
-        wandb =">=0.15.12"
+        torch=">=2.1"
+        wandb=">=0.15.12"
 
     [tool.poetry.group.dev.dependencies]
-        jupyter   =">=1"
-        plotly    =">=5"
+        jupyter=">=1"
+        plotly=">=5"
         poethepoet=">=0.24.2"
         pre-commit=">=3.5.0"
-        pyright   =">=1.1.334"
-        pytest    =">=7"
+        pyright=">=1.1.334"
+        pytest=">=7"
         pytest-cov=">=4"
-        ruff      =">=0.1.4"
+        ruff=">=0.1.4"
 
     [tool.poetry.group.demos.dependencies]
-        jupyterlab      =">=3"
-        pandas          =">=2.1.2"
+        jupyterlab=">=3"
+        pandas=">=2.1.2"
         transformer-lens=">=1.9.0"
 
 [tool.poe.tasks]
-    check    =["format", "lint", "test", "typecheck"]
-    format   ="ruff format sparse_autoencoder"
-    lint     ="ruff check sparse_autoencoder --fix"
+    check=["format", "lint", "test", "typecheck"]
+    format="ruff format sparse_autoencoder"
+    lint="ruff check sparse_autoencoder --fix"
     precommit="pre-commit run --all-files"
-    test     ="pytest"
+    test="pytest"
     typecheck="pyright"
 
 [build-system]
     build-backend="poetry.core.masonry.api"
-    requires     =["poetry-core"]
+    requires=["poetry-core"]
 
 [tool.pytest]
-
     [tool.pytest.ini_options]
-        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype \
-    -W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning \
-    --doctest-modules"""
-        filterwarnings=[
-            "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
-            # Ignore numpy.distutils deprecation warning caused by pandas
-            # More info: https://numpy.org/doc/stable/reference/distutils.html#module-numpy.distutils
-            "ignore:distutils Version classes are deprecated:DeprecationWarning",
-        ]
+        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
 
 [tool.pyright]
-    include                         =["sparse_autoencoder"]
+    deprecateTypingAliases=true
+    include=["sparse_autoencoder"]
     reportIncompatibleMethodOverride=true
+    reportMissingTypeStubs="warning"
+    reportUnknownArgumentType="warning"
+    reportUnknownMemberType="warning"
+    reportUnknownVariableType="warning"
+    strict=true
 
 [tool.ruff]
     exclude=["*/snapshots/", "/.venv"]
@@ -68,7 +65,6 @@
         "FIX002", # TODO issue link (overkill)
         "INP001", # __init__.py for all packages (Python >= 3.3 is fine)
         "PGH003", # No general type: ignore (too strict)
-        "S101",   # Use of assert detected (it's needed for tests)
         "TCH002", # Type checking imports (conflicts with beartype)
         "TD00",   # TODO banned (we're in alpha)
         # Rules that conflict with ruff format
@@ -80,12 +76,16 @@
     required-version="0.1.4"
     select=["ALL"]
 
-    [tool.ruff.lint.isort]
-        force-sort-within-sections=true
-        lines-after-imports       =2
+    [tool.ruff.lint]
+        [tool.ruff.lint.per-file-ignores]
+            "**/tests/*"=["S101"] # Assert is needed in PyTest
 
-    [tool.ruff.lint.pydocstyle]
-        convention="google"
+        [tool.ruff.lint.isort]
+            force-sort-within-sections=true
+            lines-after-imports=2
 
-[tool.ruff.pylint]
-    max-args=10
+        [tool.ruff.lint.pydocstyle]
+            convention="google"
+
+        [tool.ruff.lint.pylint]
+            max-args=10

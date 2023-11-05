@@ -1,5 +1,6 @@
 """Sweep Config."""
 from dataclasses import asdict, dataclass, field
+from typing import Any
 
 from sparse_autoencoder.train.utils.wandb_sweep_types import (
     Method,
@@ -56,7 +57,7 @@ class SweepParameterConfig(Parameters):
 
 # NOTE: This must be kept in sync with SweepParameterConfig
 @dataclass
-class SweepParametersRuntime(dict):
+class SweepParametersRuntime(dict[str, Any]):
     """Sweep parameter runtime values."""
 
     lr: float = 0.001
@@ -71,7 +72,7 @@ class SweepParametersRuntime(dict):
 
     l1_coefficient: float = 0.01
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         """Return dict representation of this object."""
         return asdict(self)
 
@@ -86,7 +87,7 @@ class SweepConfig(WandbSweepConfig):
 
     metric: Metric = field(default_factory=lambda: Metric(name="loss"))
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         """Return dict representation of this object."""
         dict_representation = asdict(self)
 
