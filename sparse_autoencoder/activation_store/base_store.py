@@ -63,12 +63,12 @@ class ActivationStore(Dataset[ActivationStoreItem], ABC):
     """
 
     @abstractmethod
-    def append(self, item: ActivationStoreItem) -> Future[None] | None:
+    def append(self, item: ActivationStoreItem) -> Future | None:
         """Add a Single Item to the Store."""
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: ActivationStoreBatch) -> Future[None] | None:
+    def extend(self, batch: ActivationStoreBatch) -> Future | None:
         """Add a Batch to the Store."""
         raise NotImplementedError
 

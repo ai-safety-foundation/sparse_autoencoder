@@ -40,7 +40,7 @@ class DiskActivationStore(ActivationStore):
     _storage_path: Path
     """Path to the Directory where the Activation Vectors are Stored."""
 
-    _cache: ListProxy[ActivationStoreItem]
+    _cache: ListProxy
     """Cache for Activation Vectors.
 
     Activation vectors are buffered in memory until the cache is full, at which point they are
@@ -132,7 +132,7 @@ class DiskActivationStore(ActivationStore):
         filename = f"{self.__len__}.pt"
         torch.save(stacked_activations, self._storage_path / filename)
 
-    def append(self, item: ActivationStoreItem) -> Future[None] | None:
+    def append(self, item: ActivationStoreItem) -> Future | None:
         """Add a Single Item to the Store.
 
         Example:
@@ -158,7 +158,7 @@ class DiskActivationStore(ActivationStore):
 
         return None  # Keep mypy happy
 
-    def extend(self, batch: ActivationStoreBatch) -> Future[None] | None:
+    def extend(self, batch: ActivationStoreBatch) -> Future | None:
         """Add a Batch to the Store.
 
         Example:
@@ -254,7 +254,7 @@ class DiskActivationStore(ActivationStore):
         0
         """
         # Calculate the length if not cached
-        if self._disk_n_activation_vectors.value is -1:
+        if self._disk_n_activation_vectors.value == -1:
             cache_size: int = 0
             for file in self._all_filenames:
                 cache_size += len(torch.load(file))

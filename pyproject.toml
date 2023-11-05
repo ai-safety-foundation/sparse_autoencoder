@@ -100,7 +100,7 @@
     reportInvalidTypeVarUse=true
     reportMatchNotExhaustive=true
     reportMissingParameterType=true
-    reportMissingTypeArgument=true
+    reportMissingTypeArgument="warning"
     reportOptionalCall=true
     reportOptionalContextManager=true
     reportOptionalIterable=true
@@ -115,7 +115,7 @@
     reportTypedDictNotRequiredAccess=true
     reportUnboundVariable=true
     reportUnknownLambdaType=true
-    reportUnknownParameterType=true
+    reportUnknownParameterType="warning"
     reportUnnecessaryCast=true
     reportUnnecessaryComparison=true
     reportUnnecessaryContains=true

@@ -69,7 +69,7 @@ class ListActivationStore(ActivationStore):
         torch.Size([2, 100])
     """
 
-    _data: list[ActivationStoreItem] | ListProxy[ActivationStoreItem]
+    _data: list[ActivationStoreItem] | ListProxy
     """Underlying List Data Store."""
 
     _device: torch.device | None
@@ -78,13 +78,13 @@ class ListActivationStore(ActivationStore):
     _pool: ProcessPoolExecutor | None = None
     """Multiprocessing Pool."""
 
-    _pool_exceptions: ListProxy[Exception] | list[Exception]
+    _pool_exceptions: ListProxy | list[Exception]
     """Pool Exceptions.
 
     Used to keep track of exceptions.
     """
 
-    _pool_futures: list[Future[None]]
+    _pool_futures: list[Future]
     """Pool Futures.
 
     Used to keep track of processes running in the pool.
@@ -205,7 +205,7 @@ class ListActivationStore(ActivationStore):
         self.wait_for_writes_to_complete()
         random.shuffle(self._data)
 
-    def append(self, item: ActivationStoreItem) -> Future[None] | None:
+    def append(self, item: ActivationStoreItem) -> Future | None:
         """Append a single item to the dataset.
 
         Note **append is blocking**. For better performance use extend instead with batches.
@@ -239,7 +239,7 @@ class ListActivationStore(ActivationStore):
         except Exception as e:  # noqa: BLE001
             self._pool_exceptions.append(e)
 
-    def extend(self, batch: ActivationStoreBatch) -> Future[None] | None:
+    def extend(self, batch: ActivationStoreBatch) -> Future | None:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:
