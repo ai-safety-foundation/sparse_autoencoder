@@ -69,8 +69,6 @@ def train_autoencoder(
             # Backwards pass
             total_loss.backward()
 
-            # TODO: Make decoder weights and grad unit norm
-
             optimizer.step()
 
             # TODO: Enable neuron resampling here

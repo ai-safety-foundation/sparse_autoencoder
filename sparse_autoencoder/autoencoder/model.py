@@ -2,10 +2,11 @@
 from jaxtyping import Float
 import torch
 from torch import Tensor
-from torch.nn import Linear, Module, ReLU, Sequential
+from torch.nn import Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.tied_bias import PostEncoderBias, PreEncoderBias
+from sparse_autoencoder.autoencoder.unit_norm_linear import ConstrainedUnitNormLinear
 
 
 class SparseAutoencoder(Module):
@@ -61,12 +62,12 @@ class SparseAutoencoder(Module):
         # Create the network
         self.encoder = Sequential(
             PreEncoderBias(self.tied_bias),
-            Linear(n_input_features, n_learned_features),
+            ConstrainedUnitNormLinear(n_input_features, n_learned_features),
             ReLU(),
         )
 
         self.decoder = Sequential(
-            Linear(n_learned_features, n_input_features),
+            ConstrainedUnitNormLinear(n_learned_features, n_input_features, bias=False),
             PostEncoderBias(self.tied_bias),
         )
 
