@@ -36,6 +36,8 @@ jobs:
           - "3.11"
     steps:
     - uses: actions/checkout@v4
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
