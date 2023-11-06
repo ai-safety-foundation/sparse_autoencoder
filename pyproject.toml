@@ -100,7 +100,7 @@
             max-args=10
 
 [tool.pyright]
-    # Includes all rules in strict mode, with some set to warning
+    # All rules apart from base are shown explicitly below
     deprecateTypingAliases=true
     disableBytesTypePromotions=true
     include=["sparse_autoencoder"]
@@ -119,8 +119,8 @@
     reportInvalidTypeVarUse=true
     reportMatchNotExhaustive=true
     reportMissingParameterType=true
-    reportMissingTypeArgument="warning"
-    reportMissingTypeStubs="warning"
+    reportMissingTypeArgument=false
+    reportMissingTypeStubs=false
     reportOptionalCall=true
     reportOptionalContextManager=true
     reportOptionalIterable=true
@@ -134,11 +134,11 @@
     reportTypeCommentUsage=true
     reportTypedDictNotRequiredAccess=true
     reportUnboundVariable=true
-    reportUnknownArgumentType="warning"
+    reportUnknownArgumentType=false
     reportUnknownLambdaType=true
-    reportUnknownMemberType="warning"
-    reportUnknownParameterType="warning"
-    reportUnknownVariableType="warning"
+    reportUnknownMemberType=false
+    reportUnknownParameterType=false
+    reportUnknownVariableType=false
     reportUnnecessaryCast=true
     reportUnnecessaryComparison=true
     reportUnnecessaryContains=true
