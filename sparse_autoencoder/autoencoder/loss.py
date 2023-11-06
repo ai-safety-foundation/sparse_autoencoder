@@ -65,12 +65,16 @@ def sae_training_loss(
 
     https://transformer-circuits.pub/2023/monosemantic-features/index.html#setup-autoencoder-motivation
 
+    Warning:
+        It isn't meaningful to compare training loss across hyperparameters that change the loss
+        function, such as L1 coefficients.
+
     Examples:
-    >>> reconstruction_loss_mse = torch.tensor([2.5000])
-    >>> l1_loss_learned_activations = torch.tensor([1.])
-    >>> l1_coefficient = 0.5
-    >>> sae_training_loss(reconstruction_loss_mse, l1_loss_learned_activations, l1_coefficient)
-    tensor(3.)
+        >>> reconstruction_loss_mse = torch.tensor([2.5000])
+        >>> l1_loss_learned_activations = torch.tensor([1.])
+        >>> l1_coefficient = 0.5
+        >>> sae_training_loss(reconstruction_loss_mse, l1_loss_learned_activations, l1_coefficient)
+        tensor(3.)
 
     Args:
         reconstruction_loss_mse: MSE reconstruction loss.
