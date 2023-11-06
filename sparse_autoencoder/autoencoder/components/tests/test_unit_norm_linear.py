@@ -1,7 +1,7 @@
 """Tests for the constrained unit norm linear layer."""
 import torch
 
-from sparse_autoencoder.autoencoder.unit_norm_linear import ConstrainedUnitNormLinear
+from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
 
 
 def test_unit_norm_applied_backward() -> None:

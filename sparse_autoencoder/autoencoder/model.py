@@ -5,8 +5,8 @@ from torch import Tensor
 from torch.nn import Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
 
-from sparse_autoencoder.autoencoder.tied_bias import TiedBias, TiedBiasPosition
-from sparse_autoencoder.autoencoder.unit_norm_linear import ConstrainedUnitNormLinear
+from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
+from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
 
 
 class SparseAutoencoder(Module):

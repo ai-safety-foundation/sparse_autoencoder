@@ -1,7 +1,7 @@
 """Tied Bias Tests."""
 import torch
 
-from sparse_autoencoder.autoencoder.tied_bias import TiedBias, TiedBiasPosition
+from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 
 
 def test_pre_encoder_subtracts_bias() -> None:
