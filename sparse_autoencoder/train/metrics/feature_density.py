@@ -56,5 +56,5 @@ def wandb_feature_density_histogram(
     """
     numpy_feature_density: NDArray[np.float_] = feature_density.detach().cpu().numpy()
 
-    a, b = histogram(numpy_feature_density, bins="auto")
-    return wandb.Histogram(np_histogram=(a, b))
+    bins, values = histogram(numpy_feature_density, bins="auto")
+    return wandb.Histogram(np_histogram=(bins, values))
