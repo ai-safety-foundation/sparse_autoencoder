@@ -30,12 +30,30 @@
             transformer-lens=">=1.9.0"
 
 [tool.poe.tasks]
-    check=["format", "lint", "test", "typecheck"]
-    format="ruff format sparse_autoencoder"
-    lint="ruff check sparse_autoencoder --fix"
-    precommit="pre-commit run --all-files"
-    test="pytest"
-    typecheck="pyright"
+    [tool.poe.tasks.check]
+        help="Run all checks"
+        ignore_fail=false
+        sequence=["format", "lint", "test", "typecheck"]
+
+    [tool.poe.tasks.format]
+        cmd="ruff format sparse_autoencoder"
+        help="Format code using Ruff (with autofix enabled)"
+
+    [tool.poe.tasks.lint]
+        cmd="ruff check sparse_autoencoder --fix"
+        help="Lint code using Ruff (with autofix enabled)"
+
+    [tool.poe.tasks.precommit]
+        cmd="pre-commit run --all-files"
+        help="Run pre-commit hooks"
+
+    [tool.poe.tasks.test]
+        cmd="pytest"
+        help="Run tests using PyTest"
+
+    [tool.poe.tasks.typecheck]
+        cmd="pyright"
+        help="Typecheck code using PyRight"
 
 [build-system]
     build-backend="poetry.core.masonry.api"

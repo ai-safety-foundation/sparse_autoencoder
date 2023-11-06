@@ -7,7 +7,6 @@ License](https://img.shields.io/pypi/l/sparse_autoencoder?color=blue) [![Checks]
 
 A sparse autoencoder for mechanistic interpretability research.
 
-**Note**: This package is in alpha and likely to have breaking changes regularly.
 
 ```shell
 pip install sparse_autoencoder
@@ -19,17 +18,16 @@ Check out the demo notebook for a guide to using this library.
 
 ## Contributing
 
-This project uses [Poetry](https://python-poetry.org) for dependency management. After checking out
+This project uses [Poetry](https://python-poetry.org) for dependency management, and
+[PoeThePoet](https://poethepoet.natn.io/installation.html) for scripts. After checking out
 the repo, install all dependencies with:
 
 ```shell
 poetry install --with dev,demos
 ```
 
-Then to run all checks locally:
+Then for a full list of available commands (e.g. `test` or `typecheck`):
 
 ```shell
-poetry run ruff check sparse_autoencoder
-poetry run pyright
-poetry run pytest
+poe
 ```
