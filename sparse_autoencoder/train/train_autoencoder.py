@@ -65,14 +65,13 @@ def train_autoencoder(
                 l1_loss_learned_activations,
                 sweep_parameters.l1_coefficient,
             )
-            # TODO: Log dead neurons metric (get_frequencies in Neel's code)
+
+            # TODO: Store the learned activations (default every 25k steps)
 
             # Backwards pass
             total_loss.backward()
 
             optimizer.step()
-
-            # TODO: Enable neuron resampling here
 
             # Log
             if step % log_interval == 0 and wandb.run is not None:
@@ -83,6 +82,10 @@ def train_autoencoder(
                         "loss": total_loss,
                     },
                 )
+
+            # TODO: Get the feature density & also log to wandb
+
+            # TODO: Apply neuron resampling if enabled
 
             progress_bar.update(batch_size)
 
