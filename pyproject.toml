@@ -28,6 +28,10 @@
             jupyterlab=">=3"
             pandas=">=2.1.2"
             transformer-lens=">=1.9.0"
+            # See this issue for the HuggingFace dependenices: https://github.com/neelnanda-io/TransformerLens/issues/404
+            transformers=">=4.33.1, <4.34.0"
+            tokenizers=">=0.13.0, <0.14.0"
+
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
