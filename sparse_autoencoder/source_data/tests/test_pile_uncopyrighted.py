@@ -17,3 +17,7 @@ def test_tokenized_prompts_correct_size(context_size: int) -> None:
     for _ in range(100):
         item = next(iterable)
         assert len(item["input_ids"]) == context_size
+
+        # Check the tokens are integers
+        for token in item["input_ids"]:
+            assert isinstance(token, int)
