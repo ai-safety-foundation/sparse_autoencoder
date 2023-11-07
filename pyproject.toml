@@ -36,7 +36,7 @@
     [tool.poe.tasks.check]
         help="Run all checks"
         ignore_fail=false
-        sequence=["format", "lint", "test", "typecheck"]
+        sequence=["checklock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format sparse_autoencoder"
@@ -46,6 +46,15 @@
         cmd="ruff check sparse_autoencoder --fix"
         help="Lint code using Ruff (with autofix enabled)"
 
+    [tool.poe.tasks.ruff]
+        help="  [alias for lint && format]"
+        ignore_fail=false
+        sequence=["format", "lint"]
+
+    [tool.poe.tasks.checklock]
+        cmd="poetry check"
+        help="Check that the lockfile is up to date"
+
     [tool.poe.tasks.precommit]
         cmd="pre-commit run --all-files"
         help="Run pre-commit hooks"
@@ -54,9 +63,17 @@
         cmd="pytest"
         help="Run tests using PyTest"
 
+    [tool.poe.tasks.pytest]
+        help="  [alias for test]"
+        sequence=["test"]
+
     [tool.poe.tasks.typecheck]
         cmd="pyright"
         help="Typecheck code using PyRight"
+
+    [tool.poe.tasks.pyright]
+        help="  [alias for typecheck]"
+        sequence=["typecheck"]
 
 [build-system]
     build-backend="poetry.core.masonry.api"
