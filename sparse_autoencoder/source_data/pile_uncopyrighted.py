@@ -75,8 +75,8 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
         """Initialize the Pile Uncopyrighted dataset.
 
         Example:
-            >>> from transformers import AutoTokenizer
-            >>> tokenizer = AutoTokenizer.from_pretrained("gpt2")
+            >>> from transformers import PreTrainedTokenizerFast
+            >>> tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
             >>> data = PileUncopyrightedDataset(
             ...     tokenizer=tokenizer
             ... )
@@ -85,8 +85,7 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
             250
 
         Args:
-            tokenizer: The tokenizer to use to tokenize the prompts (e.g.
-                `AutoTokenizer.from_pretrained("gpt")`).
+            tokenizer: The tokenizer to use to tokenize the prompts.
             context_size: The context size to use when returning a list of tokenized prompts.
                 *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
                 a context size of 250.
