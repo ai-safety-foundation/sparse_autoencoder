@@ -9,7 +9,7 @@
 
     [tool.poetry.dependencies]
         einops=">=0.6"
-        python=">=3.10, <3.13"
+        python=">=3.10, <3.12"
         torch=">=2.1"
         wandb=">=0.15.12"
         zstandard="^0.22.0"    # Required for downloading datasets such as The Pile
