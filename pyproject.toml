@@ -44,9 +44,17 @@
         cmd="ruff check sparse_autoencoder --fix"
         help="Lint code using Ruff (with autofix enabled)"
 
+    [tool.poe.tasks.check-lock]
+        cmd="poetry check"
+        help="Check that the lockfile is up to date"
+
     [tool.poe.tasks.precommit]
         cmd="pre-commit run --all-files"
         help="Run pre-commit hooks"
+
+    [tool.poe.tasks.precommit-setup]
+        cmd="pre-commit install"
+        help="Install pre-commit hooks"
 
     [tool.poe.tasks.test]
         cmd="pytest"

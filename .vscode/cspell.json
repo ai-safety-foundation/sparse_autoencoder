@@ -53,6 +53,7 @@
         "penality",
         "polysemantic",
         "polysemantically",
+        "precommit",
         "pyproject",
         "pyright",
         "pytest",
@@ -74,6 +75,7 @@
         "unsqueeze",
         "venv",
         "virtualenv",
+        "virtualenvs",
         "wandb"
     ]
 }
