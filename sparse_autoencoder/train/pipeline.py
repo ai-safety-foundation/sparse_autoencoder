@@ -84,7 +84,7 @@ def pipeline(
             # Create a dataloader from the store
             dataloader = DataLoader(
                 activation_store,
-                batch_size=8192,
+                batch_size=sweep_parameters.batch_size,
             )
 
             # Train the autoencoder
