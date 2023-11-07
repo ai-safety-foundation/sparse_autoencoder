@@ -28,7 +28,9 @@
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
             pandas=">=2.1.2"
+            tokenizers=">=0.13.0, <0.14.0"   # See https://github.com/neelnanda-io/TransformerLens/issues/404
             transformer-lens=">=1.9.0"
+            transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
