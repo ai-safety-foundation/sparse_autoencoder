@@ -62,7 +62,7 @@ def generate_activations(
     model.add_hook(cache_name, hook)
 
     # Get the input dimensions for logging
-    first_item: Int[Tensor, "batch pos"] = next(iter(dataloader))
+    first_item: Int[Tensor, "batch pos"] = next(iter(dataloader))["input_ids"]
     batch_size: int = first_item.shape[0]
     context_size: int = first_item.shape[1]
     activations_per_batch: int = context_size * batch_size
@@ -78,9 +78,9 @@ def generate_activations(
         leave=False,
         dynamic_ncols=True,
     ) as progress_bar:
-        for input_ids in dataloader:
+        for batch in dataloader:
             try:
-                input_ids = input_ids.to(device)  # noqa: PLW2901
+                input_ids = batch["input_ids"].to(device)
                 model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore
                 progress_bar.update(activations_per_batch)
 

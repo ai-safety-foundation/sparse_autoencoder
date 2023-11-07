@@ -87,6 +87,9 @@ class ActivationStore(Dataset[ActivationStoreItem], ABC):
         """Get an Item from the Store."""
         raise NotImplementedError
 
+    def shuffle(self) -> None:
+        """Optional shuffle method."""
+
 
 class StoreFullError(IndexError):
     """Exception raised when the activation store is full."""

@@ -78,8 +78,7 @@ def pipeline(
 
             # Shuffle the store if it has a shuffle method - it is often more efficient to
             # create a shuffle method ourselves rather than get the DataLoader to shuffle
-            if hasattr(activation_store, "shuffle"):
-                activation_store.shuffle()  # type: ignore
+            activation_store.shuffle()
 
             # Create a dataloader from the store
             dataloader = DataLoader(
