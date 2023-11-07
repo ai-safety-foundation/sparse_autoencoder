@@ -10,6 +10,7 @@ from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
     sae_training_loss,
+    l0,
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
@@ -60,6 +61,7 @@ def train_autoencoder(
                 reconstructed_activations,
             )
             l1_loss_learned_activations = l1_loss(learned_activations)
+            activations_l0 = l0(learned_activations)
             total_loss = sae_training_loss(
                 reconstruction_loss_mse,
                 l1_loss_learned_activations,
@@ -80,6 +82,7 @@ def train_autoencoder(
                         "reconstruction_loss": reconstruction_loss_mse,
                         "l1_loss": l1_loss_learned_activations,
                         "loss": total_loss,
+                        "l0": activations_l0,
                     },
                 )
 
