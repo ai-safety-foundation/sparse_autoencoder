@@ -1,6 +1,6 @@
 """Loss function for the Sparse Autoencoder."""
-import torch
 from jaxtyping import Float
+import torch
 from torch import Tensor
 from torch.nn.functional import mse_loss
 
