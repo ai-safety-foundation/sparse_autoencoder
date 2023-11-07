@@ -80,13 +80,12 @@ def pipeline(
 
             # Shuffle the store if it has a shuffle method - it is often more efficient to
             # create a shuffle method ourselves rather than get the DataLoader to shuffle
-            if hasattr(activation_store, "shuffle"):
-                activation_store.shuffle()  # type: ignore
+            activation_store.shuffle()
 
             # Create a dataloader from the store
             dataloader = DataLoader(
                 activation_store,
-                batch_size=8192,
+                batch_size=sweep_parameters.batch_size,
             )
 
             # Train the autoencoder

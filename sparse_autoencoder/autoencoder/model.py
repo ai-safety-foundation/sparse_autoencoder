@@ -30,11 +30,19 @@ class SparseAutoencoder(Module):
     n_learned_features: int
     """Number of Learned Features."""
 
+    device: torch.device | None
+    """Device to run the model on."""
+
+    dtype: torch.dtype | None
+    """Data type to use for the model."""
+
     def __init__(
         self,
         n_input_features: int,
         n_learned_features: int,
         geometric_median_dataset: Float[Tensor, " input_activations"],
+        device: torch.device | None = None,
+        dtype: torch.dtype | None = None,
     ) -> None:
         """Initialize the Sparse Autoencoder Model.
 
@@ -44,11 +52,15 @@ class SparseAutoencoder(Module):
             n_learned_features: Number of learned features. The initial paper experimented with 1 to
                 256 times the number of input features, and primarily used a multiple of 8.
             geometric_median_dataset: Estimated geometric median of the dataset.
+            device: Device to run the model on.
+            dtype: Data type to use for the model.
         """
         super().__init__()
 
         self.n_input_features = n_input_features
         self.n_learned_features = n_learned_features
+        self.device = device
+        self.dtype = dtype
 
         # Store the geometric median of the dataset (so that we can reset parameters). This is not a
         # parameter itself (the tied bias parameter is used for that), so gradients are disabled.
@@ -56,18 +68,22 @@ class SparseAutoencoder(Module):
         self.geometric_median_dataset.requires_grad = False
 
         # Initialize the tied bias
-        self.tied_bias = Parameter(torch.empty(n_input_features))
+        self.tied_bias = Parameter(torch.empty((n_input_features), device=device, dtype=dtype))
         self.initialize_tied_parameters()
 
         # Create the network
         self.encoder = Sequential(
             TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
-            ConstrainedUnitNormLinear(n_input_features, n_learned_features),
+            ConstrainedUnitNormLinear(
+                n_input_features, n_learned_features, bias=True, device=device, dtype=dtype
+            ),
             ReLU(),
         )
 
         self.decoder = Sequential(
-            ConstrainedUnitNormLinear(n_learned_features, n_input_features, bias=False),
+            ConstrainedUnitNormLinear(
+                n_learned_features, n_input_features, bias=False, device=device, dtype=dtype
+            ),
             TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER),
         )
 
@@ -93,7 +109,9 @@ class SparseAutoencoder(Module):
     def initialize_tied_parameters(self) -> None:
         """Initialize the tied parameters."""
         # The tied bias is initialised as the geometric median of the dataset
-        self.tied_bias.data = self.geometric_median_dataset.clone()
+        self.tied_bias.data = self.geometric_median_dataset.clone().to(
+            device=self.device, dtype=self.dtype
+        )
 
     def reset_parameters(self) -> None:
         """Reset the parameters."""
