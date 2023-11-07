@@ -5,7 +5,7 @@ For use with tests and simple examples.
 import random
 from typing import TypedDict, final
 
-from datasets import IterableDataset
+from torch.utils.data import DataLoader, Dataset
 from transformers import PreTrainedTokenizerFast
 
 from sparse_autoencoder.source_data.abstract_dataset import (
@@ -20,7 +20,7 @@ class RandomIntSourceData(TypedDict):
     input_ids: list[list[int]]
 
 
-class RandomIntHuggingFaceDataset(IterableDataset):
+class RandomIntHuggingFaceDataset(Dataset):
     """Dummy Hugging Face Dataset."""
 
     def __init__(self, vocab_size: int, context_size: int):
@@ -41,6 +41,14 @@ class RandomIntHuggingFaceDataset(IterableDataset):
         """Next Dunder Method."""
         data = [random.randint(0, self.vocab_size) for _ in range(self.context_size)]  # noqa: S311
         return {"input_ids": data}
+
+    def __len__(self) -> int:
+        """Len Dunder Method."""
+        return 1000
+
+    def __getitem__(self, index: int) -> dict[str, list[int]]:
+        """Get Item."""
+        return self.__next__()
 
 
 @final
@@ -97,4 +105,8 @@ class RandomIntDummyDataset(SourceDataset[RandomIntSourceData]):
             dataset_path: The path to the dataset on Hugging Face.
             dataset_split: Dataset split (e.g. `train`).
         """
-        self.dataset = RandomIntHuggingFaceDataset(50000, context_size=context_size)
+        self.dataset = RandomIntHuggingFaceDataset(50000, context_size=context_size)  # type: ignore
+
+    def get_dataloader(self, batch_size: int) -> DataLoader:  # type: ignore
+        """Get Dataloader."""
+        return DataLoader(self.dataset, batch_size=batch_size)  # type: ignore
