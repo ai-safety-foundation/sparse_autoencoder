@@ -41,5 +41,5 @@ poe
 You can install the pre-commit hooks, to automatically check for common issues before you commit, as follows:
 
 ```shell
-peo precommit-setup
+poe precommit-setup
 ```
