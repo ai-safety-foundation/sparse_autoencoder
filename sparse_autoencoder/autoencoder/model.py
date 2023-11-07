@@ -2,7 +2,7 @@
 from jaxtyping import Float
 import torch
 from torch import Tensor
-from torch.nn import Module, ReLU, Sequential
+from torch.nn import Linear, Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
@@ -74,9 +74,7 @@ class SparseAutoencoder(Module):
         # Create the network
         self.encoder = Sequential(
             TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
-            ConstrainedUnitNormLinear(
-                n_input_features, n_learned_features, bias=True, device=device, dtype=dtype
-            ),
+            Linear(n_input_features, n_learned_features, bias=True, device=device, dtype=dtype),
             ReLU(),
         )
 
