@@ -128,6 +128,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# Wandb logs
-wandb/
