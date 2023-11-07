@@ -4,6 +4,7 @@ from typing import Any, TypedDict
 
 from datasets import IterableDataset, load_dataset
 import pytest
+import torch
 
 from sparse_autoencoder.source_data.abstract_dataset import (
     PreprocessTokenizedPrompts,
@@ -31,8 +32,10 @@ class MockSourceDataset(SourceDataset[MockHuggingFaceDatasetItem]):
         context_size: int,  # noqa: ARG002
     ) -> PreprocessTokenizedPrompts:
         """Preprocess a batch of prompts."""
-        # Assuming a very simple preprocess that just tokenizes the 'text' field
-        tokenized_texts = [[1, 5, 23, 2], [1, 2, 61, 12]]
+        preprocess_batch = 100
+        tokenized_texts = torch.randint(
+            low=0, high=50000, size=(preprocess_batch, TEST_CONTEXT_SIZE)
+        ).tolist()
         return {"input_ids": tokenized_texts}
 
     def __init__(
@@ -87,3 +90,13 @@ def test_extended_dataset_iterator(mock_hugging_face_load_dataset: pytest.Functi
 
     first_item = next(iterator)
     assert len(first_item["input_ids"]) == TEST_CONTEXT_SIZE
+
+
+def test_get_dataloader(mock_hugging_face_load_dataset: pytest.Function) -> None:
+    """Test the get_dataloader method of the extended dataset."""
+    data = MockSourceDataset()
+    batch_size = 3
+    dataloader = data.get_dataloader(batch_size=batch_size)
+    first_item = next(iter(dataloader))["input_ids"]
+    assert first_item.shape[0] == batch_size
+    assert first_item.shape[-1] == TEST_CONTEXT_SIZE
