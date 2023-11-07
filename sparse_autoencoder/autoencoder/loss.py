@@ -88,4 +88,4 @@ def sae_training_loss(
         Overall training loss.
     """
     total_loss = reconstruction_loss_mse + l1_loss_learned_activations * l1_coefficient
-    return total_loss.sum()
+    return total_loss
