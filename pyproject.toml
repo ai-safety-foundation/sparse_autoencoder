@@ -81,6 +81,7 @@
     ]
     ignore-init-module-imports=true
     line-length=100
+    namespace-packages=["wandb"]
     select=["ALL"]
 
     [tool.ruff.lint]
