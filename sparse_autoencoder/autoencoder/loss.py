@@ -1,6 +1,6 @@
 """Loss function for the Sparse Autoencoder."""
-from jaxtyping import Float
 import torch
+from jaxtyping import Float
 from torch import Tensor
 from torch.nn.functional import mse_loss
 
@@ -42,7 +42,7 @@ def l1_loss(learned_activations: Float[Tensor, "*batch learned_activations"]) ->
     Examples:
     >>> learned_activations = torch.tensor([[2.0, -3]])
     >>> l1_loss(learned_activations)
-    tensor([5.])
+    tensor(5.)
 
     Args:
         learned_activations: Activations from the hidden layer.
