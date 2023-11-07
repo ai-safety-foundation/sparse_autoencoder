@@ -212,10 +212,7 @@ class ConstrainedUnitNormLinear(Module):
         return torch.nn.functional.linear(x, self.weight, self.bias)
 
     def extra_repr(self) -> str:
-        """Extra representation.
-
-        Used in logging.
-        """
+        """String extra representation of the module."""
         return (
             f"in_features={self.in_features}, out_features={self.out_features}, "
             f"bias={self.bias is not None}"

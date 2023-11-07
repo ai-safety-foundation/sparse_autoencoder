@@ -24,6 +24,7 @@
             pytest=">=7"
             pytest-cov=">=4"
             ruff=">=0.1.4"
+            snapshottest="^0.6.0"
 
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
@@ -91,7 +92,7 @@
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["*/snapshots/", "/.venv"]
+    exclude=["/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
