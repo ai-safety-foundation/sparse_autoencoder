@@ -61,10 +61,13 @@
     requires=["poetry-core"]
 
 [tool.pytest]
+    cache_dir=".cache/pytest"
+
     [tool.pytest.ini_options]
         addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
 
 [tool.ruff]
+    cache-dir=".cache/ruff"
     exclude=["*/snapshots/", "/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
@@ -81,7 +84,6 @@
     ]
     ignore-init-module-imports=true
     line-length=100
-    namespace-packages=["wandb"]
     select=["ALL"]
 
     [tool.ruff.lint]
