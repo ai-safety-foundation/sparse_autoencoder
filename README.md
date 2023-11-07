@@ -1,12 +1,11 @@
 # Sparse Autoencoder
 
-[![Pypi](https://img.shields.io/pypi/v/sparse_autoencoder?color=blue)](https://pypi.org/project/transformer-lens/)
+[![PyPI](https://img.shields.io/pypi/v/sparse_autoencoder?color=blue)](https://pypi.org/project/transformer-lens/)
 ![PyPI -
 License](https://img.shields.io/pypi/l/sparse_autoencoder?color=blue) [![Checks](https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/checks.yml/badge.svg)](https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/checks.yml)
 [![Release](https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/release.yml/badge.svg)](https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/release.yml)
 
 A sparse autoencoder for mechanistic interpretability research.
-
 
 ```shell
 pip install sparse_autoencoder
@@ -28,8 +27,19 @@ poetry config virtualenvs.in-project true
 poetry install --with dev,demos
 ```
 
-Then for a full list of available commands (e.g. `test` or `typecheck`):
+### Checks
+
+For a full list of available commands (e.g. `test` or `typecheck`), run this in your terminal
+(assumes the venv is active already).
 
 ```shell
 poe
+```
+
+### Pre-Commit Hooks
+
+You can install the pre-commit hooks, to automatically check for common issues before you commit, as follows:
+
+```shell
+poe precommit-setup
 ```
