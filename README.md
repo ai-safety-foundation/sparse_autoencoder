@@ -19,10 +19,12 @@ Check out the demo notebook for a guide to using this library.
 ## Contributing
 
 This project uses [Poetry](https://python-poetry.org) for dependency management, and
-[PoeThePoet](https://poethepoet.natn.io/installation.html) for scripts. After checking out
-the repo, install all dependencies with:
+[PoeThePoet](https://poethepoet.natn.io/installation.html) for scripts. After checking out the repo,
+we recommend setting poetry's config to create the `.venv` in the root directory (note this is a
+global setting) and then installing with the dev and demos dependencies.
 
 ```shell
+poetry config virtualenvs.in-project true
 poetry install --with dev,demos
 ```
 
