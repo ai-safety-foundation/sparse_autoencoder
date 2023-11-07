@@ -15,7 +15,7 @@ class ControllerType(Enum):
     local = "local"
 
 
-@dataclass
+@dataclass(frozen=True)
 class Controller:
     """Controller."""
 
@@ -28,7 +28,7 @@ class HyperbandStoppingType(Enum):
     hyperband = "hyperband"
 
 
-@dataclass
+@dataclass(frozen=True)
 class HyperbandStopping:
     """Hyperband Stopping Config.
 
@@ -105,7 +105,7 @@ class ImputeWhileRunning(Enum):
     worst = "worst"
 
 
-@dataclass
+@dataclass(frozen=True)
 class Metric:
     """Metric to optimize."""
 
@@ -150,7 +150,7 @@ class Distribution(Enum):
 ParamType = TypeVar("ParamType", float, int, str)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Parameter(Generic[ParamType]):
     """Sweep Parameter."""
 
@@ -187,7 +187,7 @@ class Parameter(Generic[ParamType]):
 Parameters = dict[str, Parameter[Any]]
 
 
-@dataclass
+@dataclass(frozen=True)
 class WandbSweepConfig:
     """Weights & Biases Sweep Configuration."""
 
