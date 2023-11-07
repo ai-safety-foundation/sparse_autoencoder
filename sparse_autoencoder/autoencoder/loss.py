@@ -54,7 +54,7 @@ def l1_loss(learned_activations: Float[Tensor, "*batch learned_activations"]) ->
 
 def l0(learned_activations: Float[Tensor, "*batch learned_activations"]) -> Tensor:
     """L0 of Learned Activations, ie average number of neurons firing.
-    
+
     Examples:
     >>> learned_activations = torch.tensor([[0.0, 2.0], [0.0, 3.0], [0.0, 0.0]])
     >>> l0(learned_activations)
@@ -66,7 +66,6 @@ def l0(learned_activations: Float[Tensor, "*batch learned_activations"]) -> Tens
     Returns:
         Average (over all but last dimension) of non-zero activations.
     """
-
     return (learned_activations > 0).float().sum(dim=-1).mean()
 
 def sae_training_loss(

@@ -7,10 +7,10 @@ import wandb
 
 from sparse_autoencoder.activation_store.base_store import ActivationStoreItem
 from sparse_autoencoder.autoencoder.loss import (
+    l0,
     l1_loss,
     reconstruction_loss,
     sae_training_loss,
-    l0,
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
