@@ -56,7 +56,7 @@ class SweepParameterConfig(Parameters):
 
     batch_size: Parameter[int] | None
     """Batch size.
-    
+
     Used in SAE Forward Pass."""
 
 
