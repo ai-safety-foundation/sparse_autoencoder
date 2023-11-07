@@ -12,7 +12,7 @@ from sparse_autoencoder.train.utils.wandb_sweep_types import (
 
 
 # NOTE: This must be kept in sync with SweepParametersRuntime
-@dataclass
+@dataclass(frozen=True)
 class SweepParameterConfig(Parameters):
     """Sweep Parameter Config."""
 
@@ -56,7 +56,7 @@ class SweepParameterConfig(Parameters):
 
 
 # NOTE: This must be kept in sync with SweepParameterConfig
-@dataclass
+@dataclass(frozen=True)
 class SweepParametersRuntime(dict[str, Any]):
     """Sweep parameter runtime values."""
 
@@ -77,7 +77,7 @@ class SweepParametersRuntime(dict[str, Any]):
         return asdict(self)
 
 
-@dataclass
+@dataclass(frozen=True)
 class SweepConfig(WandbSweepConfig):
     """Sweep Config."""
 
