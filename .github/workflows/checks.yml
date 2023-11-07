@@ -44,6 +44,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'poetry'
         allow-prereleases: true
+    - name: Check lockfile
+      run: poetry check
     - name: Install dependencies
       run: poetry install --with dev
     - name: Pyright type check
