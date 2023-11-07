@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Generic, TypedDict, TypeVar, final
 
 from datasets import IterableDataset, load_dataset
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset as TorchDataset
 
 
 TokenizedPrompt = list[int]
@@ -55,9 +57,6 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
 
     Warning:
         Hugging Face `Dataset` objects are confusingly not the same as PyTorch `Dataset` objects.
-        They can still be wrapped with the PyTorch `DataLoader` class, as the Hugging Face class
-        extends the PyTorch class, but this may lead to performance issues and it's generally best
-        to use the Hugging Face `IterableDataset` directly.
     """
 
     @abstractmethod
@@ -125,7 +124,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
 
         # Setup preprocessing
         existing_columns: list[str] = list(next(iter(dataset)).keys())
-        self.dataset = dataset.map(
+        mapped_dataset = dataset.map(
             self.preprocess,
             batched=True,
             batch_size=preprocess_batch_size,
@@ -136,7 +135,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         # Setup approximate shuffling. As the dataset is streamed, this just pre-downloads at least
         # `buffer_size` items and then shuffles just that buffer.
         # https://huggingface.co/docs/datasets/v2.14.5/stream#shuffle
-        self.dataset.shuffle(buffer_size=buffer_size)
+        self.dataset = mapped_dataset.shuffle(buffer_size=buffer_size)
 
     @final
     def __iter__(self) -> Any:  # noqa: ANN401
@@ -145,3 +144,31 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         Enables direct access to :attr:`dataset` with e.g. `for` loops.
         """
         return self.dataset.__iter__()
+
+    @final
+    def __next__(self) -> Any:  # noqa: ANN401
+        """Next Dunder Method.
+
+        Enables direct access to :attr:`dataset` with e.g. `next` calls.
+        """
+        return next(iter(self))
+
+    @final
+    def get_dataloader(self, batch_size: int) -> DataLoader:
+        """Get a PyTorch DataLoader.
+
+        Args:
+            batch_size: The batch size to use.
+
+        Returns:
+            PyTorch DataLoader.
+        """
+        torch_dataset: TorchDataset = self.dataset.with_format("torch")  # type: ignore
+
+        return DataLoader(
+            torch_dataset,
+            batch_size=batch_size,
+            # Shuffle is most efficiently done with the `shuffle` method on the dataset itself, not
+            # here.
+            shuffle=False,
+        )
