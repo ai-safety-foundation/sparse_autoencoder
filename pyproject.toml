@@ -36,7 +36,7 @@
     [tool.poe.tasks.check]
         help="Run all checks"
         ignore_fail=false
-        sequence=["checklock", "format", "lint", "test", "typecheck"]
+        sequence=["check-lock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format sparse_autoencoder"
