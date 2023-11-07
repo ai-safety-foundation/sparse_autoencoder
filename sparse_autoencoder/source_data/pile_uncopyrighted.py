@@ -75,8 +75,8 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
         """Initialize the Pile Uncopyrighted dataset.
 
         Example:
-            >>> from transformers import PreTrainedTokenizerBase
-            >>> tokenizer = PreTrainedTokenizerBase.from_pretrained("gpt2")
+            >>> from transformers import GPT2TokenizerFast
+            >>> tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
             >>> data = PileUncopyrightedDataset(
             ...     tokenizer=tokenizer
             ... )
