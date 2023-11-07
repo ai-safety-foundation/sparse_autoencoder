@@ -75,7 +75,7 @@ def sae_training_loss(
         >>> l1_loss_learned_activations = torch.tensor([1.])
         >>> l1_coefficient = 0.5
         >>> sae_training_loss(reconstruction_loss_mse, l1_loss_learned_activations, l1_coefficient)
-        tensor(3.)
+        tensor([3.])
 
     Args:
         reconstruction_loss_mse: MSE reconstruction loss.
