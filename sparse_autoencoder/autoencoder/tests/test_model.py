@@ -1,4 +1,5 @@
 """Sparse Autoencoder Model Tests."""
+from snapshottest.pytest import PyTestSnapshotTest
 import torch
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -19,3 +20,9 @@ def test_encoded_decoded_shape_same() -> None:
     output = model(input_tensor)
 
     assert output[1].shape == input_tensor.shape
+
+
+def test_representation(snapshot: PyTestSnapshotTest) -> None:
+    """Check the string representation of the model."""
+    model = SparseAutoencoder(3, 6, torch.tensor([1.0, 2.0, 3.0]))
+    snapshot.assert_match(str(model), "Model string representation")

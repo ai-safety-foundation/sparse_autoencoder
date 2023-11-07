@@ -24,6 +24,7 @@
             pytest=">=7"
             pytest-cov=">=4"
             ruff=">=0.1.4"
+            snapshottest="^0.6.0"
 
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
@@ -36,7 +37,7 @@
     [tool.poe.tasks.check]
         help="Run all checks"
         ignore_fail=false
-        sequence=["checklock", "format", "lint", "test", "typecheck"]
+        sequence=["check-lock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format sparse_autoencoder"
@@ -91,7 +92,7 @@
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["*/snapshots/", "/.venv"]
+    exclude=["/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
