@@ -1,6 +1,7 @@
 """Activation Store Base Class."""
 from abc import ABC, abstractmethod
 from concurrent.futures import Future
+from collections.abc import Callable
 
 from jaxtyping import Float
 from torch import Tensor
@@ -14,14 +15,29 @@ A single vector containing activations. For example this could be the activation
 MLP layer, for a specific position and batch item.
 """
 
-ActivationStoreBatch = Float[Tensor, "*any neuron"]
+ActivationStoreBatch = Float[Tensor, "item neuron"]
 """Activation Store Dataset Batch Type.
 
-This can be e.g. a [batch, pos, neurons] tensor, containing activations from a specific MLP layer
-in a transformer. Alternatively, it could be e.g. a [batch, pos, head_idx, neurons] tensor from an
-attention layer.
+A batch of activation vectors. For example this could be the activations from a specific MLP layer,
+for a specific position and batch item.
 """
 
+UnshapedActivationBatch = Float[Tensor, "*any neuron"]
+"""Unshaped Activation Batch Type.
+
+A batch of activation vectors, with arbitrary numbers of dimensions. For example this could be the
+activations from a specific attention layer, for a specific position and batch item, with an
+additional head_idx dimension.
+"""
+
+ReshapeMethod = Callable[[UnshapedActivationBatch], ActivationStoreBatch]
+"""Reshape Method Type.
+
+This is a function that takes a batch of activations and returns the activations reshaped into a
+batched format. For example, this could be a function that takes a [batch, pos, neurons] tensor
+and returns a [batch * pos, neurons] tensor, or a function that takes a [batch, pos, head_idx,
+neurons] tensor and returns a [batch * pos * head_idx, neurons] tensor.
+"""
 
 class ActivationStore(Dataset[ActivationStoreItem], ABC):
     """Activation Store Abstract Class.

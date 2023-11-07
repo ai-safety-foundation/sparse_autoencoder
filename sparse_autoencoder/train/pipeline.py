@@ -8,7 +8,8 @@ from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder.activation_store.base_store import ActivationStore
+from sparse_autoencoder.activation_store.base_store import ActivationStore, ReshapeMethod
+from sparse_autoencoder.activation_store.utils.extend_resize import resize_to_single_item_dimension
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.generate_activations import generate_activations
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
@@ -24,6 +25,7 @@ def pipeline(
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
+    resize_method: ReshapeMethod = resize_to_single_item_dimension,
     device: torch.device | None = None,
 ) -> None:
     """Full pipeline for training the sparse autoEncoder.

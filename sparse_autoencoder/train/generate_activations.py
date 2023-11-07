@@ -10,10 +10,13 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
+    ReshapeMethod,
     StoreFullError,
 )
-from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 
+from sparse_autoencoder.activation_store.utils.extend_resize import resize_to_single_item_dimension
+
+from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 
 def generate_activations(
     model: HookedTransformer,
@@ -22,6 +25,7 @@ def generate_activations(
     store: ActivationStore,
     dataloader: DataLoader[Int[Tensor, " pos"]],
     num_items: int,
+    reshape_method: ReshapeMethod = resize_to_single_item_dimension,
     device: torch.device | None = None,
 ) -> None:
     """Generate activations for training a Sparse Autoencoder.
@@ -58,7 +62,7 @@ def generate_activations(
 
     # Add the hook to the model (will automatically store the activations every time the model runs)
     model.remove_all_hook_fns()
-    hook = partial(store_activations_hook, store=store)
+    hook = partial(store_activations_hook, store=store, reshape_method=reshape_method)
     model.add_hook(cache_name, hook)
 
     # Get the input dimensions for logging

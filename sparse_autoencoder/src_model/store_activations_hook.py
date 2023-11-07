@@ -3,13 +3,14 @@ from jaxtyping import Float
 from torch import Tensor
 from transformer_lens.hook_points import HookPoint
 
-from sparse_autoencoder.activation_store.base_store import ActivationStore
+from sparse_autoencoder.activation_store.base_store import ActivationStore, ReshapeMethod
 
 
 def store_activations_hook(
     value: Float[Tensor, "*any neuron"],
     hook: HookPoint,  # noqa: ARG001 as needed by TransformerLens
     store: ActivationStore,
+    reshape_method: ReshapeMethod
 ) -> Float[Tensor, "*any neuron"]:
     """Store Activations Hook.
 
@@ -48,7 +49,7 @@ def store_activations_hook(
         hook: The hook point.
         store: The activation store. This should be pre-initialised with `functools.partial`.
     """
-    store.extend(value)
+    store.extend(reshape_method(value))
 
     # Return the unmodified value
     return value
