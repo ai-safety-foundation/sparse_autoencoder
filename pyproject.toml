@@ -35,17 +35,17 @@
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
-        help="Run all checks"
+        help="All checks"
         ignore_fail=false
         sequence=["check-lock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format sparse_autoencoder"
-        help="Format code using Ruff (with autofix enabled)"
+        help="Format code (with autofix)"
 
     [tool.poe.tasks.lint]
         cmd="ruff check sparse_autoencoder --fix"
-        help="Lint code using Ruff (with autofix enabled)"
+        help="Lint (with autofix)"
 
     [tool.poe.tasks.ruff]
         help="  [alias for lint && format]"
@@ -54,7 +54,7 @@
 
     [tool.poe.tasks.check-lock]
         cmd="poetry check"
-        help="Check that the lockfile is up to date"
+        help="Check the Poetry lockfile"
 
     [tool.poe.tasks.precommit]
         cmd="pre-commit run --all-files"
@@ -66,7 +66,7 @@
 
     [tool.poe.tasks.test]
         cmd="pytest"
-        help="Run tests using PyTest"
+        help="Run tests"
 
     [tool.poe.tasks.pytest]
         help="  [alias for test]"
@@ -74,7 +74,7 @@
 
     [tool.poe.tasks.typecheck]
         cmd="pyright"
-        help="Typecheck code using PyRight"
+        help="Typecheck"
 
     [tool.poe.tasks.pyright]
         help="  [alias for typecheck]"
