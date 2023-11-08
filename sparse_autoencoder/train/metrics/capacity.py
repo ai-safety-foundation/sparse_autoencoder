@@ -10,7 +10,9 @@ import wandb
 
 
 def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor, " n_feats"]:
-    """Measuring the capacity of a set of features as defined in https://arxiv.org/pdf/2210.01892.pdf.
+    """Calculate capacities.
+    
+    Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural Networks](https://arxiv.org/pdf/2210.01892.pdf).
 
     Capacity is intuitively measuring the 'proportion of a dimension' assigned to a feature.
     Formally it's the ratio of the squared dot product of a feature with itself to the sum of its
