@@ -1,7 +1,6 @@
 """Training Pipeline."""
 from collections.abc import Iterable
 
-from jaxtyping import Float, Int
 import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader
@@ -46,7 +45,7 @@ def stateful_dataloader_iterable(
         different data.
 
         >>> iterator = stateful_dataloader_iterable(data)
-        >>> next(iter(data))["int"], next(iter(data))["int"]
+        >>> next(iterator)["int"], next(iterator)["int"]
         (tensor([0]), tensor([1]))
 
     Args:
