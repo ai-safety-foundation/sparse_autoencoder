@@ -69,6 +69,7 @@
         "rtol",
         "runcap",
         "sharded",
+        "snapshottest",
         "tqdm",
         "transformer_lens",
         "typecheck",
