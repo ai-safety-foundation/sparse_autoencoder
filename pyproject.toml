@@ -94,6 +94,10 @@
         script="docs.make_docs:build_docs"
         help="Generates our docs"
 
+    [tool.poe.tasks.docs-hot-reload]
+        script="docs.make_docs:docs_hot_reload"
+        help="Starts our watch server"
+
 [build-system]
     build-backend="poetry.core.masonry.api"
     requires=["poetry-core"]
