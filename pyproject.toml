@@ -89,11 +89,10 @@
 
     [tool.pytest.ini_options]
         addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
-        norecursedirs=["**/snapshots/**"]
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["**/snapshots/**", "/.venv"]
+    exclude=["/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
