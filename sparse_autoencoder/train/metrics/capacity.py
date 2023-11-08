@@ -1,5 +1,5 @@
 """Capacity metrics for sets of learned features."""
-
+import einops
 from jaxtyping import Float
 from numpy import histogram
 import numpy as np
@@ -34,7 +34,13 @@ def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor
     Returns:
         A 1D tensor of capacities, where each element is the capacity of the corresponding feature.
     """
-    squared_dot_products = (features @ features.T).pow(2)
+    squared_dot_products = (
+        einops.einsum(
+            features, features, "n_feats1 feat_dim, n_feats2 feat_dim -> n_feats1 n_feats2"
+        )
+        ** 2
+    )
+
     sum_of_sq_dot = squared_dot_products.sum(dim=-1)
     return torch.diag(squared_dot_products) / sum_of_sq_dot
 

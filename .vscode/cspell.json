@@ -21,6 +21,7 @@
         "dunder",
         "earlyterminate",
         "einops",
+        "einsum",
         "endoftext",
         "gelu",
         "githistory",
