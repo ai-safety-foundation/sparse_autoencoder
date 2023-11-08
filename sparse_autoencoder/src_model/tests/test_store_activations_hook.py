@@ -5,6 +5,7 @@ import torch
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.list_store import ListActivationStore
+from sparse_autoencoder.activation_store.utils.extend_resize import resize_to_single_item_dimension
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 
 
@@ -15,7 +16,9 @@ def test_hook_stores_activations() -> None:
 
     model.add_hook(
         "blocks.1.mlp.hook_post",
-        partial(store_activations_hook, store=store),
+        partial(
+            store_activations_hook, store=store, reshape_method=resize_to_single_item_dimension
+        ),
     )
 
     tokens = model.to_tokens("Hello world")

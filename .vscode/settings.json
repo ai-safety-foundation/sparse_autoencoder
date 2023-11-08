@@ -3,7 +3,7 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.defaultFormatter": "ms-python.autopep8"
   },
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
@@ -43,5 +43,6 @@
   "rewrap.autoWrap.enabled": true,
   "rewrap.reformat": false,
   "rewrap.wrappingColumn": 100,
-  "python.analysis.diagnosticMode": "workspace"
+  "python.analysis.diagnosticMode": "workspace",
+  "python.formatting.provider": "none"
 }

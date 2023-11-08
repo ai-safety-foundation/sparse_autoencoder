@@ -39,13 +39,13 @@ class TensorActivationStore(ActivationStore):
         >>> len(store)
         1
 
-    Add a [batch, pos, neurons] activation tensor to the dataset:
+    Add a [batch, neurons] activation tensor to the dataset:
 
         >>> store.empty()
-        >>> batch = torch.randn(10, 10, 100)
+        >>> batch = torch.randn(10, 100)
         >>> store.extend(batch)
         >>> len(store)
-        100
+        10
 
     Shuffle the dataset **before passing it to the DataLoader**:
 
@@ -196,11 +196,6 @@ class TensorActivationStore(ActivationStore):
         >>> store.extend(torch.zeros(2, 5))
         >>> store.items_stored
         2
-
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
-        >>> store.extend(torch.zeros(3, 3, 5))
-        >>> store.items_stored
-        9
 
         Args:
             batch: The batch to append to the dataset.

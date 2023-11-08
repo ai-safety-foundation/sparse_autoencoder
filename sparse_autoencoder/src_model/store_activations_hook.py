@@ -10,7 +10,7 @@ def store_activations_hook(
     value: Float[Tensor, "*any neuron"],
     hook: HookPoint,  # noqa: ARG001 as needed by TransformerLens
     store: ActivationStore,
-    reshape_method: ReshapeMethod
+    reshape_method: ReshapeMethod,
 ) -> Float[Tensor, "*any neuron"]:
     """Store Activations Hook.
 
@@ -22,6 +22,8 @@ def store_activations_hook(
     >>> from functools import partial
     >>> from transformer_lens import HookedTransformer
     >>> from sparse_autoencoder.activation_store.list_store import ListActivationStore
+    >>> from sparse_autoencoder.activation_store.utils.extend_resize import \
+        resize_to_single_item_dimension
     >>> store = ListActivationStore()
     >>> model = HookedTransformer.from_pretrained("tiny-stories-1M")
     Loaded pretrained model tiny-stories-1M into HookedTransformer
@@ -30,7 +32,12 @@ def store_activations_hook(
     the tokens for a forward pass.
 
     >>> model.add_hook(
-    ...     "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
+    ...     "blocks.0.mlp.hook_post",
+    ...     partial(
+    ...         store_activations_hook,
+    ...         store=store,
+    ...         reshape_method=resize_to_single_item_dimension
+    ...     )
     ... )
     >>> tokens = model.to_tokens("Hello world")
     >>> tokens.shape

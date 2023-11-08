@@ -8,8 +8,7 @@ from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder.activation_store.base_store import ActivationStore, ReshapeMethod
-from sparse_autoencoder.activation_store.utils.extend_resize import resize_to_single_item_dimension
+from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.source_data.abstract_dataset import (
     SourceDataset,
@@ -67,7 +66,6 @@ def pipeline(
     autoencoder: SparseAutoencoder,
     source_dataset_batch_size: int = 16,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
-    reshape_method: ReshapeMethod = resize_to_single_item_dimension,
     device: torch.device | None = None,
 ) -> None:
     """Full pipeline for training the sparse autoEncoder.
@@ -89,8 +87,6 @@ def pipeline(
         autoencoder: The autoencoder to train.
         source_dataset_batch_size: Batch size of tokenized prompts for generating the source data.
         sweep_parameters: Parameter config to use.
-        reshape_method: The method to use to resize the activations to the correct shape for the
-            autoencoder.
         device: Device to run pipeline on.
     """
     autoencoder.to(device)
@@ -123,7 +119,6 @@ def pipeline(
                 activation_store,
                 source_data_iterator,
                 device=device,
-                reshape_method=reshape_method,
                 context_size=source_dataset.context_size,
                 num_items=num_activations_before_training,
                 batch_size=source_dataset_batch_size,

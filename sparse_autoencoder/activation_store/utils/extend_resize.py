@@ -96,6 +96,7 @@ def resize_to_single_item_dimension(
     """
     return rearrange(batch_activations, "... neurons -> (...) neurons")
 
+
 def resize_concat_to_single_item_dimension(
     batch_activations: UnshapedActivationBatch,
     concat_dims: int,

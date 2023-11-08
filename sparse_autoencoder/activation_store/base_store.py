@@ -41,6 +41,7 @@ and returns a [batch * pos, neurons] tensor, or a function that takes a [batch, 
 neurons] tensor and returns a [batch * pos * head_idx, neurons] tensor.
 """
 
+
 class ActivationStore(Dataset[ActivationStoreItem], ABC):
     """Activation Store Abstract Class.
 
