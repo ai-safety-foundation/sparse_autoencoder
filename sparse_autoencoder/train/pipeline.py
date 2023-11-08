@@ -102,6 +102,8 @@ def pipeline(
     source_dataloader = source_dataset.get_dataloader(source_dataset_batch_size)
     source_data_iterator = stateful_dataloader_iterable(source_dataloader)
 
+    total_steps: int = 0
+
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Generate/Train Cycles",
@@ -135,12 +137,13 @@ def pipeline(
             )
 
             # Train the autoencoder
-            train_autoencoder(
+            total_steps += train_autoencoder(
                 activations_dataloader=dataloader,
                 autoencoder=autoencoder,
                 optimizer=optimizer,
                 sweep_parameters=sweep_parameters,
                 device=device,
+                previous_steps=total_steps,
             )
 
             # Empty the store so we can fill it up again
