@@ -16,6 +16,9 @@ GENERATED_DIR = CURRENT_DIR.parent / "docs/source/generated"
 
 def copy_demos(_app: Any | None = None) -> None:
     """Copy demo notebooks to the generated directory."""
+    if not GENERATED_DIR.exists():
+        GENERATED_DIR.mkdir()
+
     copy_to_dir = GENERATED_DIR / "demos"
     notebooks_to_copy = [
         "benchmarks.ipynb",

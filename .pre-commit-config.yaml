@@ -24,7 +24,7 @@ repos:
         require_serial: true
       - id: ruff_format
         name: Ruff Format
-        entry: poetry run ruff format sparse_autoencoder --check
+        entry: poetry run ruff format sparse_autoencoder --check --diff
         language: system
         types: [python]
         require_serial: true
