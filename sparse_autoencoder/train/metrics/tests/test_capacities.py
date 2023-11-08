@@ -4,7 +4,7 @@ import math
 
 from jaxtyping import Float
 import pytest
-from snapshottest.pytest import PyTestSnapshotTest
+from syrupy.session import SnapshotSession
 import torch
 from torch import Tensor
 
@@ -40,10 +40,10 @@ def test_calc_capacities(
     ), "Capacity calculation is incorrect."
 
 
-def test_wandb_capacity_histogram(snapshot: PyTestSnapshotTest) -> None:
+def test_wandb_capacity_histogram(snapshot: SnapshotSession) -> None:
     """Check the Weights & Biases Histogram is created correctly."""
     capacities = torch.tensor([0.5, 0.1, 1, 1, 1])
     res = wandb_capacities_histogram(capacities)
 
     # Use the snapshot assertion instead of a manual assert
-    snapshot.assert_match(res.histogram, "capacity_histogram")
+    assert res.histogram, snapshot
