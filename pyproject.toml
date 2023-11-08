@@ -24,18 +24,20 @@
             pytest=">=7"
             pytest-cov=">=4"
             ruff=">=0.1.4"
-        snapshottest = "^0.6.0"
+            snapshottest="^0.6.0"
 
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
             pandas=">=2.1.2"
+            tokenizers=">=0.13.0, <0.14.0"   # See https://github.com/neelnanda-io/TransformerLens/issues/404
             transformer-lens=">=1.9.0"
+            transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="Run all checks"
         ignore_fail=false
-        sequence=["format", "lint", "test", "typecheck"]
+        sequence=["check-lock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format sparse_autoencoder"
@@ -45,17 +47,38 @@
         cmd="ruff check sparse_autoencoder --fix"
         help="Lint code using Ruff (with autofix enabled)"
 
+    [tool.poe.tasks.ruff]
+        help="  [alias for lint && format]"
+        ignore_fail=false
+        sequence=["format", "lint"]
+
+    [tool.poe.tasks.check-lock]
+        cmd="poetry check"
+        help="Check that the lockfile is up to date"
+
     [tool.poe.tasks.precommit]
         cmd="pre-commit run --all-files"
         help="Run pre-commit hooks"
+
+    [tool.poe.tasks.precommit-setup]
+        cmd="pre-commit install"
+        help="Install pre-commit hooks"
 
     [tool.poe.tasks.test]
         cmd="pytest"
         help="Run tests using PyTest"
 
+    [tool.poe.tasks.pytest]
+        help="  [alias for test]"
+        sequence=["test"]
+
     [tool.poe.tasks.typecheck]
         cmd="pyright"
         help="Typecheck code using PyRight"
+
+    [tool.poe.tasks.pyright]
+        help="  [alias for typecheck]"
+        sequence=["typecheck"]
 
 [build-system]
     build-backend="poetry.core.masonry.api"
@@ -66,10 +89,11 @@
 
     [tool.pytest.ini_options]
         addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
+        norecursedirs=["**/snapshots/**"]
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["*/snapshots/", "/.venv"]
+    exclude=["**/snapshots/**", "/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)

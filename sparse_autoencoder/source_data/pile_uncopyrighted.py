@@ -1,11 +1,11 @@
 """The Pile Uncopyrighted Dataset."""
 from typing import TypedDict, final
 
-from transformers import PreTrainedTokenizerFast
+from transformers import PreTrainedTokenizerBase
 
 from sparse_autoencoder.source_data.abstract_dataset import (
-    PreprocessTokenizedPrompts,
     SourceDataset,
+    TokenizedPrompts,
 )
 
 
@@ -26,14 +26,14 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
     https://huggingface.co/datasets/monology/pile-uncopyrighted
     """
 
-    tokenizer: PreTrainedTokenizerFast
+    tokenizer: PreTrainedTokenizerBase
 
     def preprocess(
         self,
         source_batch: PileUncopyrightedSourceDataBatch,
         *,
         context_size: int,
-    ) -> PreprocessTokenizedPrompts:
+    ) -> TokenizedPrompts:
         """Preprocess a batch of prompts.
 
         For each prompt's `text`, tokenize it and chunk into a list of tokenized prompts of length
@@ -65,7 +65,7 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
 
     def __init__(
         self,
-        tokenizer: PreTrainedTokenizerFast,
+        tokenizer: PreTrainedTokenizerBase,
         context_size: int = 250,
         buffer_size: int = 1000,
         preprocess_batch_size: int = 1000,
@@ -75,8 +75,8 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
         """Initialize the Pile Uncopyrighted dataset.
 
         Example:
-            >>> from transformers import PreTrainedTokenizerFast
-            >>> tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
+            >>> from transformers import GPT2TokenizerFast
+            >>> tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
             >>> data = PileUncopyrightedDataset(
             ...     tokenizer=tokenizer
             ... )

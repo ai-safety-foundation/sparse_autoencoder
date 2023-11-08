@@ -54,6 +54,11 @@ class SweepParameterConfig(Parameters):
     paper](https://transformer-circuits.pub/2023/monosemantic-features/index.html).
     """
 
+    batch_size: Parameter[int] | None
+    """Batch size.
+
+    Used in SAE Forward Pass."""
+
 
 # NOTE: This must be kept in sync with SweepParameterConfig
 @dataclass(frozen=True)
@@ -71,6 +76,8 @@ class SweepParametersRuntime(dict[str, Any]):
     adam_weight_decay: float = 0.0
 
     l1_coefficient: float = 0.01
+
+    batch_size: int = 8192
 
     def to_dict(self) -> dict[str, Any]:
         """Return dict representation of this object."""

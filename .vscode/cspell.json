@@ -55,6 +55,7 @@
         "polysemantic",
         "polysemantically",
         "polysemanticity",
+        "precommit",
         "pyproject",
         "pyright",
         "pytest",
@@ -71,6 +72,7 @@
         "runcap",
         "sharded",
         "snapshottest",
+        "solu",
         "tqdm",
         "transformer_lens",
         "typecheck",
@@ -78,6 +80,7 @@
         "unsqueeze",
         "venv",
         "virtualenv",
+        "virtualenvs",
         "wandb"
     ]
 }
