@@ -11,7 +11,7 @@ import wandb
 
 def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor, " n_feats"]:
     """Calculate capacities.
-    
+
     Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural Networks](https://arxiv.org/pdf/2210.01892.pdf).
 
     Capacity is intuitively measuring the 'proportion of a dimension' assigned to a feature.
@@ -29,7 +29,7 @@ def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor
         torch.tensor([1., 1., 1.])
 
     Args:
-        features: A 2D tensor of features, where each row is a feature.
+        features: A colletion of features.
 
     Returns:
         A 1D tensor of capacities, where each element is the capacity of the corresponding feature.
