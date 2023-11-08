@@ -1,4 +1,4 @@
-"""Auto-Generated Snapshottest File."""
+"""Auto-Generated Snapshot tests."""
 
 from snapshottest import Snapshot
 
