@@ -40,7 +40,6 @@ def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor
         )
         ** 2
     )
-
     sum_of_sq_dot = squared_dot_products.sum(dim=-1)
     return torch.diag(squared_dot_products) / sum_of_sq_dot
 
