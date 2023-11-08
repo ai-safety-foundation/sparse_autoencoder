@@ -4,8 +4,8 @@ from typing import TypedDict, final
 from transformers import PreTrainedTokenizerBase
 
 from sparse_autoencoder.source_data.abstract_dataset import (
-    PreprocessTokenizedPrompts,
     SourceDataset,
+    TokenizedPrompts,
 )
 
 
@@ -33,7 +33,7 @@ class PileUncopyrightedDataset(SourceDataset[PileUncopyrightedSourceDataBatch]):
         source_batch: PileUncopyrightedSourceDataBatch,
         *,
         context_size: int,
-    ) -> PreprocessTokenizedPrompts:
+    ) -> TokenizedPrompts:
         """Preprocess a batch of prompts.
 
         For each prompt's `text`, tokenize it and chunk into a list of tokenized prompts of length

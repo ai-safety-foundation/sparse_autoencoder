@@ -9,8 +9,9 @@ from torch.utils.data import DataLoader, Dataset
 from transformers import PreTrainedTokenizerFast
 
 from sparse_autoencoder.source_data.abstract_dataset import (
-    PreprocessTokenizedPrompts,
     SourceDataset,
+    TokenizedPrompts,
+    TorchTokenizedPrompts,
 )
 
 
@@ -65,7 +66,7 @@ class RandomIntDummyDataset(SourceDataset[RandomIntSourceData]):
         source_batch: RandomIntSourceData,
         *,
         context_size: int,
-    ) -> PreprocessTokenizedPrompts:
+    ) -> TokenizedPrompts:
         """Preprocess a batch of prompts.
 
         Not implemented for this dummy dataset.
@@ -107,6 +108,6 @@ class RandomIntDummyDataset(SourceDataset[RandomIntSourceData]):
         """
         self.dataset = RandomIntHuggingFaceDataset(50000, context_size=context_size)  # type: ignore
 
-    def get_dataloader(self, batch_size: int) -> DataLoader:  # type: ignore
+    def get_dataloader(self, batch_size: int) -> DataLoader[TorchTokenizedPrompts]:  # type: ignore
         """Get Dataloader."""
-        return DataLoader(self.dataset, batch_size=batch_size)  # type: ignore
+        return DataLoader[TorchTokenizedPrompts](self.dataset, batch_size=batch_size)  # type: ignore
