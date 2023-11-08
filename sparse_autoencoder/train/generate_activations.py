@@ -13,9 +13,12 @@ from sparse_autoencoder.activation_store.base_store import (
     ReshapeMethod,
     StoreFullError,
 )
-
-from sparse_autoencoder.activation_store.utils.extend_resize import TorchTokenizedPrompts, resize_to_single_item_dimension
+from sparse_autoencoder.activation_store.utils.extend_resize import (
+    resize_to_single_item_dimension,
+)
+from sparse_autoencoder.source_data.abstract_dataset import TorchTokenizedPrompts
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
+
 
 def generate_activations(
     model: HookedTransformer,
