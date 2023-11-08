@@ -7,8 +7,8 @@ import pytest
 import torch
 
 from sparse_autoencoder.source_data.abstract_dataset import (
-    PreprocessTokenizedPrompts,
     SourceDataset,
+    TokenizedPrompts,
 )
 
 
@@ -30,7 +30,7 @@ class MockSourceDataset(SourceDataset[MockHuggingFaceDatasetItem]):
         source_batch: MockHuggingFaceDatasetItem,  # noqa: ARG002
         *,
         context_size: int,  # noqa: ARG002
-    ) -> PreprocessTokenizedPrompts:
+    ) -> TokenizedPrompts:
         """Preprocess a batch of prompts."""
         preprocess_batch = 100
         tokenized_texts = torch.randint(

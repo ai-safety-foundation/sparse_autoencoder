@@ -68,8 +68,5 @@ class TiedBias(Module):
         return x + self._bias_reference
 
     def extra_repr(self) -> str:
-        """Extra representation.
-
-        Used in logging.
-        """
-        return f"position={self._bias_position}"
+        """String extra representation of the module."""
+        return f"position={self._bias_position.value}"

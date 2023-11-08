@@ -1,10 +1,10 @@
 """Generate activations for training a Sparse Autoencoder."""
+from collections.abc import Iterable
 from functools import partial
 
 from jaxtyping import Int
 import torch
 from torch import Tensor
-from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 
@@ -13,16 +13,18 @@ from sparse_autoencoder.activation_store.base_store import (
     ReshapeMethod,
     StoreFullError,
 )
-from sparse_autoencoder.activation_store.utils.extend_resize import resize_to_single_item_dimension
-from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 
+from sparse_autoencoder.activation_store.utils.extend_resize import TorchTokenizedPrompts, resize_to_single_item_dimension
+from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 
 def generate_activations(
     model: HookedTransformer,
     layer: int,
     cache_name: str,
     store: ActivationStore,
-    dataloader: DataLoader[Int[Tensor, " pos"]],
+    source_data: Iterable[TorchTokenizedPrompts],
+    context_size: int,
+    batch_size: int,
     num_items: int,
     reshape_method: ReshapeMethod = resize_to_single_item_dimension,
     device: torch.device | None = None,
@@ -51,7 +53,9 @@ def generate_activations(
             `blocks.0.ln2.hook_scale`, `blocks.0.ln2.hook_normalized`, `blocks.0.mlp.hook_pre`,
             `blocks.0.mlp.hook_post`, `blocks.0.hook_mlp_out`, `blocks.0.hook_resid_post`].
         store: The activation store to use.
-        dataloader: Dataloader containing source model input tokens.
+        source_data: Stateful iterator that yields batches of data to generate activations.
+        context_size: Number of tokens in each prompt.
+        batch_size: Size of each batch.
         num_items: Number of activation vectors to generate. This is an approximate rather
             than strict limit.
         reshape_method: The method to use to resize the activations to the correct shape for the
@@ -67,15 +71,11 @@ def generate_activations(
     model.add_hook(cache_name, hook)
 
     # Get the input dimensions for logging
-    first_item: Int[Tensor, "batch pos"] = next(iter(dataloader))["input_ids"]
-    batch_size: int = first_item.shape[0]
-    context_size: int = first_item.shape[1]
     activations_per_batch: int = context_size * batch_size
     total: int = num_items - num_items % activations_per_batch
 
     # Loop through the dataloader until the store reaches the desired size
     with torch.no_grad(), tqdm(
-        dataloader,
         desc="Generate Activations",
         total=total,
         colour="green",
@@ -83,10 +83,10 @@ def generate_activations(
         leave=False,
         dynamic_ncols=True,
     ) as progress_bar:
-        for batch in dataloader:
+        for batch in source_data:
             try:
-                input_ids = batch["input_ids"].to(device)
-                model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore
+                input_ids: Int[Tensor, "batch pos"] = batch["input_ids"].to(device)
+                model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)
                 progress_bar.update(activations_per_batch)
 
             # Break the loop if the store is full

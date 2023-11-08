@@ -1056,13 +1056,13 @@ test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre
 
 [[package]]
 name = "huggingface-hub"
-version = "0.18.0"
+version = "0.19.0"
 description = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "huggingface_hub-0.18.0-py3-none-any.whl", hash = "sha256:ee0b6b68acbf6aeb6d083ea081e981c277a1104b82ab67fdf6780ff5396830af"},
-    {file = "huggingface_hub-0.18.0.tar.gz", hash = "sha256:10eda12b9c1cfa800b4b7c096b3ace8843734c3f28d69d1c243743fb7d7a2e81"},
+    {file = "huggingface_hub-0.19.0-py3-none-any.whl", hash = "sha256:8cd7ffdb36393ba1c99b4576fbe8900b3496c98a643cde05f355348fe7d89144"},
+    {file = "huggingface_hub-0.19.0.tar.gz", hash = "sha256:7395c9b8053dc8aa0dec2900f367890f66be07bfe46369b95af3f4c1013eb09e"},
 ]
 
 [package.dependencies]
@@ -1075,17 +1075,17 @@ tqdm = ">=4.42.1"
 typing-extensions = ">=3.7.4.3"
 
 [package.extras]
-all = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "black (==23.7)", "gradio", "jedi", "mypy (==1.5.1)", "numpy", "pydantic (<2.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "ruff (>=0.0.241)", "soundfile", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "urllib3 (<2.0)"]
+all = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "gradio", "jedi", "mypy (==1.5.1)", "numpy", "pydantic (>1.1,<3.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "ruff (>=0.1.3)", "soundfile", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "typing-extensions (>=4.8.0)", "urllib3 (<2.0)"]
 cli = ["InquirerPy (==0.3.4)"]
-dev = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "black (==23.7)", "gradio", "jedi", "mypy (==1.5.1)", "numpy", "pydantic (<2.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "ruff (>=0.0.241)", "soundfile", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "urllib3 (<2.0)"]
-docs = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "black (==23.7)", "gradio", "hf-doc-builder", "jedi", "mypy (==1.5.1)", "numpy", "pydantic (<2.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "ruff (>=0.0.241)", "soundfile", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "urllib3 (<2.0)", "watchdog"]
+dev = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "gradio", "jedi", "mypy (==1.5.1)", "numpy", "pydantic (>1.1,<3.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "ruff (>=0.1.3)", "soundfile", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "typing-extensions (>=4.8.0)", "urllib3 (<2.0)"]
+docs = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "gradio", "hf-doc-builder", "jedi", "mypy (==1.5.1)", "numpy", "pydantic (>1.1,<3.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "ruff (>=0.1.3)", "soundfile", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "typing-extensions (>=4.8.0)", "urllib3 (<2.0)", "watchdog"]
 fastai = ["fastai (>=2.4)", "fastcore (>=1.3.27)", "toml"]
-inference = ["aiohttp", "pydantic (<2.0)"]
-quality = ["black (==23.7)", "mypy (==1.5.1)", "ruff (>=0.0.241)"]
+inference = ["aiohttp", "pydantic (>1.1,<3.0)"]
+quality = ["mypy (==1.5.1)", "ruff (>=0.1.3)"]
 tensorflow = ["graphviz", "pydot", "tensorflow"]
-testing = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "gradio", "jedi", "numpy", "pydantic (<2.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "soundfile", "urllib3 (<2.0)"]
+testing = ["InquirerPy (==0.3.4)", "Jinja2", "Pillow", "aiohttp", "gradio", "jedi", "numpy", "pydantic (>1.1,<3.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-env", "pytest-vcr", "pytest-xdist", "soundfile", "urllib3 (<2.0)"]
 torch = ["torch"]
-typing = ["pydantic (<2.0)", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3"]
+typing = ["pydantic (>1.1,<3.0)", "types-PyYAML", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3", "typing-extensions (>=4.8.0)"]
 
 [[package]]
 name = "identify"
@@ -1572,13 +1572,13 @@ files = [
 
 [[package]]
 name = "jupyterlab-server"
-version = "2.25.0"
+version = "2.25.1"
 description = "A set of server components for JupyterLab and JupyterLab like applications."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyterlab_server-2.25.0-py3-none-any.whl", hash = "sha256:c9f67a98b295c5dee87f41551b0558374e45d449f3edca153dd722140630dcb2"},
-    {file = "jupyterlab_server-2.25.0.tar.gz", hash = "sha256:77c2f1f282d610f95e496e20d5bf1d2a7706826dfb7b18f3378ae2870d272fb7"},
+    {file = "jupyterlab_server-2.25.1-py3-none-any.whl", hash = "sha256:dce9714d91fb3e53d2b37d0e0619fa26ed223c8e7b8c81cca112926de19b53a4"},
+    {file = "jupyterlab_server-2.25.1.tar.gz", hash = "sha256:6491283b0000698eae1a38c48507930560dfcf7461aea0015368698aab34dd9c"},
 ]
 
 [package.dependencies]
@@ -1593,7 +1593,7 @@ requests = ">=2.31"
 [package.extras]
 docs = ["autodoc-traits", "jinja2 (<3.2.0)", "mistune (<4)", "myst-parser", "pydata-sphinx-theme", "sphinx", "sphinx-copybutton", "sphinxcontrib-openapi (>0.8)"]
 openapi = ["openapi-core (>=0.18.0,<0.19.0)", "ruamel-yaml"]
-test = ["hatch", "ipykernel", "openapi-core (>=0.18.0,<0.19.0)", "openapi-spec-validator (>=0.6.0,<0.7.0)", "pytest (>=7.0)", "pytest-console-scripts", "pytest-cov", "pytest-jupyter[server] (>=0.6.2)", "pytest-timeout", "requests-mock", "ruamel-yaml", "sphinxcontrib-spelling", "strict-rfc3339", "werkzeug"]
+test = ["hatch", "ipykernel", "openapi-core (>=0.18.0,<0.19.0)", "openapi-spec-validator (>=0.6.0,<0.8.0)", "pytest (>=7.0)", "pytest-console-scripts", "pytest-cov", "pytest-jupyter[server] (>=0.6.2)", "pytest-timeout", "requests-mock", "ruamel-yaml", "sphinxcontrib-spelling", "strict-rfc3339", "werkzeug"]
 
 [[package]]
 name = "jupyterlab-widgets"
@@ -1865,13 +1865,13 @@ dill = ">=0.3.7"
 
 [[package]]
 name = "nbclient"
-version = "0.8.0"
+version = "0.9.0"
 description = "A client library for executing notebooks. Formerly nbconvert's ExecutePreprocessor."
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "nbclient-0.8.0-py3-none-any.whl", hash = "sha256:25e861299e5303a0477568557c4045eccc7a34c17fc08e7959558707b9ebe548"},
-    {file = "nbclient-0.8.0.tar.gz", hash = "sha256:f9b179cd4b2d7bca965f900a2ebf0db4a12ebff2f36a711cb66861e4ae158e55"},
+    {file = "nbclient-0.9.0-py3-none-any.whl", hash = "sha256:a3a1ddfb34d4a9d17fc744d655962714a866639acd30130e9be84191cd97cd15"},
+    {file = "nbclient-0.9.0.tar.gz", hash = "sha256:4b28c207877cf33ef3a9838cdc7a54c5ceff981194a82eac59d558f05487295e"},
 ]
 
 [package.dependencies]
@@ -2336,16 +2336,6 @@ files = [
 ]
 
 [[package]]
-name = "pathtools"
-version = "0.1.2"
-description = "File system general utilities"
-optional = false
-python-versions = "*"
-files = [
-    {file = "pathtools-0.1.2.tar.gz", hash = "sha256:7c35c5421a39bb82e58018febd90e3b6e5db34c5443aaaf742b3f33d4655f1c0"},
-]
-
-[[package]]
 name = "pexpect"
 version = "4.8.0"
 description = "Pexpect allows easy control of interactive console applications."
@@ -2616,13 +2606,13 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pyright"
-version = "1.1.334"
+version = "1.1.335"
 description = "Command line wrapper for pyright"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pyright-1.1.334-py3-none-any.whl", hash = "sha256:dcb13e8358e021189672c4d6ebcad192ab061e4c7225036973ec493183c6da68"},
-    {file = "pyright-1.1.334.tar.gz", hash = "sha256:3adaf10f1f4209575dc022f9c897f7ef024639b7ea5b3cbe49302147e6949cd4"},
+    {file = "pyright-1.1.335-py3-none-any.whl", hash = "sha256:1149d99d5cea3997010a5ac39611534e0426125d5090913ae5cb1e0e2c9fbca3"},
+    {file = "pyright-1.1.335.tar.gz", hash = "sha256:12c09c1644b223515cc342f7d383e55eefeedd730d7875e39a2cf338c2d99be4"},
 ]
 
 [package.dependencies]
@@ -3636,6 +3626,20 @@ files = [
 mpmath = ">=0.19"
 
 [[package]]
+name = "syrupy"
+version = "4.6.0"
+description = "Pytest Snapshot Test Utility"
+optional = false
+python-versions = ">=3.8.1,<4"
+files = [
+    {file = "syrupy-4.6.0-py3-none-any.whl", hash = "sha256:747aae1bcf3cb3249e33b1e6d81097874d23615982d5686ebe637875b0775a1b"},
+    {file = "syrupy-4.6.0.tar.gz", hash = "sha256:231b1f5d00f1f85048ba81676c79448076189c4aef4d33f21ae32f3b4c565a54"},
+]
+
+[package.dependencies]
+pytest = ">=7.0.0,<8.0.0"
+
+[[package]]
 name = "tenacity"
 version = "8.2.3"
 description = "Retry code until it succeeds"
@@ -4081,13 +4085,13 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 
 [[package]]
 name = "wandb"
-version = "0.15.12"
+version = "0.16.0"
 description = "A CLI and library for interacting with the Weights & Biases API."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "wandb-0.15.12-py3-none-any.whl", hash = "sha256:75c57b5bb8ddae21d45a02f644628585bdd112fea686de3177099a0996f1c41c"},
-    {file = "wandb-0.15.12.tar.gz", hash = "sha256:c344d92fb8044b072a6138afd9adc5d3801ad050cf11378fe2af2fe899dcca84"},
+    {file = "wandb-0.16.0-py3-none-any.whl", hash = "sha256:e103142a5ecdb158d29441c2bf9f935ae149ed562377f7cebffd2a6f7c9de949"},
+    {file = "wandb-0.16.0.tar.gz", hash = "sha256:8d9875f1d8d75fee32dc51f6727bc277ce4f3869d7319ccf5f36ce596597402a"},
 ]
 
 [package.dependencies]
@@ -4095,7 +4099,6 @@ appdirs = ">=1.4.3"
 Click = ">=7.1,<8.0.0 || >8.0.0"
 docker-pycreds = ">=0.4.0"
 GitPython = ">=1.0.0,<3.1.29 || >3.1.29"
-pathtools = "*"
 protobuf = {version = ">=3.19.0,<4.21.0 || >4.21.0,<5", markers = "python_version > \"3.9\" or sys_platform != \"linux\""}
 psutil = ">=5.0.0"
 PyYAML = "*"
@@ -4105,15 +4108,15 @@ setproctitle = "*"
 setuptools = "*"
 
 [package.extras]
-async = ["httpx (>=0.22.0)"]
+async = ["httpx (>=0.23.0)"]
 aws = ["boto3"]
 azure = ["azure-identity", "azure-storage-blob"]
 gcp = ["google-cloud-storage"]
 kubeflow = ["google-cloud-storage", "kubernetes", "minio", "sh"]
-launch = ["PyYAML (>=6.0.0)", "awscli", "azure-containerregistry", "azure-identity", "azure-storage-blob", "boto3", "botocore", "chardet", "google-auth", "google-cloud-artifact-registry", "google-cloud-compute", "google-cloud-storage", "iso8601", "kubernetes", "nbconvert", "nbformat", "optuna", "typing-extensions"]
+launch = ["PyYAML (>=6.0.0)", "awscli", "azure-containerregistry", "azure-identity", "azure-storage-blob", "boto3", "botocore", "chardet", "google-auth", "google-cloud-aiplatform", "google-cloud-artifact-registry", "google-cloud-compute", "google-cloud-storage", "iso8601", "kubernetes", "kubernetes-asyncio", "nbconvert", "nbformat", "optuna", "typing-extensions"]
 media = ["bokeh", "moviepy", "numpy", "pillow", "plotly", "rdkit-pypi", "soundfile"]
 models = ["cloudpickle"]
-nexus = ["wandb-core (>=0.16.0b1)"]
+nexus = ["wandb-core (>=0.17.0b1)"]
 perf = ["orjson"]
 sweeps = ["sweeps (>=0.2.0)"]
 
@@ -4449,4 +4452,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "b56e5da1592d60f58a73381c977226b0fb27d25c73ad297c979b020b5ea2c0be"
+content-hash = "fe9961f7d226ecb7bcde8ad4b3cb6ce4d06635138b842841d3fbc4c9aaf6dd0b"

@@ -7,8 +7,8 @@ are known in TransformerLens as `gelu-1l` to `gelu-4l`. The dataset is pre-token
 from typing import TypedDict, final
 
 from sparse_autoencoder.source_data.abstract_dataset import (
-    PreprocessTokenizedPrompts,
     SourceDataset,
+    TokenizedPrompts,
 )
 
 
@@ -33,7 +33,7 @@ class NeelC4SourceDataset(SourceDataset[NeelC4SourceDataBatch]):
         source_batch: NeelC4SourceDataBatch,
         *,
         context_size: int,
-    ) -> PreprocessTokenizedPrompts:
+    ) -> TokenizedPrompts:
         """Preprocess a batch of prompts.
 
         As this dataset is already tokenized, all this does is split up each item based on the

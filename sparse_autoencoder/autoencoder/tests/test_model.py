@@ -1,4 +1,5 @@
 """Sparse Autoencoder Model Tests."""
+from syrupy.session import SnapshotSession
 import torch
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -19,3 +20,17 @@ def test_encoded_decoded_shape_same() -> None:
     output = model(input_tensor)
 
     assert output[1].shape == input_tensor.shape
+
+
+def test_can_get_encoder_weights() -> None:
+    """Check we can access the encoder weights."""
+    geometric_median = torch.tensor([1.0, 2.0, 3.0])
+    model = SparseAutoencoder(3, 6, geometric_median)
+    linear = model.encoder.get_submodule("Linear")
+    assert linear.weight.shape == (6, 3)
+
+
+def test_representation(snapshot: SnapshotSession) -> None:
+    """Check the string representation of the model."""
+    model = SparseAutoencoder(3, 6, torch.tensor([1.0, 2.0, 3.0]))
+    assert snapshot == str(model), "Model string representation has changed."

@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Generic, TypedDict, TypeVar, final
 
 from datasets import IterableDataset, load_dataset
+from jaxtyping import Int
+from torch import Tensor
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset as TorchDataset
 
@@ -11,10 +13,16 @@ TokenizedPrompt = list[int]
 """A tokenized prompt."""
 
 
-class PreprocessTokenizedPrompts(TypedDict):
-    """Preprocess tokenized prompts return type."""
+class TokenizedPrompts(TypedDict):
+    """Tokenized prompts."""
 
     input_ids: list[TokenizedPrompt]
+
+
+class TorchTokenizedPrompts(TypedDict):
+    """Tokenized prompts prepared for PyTorch."""
+
+    input_ids: Int[Tensor, "batch pos"]
 
 
 HuggingFaceDatasetItem = TypeVar("HuggingFaceDatasetItem", bound=Any)
@@ -65,7 +73,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         source_batch: HuggingFaceDatasetItem,
         *,
         context_size: int,
-    ) -> PreprocessTokenizedPrompts:
+    ) -> TokenizedPrompts:
         """Preprocess function.
 
         Takes a `preprocess_batch_size` ($m$) batch of source data (which may e.g. include string
@@ -119,6 +127,8 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
         """
+        self.context_size = context_size
+
         # Load the dataset
         dataset: IterableDataset = load_dataset(dataset_path, streaming=True, split=dataset_split)  # type: ignore
 
@@ -154,7 +164,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         return next(iter(self))
 
     @final
-    def get_dataloader(self, batch_size: int) -> DataLoader:
+    def get_dataloader(self, batch_size: int) -> DataLoader[TorchTokenizedPrompts]:
         """Get a PyTorch DataLoader.
 
         Args:
@@ -163,9 +173,9 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         Returns:
             PyTorch DataLoader.
         """
-        torch_dataset: TorchDataset = self.dataset.with_format("torch")  # type: ignore
+        torch_dataset: TorchDataset[TorchTokenizedPrompts] = self.dataset.with_format("torch")  # type: ignore
 
-        return DataLoader(
+        return DataLoader[TorchTokenizedPrompts](
             torch_dataset,
             batch_size=batch_size,
             # Shuffle is most efficiently done with the `shuffle` method on the dataset itself, not
