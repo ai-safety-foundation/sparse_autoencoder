@@ -23,7 +23,8 @@ def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor
         >>> import torch
         >>> orthogonal_features = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])
         >>> orthogonal_caps = calc_capacities(orthogonal_features)
-        >>> assert torch.allclose(orthogonal_caps, torch.tensor([1., 1., 1.]))
+        >>> orthogonal_caps
+        torch.tensor([1., 1., 1.])
 
     Args:
         features: A 2D tensor of features, where each row is a feature.
