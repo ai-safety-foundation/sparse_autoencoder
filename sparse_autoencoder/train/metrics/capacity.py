@@ -1,12 +1,12 @@
 """Capacity metrics for sets of learned features."""
 
-import numpy as np
-import torch
-import wandb
 from jaxtyping import Float
 from numpy import histogram
+import numpy as np
 from numpy.typing import NDArray
+import torch
 from torch import Tensor
+import wandb
 
 
 def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor, " n_feats"]:
@@ -26,7 +26,7 @@ def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor
         >>> orthogonal_features = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])
         >>> orthogonal_caps = calc_capacities(orthogonal_features)
         >>> orthogonal_caps
-        torch.tensor([1., 1., 1.])
+        tensor([1., 1., 1.])
 
     Args:
         features: A collection of features.
