@@ -26,8 +26,10 @@ def test_activations_generated() -> None:
         layer=1,
         cache_name="blocks.1.mlp.hook_post",
         store=store,
-        dataloader=dataloader,
+        source_data=iter(dataloader),
         num_items=num_items,
+        context_size=dataset.context_size,
+        batch_size=2,
     )
 
     assert len(store) >= num_items
