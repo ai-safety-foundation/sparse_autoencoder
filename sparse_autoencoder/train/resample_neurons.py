@@ -15,6 +15,12 @@ def get_dead_neuron_indices(
 ) -> Int[Tensor, " learned_features"]:
     """Identify the indices of neurons that have zero activity.
 
+    Example:
+        >>> neuron_activity = torch.tensor([0.0, 0.0, 0.1, 1.0])
+        >>> dead_neuron_indices = get_dead_neuron_indices(neuron_activity, threshold=0.05)
+        >>> dead_neuron_indices.tolist()
+        [0, 1]
+
     Args:
         neuron_activity: Tensor representing the number of times each neuron fired.
         threshold: Threshold for determining if a neuron is dead (fires in response to less than
@@ -32,7 +38,9 @@ def compute_loss_and_get_activations(
     sweep_parameters: SweepParametersRuntime,
     num_inputs: int,
 ) -> tuple[Float[Tensor, " item"], Float[Tensor, "item input_feature"]]:
-    """Compute the loss for the SAR on a random subset of inputs and get the activations.
+    """Compute the loss on a random subset of inputs.
+
+    Computes the loss and also stores the input activations (for use in resampling neurons).
 
     Args:
         store: Activation store.
@@ -71,6 +79,11 @@ def assign_sampling_probabilities(loss: Float[Tensor, " item"]) -> Tensor:
     Assign each input vector a probability of being picked that is proportional to the square of
     the autoencoder's loss on that input.
 
+    Example:
+        >>> loss = torch.tensor([1.0, 2.0, 3.0])
+        >>> assign_sampling_probabilities(loss).round(decimals=1)
+        tensor([0.1000, 0.3000, 0.6000])
+
     Args:
         loss: Loss per item.
 
@@ -85,6 +98,14 @@ def sample_input(
     probabilities: Float[Tensor, " item"], input_activations: Float[Tensor, "item input_feature"]
 ) -> Float[Tensor, " input_feature"]:
     """Sample an input vector based on the provided probabilities.
+
+    Example:
+        >>> probabilities = torch.tensor([0.1, 0.2, 0.7])
+        >>> input_activations = torch.tensor([[1, 2], [3, 4], [5, 6]])
+        >>> _seed = torch.manual_seed(0)  # For reproducibility in example
+        >>> sampled_input = sample_input(probabilities, input_activations)
+        >>> sampled_input.tolist()
+        [5, 6]
 
     Args:
         probabilities: Probabilities for each input.
@@ -106,6 +127,15 @@ def renormalize_and_scale(
 
     Renormalize the sampled input vector to have unit L2 norm and scale the encoder weights and
     bias.
+
+    Example:
+        >>> _seed = torch.manual_seed(0)  # For reproducibility in example
+        >>> sampled_input = torch.tensor([3.0, 4.0])
+        >>> neuron_activity = torch.tensor([3, 0, 5, 0, 1, 3])
+        >>> encoder_weight = torch.ones((2, 6))
+        >>> rescaled_input = renormalize_and_scale(sampled_input, neuron_activity, encoder_weight)
+        >>> rescaled_input.round(decimals=1)
+        tensor([0.2000, 0.3000])
 
     Args:
         sampled_input: Tensor of the sampled input activation.
