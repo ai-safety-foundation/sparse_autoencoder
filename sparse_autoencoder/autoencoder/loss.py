@@ -42,15 +42,16 @@ def l1_loss(learned_activations: Float[Tensor, "*batch learned_activations"]) ->
     Examples:
     >>> learned_activations = torch.tensor([[2.0, -3]])
     >>> l1_loss(learned_activations)
-    tensor([5.])
+    tensor(5.)
 
     Args:
         learned_activations: Activations from the hidden layer.
 
     Returns:
-        L1 loss on learned activations.
+        L1 loss on learned activations,
+        summed over the last dimension and averaged over all other elements.
     """
-    return torch.abs(learned_activations).sum(dim=-1)
+    return torch.abs(learned_activations).sum(dim=-1).mean()
 
 
 def sae_training_loss(
@@ -74,7 +75,7 @@ def sae_training_loss(
         >>> l1_loss_learned_activations = torch.tensor([1.])
         >>> l1_coefficient = 0.5
         >>> sae_training_loss(reconstruction_loss_mse, l1_loss_learned_activations, l1_coefficient)
-        tensor(3.)
+        tensor([3.])
 
     Args:
         reconstruction_loss_mse: MSE reconstruction loss.
@@ -87,5 +88,4 @@ def sae_training_loss(
     Returns:
         Overall training loss.
     """
-    total_loss = reconstruction_loss_mse + l1_loss_learned_activations * l1_coefficient
-    return total_loss.sum()
+    return reconstruction_loss_mse + l1_loss_learned_activations * l1_coefficient
