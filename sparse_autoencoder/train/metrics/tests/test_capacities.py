@@ -45,5 +45,4 @@ def test_wandb_capacity_histogram(snapshot: SnapshotSession) -> None:
     capacities = torch.tensor([0.5, 0.1, 1, 1, 1])
     res = wandb_capacities_histogram(capacities)
 
-    # Use the snapshot assertion instead of a manual assert
-    assert res.histogram, snapshot
+    assert res.histogram == snapshot
