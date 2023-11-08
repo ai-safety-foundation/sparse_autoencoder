@@ -1,5 +1,5 @@
 """Neuron Resampling."""
-from jaxtyping import Bool, Float, Int
+from jaxtyping import Float, Int
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
@@ -8,6 +8,124 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.loss import l1_loss, reconstruction_loss, sae_training_loss
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
+
+
+def get_dead_neuron_indices(
+    neuron_activity: Int[Tensor, " learned_features"], threshold: float = 1e-7
+) -> Int[Tensor, " learned_features"]:
+    """Identify the indices of neurons that have zero activity.
+
+    Args:
+        neuron_activity: Tensor representing the number of times each neuron fired.
+        threshold: Threshold for determining if a neuron is dead (fires in response to less than
+        this percentage of source activation vectors).
+
+    Returns:
+        A tensor containing the indices of neurons that are 'dead' (zero activity).
+    """
+    return torch.where(neuron_activity <= threshold)[0]
+
+
+def compute_loss_and_get_activations(
+    store: ActivationStore,
+    autoencoder: SparseAutoencoder,
+    sweep_parameters: SweepParametersRuntime,
+    num_inputs: int,
+) -> tuple[Float[Tensor, " item"], Float[Tensor, "item input_feature"]]:
+    """Compute the loss for the SAR on a random subset of inputs and get the activations.
+
+    Args:
+        store: Activation store.
+        autoencoder: Sparse autoencoder model.
+        sweep_parameters: Current training sweep parameters.
+        num_inputs: Number of input activations to use.
+
+    Returns:
+        A tuple containing the loss per item, and all input activations.
+    """
+    loss_batches: list[Float[Tensor, " batch_item"]] = []
+    input_activations_batches: list[Float[Tensor, "batch_item input_feature"]] = []
+    batch_size: int = sweep_parameters.batch_size
+    dataloader = DataLoader(store, batch_size=batch_size)
+    batches: int = num_inputs // batch_size
+
+    for batch_idx, batch in enumerate(dataloader):
+        input_activations_batches.append(batch)
+        learned_activations, reconstructed_activations = autoencoder(batch)
+        loss_batches.append(
+            sae_training_loss(
+                reconstruction_loss(batch, reconstructed_activations),
+                l1_loss(learned_activations),
+                sweep_parameters.l1_coefficient,
+            )
+        )
+        if batch_idx >= batches:
+            break
+
+    return torch.stack(loss_batches), torch.stack(input_activations_batches)
+
+
+def assign_sampling_probabilities(loss: Float[Tensor, " item"]) -> Tensor:
+    """Assign the sampling probabilities for each input activations vector.
+
+    Assign each input vector a probability of being picked that is proportional to the square of
+    the autoencoder's loss on that input.
+
+    Args:
+        loss: Loss per item.
+
+    Returns:
+        A tensor of probabilities for each item.
+    """
+    square_loss = loss.pow(2)
+    return square_loss / square_loss.sum()
+
+
+def sample_input(
+    probabilities: Float[Tensor, " item"], input_activations: Float[Tensor, "item input_feature"]
+) -> Float[Tensor, " input_feature"]:
+    """Sample an input vector based on the provided probabilities.
+
+    Args:
+        probabilities: Probabilities for each input.
+        input_activations: Input activation vectors.
+
+    Returns:
+        Sampled input activation vector.
+    """
+    sample_idx = torch.multinomial(probabilities, num_samples=1)[0]
+    return input_activations[sample_idx, :]
+
+
+def renormalize_and_scale(
+    sampled_input: Float[Tensor, " input_feature"],
+    neuron_activity: Int[Tensor, " learned_features"],
+    encoder_weight: Float[Tensor, "learned_feature input_feature"],
+) -> Float[Tensor, " input_feature"]:
+    """Renormalize and scale the resampled dictionary vectors.
+
+    Renormalize the sampled input vector to have unit L2 norm and scale the encoder weights and
+    bias.
+
+    Args:
+        sampled_input: Tensor of the sampled input activation.
+        neuron_activity: Tensor representing the number of times each neuron fired.
+        encoder_weight: Tensor of encoder weights.
+
+    Returns:
+        Rescaled sampled input.
+    """
+    # Renormalize the input vector to have unit L2 norm and set this to be the dictionary vector
+    # for the dead autoencoder neuron.
+    unit_norm_sampled_input = torch.nn.functional.normalize(sampled_input, dim=-1)
+    alive_neuron_mask = neuron_activity > 0
+    alive_encoder_weights = encoder_weight[:, alive_neuron_mask]
+
+    # For the corresponding encoder vector, renormalize the input vector to equal the average norm
+    # of the encoder weights for alive neurons times 0.2. Set the corresponding encoder bias
+    # element to zero.
+    average_alive_norm = alive_encoder_weights.norm(dim=-1).mean()
+    return unit_norm_sampled_input * average_alive_norm * 0.2
 
 
 def resample_neurons(
@@ -52,42 +170,16 @@ def resample_neurons(
             divisible by the batch size, and cannot be larger than the number of items currently in
             the store.
     """
-    # Get the dead neuron indices
-    dead_neuron_indices: Int[Tensor, " learned_neuron_idx"] = torch.where(neuron_activity == 0)[0]
+    dead_neuron_indices = get_dead_neuron_indices(neuron_activity)
 
-    # Setup stores for loss and inputs
-    loss_batches: list[Float[Tensor, " batch_item"]] = []
-    input_activations_batches: list[Float[Tensor, "batch_item input_feature"]] = []
-
-    # Compute the loss for the current model on a random subset of 819,200 inputs.
-    batch_size: int = sweep_parameters.batch_size
-    dataloader = DataLoader(store, batch_size=batch_size)
-    batches: int = num_inputs // batch_size
-
-    for batch_idx, batch in enumerate(dataloader):
-        input_activations_batches.append(batch)
-        learned_activations, reconstructed_activations = autoencoder(batch)
-
-        reconstruction_loss_mse = reconstruction_loss(
-            batch,
-            reconstructed_activations,
-        )
-        l1_loss_learned_activations = l1_loss(learned_activations)
-        total_loss = sae_training_loss(
-            reconstruction_loss_mse,
-            l1_loss_learned_activations,
-            sweep_parameters.l1_coefficient,
-        )
-        loss_batches.append(total_loss)
-
-        if batch_idx >= batches:
-            break
+    # Compute the loss for the current model on a random subset of inputs and get the activations.
+    loss, input_activations = compute_loss_and_get_activations(
+        store, autoencoder, sweep_parameters, num_inputs
+    )
 
     # Assign each input vector a probability of being picked that is proportional to the square of
     # the autoencoder's loss on that input.
-    square_loss: Float[Tensor, " item"] = torch.stack(loss_batches).pow(2)
-    sample_probabilities: Float[Tensor, " item"] = square_loss / square_loss.sum()
-    input_activations: Float[Tensor, "item input_feature"] = torch.stack(input_activations_batches)
+    sample_probabilities: Float[Tensor, " item"] = assign_sampling_probabilities(loss)
 
     encoder_weight: Float[
         Tensor, "learned_feature input_feature"
@@ -96,25 +188,14 @@ def resample_neurons(
 
     for neuron_idx in dead_neuron_indices:
         # For each dead neuron sample an input according to these probabilities.
-        sample_idx: Int[Tensor, 1] = torch.multinomial(sample_probabilities, num_samples=1)[0]
-        sampled_input: Float[Tensor, " input_feature"] = input_activations[sample_idx, :]
+        sampled_input: Float[Tensor, " input_feature"] = sample_input(
+            sample_probabilities, input_activations
+        )
 
         # Renormalize the input vector to have unit L2 norm and set this to be the dictionary vector
         # for the dead autoencoder neuron.
-        unit_norm_sampled_input: Float[Tensor, " input_feature"] = torch.nn.functional.normalize(
-            sampled_input, dim=-1
-        )
-
-        # For the corresponding encoder vector, renormalize the input vector to equal the average
-        # norm of the encoder weights for alive neurons times 0.2. Set the corresponding encoder
-        # bias element to zero.
-        alive_neuron_mask: Bool[Tensor, " learned_feature"] = neuron_activity > 0
-        alive_encoder_weights: Float[Tensor, "alive_feature input_feature"] = encoder_weight[
-            :, alive_neuron_mask
-        ]
-        average_alive_norm: Float[Tensor, 1] = alive_encoder_weights.norm(dim=-1).mean()
-        rescaled_sampled_input: Float[Tensor, " input_feature"] = (
-            unit_norm_sampled_input * average_alive_norm * 0.2
+        rescaled_sampled_input = renormalize_and_scale(
+            sampled_input, neuron_activity, encoder_weight
         )
         encoder_weight.data[:, neuron_idx] = rescaled_sampled_input
         encoder_bias.data[neuron_idx] = 0.0
