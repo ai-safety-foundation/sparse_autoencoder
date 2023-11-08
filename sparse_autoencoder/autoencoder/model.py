@@ -36,6 +36,15 @@ class SparseAutoencoder(Module):
     dtype: torch.dtype | None
     """Data type to use for the model."""
 
+    encoder_linear: Linear
+    """Encoder Linear Module."""
+
+    encoder: Sequential
+    """Encoder Module."""
+
+    decoder: Sequential
+    """Decoder Module."""
+
     def __init__(
         self,
         n_input_features: int,
@@ -72,9 +81,13 @@ class SparseAutoencoder(Module):
         self.initialize_tied_parameters()
 
         # Create the network
+        self.encoder_linear = Linear(
+            n_input_features, n_learned_features, bias=False, device=device, dtype=dtype
+        )
+
         self.encoder = Sequential(
             TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
-            Linear(n_input_features, n_learned_features, bias=True, device=device, dtype=dtype),
+            self.encoder_linear,
             ReLU(),
         )
 
