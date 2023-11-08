@@ -1,4 +1,6 @@
 """The Sparse Autoencoder Model."""
+from collections import OrderedDict
+
 from jaxtyping import Float
 import torch
 from torch import Tensor
@@ -80,22 +82,27 @@ class SparseAutoencoder(Module):
         self.tied_bias = Parameter(torch.empty((n_input_features), device=device, dtype=dtype))
         self.initialize_tied_parameters()
 
-        # Create the network
-        self.encoder_linear = Linear(
-            n_input_features, n_learned_features, bias=False, device=device, dtype=dtype
-        )
-
         self.encoder = Sequential(
-            TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
-            self.encoder_linear,
-            ReLU(),
+            OrderedDict(
+                {
+                    "TiedBias": TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
+                    "Linear": Linear(
+                        n_input_features, n_learned_features, bias=False, device=device, dtype=dtype
+                    ),
+                    "ReLU": ReLU(),
+                }
+            )
         )
 
         self.decoder = Sequential(
-            ConstrainedUnitNormLinear(
-                n_learned_features, n_input_features, bias=False, device=device, dtype=dtype
-            ),
-            TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER),
+            OrderedDict(
+                {
+                    "ConstrainedUnitNormLinear": ConstrainedUnitNormLinear(
+                        n_learned_features, n_input_features, bias=False, device=device, dtype=dtype
+                    ),
+                    "TiedBias": TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER),
+                }
+            )
         )
 
     def forward(

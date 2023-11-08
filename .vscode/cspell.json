@@ -66,6 +66,7 @@
         "quniform",
         "randn",
         "randperm",
+        "relu",
         "resid",
         "runcap",
         "sharded",
