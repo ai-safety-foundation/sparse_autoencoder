@@ -1,7 +1,7 @@
 """Activation Store Base Class."""
 from abc import ABC, abstractmethod
-from concurrent.futures import Future
 from collections.abc import Callable
+from concurrent.futures import Future
 
 from jaxtyping import Float
 from torch import Tensor

@@ -25,7 +25,7 @@ def pipeline(
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
-    resize_method: ReshapeMethod = resize_to_single_item_dimension,
+    reshape_method: ReshapeMethod = resize_to_single_item_dimension,
     device: torch.device | None = None,
 ) -> None:
     """Full pipeline for training the sparse autoEncoder.
@@ -46,6 +46,8 @@ def pipeline(
             2GB of memory (assuming float16/bfloat16).
         autoencoder: The autoencoder to train.
         sweep_parameters: Parameter config to use.
+        reshape_method: The method to use to resize the activations to the correct shape for the
+            autoencoder.
         device: Device to run pipeline on.
     """
     autoencoder.to(device)
@@ -73,6 +75,7 @@ def pipeline(
                 activation_store,
                 src_dataloader,
                 device=device,
+                reshape_method=reshape_method,
                 num_items=num_activations_before_training,
             )
             if len(activation_store) == 0:

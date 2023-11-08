@@ -13,10 +13,9 @@ from sparse_autoencoder.activation_store.base_store import (
     ReshapeMethod,
     StoreFullError,
 )
-
 from sparse_autoencoder.activation_store.utils.extend_resize import resize_to_single_item_dimension
-
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
+
 
 def generate_activations(
     model: HookedTransformer,
@@ -55,6 +54,8 @@ def generate_activations(
         dataloader: Dataloader containing source model input tokens.
         num_items: Number of activation vectors to generate. This is an approximate rather
             than strict limit.
+        reshape_method: The method to use to resize the activations to the correct shape for the
+            autoencoder.
         device: Device to run the model on.
     """
     if isinstance(device, torch.device):

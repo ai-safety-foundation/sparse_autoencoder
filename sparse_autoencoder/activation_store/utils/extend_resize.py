@@ -1,15 +1,16 @@
 """Resize Tensors for Extend Methods."""
+from math import prod
+
 from einops import rearrange
 from jaxtyping import Float
 from torch import Tensor
 
-from math import prod
-
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStoreBatch,
-    UnshapedActivationBatch,
     ActivationStoreItem,
+    UnshapedActivationBatch,
 )
+
 
 def resize_to_list_vectors(
     batched_tensor: UnshapedActivationBatch,
@@ -101,17 +102,17 @@ def resize_concat_to_single_item_dimension(
 ) -> ActivationStoreBatch:
     """Resize To Single Item Dimension, Concatenating the Specified Dimensions.
 
-    Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last `concat_dims`
-    of which are the neuron dimensions), and returns a single tensor of size [item, neurons].
+    Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last
+    `concat_dims` of which are the neuron dimensions), and returns a single tensor of size
+    [item, neurons].
 
     Args:
         batch_activations: Input Activation Store Batch
         concat_dims: Number of dimensions to concatenate
-    
+
     Returns:
         Single Tensor of Activation Store Items
     """
-
     neurons = prod(batch_activations.shape[-concat_dims:])
     items = prod(batch_activations.shape[:-concat_dims])
     return batch_activations.reshape(items, neurons)
