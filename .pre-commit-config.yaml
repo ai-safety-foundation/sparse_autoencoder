@@ -18,7 +18,7 @@ repos:
     hooks:
       - id: ruff_lint
         name: Ruff Lint
-        entry: poetry run ruff check sparse_autoencoder
+        entry: poetry run ruff check sparse_autoencoder --fix
         language: system
         types: [python]
         require_serial: true

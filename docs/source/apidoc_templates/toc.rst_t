@@ -1,0 +1,12 @@
+Sparse Autoencoder API
+----------------------
+
+If browsing the docs for the first time, we recommend initially looking at ...
+Contents
+^^^^^^^^
+
+.. toctree::
+   :maxdepth: 3
+{% for docname in docnames %}
+   {{ docname }}
+{%- endfor %}

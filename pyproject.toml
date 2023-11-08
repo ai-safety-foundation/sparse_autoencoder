@@ -33,6 +33,16 @@
             transformer-lens=">=1.9.0"
             transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
+        [tool.poetry.group.docs.dependencies]
+            sphinx = "^7.2.6"
+            sphinxcontrib-napoleon = "^0.7"
+            sphinx-autobuild = "^2021.3.14"
+            furo = "^2023.9.10"
+            myst-parser = "^2.0.0"
+            nbsphinx = "^0.9.3"
+            nbconvert = "^7.11.0"
+            pandoc = "^2.3"
+
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="Run all checks"
@@ -80,6 +90,10 @@
         help="  [alias for typecheck]"
         sequence=["typecheck"]
 
+    [tool.poe.tasks.make-docs]
+        script="docs.make_docs:build_docs"
+        help="Generates our docs"
+
 [build-system]
     build-backend="poetry.core.masonry.api"
     requires=["poetry-core"]
@@ -92,7 +106,6 @@
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
@@ -119,6 +132,11 @@
             lines-after-imports=2
 
         [tool.ruff.lint.per-file-ignores]
+            "**/docs/*" = [
+                "ANN401", # Allow type.Any in doc scripts
+                "S603", # Starting an untrusted subprocess
+                "S607", # Starting a process with a partial path for sphinx
+            ]
             "**/tests/*"=[
                 "ARG001", # Fixtures often have unused arguments
                 "PT004",  # Fixtures don't return anything
