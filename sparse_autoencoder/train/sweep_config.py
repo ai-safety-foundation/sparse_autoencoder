@@ -75,7 +75,7 @@ class SweepParametersRuntime(dict[str, Any]):
 
     adam_weight_decay: float = 0.0
 
-    l1_coefficient: float = 0.01
+    l1_coefficient: float = 0.001
 
     batch_size: int = 512
 

@@ -38,9 +38,6 @@ class SparseAutoencoder(Module):
     dtype: torch.dtype | None
     """Data type to use for the model."""
 
-    encoder_linear: Linear
-    """Encoder Linear Module."""
-
     encoder: Sequential
     """Encoder Module."""
 
