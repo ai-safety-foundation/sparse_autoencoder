@@ -1,33 +1,25 @@
 """Tests for the capacity calculation and histogram creation."""
 
+import math
+
+import pytest
 import torch
+from jaxtyping import Float
+from torch import Tensor
 
-from sparse_autoencoder.train.metrics.capacity import calc_capacities, wandb_capacities_histogram
+from sparse_autoencoder.train.metrics.capacity import (
+    calc_capacities, wandb_capacities_histogram)
 
 
-def test_calc_capacities() -> None:
+@pytest.mark.parametrize("features,expected_capacities", [
+    (torch.tensor([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]), torch.tensor([1.0, 1.0, 1.0])),
+    (torch.tensor([[-0.8, -0.8, -0.8], [-0.8, -0.8, -0.8], [-0.8, -0.8, -0.8]]), torch.ones(3) / 3),
+    (torch.tensor([[1.0, 0.0, 0], [math.sqrt(2), math.sqrt(2), 0.0], [0.0, 0.0, 1.0]]), torch.tensor([2 / 3, 2 / 3, 1.0])),
+])
+def test_calc_capacities(features: Float[Tensor, "n_feats feat_dim"], expected_capacities: Float[Tensor, " n_feats"]) -> None:
     """Check that the capacity calculation is correct."""
-    orthogonal_activations = torch.tensor([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-    identical_activations = torch.tensor(
-        [[-0.8, -0.8, -0.8], [-0.8, -0.8, -0.8], [-0.8, -0.8, -0.8]]
-    )
-    intermediate_activations = torch.tensor([[1.0, 0.0, 0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-    intermediate_activations /= torch.norm(intermediate_activations, dim=1, keepdim=True)
-
-    orthogonal_capacities = calc_capacities(orthogonal_activations)
-    identical_capacities = calc_capacities(identical_activations)
-    intermediate_capacities = calc_capacities(intermediate_activations)
-
-    assert torch.allclose(
-        orthogonal_capacities, torch.tensor([1.0, 1.0, 1.0])
-    ), "Orthogonal features should have capacity 1.0."
-    assert torch.allclose(
-        identical_capacities, torch.ones(3) / 3
-    ), "Identical features should have capacity 1/3."
-    assert torch.allclose(
-        intermediate_capacities, torch.tensor([2 / 3, 2 / 3, 1.0]), rtol=1e-3
-    ), "Capacity calculation is incorrect."
-
+    capacities = calc_capacities(features)
+    assert torch.allclose(capacities, expected_capacities, rtol=1e-3), "Capacity calculation is incorrect."
 
 def test_wandb_capacity_histogram() -> None:
     """Check the Weights & Biases Histogram is created correctly."""

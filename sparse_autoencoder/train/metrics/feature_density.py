@@ -1,13 +1,13 @@
 """Feature density metrics & histogram."""
 
 import einops
+import numpy as np
+import torch
+import wandb
 from jaxtyping import Float
 from numpy import histogram
-import numpy as np
 from numpy.typing import NDArray
-import torch
 from torch import Tensor
-import wandb
 
 
 def calc_feature_density(
