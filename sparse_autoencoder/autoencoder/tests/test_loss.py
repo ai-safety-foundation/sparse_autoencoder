@@ -28,10 +28,10 @@ def test_loss() -> None:
 
     # Compute the reconstruction_loss, l1_loss, and sae_training_loss
     mse_tensor = reconstruction_loss(
-        torch.tensor(input_activations),
-        torch.tensor(output_activations),
+        torch.tensor(input_activations).unsqueeze(0),
+        torch.tensor(output_activations).unsqueeze(0),
     )
-    l1_tensor = l1_loss(torch.tensor(learned_activations))
+    l1_tensor = l1_loss(torch.tensor(learned_activations).unsqueeze(0))
     result = sae_training_loss(mse_tensor, l1_tensor, l1_coefficient)
 
     assert torch.allclose(result, torch.tensor([expected]))
