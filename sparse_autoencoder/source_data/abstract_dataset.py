@@ -127,6 +127,8 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
         """
+        self.context_size = context_size
+
         # Load the dataset
         dataset: IterableDataset = load_dataset(dataset_path, streaming=True, split=dataset_split)  # type: ignore
 

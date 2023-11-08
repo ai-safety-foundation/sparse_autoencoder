@@ -69,6 +69,7 @@
         "runcap",
         "sharded",
         "snapshottest",
+        "solu",
         "tqdm",
         "transformer_lens",
         "typecheck",

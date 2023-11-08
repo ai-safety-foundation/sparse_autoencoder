@@ -12,7 +12,6 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.source_data.abstract_dataset import (
     SourceDataset,
-    TokenizedPrompts,
     TorchTokenizedPrompts,
 )
 from sparse_autoencoder.train.generate_activations import generate_activations
@@ -61,10 +60,11 @@ def pipeline(
     src_model: HookedTransformer,
     src_model_activation_hook_point: str,
     src_model_activation_layer: int,
-    source_dataset: SourceDataset[TokenizedPrompts],
+    source_dataset: SourceDataset,
     activation_store: ActivationStore,
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
+    source_dataset_batch_size: int = 16,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
 ) -> None:
@@ -85,6 +85,7 @@ def pipeline(
             autoencoder. As a guide, 1 million activations, each of size 1024, will take up about
             2GB of memory (assuming float16/bfloat16).
         autoencoder: The autoencoder to train.
+        source_dataset_batch_size: Batch size of tokenized prompts for generating the source data.
         sweep_parameters: Parameter config to use.
         device: Device to run pipeline on.
     """
@@ -98,7 +99,7 @@ def pipeline(
         weight_decay=sweep_parameters.adam_weight_decay,
     )
 
-    source_dataloader = source_dataset.get_dataloader(sweep_parameters.batch_size)
+    source_dataloader = source_dataset.get_dataloader(source_dataset_batch_size)
     source_data_iterator = stateful_dataloader_iterable(source_dataloader)
 
     # Run loop until source data is exhausted:
@@ -118,7 +119,7 @@ def pipeline(
                 device=device,
                 context_size=source_dataset.context_size,
                 num_items=num_activations_before_training,
-                batch_size=sweep_parameters.batch_size,
+                batch_size=source_dataset_batch_size,
             )
             if len(activation_store) == 0:
                 break
