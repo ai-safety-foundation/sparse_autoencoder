@@ -11,7 +11,6 @@ from transformer_lens import HookedTransformer
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     ReshapeMethod,
-    StoreFullError,
 )
 from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_single_item_dimension,
