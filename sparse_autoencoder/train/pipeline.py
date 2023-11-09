@@ -71,6 +71,7 @@ def pipeline(  # noqa: PLR0913
     resample_frequency: int = 25000,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
+    max_activations: int = 100_000_000,
 ) -> None:
     """Full pipeline for training the sparse autoEncoder.
 
@@ -93,6 +94,8 @@ def pipeline(  # noqa: PLR0913
         resample_frequency: How often to resample neurons (in steps).
         sweep_parameters: Parameter config to use.
         device: Device to run pipeline on.
+        max_activations: Maximum number of activations to train with. May train for less if the
+            source dataset is exhausted.
     """
     autoencoder.to(device)
 
@@ -112,14 +115,20 @@ def pipeline(  # noqa: PLR0913
     neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
+    total_activations: int = 0
+    generate_train_iterations: int = 0
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
-        desc="Generate/Train Cycles",
-        position=0,
+        desc="Total activations trained on",
         dynamic_ncols=True,
+        colour="blue",
+        total=max_activations,
+        postfix={"Generate/train iterations": 0},
     ) as progress_bar:
-        while True:
+        while total_activations < max_activations:
+            activation_store.empty()  # In case it was filled by a different run
+
             # Add activations to the store
             generate_activations(
                 src_model,
@@ -139,15 +148,9 @@ def pipeline(  # noqa: PLR0913
             # create a shuffle method ourselves rather than get the DataLoader to shuffle
             activation_store.shuffle()
 
-            # Create a dataloader from the store
-            dataloader = DataLoader(
-                activation_store,
-                batch_size=sweep_parameters.batch_size,
-            )
-
             # Train the autoencoder
             train_steps, learned_activations_fired_count = train_autoencoder(
-                activations_dataloader=dataloader,
+                activation_store=activation_store,
                 autoencoder=autoencoder,
                 optimizer=optimizer,
                 sweep_parameters=sweep_parameters,
@@ -158,7 +161,8 @@ def pipeline(  # noqa: PLR0913
             non_resampled_steps += train_steps
             neuron_activity.add_(learned_activations_fired_count)
 
-            # Empty the store so we can fill it up again
+            total_activations += len(activation_store)
+            progress_bar.update(len(activation_store))
             activation_store.empty()
 
             # Resample neurons if required
@@ -172,3 +176,5 @@ def pipeline(  # noqa: PLR0913
                 )
 
             progress_bar.update(1)
+            generate_train_iterations += 1
+            progress_bar.set_postfix({"Generate/train iterations": generate_train_iterations})
