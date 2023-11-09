@@ -112,7 +112,6 @@ def pipeline(  # noqa: PLR0913
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Total activations trained on",
-        position=0,
         dynamic_ncols=True,
         colour="blue",
         total=max_activations,

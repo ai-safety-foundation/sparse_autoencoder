@@ -58,7 +58,6 @@ def train_autoencoder(
         desc="Train Autoencoder",
         total=n_dataset_items,
         colour="green",
-        position=1,
         leave=False,
         dynamic_ncols=True,
     ) as progress_bar:
@@ -108,7 +107,5 @@ def train_autoencoder(
             # TODO: Apply neuron resampling if enabled
 
             progress_bar.update(batch_size)
-
-        progress_bar.close()
 
         return previous_steps + step + 1
