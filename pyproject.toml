@@ -97,11 +97,9 @@
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
         "FA102",  # Annotations support (Python >= 3.9 is fine)
-        "FIX002", # TODO issue link (overkill)
         "INP001", # __init__.py for all packages (Python >= 3.3 is fine)
         "PGH003", # No general type: ignore (not supported with pyright)
         "TCH002", # Type checking imports (conflicts with beartype)
-        "TD00",   # TODO banned (we're in alpha)
         # Rules that conflict with ruff format
         "COM812",
         "ISC001",
