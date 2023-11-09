@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 import wandb
 
-from sparse_autoencoder.activation_store.base_store import ActivationStoreItem
+from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.loss import (
     l1_loss,
     reconstruction_loss,
@@ -18,7 +18,7 @@ from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
 def train_autoencoder(
-    activations_dataloader: DataLoader[ActivationStoreItem],
+    activation_store: ActivationStore,
     autoencoder: SparseAutoencoder,
     optimizer: Optimizer,
     sweep_parameters: SweepParametersRuntime,
@@ -29,7 +29,7 @@ def train_autoencoder(
     """Sparse Autoencoder Training Loop.
 
     Args:
-        activations_dataloader: DataLoader containing activations.
+        activation_store: Activation store to train on.
         autoencoder: Sparse autoencoder model.
         optimizer: The optimizer to use.
         sweep_parameters: The sweep parameters to use.
@@ -40,11 +40,17 @@ def train_autoencoder(
     Returns:
         Number of steps taken.
     """
-    n_dataset_items: int = len(activations_dataloader.dataset)  # type: ignore
-    batch_size: int = activations_dataloader.batch_size  # type: ignore
+    # Create a dataloader from the store
+    activations_dataloader = DataLoader(
+        activation_store,
+        batch_size=sweep_parameters.batch_size,
+    )
 
-    learned_activations_fired_count: Int[Tensor, " activations"] = torch.zeros(
-        autoencoder.n_learned_features, dtype=torch.int32
+    n_dataset_items: int = len(activation_store)
+    batch_size: int = sweep_parameters.batch_size
+
+    learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
+        autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
 
     step = 0
@@ -83,7 +89,7 @@ def train_autoencoder(
             learned_activations_fired_count.add_(fired.sum(dim=0))
 
             # Backwards pass
-            total_loss.backward()
+            total_loss.sum().backward()
 
             optimizer.step()
 
