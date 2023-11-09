@@ -80,23 +80,15 @@ def generate_activations(
     # Loop through the dataloader until the store reaches the desired size
     with torch.no_grad(), tqdm(
         desc="Generate Activations",
-        total=total,
+        total=total - total % activations_per_batch,
         colour="green",
-        position=1,
         leave=False,
         dynamic_ncols=True,
     ) as progress_bar:
         for batch in source_data:
-            try:
-                input_ids: Int[Tensor, "batch pos"] = batch["input_ids"].to(device)
-                model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)
-                progress_bar.update(activations_per_batch)
-
-            # Break the loop if the store is full
-            except StoreFullError:
+            if len(store) + activations_per_batch > total:
                 break
 
-            if len(store) >= total:
-                return
-
-        progress_bar.close()
+            input_ids: Int[Tensor, "batch pos"] = batch["input_ids"].to(device)
+            model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)
+            progress_bar.update(activations_per_batch)

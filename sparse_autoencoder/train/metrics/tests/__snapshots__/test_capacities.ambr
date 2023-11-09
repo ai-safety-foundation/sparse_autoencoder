@@ -1,0 +1,25 @@
+# serializer version: 1
+# name: test_wandb_capacity_histogram
+  list([
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3,
+  ])
+# ---
