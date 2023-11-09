@@ -25,7 +25,7 @@ def train_autoencoder(
     previous_steps: int,
     log_interval: int = 10,
     device: device | None = None,
-) -> int:
+) -> tuple[int, Float[Tensor, " learned_feature"]]:
     """Sparse Autoencoder Training Loop.
 
     Args:
@@ -43,7 +43,7 @@ def train_autoencoder(
     n_dataset_items: int = len(activations_dataloader.dataset)  # type: ignore
     batch_size: int = activations_dataloader.batch_size  # type: ignore
 
-    learned_activations_fired_count: Int[Tensor, " activations"] = torch.zeros(
+    learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32
     )
 
@@ -97,12 +97,10 @@ def train_autoencoder(
                     },
                 )
 
-            # TODO: Get the feature density & also log to wandb
-
-            # TODO: Apply neuron resampling if enabled
-
             progress_bar.update(batch_size)
 
         progress_bar.close()
 
-        return previous_steps + step + 1
+        current_step = previous_steps + step + 1
+
+        return current_step, learned_activations_fired_count

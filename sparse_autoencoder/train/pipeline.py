@@ -1,7 +1,9 @@
 """Training Pipeline."""
 from collections.abc import Iterable
 
+from jaxtyping import Int
 import torch
+from torch import Tensor
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -15,6 +17,7 @@ from sparse_autoencoder.source_data.abstract_dataset import (
     TorchTokenizedPrompts,
 )
 from sparse_autoencoder.train.generate_activations import generate_activations
+from sparse_autoencoder.train.resample_neurons import resample_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
@@ -56,7 +59,7 @@ def stateful_dataloader_iterable(
     yield from dataloader
 
 
-def pipeline(
+def pipeline(  # noqa: PLR0913
     src_model: HookedTransformer,
     src_model_activation_hook_point: str,
     src_model_activation_layer: int,
@@ -65,6 +68,7 @@ def pipeline(
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     source_dataset_batch_size: int = 16,
+    resample_frequency: int = 25000,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
 ) -> None:
@@ -86,6 +90,7 @@ def pipeline(
             2GB of memory (assuming float16/bfloat16).
         autoencoder: The autoencoder to train.
         source_dataset_batch_size: Batch size of tokenized prompts for generating the source data.
+        resample_frequency: How often to resample neurons (in steps).
         sweep_parameters: Parameter config to use.
         device: Device to run pipeline on.
     """
@@ -103,6 +108,10 @@ def pipeline(
     source_data_iterator = stateful_dataloader_iterable(source_dataloader)
 
     total_steps: int = 0
+    non_resampled_steps: int = 0
+    neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
+        autoencoder.n_learned_features, dtype=torch.int32, device=device
+    )
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
@@ -137,7 +146,7 @@ def pipeline(
             )
 
             # Train the autoencoder
-            total_steps += train_autoencoder(
+            train_steps, learned_activations_fired_count = train_autoencoder(
                 activations_dataloader=dataloader,
                 autoencoder=autoencoder,
                 optimizer=optimizer,
@@ -145,8 +154,21 @@ def pipeline(
                 device=device,
                 previous_steps=total_steps,
             )
+            total_steps += train_steps
+            non_resampled_steps += train_steps
+            neuron_activity.add_(learned_activations_fired_count)
 
             # Empty the store so we can fill it up again
             activation_store.empty()
+
+            # Resample neurons if required
+            if non_resampled_steps >= resample_frequency:
+                non_resampled_steps = 0
+                resample_neurons(
+                    neuron_activity=neuron_activity,
+                    store=activation_store,
+                    autoencoder=autoencoder,
+                    sweep_parameters=sweep_parameters,
+                )
 
             progress_bar.update(1)
