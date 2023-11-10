@@ -68,7 +68,7 @@ def pipeline(  # noqa: PLR0913
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     source_dataset_batch_size: int = 16,
-    resample_frequency: int = 25000,
+    resample_frequency: int = 1,  # 25_000_000,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
     max_activations: int = 100_000_000,
@@ -91,7 +91,7 @@ def pipeline(  # noqa: PLR0913
             2GB of memory (assuming float16/bfloat16).
         autoencoder: The autoencoder to train.
         source_dataset_batch_size: Batch size of tokenized prompts for generating the source data.
-        resample_frequency: How often to resample neurons (in steps).
+        resample_frequency: How often to resample neurons (number of activations learnt on).
         sweep_parameters: Parameter config to use.
         device: Device to run pipeline on.
         max_activations: Maximum number of activations to train with. May train for less if the
@@ -111,7 +111,7 @@ def pipeline(  # noqa: PLR0913
     source_data_iterator = stateful_dataloader_iterable(source_dataloader)
 
     total_steps: int = 0
-    non_resampled_steps: int = 0
+    activations_since_resampling: int = 0
     neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
@@ -158,22 +158,26 @@ def pipeline(  # noqa: PLR0913
                 previous_steps=total_steps,
             )
             total_steps += train_steps
-            non_resampled_steps += train_steps
-            neuron_activity.add_(learned_activations_fired_count)
 
+            if activations_since_resampling >= resample_frequency / 2:
+                neuron_activity.add_(learned_activations_fired_count)
+
+            activations_since_resampling += len(activation_store)
             total_activations += len(activation_store)
             progress_bar.update(len(activation_store))
             activation_store.empty()
 
             # Resample neurons if required
-            if non_resampled_steps >= resample_frequency:
-                non_resampled_steps = 0
+            if activations_since_resampling >= resample_frequency:
+                activations_since_resampling = 0
                 resample_neurons(
                     neuron_activity=neuron_activity,
                     store=activation_store,
                     autoencoder=autoencoder,
                     sweep_parameters=sweep_parameters,
                 )
+                learned_activations_fired_count.zero_()
+                optimizer.state_dict().clear()  # Reset optimizer state
 
             progress_bar.update(1)
             generate_train_iterations += 1
