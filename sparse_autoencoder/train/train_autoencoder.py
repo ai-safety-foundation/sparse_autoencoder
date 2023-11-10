@@ -1,4 +1,6 @@
 """Training Pipeline."""
+from collections.abc import Sequence
+
 from jaxtyping import Float, Int
 import torch
 from torch import Tensor, device, set_grad_enabled
@@ -8,12 +10,9 @@ from tqdm.auto import tqdm
 import wandb
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
-from sparse_autoencoder.autoencoder.loss import (
-    l1_loss,
-    reconstruction_loss,
-    sae_training_loss,
-)
+from sparse_autoencoder.autoencoder.loss import l1_loss, reconstruction_loss, sae_training_loss
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.train.metrics.metric_class import Metric, MetricArgs
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
@@ -23,6 +22,7 @@ def train_autoencoder(
     optimizer: Optimizer,
     sweep_parameters: SweepParametersRuntime,
     previous_steps: int,
+    metrics: Sequence[Metric],
     log_interval: int = 10,
     device: device | None = None,
 ) -> int:
@@ -34,6 +34,7 @@ def train_autoencoder(
         optimizer: The optimizer to use.
         sweep_parameters: The sweep parameters to use.
         previous_steps: Training steps from previous generate/train iterations.
+        metrics: List of metrics to compute, inherit from Metric.
         log_interval: How often to log progress.
         device: Decide to use.
 
@@ -92,7 +93,6 @@ def train_autoencoder(
 
             optimizer.step()
 
-            # Log
             if step % log_interval == 0 and wandb.run is not None:
                 wandb.log(
                     {
@@ -100,12 +100,25 @@ def train_autoencoder(
                         "l1_loss": l1_loss_learned_activations.mean().item(),
                         "loss": total_loss.mean().item(),
                     },
+                    commit=False,
                 )
 
             # TODO: Get the feature density & also log to wandb
+            metric_args = MetricArgs(
+                step=step + previous_steps + 1,
+                batch=batch,
+                reconstruction_loss_mse=reconstruction_loss_mse,
+                l1_loss=l1_loss_learned_activations,
+                autoencoder=autoencoder,
+                optimizer=optimizer,
+                learned_activations=learned_activations,
+                reconstructed_activations=reconstructed_activations,
+            )
 
-            # TODO: Apply neuron resampling if enabled
+            for metric in metrics:
+                metric.compute_and_log(metric_args)
 
+            wandb.log({}, commit=True, step=step + previous_steps + 1)
             progress_bar.update(batch_size)
 
         return previous_steps + step + 1

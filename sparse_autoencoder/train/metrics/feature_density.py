@@ -9,6 +9,8 @@ import torch
 from torch import Tensor
 import wandb
 
+from sparse_autoencoder.train.metrics.metric_class import Metric, MetricArgs
+
 
 def calc_feature_density(
     activations: Float[Tensor, "sample activation"], threshold: float = 0.001
@@ -56,5 +58,17 @@ def wandb_feature_density_histogram(
     """
     numpy_feature_density: NDArray[np.float_] = feature_density.detach().cpu().numpy()
 
-    bins, values = histogram(numpy_feature_density, bins="auto")
+    bins, values = histogram(numpy_feature_density, bins=100)
     return wandb.Histogram(np_histogram=(bins, values))
+
+
+class FeatureDensityMetric(Metric):
+    """Metric for that computes and logs a feature density histogram."""
+
+    def compute_and_log(self, args: MetricArgs) -> None:
+        """Compute and log the feature density histogram."""
+        value = calc_feature_density(args["learned_activations"])
+
+        histogram = wandb_feature_density_histogram(value)
+
+        wandb.log({"feature_density_histogram": histogram})

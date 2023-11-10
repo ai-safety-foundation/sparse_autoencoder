@@ -8,6 +8,8 @@ import torch
 from torch import Tensor
 import wandb
 
+from sparse_autoencoder.train.metrics.metric_class import Metric, MetricArgs
+
 
 def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor, " n_feats"]:
     """Calculate capacities.
@@ -62,3 +64,13 @@ def wandb_capacities_histogram(
 
     bins, values = histogram(numpy_capacities, bins=20, range=(0, 1))
     return wandb.Histogram(np_histogram=(bins, values))
+
+
+class CapacityMetric(Metric):
+    """Capacity metric."""
+
+    def compute_and_log(self, args: MetricArgs) -> None:
+        """Compute and log the capacity of the learned features."""
+        value = calc_capacities(args["autoencoder"].decoder[0].weight)
+        histogram = wandb_capacities_histogram(value)
+        wandb.log({"capacities_histogram": histogram})

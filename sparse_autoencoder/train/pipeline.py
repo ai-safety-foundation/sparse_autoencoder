@@ -1,5 +1,5 @@
 """Training Pipeline."""
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 
 import torch
 from torch.optim import Adam
@@ -10,11 +10,11 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.source_data.abstract_dataset import (
-    SourceDataset,
-    TorchTokenizedPrompts,
-)
+from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.train.generate_activations import generate_activations
+from sparse_autoencoder.train.metrics.capacity import CapacityMetric
+from sparse_autoencoder.train.metrics.feature_density import FeatureDensityMetric
+from sparse_autoencoder.train.metrics.metric_class import Metric
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
@@ -68,6 +68,7 @@ def pipeline(  # noqa: PLR0913
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
     max_activations: int = 100_000_000,
+    additional_metrics: Sequence[Metric] | None = None,
 ) -> None:
     """Full pipeline for training the sparse autoEncoder.
 
@@ -91,6 +92,7 @@ def pipeline(  # noqa: PLR0913
         device: Device to run pipeline on.
         max_activations: Maximum number of activations to train with. May train for less if the
             source dataset is exhausted.
+        additional_metrics: Additional metrics to run during training.
     """
     autoencoder.to(device)
 
@@ -108,6 +110,10 @@ def pipeline(  # noqa: PLR0913
     total_steps: int = 0
     total_activations: int = 0
     generate_train_iterations: int = 0
+
+    metrics: list[Metric] = [CapacityMetric(), FeatureDensityMetric()]
+    if additional_metrics:
+        metrics.extend(additional_metrics)
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
@@ -145,6 +151,7 @@ def pipeline(  # noqa: PLR0913
                 autoencoder=autoencoder,
                 optimizer=optimizer,
                 sweep_parameters=sweep_parameters,
+                metrics=metrics,
                 device=device,
                 previous_steps=total_steps,
             )
