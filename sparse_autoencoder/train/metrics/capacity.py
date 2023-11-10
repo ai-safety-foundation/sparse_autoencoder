@@ -73,4 +73,4 @@ class CapacityMetric(Metric):
         """Compute and log the capacity of the learned features."""
         value = calc_capacities(args["autoencoder"].decoder[0].weight)
         histogram = wandb_capacities_histogram(value)
-        wandb.log({"capacities_histogram": histogram})
+        wandb.log({"capacities_histogram": histogram}, step=args["step"], commit=False)

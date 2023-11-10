@@ -1,5 +1,4 @@
 """Feature density metrics & histogram."""
-
 import einops
 from jaxtyping import Float
 from numpy import histogram
@@ -68,7 +67,5 @@ class FeatureDensityMetric(Metric):
     def compute_and_log(self, args: MetricArgs) -> None:
         """Compute and log the feature density histogram."""
         value = calc_feature_density(args["learned_activations"])
-
         histogram = wandb_feature_density_histogram(value)
-
-        wandb.log({"feature_density_histogram": histogram})
+        wandb.log({"feature_density_histogram": histogram}, step=args["step"], commit=False)

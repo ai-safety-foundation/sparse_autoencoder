@@ -101,9 +101,9 @@ def train_autoencoder(
                         "loss": total_loss.mean().item(),
                     },
                     commit=False,
+                    step=step + previous_steps + 1,
                 )
 
-            # TODO: Get the feature density & also log to wandb
             metric_args = MetricArgs(
                 step=step + previous_steps + 1,
                 batch=batch,
