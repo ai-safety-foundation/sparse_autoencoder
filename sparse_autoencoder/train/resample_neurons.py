@@ -105,34 +105,39 @@ def assign_sampling_probabilities(loss: Float[Tensor, " item"]) -> Tensor:
 
 
 def sample_input(
-    probabilities: Float[Tensor, " item"], input_activations: Float[Tensor, "item input_feature"]
-) -> Float[Tensor, " input_feature"]:
+    probabilities: Float[Tensor, " item"],
+    input_activations: Float[Tensor, "item input_feature"],
+    num_samples: int,
+) -> Float[Tensor, "dead_neuron input_feature"]:
     """Sample an input vector based on the provided probabilities.
 
     Example:
         >>> probabilities = torch.tensor([0.1, 0.2, 0.7])
         >>> input_activations = torch.tensor([[1, 2], [3, 4], [5, 6]])
         >>> _seed = torch.manual_seed(0)  # For reproducibility in example
-        >>> sampled_input = sample_input(probabilities, input_activations)
+        >>> sampled_input = sample_input(probabilities, input_activations, 2)
         >>> sampled_input.tolist()
-        [5, 6]
+        [[5, 6], [3, 4]]
 
     Args:
         probabilities: Probabilities for each input.
         input_activations: Input activation vectors.
+        num_samples: Number of samples to take (number of dead neurons).
 
     Returns:
         Sampled input activation vector.
     """
-    sample_idx = torch.multinomial(probabilities, num_samples=1)[0]
-    return input_activations[sample_idx, :]
+    sample_indices: Int[Tensor, " dead_neuron"] = torch.multinomial(
+        probabilities, num_samples=num_samples
+    )
+    return input_activations[sample_indices, :]
 
 
 def renormalize_and_scale(
-    sampled_input: Float[Tensor, " input_feature"],
+    sampled_input: Float[Tensor, "dead_neuron input_feature"],
     neuron_activity: Int[Tensor, " learned_features"],
     encoder_weight: Float[Tensor, "learned_feature input_feature"],
-) -> Float[Tensor, " input_feature"]:
+) -> Float[Tensor, "dead_neuron input_feature"]:
     """Renormalize and scale the resampled dictionary vectors.
 
     Renormalize the input vector to equal the average norm of the encoder weights for alive neurons
@@ -140,12 +145,12 @@ def renormalize_and_scale(
 
     Example:
         >>> _seed = torch.manual_seed(0)  # For reproducibility in example
-        >>> sampled_input = torch.tensor([3.0, 4.0])
+        >>> sampled_input = torch.tensor([[3.0, 4.0]])
         >>> neuron_activity = torch.tensor([3, 0, 5, 0, 1, 3])
-        >>> encoder_weight = torch.ones((2, 6))
+        >>> encoder_weight = torch.ones((6, 2))
         >>> rescaled_input = renormalize_and_scale(sampled_input, neuron_activity, encoder_weight)
         >>> rescaled_input.round(decimals=1)
-        tensor([0.2000, 0.3000])
+        tensor([[0.2000, 0.2000]])
 
     Args:
         sampled_input: Tensor of the sampled input activation.
@@ -164,7 +169,9 @@ def renormalize_and_scale(
 
     # Renormalize the input vector to equal the average norm of the encoder weights for alive
     # neurons times 0.2.
-    renormalized_input = torch.nn.functional.normalize(sampled_input, dim=-1)
+    renormalized_input: Float[Tensor, "dead_neuron input_feature"] = torch.nn.functional.normalize(
+        sampled_input, dim=-1
+    )
     return renormalized_input * (average_alive_norm * 0.2)
 
 
@@ -264,26 +271,25 @@ def resample_neurons(
         encoder_bias: Float[Tensor, " learned_feature"] = encoder_linear.bias
         decoder_weight: Float[Tensor, "input_feature learned_feature"] = decoder_linear.weight
 
-        for neuron_idx in dead_neuron_indices:
-            # For each dead neuron sample an input according to these probabilities.
-            sampled_input: Float[Tensor, " input_feature"] = sample_input(
-                sample_probabilities, input_activations
-            )
+        # For each dead neuron sample an input according to these probabilities.
+        sampled_input: Float[Tensor, "dead_neuron input_feature"] = sample_input(
+            sample_probabilities, input_activations, len(dead_neuron_indices)
+        )
 
-            # Renormalize the input vector to have unit L2 norm and set this to be the dictionary
-            # vector for the dead autoencoder neuron.
-            renormalized_input: Float[Tensor, " input_feature"] = torch.nn.functional.normalize(
-                sampled_input, dim=-1
-            )
-            decoder_weight[:, neuron_idx] = renormalized_input
+        # Renormalize the input vector to have unit L2 norm and set this to be the dictionary
+        # vector for the dead autoencoder neuron.
+        renormalized_input: Float[
+            Tensor, "dead_neuron input_feature"
+        ] = torch.nn.functional.normalize(sampled_input, dim=-1)
+        decoder_weight[:, dead_neuron_indices] = renormalized_input
 
-            # For the corresponding encoder vector, renormalize the input vector to equal the
-            # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
-            # encoder bias element to zero.
-            rescaled_sampled_input = renormalize_and_scale(
-                sampled_input, neuron_activity, encoder_weight
-            )
-            encoder_weight.data[neuron_idx, :] = rescaled_sampled_input
-            encoder_bias.data[neuron_idx] = 0.0
+        # For the corresponding encoder vector, renormalize the input vector to equal the
+        # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
+        # encoder bias element to zero.
+        rescaled_sampled_input = renormalize_and_scale(
+            sampled_input, neuron_activity, encoder_weight
+        )
+        encoder_weight.data[dead_neuron_indices, :] = rescaled_sampled_input
+        encoder_bias.data[dead_neuron_indices] = 0.0
 
     reset_adam_parameters(optimizer, autoencoder, dead_neuron_indices)
