@@ -7,6 +7,7 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.train.resample_neurons import (
+    assign_sampling_probabilities,
     compute_loss_and_get_activations,
     get_dead_neuron_indices,
 )
@@ -103,3 +104,29 @@ class TestComputeLossAndGetActivations:
 
         # Check that the activations are the same as the input data
         assert torch.equal(input_activations, input_activations_fixture)
+
+
+class TestAssignSamplingProbabilities:
+    """Tests for assign_sampling_probabilities."""
+
+    @pytest.mark.parametrize(
+        ("loss"),
+        [
+            (torch.tensor([1.0, 2.0, 3.0])),
+            (torch.tensor([2.0, 3.0, 5.0])),
+            (torch.tensor([0.0, 100.0])),
+        ],
+    )
+    def test_assign_sampling_probabilities(self, loss: Tensor) -> None:
+        """Test that sampling probabilities are correctly assigned based on loss."""
+        probabilities = assign_sampling_probabilities(loss)
+
+        # Compare against non-vectorized implementation
+        squared_loss = [batch_item_loss.item() ** 2 for batch_item_loss in loss]
+        sum_squared = sum(squared_loss)
+        proportions = [item / sum_squared for item in squared_loss]
+        expected_probabilities = torch.tensor(proportions)
+
+        assert torch.allclose(
+            probabilities, expected_probabilities, atol=1e-4
+        ), f"Expected probabilities {expected_probabilities} but got {probabilities}"
