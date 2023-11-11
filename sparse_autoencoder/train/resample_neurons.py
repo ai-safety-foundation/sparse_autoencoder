@@ -165,11 +165,42 @@ def renormalize_and_scale(
     return renormalized_input * (average_alive_norm * 0.2)
 
 
+def reset_adam_parameters(
+    optimizer: torch.optim.Adam,
+    autoencoder: SparseAutoencoder,
+    dead_neuron_indices: Int[Tensor, " learned_features"],
+) -> None:
+    """Reset the Adam optimizer parameters for every modified weight and bias term.
+
+    Args:
+        optimizer: Adam optimizer.
+        autoencoder: Sparse autoencoder model.
+        dead_neuron_indices: Indices of dead neurons.
+    """
+    # Get the Adam state for the encoder and decoder weights and biases.
+    weight_encoder_state = optimizer.state[autoencoder.encoder.get_submodule("Linear").weight]
+    weight_decoder_state = optimizer.state[
+        autoencoder.decoder.get_submodule("ConstrainedUnitNormLinear").weight
+    ]
+    bias_encoder_state = optimizer.state[autoencoder.encoder.get_submodule("Linear").bias]
+
+    # Reset the state
+    weight_decoder_state["exp_avg"][:, dead_neuron_indices] = 0.0
+    weight_decoder_state["exp_avg_sq"][:, dead_neuron_indices] = 0.0
+
+    weight_encoder_state["exp_avg"][dead_neuron_indices] = 0.0
+    weight_encoder_state["exp_avg_sq"][dead_neuron_indices] = 0.0
+
+    bias_encoder_state["exp_avg"][dead_neuron_indices] = 0.0
+    bias_encoder_state["exp_avg_sq"][dead_neuron_indices] = 0.0
+
+
 def resample_neurons(
     neuron_activity: Int[Tensor, " learned_features"],
     store: ActivationStore,
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime,
+    optimizer: torch.optim.Adam,
     num_inputs: int = 819_200,
 ) -> None:
     """Resample neurons.
@@ -203,6 +234,7 @@ def resample_neurons(
         store: Activation store.
         autoencoder: Sparse autoencoder model.
         sweep_parameters: Current training sweep parameters.
+        optimizer: Adam optimizer.
         num_inputs: Number of input activations to use when resampling. Will be rounded down to be
             divisible by the batch size, and cannot be larger than the number of items currently in
             the store.
@@ -248,3 +280,5 @@ def resample_neurons(
         )
         encoder_weight.data[neuron_idx, :] = rescaled_sampled_input
         encoder_bias.data[neuron_idx] = 0.0
+
+    reset_adam_parameters(optimizer, autoencoder, dead_neuron_indices)

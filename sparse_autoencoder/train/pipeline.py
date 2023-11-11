@@ -174,10 +174,10 @@ def pipeline(  # noqa: PLR0913
                     neuron_activity=neuron_activity,
                     store=activation_store,
                     autoencoder=autoencoder,
+                    optimizer=optimizer,
                     sweep_parameters=sweep_parameters,
                 )
                 learned_activations_fired_count.zero_()
-                optimizer.state_dict().clear()  # Reset optimizer state
 
             progress_bar.update(1)
             generate_train_iterations += 1
