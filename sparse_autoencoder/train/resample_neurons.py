@@ -246,5 +246,5 @@ def resample_neurons(
         rescaled_sampled_input = renormalize_and_scale(
             sampled_input, neuron_activity, encoder_weight
         )
-        encoder_weight.data[:, neuron_idx] = rescaled_sampled_input
+        encoder_weight.data[neuron_idx, :] = rescaled_sampled_input
         encoder_bias.data[neuron_idx] = 0.0
