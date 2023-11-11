@@ -10,6 +10,7 @@ from sparse_autoencoder.train.resample_neurons import (
     assign_sampling_probabilities,
     compute_loss_and_get_activations,
     get_dead_neuron_indices,
+    sample_input,
 )
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
@@ -130,3 +131,40 @@ class TestAssignSamplingProbabilities:
         assert torch.allclose(
             probabilities, expected_probabilities, atol=1e-4
         ), f"Expected probabilities {expected_probabilities} but got {probabilities}"
+
+
+class TestSampleInput:
+    """Tests for sample_input."""
+
+    def test_distribution(self) -> None:
+        """Test that sample approximately matches a multinomial distribution."""
+        torch.manual_seed(0)
+
+        probabilities = torch.tensor([0.1, 0.2, 0.7])
+
+        results = [0, 0, 0]
+        for _ in range(10_000):
+            input_activations = torch.tensor([[0.0, 0], [1, 1], [2, 2]])
+            sampled_input = sample_input(probabilities, input_activations, 1)
+
+            # Get the input activation index (the first element is also the index)
+            sampled_activation_idx = sampled_input[0][0].item()
+
+            results[int(sampled_activation_idx)] += 1
+
+        resulting_probabilities = torch.tensor([item / sum(results) for item in results])
+
+        assert torch.allclose(
+            resulting_probabilities, probabilities, atol=1e-2
+        ), f"Expected probabilities {probabilities} but got {resulting_probabilities}"
+
+    def test_sample_input_raises_value_error(self) -> None:
+        """Test that ValueError is raised on length miss-match."""
+        probabilities = torch.tensor([0.1, 0.2, 0.7])
+        input_activations = torch.tensor([[1.0, 2], [3, 4], [5, 6]])
+        num_samples = 4  # More than the number of input activations
+
+        with pytest.raises(
+            ValueError, match=r"Cannot sample \d+ inputs from \d+ input activations."
+        ):
+            sample_input(probabilities, input_activations, num_samples)

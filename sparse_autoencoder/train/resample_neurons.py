@@ -127,7 +127,16 @@ def sample_input(
 
     Returns:
         Sampled input activation vector.
+
+    Raises:
+        ValueError: If the number of samples is greater than the number of input activations.
     """
+    if num_samples > len(input_activations):
+        exception_message = (
+            f"Cannot sample {num_samples} inputs from {len(input_activations)} input activations."
+        )
+        raise ValueError(exception_message)
+
     sample_indices: Int[Tensor, " dead_neuron"] = torch.multinomial(
         probabilities, num_samples=num_samples
     )
