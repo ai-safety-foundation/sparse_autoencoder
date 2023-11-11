@@ -18,20 +18,20 @@ if TYPE_CHECKING:
 
 
 def get_dead_neuron_indices(
-    neuron_activity: Int[Tensor, " learned_features"], threshold: float = 1e-7
-) -> Int[Tensor, " learned_features"]:
+    neuron_activity: Int[Tensor, " learned_features"], threshold: int = 0
+) -> Int[Tensor, " dead_neuron"]:
     """Identify the indices of neurons that have zero activity.
 
     Example:
-        >>> neuron_activity = torch.tensor([0.0, 0.0, 0.1, 1.0])
-        >>> dead_neuron_indices = get_dead_neuron_indices(neuron_activity, threshold=0.05)
+        >>> neuron_activity = torch.tensor([0, 0, 3, 10, 0])
+        >>> dead_neuron_indices = get_dead_neuron_indices(neuron_activity)
         >>> dead_neuron_indices.tolist()
-        [0, 1]
+        [0, 1, 4]
 
     Args:
         neuron_activity: Tensor representing the number of times each neuron fired.
-        threshold: Threshold for determining if a neuron is dead (fires in response to less than
-        this percentage of source activation vectors).
+        threshold: Threshold for determining if a neuron is dead (has fired less than this number of
+            times.
 
     Returns:
         A tensor containing the indices of neurons that are 'dead' (zero activity).
@@ -58,29 +58,30 @@ def compute_loss_and_get_activations(
     Returns:
         A tuple containing the loss per item, and all input activations.
     """
-    loss_batches: list[Float[Tensor, " batch_item"]] = []
-    input_activations_batches: list[Float[Tensor, "batch_item input_feature"]] = []
-    batch_size: int = sweep_parameters.batch_size
-    dataloader = DataLoader(store, batch_size=batch_size)
-    batches: int = num_inputs // batch_size
+    with torch.no_grad():
+        loss_batches: list[Float[Tensor, " batch_item"]] = []
+        input_activations_batches: list[Float[Tensor, "batch_item input_feature"]] = []
+        batch_size: int = sweep_parameters.batch_size
+        dataloader = DataLoader(store, batch_size=batch_size)
+        batches: int = num_inputs // batch_size
 
-    for batch_idx, batch in enumerate(iter(dataloader)):
-        input_activations_batches.append(batch)
-        learned_activations, reconstructed_activations = autoencoder(batch)
-        loss_batches.append(
-            sae_training_loss(
-                reconstruction_loss(batch, reconstructed_activations),
-                l1_loss(learned_activations),
-                sweep_parameters.l1_coefficient,
+        for batch_idx, batch in enumerate(iter(dataloader)):
+            input_activations_batches.append(batch)
+            learned_activations, reconstructed_activations = autoencoder(batch)
+            loss_batches.append(
+                sae_training_loss(
+                    reconstruction_loss(batch, reconstructed_activations),
+                    l1_loss(learned_activations),
+                    sweep_parameters.l1_coefficient,
+                )
             )
-        )
-        if batch_idx >= batches:
-            break
+            if batch_idx >= batches:
+                break
 
-    loss = torch.cat(loss_batches)
-    input_activations = torch.cat(input_activations_batches)
+        loss = torch.cat(loss_batches)
+        input_activations = torch.cat(input_activations_batches)
 
-    return loss, input_activations
+        return loss, input_activations
 
 
 def assign_sampling_probabilities(loss: Float[Tensor, " item"]) -> Tensor:
@@ -234,8 +235,6 @@ def resample_neurons(
     was done to minimize interference with the rest of the network.
 
     Warning:
-        You should reset the Adam optimizer state (to the model parameters) after doing this.
-
         Note this approach is also known to create sudden loss spikes, and resampling too frequently
         causes training to diverge.
 
