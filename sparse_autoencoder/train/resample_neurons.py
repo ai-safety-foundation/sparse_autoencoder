@@ -77,7 +77,10 @@ def compute_loss_and_get_activations(
         if batch_idx >= batches:
             break
 
-    return torch.stack(loss_batches), torch.stack(input_activations_batches)
+    loss = torch.cat(loss_batches)
+    input_activations = torch.cat(input_activations_batches)
+
+    return loss, input_activations
 
 
 def assign_sampling_probabilities(loss: Float[Tensor, " item"]) -> Tensor:
@@ -155,7 +158,7 @@ def renormalize_and_scale(
     # Calculate the average norm of the encoder weights for alive neurons.
     alive_neuron_mask: Bool[Tensor, " learned_features"] = neuron_activity > 0
     alive_encoder_weights: Float[Tensor, "learned_feature alive_input_features"] = encoder_weight[
-        :, alive_neuron_mask
+        alive_neuron_mask, :
     ]
     average_alive_norm: Float[Tensor, 1] = alive_encoder_weights.norm(dim=-1).mean()
 
@@ -239,46 +242,48 @@ def resample_neurons(
             divisible by the batch size, and cannot be larger than the number of items currently in
             the store.
     """
-    dead_neuron_indices = get_dead_neuron_indices(neuron_activity)
+    with torch.no_grad():
+        dead_neuron_indices = get_dead_neuron_indices(neuron_activity)
 
-    # Compute the loss for the current model on a random subset of inputs and get the activations.
-    loss, input_activations = compute_loss_and_get_activations(
-        store, autoencoder, sweep_parameters, num_inputs
-    )
-
-    # Assign each input vector a probability of being picked that is proportional to the square of
-    # the autoencoder's loss on that input.
-    sample_probabilities: Float[Tensor, " item"] = assign_sampling_probabilities(loss)
-
-    # Get references to the encoder and decoder parameters
-    encoder_linear: torch.nn.Linear = autoencoder.encoder.get_submodule("Linear")  # type: ignore
-    decoder_linear: ConstrainedUnitNormLinear = autoencoder.decoder.get_submodule(
-        "ConstrainedUnitNormLinear"
-    )  # type: ignore
-    encoder_weight: Float[Tensor, "learned_feature input_feature"] = encoder_linear.weight
-    encoder_bias: Float[Tensor, " learned_feature"] = encoder_linear.bias
-    decoder_weight: Float[Tensor, "input_feature learned_feature"] = decoder_linear.weight
-
-    for neuron_idx in dead_neuron_indices:
-        # For each dead neuron sample an input according to these probabilities.
-        sampled_input: Float[Tensor, " input_feature"] = sample_input(
-            sample_probabilities, input_activations
+        # Compute the loss for the current model on a random subset of inputs and get the
+        # activations.
+        loss, input_activations = compute_loss_and_get_activations(
+            store, autoencoder, sweep_parameters, num_inputs
         )
 
-        # Renormalize the input vector to have unit L2 norm and set this to be the dictionary vector
-        # for the dead autoencoder neuron.
-        renormalized_input: Float[Tensor, " input_feature"] = torch.nn.functional.normalize(
-            sampled_input, dim=-1
-        )
-        decoder_weight[:, neuron_idx] = renormalized_input
+        # Assign each input vector a probability of being picked that is proportional to the square
+        # of the autoencoder's loss on that input.
+        sample_probabilities: Float[Tensor, " item"] = assign_sampling_probabilities(loss)
 
-        # For the corresponding encoder vector, renormalize the input vector to equal the average
-        # norm of the encoder weights for alive neurons times 0.2. Set the corresponding encoder
-        # bias element to zero.
-        rescaled_sampled_input = renormalize_and_scale(
-            sampled_input, neuron_activity, encoder_weight
-        )
-        encoder_weight.data[neuron_idx, :] = rescaled_sampled_input
-        encoder_bias.data[neuron_idx] = 0.0
+        # Get references to the encoder and decoder parameters
+        encoder_linear: torch.nn.Linear = autoencoder.encoder.get_submodule("Linear")  # type: ignore
+        decoder_linear: ConstrainedUnitNormLinear = autoencoder.decoder.get_submodule(
+            "ConstrainedUnitNormLinear"
+        )  # type: ignore
+        encoder_weight: Float[Tensor, "learned_feature input_feature"] = encoder_linear.weight
+        encoder_bias: Float[Tensor, " learned_feature"] = encoder_linear.bias
+        decoder_weight: Float[Tensor, "input_feature learned_feature"] = decoder_linear.weight
+
+        for neuron_idx in dead_neuron_indices:
+            # For each dead neuron sample an input according to these probabilities.
+            sampled_input: Float[Tensor, " input_feature"] = sample_input(
+                sample_probabilities, input_activations
+            )
+
+            # Renormalize the input vector to have unit L2 norm and set this to be the dictionary
+            # vector for the dead autoencoder neuron.
+            renormalized_input: Float[Tensor, " input_feature"] = torch.nn.functional.normalize(
+                sampled_input, dim=-1
+            )
+            decoder_weight[:, neuron_idx] = renormalized_input
+
+            # For the corresponding encoder vector, renormalize the input vector to equal the
+            # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
+            # encoder bias element to zero.
+            rescaled_sampled_input = renormalize_and_scale(
+                sampled_input, neuron_activity, encoder_weight
+            )
+            encoder_weight.data[neuron_idx, :] = rescaled_sampled_input
+            encoder_bias.data[neuron_idx] = 0.0
 
     reset_adam_parameters(optimizer, autoencoder, dead_neuron_indices)

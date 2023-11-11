@@ -165,7 +165,6 @@ def pipeline(  # noqa: PLR0913
             activations_since_resampling += len(activation_store)
             total_activations += len(activation_store)
             progress_bar.update(len(activation_store))
-            activation_store.empty()
 
             # Resample neurons if required
             if activations_since_resampling >= resample_frequency:
@@ -178,6 +177,8 @@ def pipeline(  # noqa: PLR0913
                     sweep_parameters=sweep_parameters,
                 )
                 learned_activations_fired_count.zero_()
+
+            activation_store.empty()
 
             progress_bar.update(1)
             generate_train_iterations += 1
