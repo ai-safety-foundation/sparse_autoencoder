@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from jaxtyping import Int
 import torch
 from torch import Tensor
+from torch.profiler import record_function
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
@@ -97,90 +98,92 @@ def pipeline(  # noqa: PLR0913
         max_activations: Maximum number of activations to train with. May train for less if the
             source dataset is exhausted.
     """
-    autoencoder.to(device)
+    with record_function("setup"):
+        autoencoder.to(device)
 
-    optimizer = AdamWithReset(
-        autoencoder.parameters(),
-        lr=sweep_parameters.lr,
-        betas=(sweep_parameters.adam_beta_1, sweep_parameters.adam_beta_2),
-        eps=sweep_parameters.adam_epsilon,
-        weight_decay=sweep_parameters.adam_weight_decay,
-        named_parameters=autoencoder.named_parameters(),
-    )
+        optimizer = AdamWithReset(
+            autoencoder.parameters(),
+            lr=sweep_parameters.lr,
+            betas=(sweep_parameters.adam_beta_1, sweep_parameters.adam_beta_2),
+            eps=sweep_parameters.adam_epsilon,
+            weight_decay=sweep_parameters.adam_weight_decay,
+            named_parameters=autoencoder.named_parameters(),
+        )
 
-    source_dataloader = source_dataset.get_dataloader(source_dataset_batch_size)
-    source_data_iterator = stateful_dataloader_iterable(source_dataloader)
+        source_dataloader = source_dataset.get_dataloader(source_dataset_batch_size)
+        source_data_iterator = stateful_dataloader_iterable(source_dataloader)
 
-    total_steps: int = 0
-    activations_since_resampling: int = 0
-    neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
-        autoencoder.n_learned_features, dtype=torch.int32, device=device
-    )
-    total_activations: int = 0
-    generate_train_iterations: int = 0
+        total_steps: int = 0
+        activations_since_resampling: int = 0
+        neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
+            autoencoder.n_learned_features,
+            dtype=torch.int32,
+            device=device,
+        )
+        total_activations: int = 0
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Total activations trained on",
         dynamic_ncols=True,
-        colour="blue",
         total=max_activations,
-        postfix={"Generate/train iterations": 0},
-    ) as progress_bar:
+        postfix={"Current mode": "initializing"},
+    ) as progress_bar, record_function("pipeline"):
         while total_activations < max_activations:
-            activation_store.empty()  # In case it was filled by a different run
+            with record_function("generate_activations"):
+                # Add activations to the store
+                activation_store.empty()  # In case it was filled by a different run
+                progress_bar.set_postfix({"Current mode": "generating"})
+                generate_activations(
+                    src_model,
+                    src_model_activation_layer,
+                    src_model_activation_hook_point,
+                    activation_store,
+                    source_data_iterator,
+                    device=device,
+                    context_size=source_dataset.context_size,
+                    num_items=num_activations_before_training,
+                    batch_size=source_dataset_batch_size,
+                )
+                if len(activation_store) == 0:
+                    break
 
-            # Add activations to the store
-            generate_activations(
-                src_model,
-                src_model_activation_layer,
-                src_model_activation_hook_point,
-                activation_store,
-                source_data_iterator,
-                device=device,
-                context_size=source_dataset.context_size,
-                num_items=num_activations_before_training,
-                batch_size=source_dataset_batch_size,
-            )
-            if len(activation_store) == 0:
-                break
-
-            # Shuffle the store if it has a shuffle method - it is often more efficient to
-            # create a shuffle method ourselves rather than get the DataLoader to shuffle
-            activation_store.shuffle()
+                # Shuffle the store if it has a shuffle method - it is often more efficient to
+                # create a shuffle method ourselves rather than get the DataLoader to shuffle
+                activation_store.shuffle()
 
             # Train the autoencoder
-            train_steps, learned_activations_fired_count = train_autoencoder(
-                activation_store=activation_store,
-                autoencoder=autoencoder,
-                optimizer=optimizer,
-                sweep_parameters=sweep_parameters,
-                device=device,
-                previous_steps=total_steps,
-            )
-            total_steps += train_steps
+            with record_function("train"):
+                progress_bar.set_postfix({"Current mode": "training"})
+                train_steps, learned_activations_fired_count = train_autoencoder(
+                    activation_store=activation_store,
+                    autoencoder=autoencoder,
+                    optimizer=optimizer,
+                    sweep_parameters=sweep_parameters,
+                    device=device,
+                    previous_steps=total_steps,
+                )
+                total_steps += train_steps
 
-            if activations_since_resampling >= resample_frequency / 2:
-                neuron_activity.add_(learned_activations_fired_count)
+                if activations_since_resampling >= resample_frequency / 2:
+                    neuron_activity.add_(learned_activations_fired_count)
 
-            activations_since_resampling += len(activation_store)
-            total_activations += len(activation_store)
-            progress_bar.update(len(activation_store))
+                activations_since_resampling += len(activation_store)
+                total_activations += len(activation_store)
+                progress_bar.update(len(activation_store))
 
             # Resample neurons if required
             if activations_since_resampling >= resample_frequency:
-                activations_since_resampling = 0
-                resample_dead_neurons(
-                    neuron_activity=neuron_activity,
-                    store=activation_store,
-                    autoencoder=autoencoder,
-                    sweep_parameters=sweep_parameters,
-                )
-                learned_activations_fired_count.zero_()
-                optimizer.reset_state_all_parameters()
+                with record_function("resample"):
+                    progress_bar.set_postfix({"Current mode": "resampling"})
+                    activations_since_resampling = 0
+                    resample_dead_neurons(
+                        neuron_activity=neuron_activity,
+                        store=activation_store,
+                        autoencoder=autoencoder,
+                        sweep_parameters=sweep_parameters,
+                    )
+                    learned_activations_fired_count.zero_()
+                    optimizer.reset_state_all_parameters()
 
             activation_store.empty()
-
-            progress_bar.update(1)
-            generate_train_iterations += 1
-            progress_bar.set_postfix({"Generate/train iterations": generate_train_iterations})

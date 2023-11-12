@@ -1055,6 +1055,23 @@ gitdb = ">=4.0.1,<5"
 test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre-commit", "pytest", "pytest-cov", "pytest-instafail", "pytest-subtests", "pytest-sugar"]
 
 [[package]]
+name = "holistictraceanalysis"
+version = "0.2.0"
+description = "A python library for analyzing PyTorch Profiler traces"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "HolisticTraceAnalysis-0.2.0-py3-none-any.whl", hash = "sha256:2ee513adcaa93add3196c064bf3766577af7712d9521a1ea00a6ac0baa0a30c1"},
+    {file = "HolisticTraceAnalysis-0.2.0.tar.gz", hash = "sha256:fbeff9e30b9af48d542e00e7fc7c1ed846fde376378f4db3c809b7453f84b570"},
+]
+
+[package.dependencies]
+jupyterlab = ">=3.5.1"
+numpy = ">=1.23.5"
+pandas = ">=1.5.2"
+plotly = ">=5.11.0"
+
+[[package]]
 name = "huggingface-hub"
 version = "0.19.0"
 description = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
@@ -2119,7 +2136,6 @@ optional = false
 python-versions = ">=3"
 files = [
     {file = "nvidia_cudnn_cu12-8.9.6.50-py3-none-manylinux1_x86_64.whl", hash = "sha256:02fbdf6a9f00ba88da68b275d1f175111cc01bbe2294fb688cd309fd61af8844"},
-    {file = "nvidia_cudnn_cu12-8.9.6.50-py3-none-win_amd64.whl", hash = "sha256:acfc4447a9345e8ba525e3b0641ee64bdfd35189ab9904241814ff991792f77a"},
 ]
 
 [package.dependencies]
@@ -4453,4 +4469,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "fe9961f7d226ecb7bcde8ad4b3cb6ce4d06635138b842841d3fbc4c9aaf6dd0b"
+content-hash = "e7e36206d268567aed045eb26ec275a666675d8355c9c5658348198f896cfd65"

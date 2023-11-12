@@ -16,6 +16,7 @@
 
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
+            holistictraceanalysis="^0.2.0"
             jupyter=">=1"
             plotly=">=5"
             poethepoet=">=0.24.2"
@@ -125,6 +126,9 @@
                 "ARG001", # Fixtures often have unused arguments
                 "PT004",  # Fixtures don't return anything
                 "S101",   # Assert is needed in PyTest
+            ]
+            "*.ipynb"=[
+                "E402", # Imports don't need to be at the top
             ]
 
         [tool.ruff.lint.pydocstyle]

@@ -1,10 +1,11 @@
 """Training Pipeline."""
+
 from jaxtyping import Float, Int
 import torch
-from torch import Tensor, device, set_grad_enabled
+from torch import Tensor, device
 from torch.optim import Optimizer
+from torch.profiler import record_function
 from torch.utils.data import DataLoader
-from tqdm.auto import tqdm
 import wandb
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
@@ -41,37 +42,30 @@ def train_autoencoder(
         Number of steps taken.
     """
     # Create a dataloader from the store
-    activations_dataloader = DataLoader(
-        activation_store,
-        batch_size=sweep_parameters.batch_size,
-    )
+    with record_function("dataloader"):
+        activations_dataloader = DataLoader(
+            activation_store,
+            batch_size=sweep_parameters.batch_size,
+        )
 
-    n_dataset_items: int = len(activation_store)
-    batch_size: int = sweep_parameters.batch_size
+        learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
+            autoencoder.n_learned_features, dtype=torch.int32, device=device
+        )
 
-    learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
-        autoencoder.n_learned_features, dtype=torch.int32, device=device
-    )
-
-    step = 0
-    with set_grad_enabled(True), tqdm(  # noqa: FBT003
-        desc="Train Autoencoder",
-        total=n_dataset_items,
-        colour="green",
-        leave=False,
-        dynamic_ncols=True,
-    ) as progress_bar:
-        for step, batch in enumerate(activations_dataloader):
+    step: int = 0  # Initialize step
+    for step, store_batch in enumerate(activations_dataloader):
+        with record_function("inference"):
             # Zero the gradients
             optimizer.zero_grad()
 
             # Move the batch to the device (in place)
-            batch = batch.to(device)  # noqa: PLW2901
+            batch = store_batch.detach().to(device)
 
             # Forward pass
             learned_activations, reconstructed_activations = autoencoder(batch)
 
-            # Get metrics
+        # Get metrics
+        with record_function("loss"):
             reconstruction_loss_mse: Float[Tensor, " item"] = reconstruction_loss(
                 batch,
                 reconstructed_activations,
@@ -84,15 +78,17 @@ def train_autoencoder(
             )
 
             # Store count of how many neurons have fired
-            fired = learned_activations > 0
-            learned_activations_fired_count.add_(fired.sum(dim=0))
+            with torch.no_grad():
+                fired = learned_activations > 0
+                learned_activations_fired_count.add_(fired.sum(dim=0))
 
+        with record_function("backwards"):
             # Backwards pass
             total_loss.sum().backward()
-
             optimizer.step()
 
-            # Log
+        # Log
+        with record_function("logging"):
             if step % log_interval == 0 and wandb.run is not None:
                 wandb.log(
                     {
@@ -102,7 +98,6 @@ def train_autoencoder(
                     },
                 )
 
-            progress_bar.update(batch_size)
+    current_step = previous_steps + step + 1
 
-        current_step = previous_steps + step + 1
-        return current_step, learned_activations_fired_count
+    return current_step, learned_activations_fired_count
