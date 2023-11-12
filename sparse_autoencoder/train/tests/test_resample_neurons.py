@@ -1,4 +1,6 @@
 """Tests for the resample_neurons module."""
+import copy
+
 from jaxtyping import Float, Int
 import pytest
 import torch
@@ -298,13 +300,15 @@ class TestResampleDeadNeurons:
         loss.backward()
         optimizer.step()
 
-        current_parameters = model.state_dict()
+        current_parameters = copy.deepcopy(model.state_dict())
         resample_dead_neurons(neuron_activity, store, model, sweep_parameters, 100)
         updated_parameters = model.state_dict()
 
         for key in current_parameters:
-            if "TiedBias" in key:
+            if "tied_bias" in key or "TiedBias" in key:
                 assert torch.equal(current_parameters[key], updated_parameters[key])
 
             else:
-                assert not torch.equal(current_parameters[key], updated_parameters[key])
+                assert not torch.equal(
+                    current_parameters[key], updated_parameters[key]
+                ), f"Parameter {key} should have changed."
