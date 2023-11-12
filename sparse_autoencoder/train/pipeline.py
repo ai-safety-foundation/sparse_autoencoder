@@ -68,7 +68,7 @@ def pipeline(  # noqa: PLR0913
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     source_dataset_batch_size: int = 16,
-    resample_frequency: int = 1,  # 25_000_000,
+    resample_frequency: int = 25_000_000,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
     max_activations: int = 100_000_000,
