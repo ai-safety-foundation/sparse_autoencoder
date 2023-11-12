@@ -64,6 +64,10 @@
         cmd="pre-commit install"
         help="Install pre-commit hooks"
 
+    [tool.poe.tasks.snapshot-update]
+        cmd="pytest --snapshot-update"
+        help="Update test snapshots"
+
     [tool.poe.tasks.test]
         cmd="pytest"
         help="Run tests"
