@@ -50,7 +50,9 @@ class AdamWithReset(Adam):
             Named parameters must be with default settings (remove duplicates and not recursive).
 
         Example:
-            >>> model = nn.Sequential(nn.Linear(10, 10), nn.Linear(10, 10))
+            >>> import torch
+            >>> from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+            >>> model = SparseAutoencoder(5, 10, torch.zeros(5))
             >>> optimizer = AdamWithReset(
             ...     model.parameters(),
             ...     named_parameters=model.named_parameters(),
@@ -144,11 +146,12 @@ class AdamWithReset(Adam):
         """Reset the state for specific neurons, on a specific parameter.
 
         Example:
+            >>> import torch
             >>> from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-            >>> model = SparseAutoencoder(5, 10)
+            >>> model = SparseAutoencoder(5, 10, torch.zeros(5))
             >>> optimizer = AdamWithReset(
             ...     model.parameters(),
-            ...     named_parameters=model.named_parameters(remove_duplicate=False),
+            ...     named_parameters=model.named_parameters(),
             ... )
             >>> # ... train the model and then resample some dead neurons, then do this ...
             >>> dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices
