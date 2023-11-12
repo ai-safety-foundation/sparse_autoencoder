@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from einops import rearrange
 from jaxtyping import Bool, Float, Int
 import torch
 from torch import Tensor
@@ -81,6 +82,13 @@ def compute_loss_and_get_activations(
         loss = torch.cat(loss_batches)
         input_activations = torch.cat(input_activations_batches)
 
+        # Check we generated enough data
+        if len(loss) < num_inputs:
+            error_message = (
+                f"Cannot get {num_inputs} items from the store, as only {len(loss)} were available."
+            )
+            raise ValueError(error_message)
+
         return loss, input_activations
 
 
@@ -137,6 +145,13 @@ def sample_input(
         )
         raise ValueError(exception_message)
 
+    if num_samples == 0:
+        return torch.empty(
+            (0, input_activations.shape[-1]),
+            dtype=input_activations.dtype,
+            device=input_activations.device,
+        )
+
     sample_indices: Int[Tensor, " dead_neuron"] = torch.multinomial(
         probabilities, num_samples=num_samples
     )
@@ -169,9 +184,24 @@ def renormalize_and_scale(
 
     Returns:
         Rescaled sampled input.
+
+    Raises:
+        ValueError: If there are no alive neurons.
     """
-    # Calculate the average norm of the encoder weights for alive neurons.
     alive_neuron_mask: Bool[Tensor, " learned_features"] = neuron_activity > 0
+
+    # Check there is at least one alive neuron
+    if not torch.any(alive_neuron_mask):
+        error_message = "No alive neurons found."
+        raise ValueError(error_message)
+
+    # Handle all alive neurons
+    if torch.all(alive_neuron_mask):
+        return torch.empty(
+            (0, sampled_input.shape[-1]), dtype=sampled_input.dtype, device=sampled_input.device
+        )
+
+    # Calculate the average norm of the encoder weights for alive neurons.
     alive_encoder_weights: Float[Tensor, "learned_feature alive_input_features"] = encoder_weight[
         alive_neuron_mask, :
     ]
@@ -185,45 +215,14 @@ def renormalize_and_scale(
     return renormalized_input * (average_alive_norm * 0.2)
 
 
-def reset_adam_parameters(
-    optimizer: torch.optim.Adam,
-    autoencoder: SparseAutoencoder,
-    dead_neuron_indices: Int[Tensor, " learned_features"],
-) -> None:
-    """Reset the Adam optimizer parameters for every modified weight and bias term.
-
-    Args:
-        optimizer: Adam optimizer.
-        autoencoder: Sparse autoencoder model.
-        dead_neuron_indices: Indices of dead neurons.
-    """
-    # Get the Adam state for the encoder and decoder weights and biases.
-    weight_encoder_state = optimizer.state[autoencoder.encoder.get_submodule("Linear").weight]
-    weight_decoder_state = optimizer.state[
-        autoencoder.decoder.get_submodule("ConstrainedUnitNormLinear").weight
-    ]
-    bias_encoder_state = optimizer.state[autoencoder.encoder.get_submodule("Linear").bias]
-
-    # Reset the state
-    weight_decoder_state["exp_avg"][:, dead_neuron_indices] = 0.0
-    weight_decoder_state["exp_avg_sq"][:, dead_neuron_indices] = 0.0
-
-    weight_encoder_state["exp_avg"][dead_neuron_indices] = 0.0
-    weight_encoder_state["exp_avg_sq"][dead_neuron_indices] = 0.0
-
-    bias_encoder_state["exp_avg"][dead_neuron_indices] = 0.0
-    bias_encoder_state["exp_avg_sq"][dead_neuron_indices] = 0.0
-
-
-def resample_neurons(
+def resample_dead_neurons(
     neuron_activity: Int[Tensor, " learned_features"],
     store: ActivationStore,
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime,
-    optimizer: torch.optim.Adam,
     num_inputs: int = 819_200,
 ) -> None:
-    """Resample neurons.
+    """Resample dead neurons.
 
     Over the course of training, a subset of autoencoder neurons will have zero activity across a
     large number of datapoints. The authors of *Towards Monosemanticity: Decomposing Language Models
@@ -244,6 +243,9 @@ def resample_neurons(
     was done to minimize interference with the rest of the network.
 
     Warning:
+        The optimizer should be reset after applying this function, as the Adam state will be
+        incorrect for the modified weights and biases.
+
         Note this approach is also known to create sudden loss spikes, and resampling too frequently
         causes training to diverge.
 
@@ -252,7 +254,6 @@ def resample_neurons(
         store: Activation store.
         autoencoder: Sparse autoencoder model.
         sweep_parameters: Current training sweep parameters.
-        optimizer: Adam optimizer.
         num_inputs: Number of input activations to use when resampling. Will be rounded down to be
             divisible by the batch size, and cannot be larger than the number of items currently in
             the store.
@@ -289,7 +290,10 @@ def resample_neurons(
         renormalized_input: Float[
             Tensor, "dead_neuron input_feature"
         ] = torch.nn.functional.normalize(sampled_input, dim=-1)
-        decoder_weight[:, dead_neuron_indices] = renormalized_input
+
+        decoder_weight[:, dead_neuron_indices] = rearrange(
+            renormalized_input, "dead_neuron input_feature -> input_feature dead_neuron"
+        )
 
         # For the corresponding encoder vector, renormalize the input vector to equal the
         # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
@@ -299,5 +303,3 @@ def resample_neurons(
         )
         encoder_weight.data[dead_neuron_indices, :] = rescaled_sampled_input
         encoder_bias.data[dead_neuron_indices] = 0.0
-
-    reset_adam_parameters(optimizer, autoencoder, dead_neuron_indices)

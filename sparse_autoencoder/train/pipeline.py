@@ -4,7 +4,6 @@ from collections.abc import Iterable
 from jaxtyping import Int
 import torch
 from torch import Tensor
-from torch.optim import Adam
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
@@ -12,12 +11,13 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import (
     SourceDataset,
     TorchTokenizedPrompts,
 )
 from sparse_autoencoder.train.generate_activations import generate_activations
-from sparse_autoencoder.train.resample_neurons import resample_neurons
+from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
@@ -99,12 +99,13 @@ def pipeline(  # noqa: PLR0913
     """
     autoencoder.to(device)
 
-    optimizer = Adam(
+    optimizer = AdamWithReset(
         autoencoder.parameters(),
         lr=sweep_parameters.lr,
         betas=(sweep_parameters.adam_beta_1, sweep_parameters.adam_beta_2),
         eps=sweep_parameters.adam_epsilon,
         weight_decay=sweep_parameters.adam_weight_decay,
+        named_parameters=autoencoder.named_parameters(),
     )
 
     source_dataloader = source_dataset.get_dataloader(source_dataset_batch_size)
@@ -169,14 +170,14 @@ def pipeline(  # noqa: PLR0913
             # Resample neurons if required
             if activations_since_resampling >= resample_frequency:
                 activations_since_resampling = 0
-                resample_neurons(
+                resample_dead_neurons(
                     neuron_activity=neuron_activity,
                     store=activation_store,
                     autoencoder=autoencoder,
-                    optimizer=optimizer,
                     sweep_parameters=sweep_parameters,
                 )
                 learned_activations_fired_count.zero_()
+                optimizer.reset_state_all_parameters()
 
             activation_store.empty()
 
