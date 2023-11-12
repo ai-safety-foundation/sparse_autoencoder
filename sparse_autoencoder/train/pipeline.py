@@ -1,8 +1,9 @@
 """Training Pipeline."""
 from collections.abc import Iterable
 
+from jaxtyping import Int
 import torch
-from torch.optim import Adam
+from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
@@ -10,11 +11,13 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import (
     SourceDataset,
     TorchTokenizedPrompts,
 )
 from sparse_autoencoder.train.generate_activations import generate_activations
+from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
@@ -65,6 +68,7 @@ def pipeline(  # noqa: PLR0913
     num_activations_before_training: int,
     autoencoder: SparseAutoencoder,
     source_dataset_batch_size: int = 16,
+    resample_frequency: int = 25_000_000,
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
     max_activations: int = 100_000_000,
@@ -87,6 +91,7 @@ def pipeline(  # noqa: PLR0913
             2GB of memory (assuming float16/bfloat16).
         autoencoder: The autoencoder to train.
         source_dataset_batch_size: Batch size of tokenized prompts for generating the source data.
+        resample_frequency: How often to resample neurons (number of activations learnt on).
         sweep_parameters: Parameter config to use.
         device: Device to run pipeline on.
         max_activations: Maximum number of activations to train with. May train for less if the
@@ -94,18 +99,23 @@ def pipeline(  # noqa: PLR0913
     """
     autoencoder.to(device)
 
-    optimizer = Adam(
+    optimizer = AdamWithReset(
         autoencoder.parameters(),
         lr=sweep_parameters.lr,
         betas=(sweep_parameters.adam_beta_1, sweep_parameters.adam_beta_2),
         eps=sweep_parameters.adam_epsilon,
         weight_decay=sweep_parameters.adam_weight_decay,
+        named_parameters=autoencoder.named_parameters(),
     )
 
     source_dataloader = source_dataset.get_dataloader(source_dataset_batch_size)
     source_data_iterator = stateful_dataloader_iterable(source_dataloader)
 
     total_steps: int = 0
+    activations_since_resampling: int = 0
+    neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
+        autoencoder.n_learned_features, dtype=torch.int32, device=device
+    )
     total_activations: int = 0
     generate_train_iterations: int = 0
 
@@ -140,7 +150,7 @@ def pipeline(  # noqa: PLR0913
             activation_store.shuffle()
 
             # Train the autoencoder
-            train_steps = train_autoencoder(
+            train_steps, learned_activations_fired_count = train_autoencoder(
                 activation_store=activation_store,
                 autoencoder=autoencoder,
                 optimizer=optimizer,
@@ -150,9 +160,27 @@ def pipeline(  # noqa: PLR0913
             )
             total_steps += train_steps
 
+            if activations_since_resampling >= resample_frequency / 2:
+                neuron_activity.add_(learned_activations_fired_count)
+
+            activations_since_resampling += len(activation_store)
             total_activations += len(activation_store)
             progress_bar.update(len(activation_store))
+
+            # Resample neurons if required
+            if activations_since_resampling >= resample_frequency:
+                activations_since_resampling = 0
+                resample_dead_neurons(
+                    neuron_activity=neuron_activity,
+                    store=activation_store,
+                    autoencoder=autoencoder,
+                    sweep_parameters=sweep_parameters,
+                )
+                learned_activations_fired_count.zero_()
+                optimizer.reset_state_all_parameters()
+
             activation_store.empty()
 
+            progress_bar.update(1)
             generate_train_iterations += 1
             progress_bar.set_postfix({"Generate/train iterations": generate_train_iterations})

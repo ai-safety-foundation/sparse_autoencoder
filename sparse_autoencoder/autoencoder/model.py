@@ -84,7 +84,7 @@ class SparseAutoencoder(Module):
                 {
                     "TiedBias": TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
                     "Linear": Linear(
-                        n_input_features, n_learned_features, bias=False, device=device, dtype=dtype
+                        n_input_features, n_learned_features, bias=True, device=device, dtype=dtype
                     ),
                     "ReLU": ReLU(),
                 }
