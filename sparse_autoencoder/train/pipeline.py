@@ -123,8 +123,8 @@ def pipeline(  # noqa: PLR0913
 
     if len(activation_store) < DEFAULT_RESAMPLE_N:
         warn_str = (
-            f"Warning: activation store length {len(activation_store)} less than d 819_200"
-            "setting to {len(activation_store)}."
+            f"Warning: activation store length {len(activation_store)} less than default 819_200, "
+            f"setting to {len(activation_store)}."
         )
         warnings.warn(
             warn_str,
