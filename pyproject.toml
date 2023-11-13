@@ -39,7 +39,6 @@
             mkdocstrings-python = "^1.7.3"
             mkdocs-gen-files = "^0.5.0"
             mkdocs-literate-nav = "^0.6.1"
-            mkdocs-section-index = "^0.3.8"
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
@@ -89,11 +88,15 @@
         sequence=["typecheck"]
 
     [tool.poe.tasks.clean-docs]
-        cmd="rm -rf ./docs/reference/"
+        cmd="rm -rf ./docs/content/reference/"
+        help="Cleans out the automatically generated docs."
+
+    [tool.poe.tasks.gen-docs]
+        script="docs.gen_ref_pages:run"
         help="Cleans out the automatically generated docs."
 
     [tool.poe.tasks.make-docs]
-        deps=["clean-docs"]
+        deps=["clean-docs", "gen-docs"]
         cmd="mkdocs build"
         help="Generates our docs"
 

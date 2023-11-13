@@ -4,12 +4,11 @@ site_dir: docs/generated
 theme:
   name: readthedocs
 plugins:
-  - search
-  - autorefs
   - gen-files:
       scripts:
       - docs/gen_ref_pages.py
+  - mkdocstrings
+  - search
+  - autorefs
   - literate-nav:
       nav_file: SUMMARY.md
-  - section-index
-  - mkdocstrings

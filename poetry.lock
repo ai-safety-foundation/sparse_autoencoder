@@ -1866,20 +1866,6 @@ files = [
 mkdocs = ">=1.0.3"
 
 [[package]]
-name = "mkdocs-section-index"
-version = "0.3.8"
-description = "MkDocs plugin to allow clickable sections that lead to an index page"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "mkdocs_section_index-0.3.8-py3-none-any.whl", hash = "sha256:823d298d78bc1e73e23678ff60889f3c369c2167b03dba73fea88bd0e268a60d"},
-    {file = "mkdocs_section_index-0.3.8.tar.gz", hash = "sha256:bbd209f0da79441baf136ef3a9c40665bb9681d1fb62c73ca2f116fd1388a404"},
-]
-
-[package.dependencies]
-mkdocs = ">=1.2"
-
-[[package]]
 name = "mkdocstrings"
 version = "0.23.0"
 description = "Automatic documentation from sources, for MkDocs."
@@ -4392,13 +4378,13 @@ watchmedo = ["PyYAML (>=3.10)"]
 
 [[package]]
 name = "wcwidth"
-version = "0.2.9"
+version = "0.2.10"
 description = "Measures the displayed width of unicode strings in a terminal"
 optional = false
 python-versions = "*"
 files = [
-    {file = "wcwidth-0.2.9-py2.py3-none-any.whl", hash = "sha256:9a929bd8380f6cd9571a968a9c8f4353ca58d7cd812a4822bba831f8d685b223"},
-    {file = "wcwidth-0.2.9.tar.gz", hash = "sha256:a675d1a4a2d24ef67096a04b85b02deeecd8e226f57b5e3a72dbb9ed99d27da8"},
+    {file = "wcwidth-0.2.10-py2.py3-none-any.whl", hash = "sha256:aec5179002dd0f0d40c456026e74a729661c9d468e1ed64405e3a6c2176ca36f"},
+    {file = "wcwidth-0.2.10.tar.gz", hash = "sha256:390c7454101092a6a5e43baad8f83de615463af459201709556b6e4b1c861f97"},
 ]
 
 [[package]]
@@ -4722,4 +4708,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "746cb76729de1c119d4978bed3705bd60d4116d046bb92ba2127bab065c05ac7"
+content-hash = "46b5c11d3edbd4af557f2224528862a39219188bd653b9621f48b945602eb3e4"
