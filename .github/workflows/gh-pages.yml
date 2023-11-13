@@ -25,12 +25,14 @@ jobs:
         with:
           python-version: "3.11"
           cache: "poetry"
+      - name: Install poe
+        run: pip install poethepoet
       - name: Install mkdocs
         run: pip install mkdocs
       - name: Install dependencies
         run: poetry install --with docs
       - name: Build Docs
-        run: poetry run make-docs
+        run: poe make-docs
       - name: Upload Docs Artifact
         uses: actions/upload-artifact@v3
         with:
