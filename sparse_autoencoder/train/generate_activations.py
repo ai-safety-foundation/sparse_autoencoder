@@ -5,12 +5,10 @@ from functools import partial
 from jaxtyping import Int
 import torch
 from torch import Tensor
-from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
-    StoreFullError,
 )
 from sparse_autoencoder.source_data.abstract_dataset import TorchTokenizedPrompts
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
@@ -58,6 +56,9 @@ def generate_activations(
             than strict limit.
         device: Device to run the model on.
     """
+    # Set model to evaluation (inference) mode
+    model.eval()
+
     if isinstance(device, torch.device):
         model.to(device, print_details=False)
 
@@ -71,25 +72,10 @@ def generate_activations(
     total: int = num_items - num_items % activations_per_batch
 
     # Loop through the dataloader until the store reaches the desired size
-    with torch.no_grad(), tqdm(
-        desc="Generate Activations",
-        total=total,
-        colour="green",
-        position=1,
-        leave=False,
-        dynamic_ncols=True,
-    ) as progress_bar:
+    with torch.no_grad():
         for batch in source_data:
-            try:
-                input_ids: Int[Tensor, "batch pos"] = batch["input_ids"].to(device)
-                model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)
-                progress_bar.update(activations_per_batch)
-
-            # Break the loop if the store is full
-            except StoreFullError:
+            if len(store) + activations_per_batch > total:
                 break
 
-            if len(store) >= total:
-                return
-
-        progress_bar.close()
+            input_ids: Int[Tensor, "batch pos"] = batch["input_ids"].to(device)
+            model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)

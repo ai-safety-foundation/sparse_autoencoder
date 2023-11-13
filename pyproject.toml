@@ -42,17 +42,17 @@
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
-        help="Run all checks"
+        help="All checks"
         ignore_fail=false
         sequence=["check-lock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format sparse_autoencoder"
-        help="Format code using Ruff (with autofix enabled)"
+        help="Format code (with autofix)"
 
     [tool.poe.tasks.lint]
         cmd="ruff check sparse_autoencoder --fix"
-        help="Lint code using Ruff (with autofix enabled)"
+        help="Lint (with autofix)"
 
     [tool.poe.tasks.ruff]
         help="  [alias for lint && format]"
@@ -61,7 +61,7 @@
 
     [tool.poe.tasks.check-lock]
         cmd="poetry check"
-        help="Check that the lockfile is up to date"
+        help="Check the Poetry lockfile"
 
     [tool.poe.tasks.precommit]
         cmd="pre-commit run --all-files"
@@ -71,9 +71,13 @@
         cmd="pre-commit install"
         help="Install pre-commit hooks"
 
+    [tool.poe.tasks.snapshot-update]
+        cmd="pytest --snapshot-update"
+        help="Update test snapshots"
+
     [tool.poe.tasks.test]
         cmd="pytest"
-        help="Run tests using PyTest"
+        help="Run tests"
 
     [tool.poe.tasks.pytest]
         help="  [alias for test]"
@@ -81,7 +85,7 @@
 
     [tool.poe.tasks.typecheck]
         cmd="pyright"
-        help="Typecheck code using PyRight"
+        help="Typecheck"
 
     [tool.poe.tasks.pyright]
         help="  [alias for typecheck]"
@@ -121,11 +125,9 @@
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
         "FA102",  # Annotations support (Python >= 3.9 is fine)
-        "FIX002", # TODO issue link (overkill)
         "INP001", # __init__.py for all packages (Python >= 3.3 is fine)
         "PGH003", # No general type: ignore (not supported with pyright)
         "TCH002", # Type checking imports (conflicts with beartype)
-        "TD00",   # TODO banned (we're in alpha)
         # Rules that conflict with ruff format
         "COM812",
         "ISC001",

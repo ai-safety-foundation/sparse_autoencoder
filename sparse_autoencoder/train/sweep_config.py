@@ -77,7 +77,7 @@ class SweepParametersRuntime(dict[str, Any]):
 
     l1_coefficient: float = 0.001
 
-    batch_size: int = 512
+    batch_size: int = 4096
 
     def to_dict(self) -> dict[str, Any]:
         """Return dict representation of this object."""
