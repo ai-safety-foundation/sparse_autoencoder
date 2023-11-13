@@ -1,5 +1,6 @@
 """Training Pipeline."""
 from collections.abc import Iterable
+import warnings
 
 from jaxtyping import Int
 import torch
@@ -12,14 +13,14 @@ from transformer_lens import HookedTransformer
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
-from sparse_autoencoder.source_data.abstract_dataset import (
-    SourceDataset,
-    TorchTokenizedPrompts,
-)
+from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.train.generate_activations import generate_activations
 from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
+
+
+DEFAULT_RESAMPLE_N = 819_200
 
 
 def stateful_dataloader_iterable(
@@ -120,6 +121,19 @@ def pipeline(  # noqa: PLR0913
     )
     total_activations: int = 0
 
+    if len(activation_store) < DEFAULT_RESAMPLE_N:
+        warn_str = (
+            f"Warning: activation store length {len(activation_store)} less than d 819_200"
+            "setting to {len(activation_store)}."
+        )
+        warnings.warn(
+            warn_str,
+            stacklevel=2,
+        )
+        num_resample_inputs = len(activation_store)
+    else:
+        num_resample_inputs = DEFAULT_RESAMPLE_N
+
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Total activations trained on",
@@ -172,11 +186,13 @@ def pipeline(  # noqa: PLR0913
             if activations_since_resampling >= resample_frequency:
                 progress_bar.set_postfix({"Current mode": "resampling"})
                 activations_since_resampling = 0
+
                 resample_dead_neurons(
                     neuron_activity=neuron_activity,
                     store=activation_store,
                     autoencoder=autoencoder,
                     sweep_parameters=sweep_parameters,
+                    num_inputs=num_resample_inputs,
                 )
                 learned_activations_fired_count.zero_()
                 optimizer.reset_state_all_parameters()
