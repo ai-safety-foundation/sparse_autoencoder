@@ -122,11 +122,11 @@ def sample_input(
 
     Example:
         >>> probabilities = torch.tensor([0.1, 0.2, 0.7])
-        >>> input_activations = torch.tensor([[1, 2], [3, 4], [5, 6]])
+        >>> input_activations = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
         >>> _seed = torch.manual_seed(0)  # For reproducibility in example
         >>> sampled_input = sample_input(probabilities, input_activations, 2)
         >>> sampled_input.tolist()
-        [[5, 6], [3, 4]]
+        [[5.0, 6.0], [3.0, 4.0]]
 
     Args:
         probabilities: Probabilities for each input.
