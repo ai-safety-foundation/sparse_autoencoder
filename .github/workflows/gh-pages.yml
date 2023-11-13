@@ -25,15 +25,12 @@ jobs:
         with:
           python-version: "3.11"
           cache: "poetry"
-      - name: Install pandoc
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: pandoc
-          version: 1.0
+      - name: Install mkdocs
+        run: pip install mkdocs
       - name: Install dependencies
         run: poetry install --with docs
       - name: Build Docs
-        run: poetry run build-docs
+        run: poetry run make-docs
       - name: Upload Docs Artifact
         uses: actions/upload-artifact@v3
         with:
