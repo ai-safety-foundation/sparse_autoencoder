@@ -1,10 +1,9 @@
 """Training Pipeline."""
 from jaxtyping import Float, Int
 import torch
-from torch import Tensor, device, set_grad_enabled
+from torch import Tensor, device
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
-from tqdm.auto import tqdm
 import wandb
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
@@ -46,63 +45,52 @@ def train_autoencoder(
         batch_size=sweep_parameters.batch_size,
     )
 
-    n_dataset_items: int = len(activation_store)
-    batch_size: int = sweep_parameters.batch_size
-
     learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
 
-    step = 0
-    with set_grad_enabled(True), tqdm(  # noqa: FBT003
-        desc="Train Autoencoder",
-        total=n_dataset_items,
-        colour="green",
-        leave=False,
-        dynamic_ncols=True,
-    ) as progress_bar:
-        for step, batch in enumerate(activations_dataloader):
-            # Zero the gradients
-            optimizer.zero_grad()
+    step: int = 0  # Initialize step
+    for step, store_batch in enumerate(activations_dataloader):
+        # Zero the gradients
+        optimizer.zero_grad()
 
-            # Move the batch to the device (in place)
-            batch = batch.to(device)  # noqa: PLW2901
+        # Move the batch to the device (in place)
+        batch = store_batch.detach().to(device)
 
-            # Forward pass
-            learned_activations, reconstructed_activations = autoencoder(batch)
+        # Forward pass
+        learned_activations, reconstructed_activations = autoencoder(batch)
 
-            # Get metrics
-            reconstruction_loss_mse: Float[Tensor, " item"] = reconstruction_loss(
-                batch,
-                reconstructed_activations,
-            )
-            l1_loss_learned_activations: Float[Tensor, " item"] = l1_loss(learned_activations)
-            total_loss: Float[Tensor, " item"] = sae_training_loss(
-                reconstruction_loss_mse,
-                l1_loss_learned_activations,
-                sweep_parameters.l1_coefficient,
-            )
+        # Get metrics
+        reconstruction_loss_mse: Float[Tensor, " item"] = reconstruction_loss(
+            batch,
+            reconstructed_activations,
+        )
+        l1_loss_learned_activations: Float[Tensor, " item"] = l1_loss(learned_activations)
+        total_loss: Float[Tensor, " item"] = sae_training_loss(
+            reconstruction_loss_mse,
+            l1_loss_learned_activations,
+            sweep_parameters.l1_coefficient,
+        )
 
-            # Store count of how many neurons have fired
+        # Store count of how many neurons have fired
+        with torch.no_grad():
             fired = learned_activations > 0
             learned_activations_fired_count.add_(fired.sum(dim=0))
 
-            # Backwards pass
-            total_loss.sum().backward()
+        # Backwards pass
+        total_loss.sum().backward()
+        optimizer.step()
 
-            optimizer.step()
+        # Log
+        if step % log_interval == 0 and wandb.run is not None:
+            wandb.log(
+                {
+                    "reconstruction_loss": reconstruction_loss_mse.mean().item(),
+                    "l1_loss": l1_loss_learned_activations.mean().item(),
+                    "loss": total_loss.mean().item(),
+                },
+            )
 
-            # Log
-            if step % log_interval == 0 and wandb.run is not None:
-                wandb.log(
-                    {
-                        "reconstruction_loss": reconstruction_loss_mse.mean().item(),
-                        "l1_loss": l1_loss_learned_activations.mean().item(),
-                        "loss": total_loss.mean().item(),
-                    },
-                )
+    current_step = previous_steps + step + 1
 
-            progress_bar.update(batch_size)
-
-        current_step = previous_steps + step + 1
-        return current_step, learned_activations_fired_count
+    return current_step, learned_activations_fired_count
