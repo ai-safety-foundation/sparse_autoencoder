@@ -121,19 +121,6 @@ def pipeline(  # noqa: PLR0913
     )
     total_activations: int = 0
 
-    if len(activation_store) < DEFAULT_RESAMPLE_N:
-        warn_str = (
-            f"Warning: activation store length {len(activation_store)} less than default 819_200, "
-            f"setting to {len(activation_store)}."
-        )
-        warnings.warn(
-            warn_str,
-            stacklevel=2,
-        )
-        num_resample_inputs = len(activation_store)
-    else:
-        num_resample_inputs = DEFAULT_RESAMPLE_N
-
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Total activations trained on",
@@ -183,6 +170,20 @@ def pipeline(  # noqa: PLR0913
             progress_bar.update(len(activation_store))
 
             # Resample neurons if required
+            if len(activation_store) < DEFAULT_RESAMPLE_N:
+                warn_str = (
+                    f"Warning: activation store len {len(activation_store)} is less than "
+                    f"DEFAULT_RESAMPLE_N ({DEFAULT_RESAMPLE_N}). Resampling with"
+                    f"num_resample_inputs as {len(activation_store)}."
+                )
+                warnings.warn(
+                    warn_str,
+                    stacklevel=2,
+                )
+                num_resample_inputs = len(activation_store)
+            else:
+                num_resample_inputs = DEFAULT_RESAMPLE_N
+
             if activations_since_resampling >= resample_frequency:
                 progress_bar.set_postfix({"Current mode": "resampling"})
                 activations_since_resampling = 0
