@@ -1,0 +1,15 @@
+site_name: Sparse Autoencoder
+docs_dir: docs/content
+site_dir: docs/generated
+theme:
+  name: readthedocs
+plugins:
+  - search
+  - autorefs
+  - gen-files:
+      scripts:
+      - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings

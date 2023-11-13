@@ -53,7 +53,8 @@ coverage.xml
 .pytest_cache/
 
 # Docs stuff
-docs/source/generated
+docs/content/reference
+docs/generated
 
 # Translations
 *.mo

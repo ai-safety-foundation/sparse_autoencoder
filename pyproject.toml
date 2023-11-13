@@ -34,14 +34,12 @@
             transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
         [tool.poetry.group.docs.dependencies]
-            sphinx = "^7.2.6"
-            sphinxcontrib-napoleon = "^0.7"
-            sphinx-autobuild = "^2021.3.14"
-            furo = "^2023.9.10"
-            myst-parser = "^2.0.0"
-            nbsphinx = "^0.9.3"
-            nbconvert = "^7.11.0"
-            pandoc = "^2.3"
+            mkdocs = "^1.5.3"
+            mkdocstrings = "^0.23.0"
+            mkdocstrings-python = "^1.7.3"
+            mkdocs-gen-files = "^0.5.0"
+            mkdocs-literate-nav = "^0.6.1"
+            mkdocs-section-index = "^0.3.8"
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
@@ -90,12 +88,18 @@
         help="  [alias for typecheck]"
         sequence=["typecheck"]
 
+    [tool.poe.tasks.clean-docs]
+        cmd="rm -rf ./docs/reference/"
+        help="Cleans out the automatically generated docs."
+
     [tool.poe.tasks.make-docs]
-        script="docs.make_docs:build_docs"
+        deps=["clean-docs"]
+        cmd="mkdocs build"
         help="Generates our docs"
 
     [tool.poe.tasks.docs-hot-reload]
-        script="docs.make_docs:docs_hot_reload"
+        deps=["clean-docs"]
+        cmd="mkdocs serve"
         help="Starts our watch server"
 
 [build-system]
