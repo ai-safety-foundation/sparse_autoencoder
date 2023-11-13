@@ -114,23 +114,23 @@ def pipeline(  # noqa: PLR0913
     total_steps: int = 0
     activations_since_resampling: int = 0
     neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
-        autoencoder.n_learned_features, dtype=torch.int32, device=device
+        autoencoder.n_learned_features,
+        dtype=torch.int32,
+        device=device,
     )
     total_activations: int = 0
-    generate_train_iterations: int = 0
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Total activations trained on",
         dynamic_ncols=True,
-        colour="blue",
         total=max_activations,
-        postfix={"Generate/train iterations": 0},
+        postfix={"Current mode": "initializing"},
     ) as progress_bar:
         while total_activations < max_activations:
-            activation_store.empty()  # In case it was filled by a different run
-
             # Add activations to the store
+            activation_store.empty()  # In case it was filled by a different run
+            progress_bar.set_postfix({"Current mode": "generating"})
             generate_activations(
                 src_model,
                 src_model_activation_layer,
@@ -150,6 +150,7 @@ def pipeline(  # noqa: PLR0913
             activation_store.shuffle()
 
             # Train the autoencoder
+            progress_bar.set_postfix({"Current mode": "training"})
             train_steps, learned_activations_fired_count = train_autoencoder(
                 activation_store=activation_store,
                 autoencoder=autoencoder,
@@ -169,6 +170,7 @@ def pipeline(  # noqa: PLR0913
 
             # Resample neurons if required
             if activations_since_resampling >= resample_frequency:
+                progress_bar.set_postfix({"Current mode": "resampling"})
                 activations_since_resampling = 0
                 resample_dead_neurons(
                     neuron_activity=neuron_activity,
@@ -180,7 +182,3 @@ def pipeline(  # noqa: PLR0913
                 optimizer.reset_state_all_parameters()
 
             activation_store.empty()
-
-            progress_bar.update(1)
-            generate_train_iterations += 1
-            progress_bar.set_postfix({"Generate/train iterations": generate_train_iterations})
