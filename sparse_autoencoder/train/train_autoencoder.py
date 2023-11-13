@@ -78,7 +78,7 @@ def train_autoencoder(
             learned_activations_fired_count.add_(fired.sum(dim=0))
 
         # Backwards pass
-        total_loss.sum().backward()
+        total_loss.mean().backward()
         optimizer.step()
 
         # Log
