@@ -2119,7 +2119,6 @@ optional = false
 python-versions = ">=3"
 files = [
     {file = "nvidia_cudnn_cu12-8.9.6.50-py3-none-manylinux1_x86_64.whl", hash = "sha256:02fbdf6a9f00ba88da68b275d1f175111cc01bbe2294fb688cd309fd61af8844"},
-    {file = "nvidia_cudnn_cu12-8.9.6.50-py3-none-win_amd64.whl", hash = "sha256:acfc4447a9345e8ba525e3b0641ee64bdfd35189ab9904241814ff991792f77a"},
 ]
 
 [package.dependencies]
@@ -3613,6 +3612,22 @@ pure-eval = "*"
 tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
 [[package]]
+name = "strenum"
+version = "0.4.15"
+description = "An Enum that inherits from str."
+optional = false
+python-versions = "*"
+files = [
+    {file = "StrEnum-0.4.15-py3-none-any.whl", hash = "sha256:a30cda4af7cc6b5bf52c8055bc4bf4b2b6b14a93b574626da33df53cf7740659"},
+    {file = "StrEnum-0.4.15.tar.gz", hash = "sha256:878fb5ab705442070e4dd1929bb5e2249511c0bcf2b0eeacf3bcd80875c82eff"},
+]
+
+[package.extras]
+docs = ["myst-parser[linkify]", "sphinx", "sphinx-rtd-theme"]
+release = ["twine"]
+test = ["pylint", "pytest", "pytest-black", "pytest-cov", "pytest-pylint"]
+
+[[package]]
 name = "sympy"
 version = "1.12"
 description = "Computer algebra system (CAS) in Python"
@@ -4453,4 +4468,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "fe9961f7d226ecb7bcde8ad4b3cb6ce4d06635138b842841d3fbc4c9aaf6dd0b"
+content-hash = "4d4c458f649e9618b43a794543a00cfafddafc089a4bd68287bc9a769484149e"
