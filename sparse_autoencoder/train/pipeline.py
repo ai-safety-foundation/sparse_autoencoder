@@ -103,7 +103,7 @@ def pipeline(  # noqa: PLR0913
         device: Device to run pipeline on.
         max_activations: Maximum number of activations to train with. May train for less if the
             source dataset is exhausted.
-        save_frequencey: How often to save the model. Set to -1 to disable saving.
+        save_frequency: How often to save the model. Set to -1 to disable saving.
         run_name: Name of the run. If None, a random uuid will be used.
     """
     autoencoder.to(device)
