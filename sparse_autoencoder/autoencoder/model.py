@@ -11,6 +11,9 @@ from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBi
 from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
 
 
+DEFAULT_SAVE_FOLDER = "./models/"
+
+
 class SparseAutoencoder(Module):
     """Sparse Autoencoder Model."""
 
@@ -135,9 +138,27 @@ class SparseAutoencoder(Module):
             if "reset_parameters" in dir(module):
                 module.reset_parameters()
 
-    def save_to_hf(self) -> None:
-        """Save the model to Hugging Face."""
-        raise NotImplementedError
+    def save_to_disk(self, model_name: str, path: str = DEFAULT_SAVE_FOLDER) -> None:
+        """Save the model to disk.
+
+        Args:
+            model_name: Name of the model for the saved file.
+            path: Path to the directory where the model will be saved.
+        """
+        file_path = f"{path}/{model_name}.pth"
+        torch.save(self.state_dict(), file_path)
+
+    def save_to_hf(self, model_name: str, hf_token: str) -> None:
+        """Save the model to Hugging Face.
+
+        Args:
+            model_name: Name of the model on Hugging Face.
+            hf_token: Hugging Face API token for authentication.
+        """
+        from transformers import Trainer
+
+        trainer = Trainer(model=self)
+        trainer.push_to_hub(model_name, use_auth_token=hf_token)
 
     def load_from_hf(self) -> None:
         """Load the model from Hugging Face."""

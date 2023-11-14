@@ -1,9 +1,12 @@
 """Training Pipeline."""
-from collections.abc import Iterable
+import uuid
 import warnings
+from collections.abc import Iterable
+from pathlib import Path
 
-from jaxtyping import Int
 import torch
+import wandb
+from jaxtyping import Int
 from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -13,14 +16,15 @@ from transformer_lens import HookedTransformer
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
-from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
+from sparse_autoencoder.source_data.abstract_dataset import (
+    SourceDataset, TorchTokenizedPrompts)
 from sparse_autoencoder.train.generate_activations import generate_activations
 from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
-
 DEFAULT_RESAMPLE_N = 819_200
+DEFAULT_SAVE_FOLDER = "models"
 
 
 def stateful_dataloader_iterable(
@@ -73,6 +77,8 @@ def pipeline(  # noqa: PLR0913
     sweep_parameters: SweepParametersRuntime = SweepParametersRuntime(),  # noqa: B008
     device: torch.device | None = None,
     max_activations: int = 100_000_000,
+    save_frequency: int = 100_000_000,
+    run_name: str | None = None,
 ) -> None:
     """Full pipeline for training the sparse autoEncoder.
 
@@ -97,6 +103,8 @@ def pipeline(  # noqa: PLR0913
         device: Device to run pipeline on.
         max_activations: Maximum number of activations to train with. May train for less if the
             source dataset is exhausted.
+        save_frequencey: How often to save the model. Set to -1 to disable saving.
+        run_name: Name of the run. If None, a random uuid will be used.
     """
     autoencoder.to(device)
 
@@ -120,6 +128,12 @@ def pipeline(  # noqa: PLR0913
         device=device,
     )
     total_activations: int = 0
+
+    # checkpoint saving
+    run_name = str(uuid.uuid4()) if run_name is None else f"{run_name}_{uuid.uuid4()}"
+    save_folder = f"{DEFAULT_SAVE_FOLDER}/{run_name}"
+    Path(DEFAULT_SAVE_FOLDER).mkdir(exist_ok=True)
+    Path(save_folder).mkdir(exist_ok=True)
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
@@ -168,6 +182,19 @@ def pipeline(  # noqa: PLR0913
             activations_since_resampling += len(activation_store)
             total_activations += len(activation_store)
             progress_bar.update(len(activation_store))
+
+            # Model saving.
+            if total_activations % save_frequency == 0:
+                path = f"{save_folder}/autoencoder_{total_activations}.pt"
+                torch.save(autoencoder.state_dict(), f=path)
+                if wandb.run is not None:
+                    artifact = wandb.Artifact(
+                        f"{run_name}_{total_activations}",
+                        type="model",
+                        description="A sparse autoencoder model",
+                    )
+                    artifact.add_file(path)
+                    wandb.run.log_artifact(artifact)
 
             # Resample neurons if required
             if len(activation_store) < DEFAULT_RESAMPLE_N:
