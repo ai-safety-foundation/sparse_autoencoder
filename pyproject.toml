@@ -145,11 +145,6 @@
             lines-after-imports=2
 
         [tool.ruff.lint.per-file-ignores]
-            "**/docs/*" = [
-                "ANN401", # Allow type.Any in doc scripts
-                "S603", # Starting an untrusted subprocess
-                "S607", # Starting a process with a partial path for sphinx
-            ]
             "**/tests/*"=[
                 "ARG001", # Fixtures often have unused arguments
                 "PT004",  # Fixtures don't return anything
