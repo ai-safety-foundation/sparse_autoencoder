@@ -1,27 +1,27 @@
 """Training Pipeline."""
-import uuid
-import warnings
 from collections.abc import Iterable
 from pathlib import Path
+import uuid
+import warnings
 
-import torch
-import wandb
 from jaxtyping import Int
+import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 from transformer_lens import HookedTransformer
+import wandb
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
-from sparse_autoencoder.source_data.abstract_dataset import (
-    SourceDataset, TorchTokenizedPrompts)
+from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.train.generate_activations import generate_activations
 from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
+
 
 DEFAULT_RESAMPLE_N = 819_200
 DEFAULT_SAVE_FOLDER = "models"
