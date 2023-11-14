@@ -1,17 +1,16 @@
 """Resize Tensors for Extend Methods."""
 from einops import rearrange
-from jaxtyping import Float
-from torch import Tensor
 
-from sparse_autoencoder.activation_store.base_store import (
-    ActivationStoreBatch,
-    ActivationStoreItem,
+from sparse_autoencoder.tensor_types import (
+    GeneratedActivation,
+    GeneratedActivationBatch,
+    SourceModelActivations,
 )
 
 
 def resize_to_list_vectors(
-    batched_tensor: ActivationStoreBatch,
-) -> list[ActivationStoreItem]:
+    batched_tensor: SourceModelActivations,
+) -> list[GeneratedActivation]:
     """Resize Extend List Vectors.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is
@@ -46,7 +45,7 @@ def resize_to_list_vectors(
     Returns:
         List of Activation Store Item Vectors
     """
-    rearranged: Float[Tensor, "batch neuron"] = rearrange(
+    rearranged: GeneratedActivationBatch = rearrange(
         batched_tensor,
         "... neurons -> (...) neurons",
     )
@@ -55,8 +54,8 @@ def resize_to_list_vectors(
 
 
 def resize_to_single_item_dimension(
-    batch_activations: ActivationStoreBatch,
-) -> Float[Tensor, "item neuron"]:
+    batch_activations: SourceModelActivations,
+) -> GeneratedActivationBatch:
     """Resize Extend Single Item Dimension.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is

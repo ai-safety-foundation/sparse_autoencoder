@@ -2,12 +2,11 @@
 
 import math
 
-from jaxtyping import Float
 import pytest
 from syrupy.session import SnapshotSession
 import torch
-from torch import Tensor
 
+from sparse_autoencoder.tensor_types import ValidationActivationBatch, ValidationBatch
 from sparse_autoencoder.train.metrics.capacity import calc_capacities, wandb_capacities_histogram
 
 
@@ -31,7 +30,7 @@ from sparse_autoencoder.train.metrics.capacity import calc_capacities, wandb_cap
     ],
 )
 def test_calc_capacities(
-    features: Float[Tensor, "n_feats feat_dim"], expected_capacities: Float[Tensor, " n_feats"]
+    features: ValidationActivationBatch, expected_capacities: ValidationBatch
 ) -> None:
     """Check that the capacity calculation is correct."""
     capacities = calc_capacities(features)

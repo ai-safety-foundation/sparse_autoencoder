@@ -2,11 +2,17 @@
 import math
 
 import einops
-from jaxtyping import Float
 import torch
 from torch import Tensor
 from torch.nn import Module, init
 from torch.nn.parameter import Parameter
+
+from sparse_autoencoder.tensor_types import (
+    DecoderBias,
+    DecoderWeights,
+    EncoderWeights,
+    LearnedFeatures,
+)
 
 
 class ConstrainedUnitNormLinear(Module):
@@ -45,10 +51,10 @@ class ConstrainedUnitNormLinear(Module):
     DIMENSION_CONSTRAIN_UNIT_NORM: int = -1
     """Dimension to constrain to unit norm."""
 
-    weight: Float[Tensor, " out_features in_features"]
+    weight: DecoderWeights
     """Weight parameter."""
 
-    bias: Float[Tensor, " out_features"] | None
+    bias: DecoderBias | None
     """Bias parameter."""
 
     def __init__(
@@ -101,9 +107,7 @@ class ConstrainedUnitNormLinear(Module):
         # Initialize the weights with a normal distribution. Note we don't use e.g. kaiming
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
-        self.weight: Float[Tensor, "out_features in_features"] = init.normal_(
-            self.weight, mean=0, std=1
-        )
+        self.weight: EncoderWeights = init.normal_(self.weight, mean=0, std=1)
 
         # Scale so that each column has unit norm
         with torch.no_grad():
@@ -120,8 +124,8 @@ class ConstrainedUnitNormLinear(Module):
 
     def _weight_backward_hook(
         self,
-        grad: Float[Tensor, "out_features in_features"],
-    ) -> Float[Tensor, "out_features in_features"]:
+        grad: EncoderWeights,
+    ) -> EncoderWeights:
         """Unit norm backward hook.
 
         By subtracting the projection of the gradient onto the dictionary vectors, we remove the
@@ -148,11 +152,11 @@ class ConstrainedUnitNormLinear(Module):
         # the gradient onto the dictionary vectors is the component of the gradient that is parallel
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
-        dot_product: Float[Tensor, " out_features"] = einops.einsum(
+        dot_product: LearnedFeatures = einops.einsum(
             grad, self.weight, "out_features in_features, out_features in_features -> out_features"
         )
 
-        normalized_weight: Float[Tensor, "out_features in_features"] = self.weight / torch.norm(
+        normalized_weight: EncoderWeights = self.weight / torch.norm(
             self.weight, dim=self.DIMENSION_CONSTRAIN_UNIT_NORM, keepdim=True
         )
 

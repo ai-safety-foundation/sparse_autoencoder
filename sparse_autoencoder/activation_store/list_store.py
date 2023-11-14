@@ -9,11 +9,13 @@ import torch
 
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
-    ActivationStoreBatch,
-    ActivationStoreItem,
 )
 from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
+)
+from sparse_autoencoder.tensor_types import (
+    GeneratedActivation,
+    SourceModelActivations,
 )
 
 
@@ -69,7 +71,7 @@ class ListActivationStore(ActivationStore):
         torch.Size([2, 100])
     """
 
-    _data: list[ActivationStoreItem] | ListProxy
+    _data: list[GeneratedActivation] | ListProxy
     """Underlying List Data Store."""
 
     _device: torch.device | None
@@ -92,7 +94,7 @@ class ListActivationStore(ActivationStore):
 
     def __init__(
         self,
-        data: list[ActivationStoreItem] | None = None,
+        data: list[GeneratedActivation] | None = None,
         device: torch.device | None = None,
         max_workers: int | None = None,
         *,
@@ -166,7 +168,7 @@ class ListActivationStore(ActivationStore):
 
         return total_tensors_size + list_of_pointers_size
 
-    def __getitem__(self, index: int) -> ActivationStoreItem:
+    def __getitem__(self, index: int) -> GeneratedActivation:
         """Get Item Dunder Method.
 
         Example:
@@ -205,7 +207,7 @@ class ListActivationStore(ActivationStore):
         self.wait_for_writes_to_complete()
         random.shuffle(self._data)
 
-    def append(self, item: ActivationStoreItem) -> Future | None:
+    def append(self, item: GeneratedActivation) -> Future | None:
         """Append a single item to the dataset.
 
         Note **append is blocking**. For better performance use extend instead with batches.
@@ -223,7 +225,7 @@ class ListActivationStore(ActivationStore):
         """
         self._data.append(item.to(self._device))
 
-    def _extend(self, batch: ActivationStoreBatch) -> None:
+    def _extend(self, batch: SourceModelActivations) -> None:
         """Extend threadpool method.
 
         To be called by :meth:`extend`.
@@ -233,13 +235,13 @@ class ListActivationStore(ActivationStore):
         """
         try:
             # Unstack to a list of tensors
-            items: list[ActivationStoreItem] = resize_to_list_vectors(batch)
+            items: list[GeneratedActivation] = resize_to_list_vectors(batch)
 
             self._data.extend(items)
         except Exception as e:  # noqa: BLE001
             self._pool_exceptions.append(e)
 
-    def extend(self, batch: ActivationStoreBatch) -> Future | None:
+    def extend(self, batch: SourceModelActivations) -> Future | None:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:

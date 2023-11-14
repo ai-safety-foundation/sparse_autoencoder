@@ -1,26 +1,30 @@
 """The Sparse Autoencoder Model."""
 from collections import OrderedDict
 
-from jaxtyping import Float
 import torch
-from torch import Tensor
 from torch.nn import Linear, Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
+from sparse_autoencoder.tensor_types import (
+    DecodedActivationBatch,
+    InputActivationBatch,
+    InputActivationsStatistic,
+    LearnedActivationBatch,
+)
 
 
 class SparseAutoencoder(Module):
     """Sparse Autoencoder Model."""
 
-    geometric_median_dataset: Float[Tensor, " input_activations"]
+    geometric_median_dataset: InputActivationsStatistic
     """Estimated Geometric Median of the Dataset.
 
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: Float[Parameter, " input_activations"]
+    tied_bias: InputActivationBatch
     """Tied Bias Parameter.
 
     The same bias is used pre-encoder and post-decoder.
@@ -48,7 +52,7 @@ class SparseAutoencoder(Module):
         self,
         n_input_features: int,
         n_learned_features: int,
-        geometric_median_dataset: Float[Tensor, " input_activations"],
+        geometric_median_dataset: InputActivationsStatistic,
         device: torch.device | None = None,
         dtype: torch.dtype | None = None,
     ) -> None:
@@ -104,10 +108,10 @@ class SparseAutoencoder(Module):
 
     def forward(
         self,
-        x: Float[Tensor, "batch input_activations"],
+        x: InputActivationBatch,
     ) -> tuple[
-        Float[Tensor, "batch learned_activations"],
-        Float[Tensor, "batch input_activations"],
+        LearnedActivationBatch,
+        DecodedActivationBatch,
     ]:
         """Forward Pass.
 

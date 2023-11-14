@@ -3,29 +3,13 @@ from abc import ABC, abstractmethod
 from concurrent.futures import Future
 from typing import final
 
-from jaxtyping import Float
 import torch
-from torch import Tensor
 from torch.utils.data import Dataset
 
-
-ActivationStoreItem = Float[Tensor, "neuron"]
-"""Activation Store Dataset Item Type.
-
-A single vector containing activations. For example this could be the activations from a specific
-MLP layer, for a specific position and batch item.
-"""
-
-ActivationStoreBatch = Float[Tensor, "*any neuron"]
-"""Activation Store Dataset Batch Type.
-
-This can be e.g. a [batch, pos, neurons] tensor, containing activations from a specific MLP layer
-in a transformer. Alternatively, it could be e.g. a [batch, pos, head_idx, neurons] tensor from an
-attention layer.
-"""
+from sparse_autoencoder.tensor_types import GeneratedActivation, GeneratedActivationBatch
 
 
-class ActivationStore(Dataset[ActivationStoreItem], ABC):
+class ActivationStore(Dataset[GeneratedActivation], ABC):
     """Activation Store Abstract Class.
 
     Extends the `torch.utils.data.Dataset` class to provide an activation store, with additional
@@ -43,16 +27,16 @@ class ActivationStore(Dataset[ActivationStoreItem], ABC):
     ...         super().__init__()
     ...         self._data = [] # In this example, we just store in a list
     ...
-    ...     def append(self, item: ActivationStoreItem) -> None:
+    ...     def append(self, item: GeneratedActivation) -> None:
     ...         self._data.append(item)
     ...
-    ...     def extend(self, batch: ActivationStoreBatch):
+    ...     def extend(self, batch: GeneratedActivationBatch):
     ...         self._data.extend(batch)
     ...
     ...     def empty(self):
     ...         self._data = []
     ...
-    ...     def __getitem__(self, index: int) -> ActivationStoreItem:
+    ...     def __getitem__(self, index: int) -> GeneratedActivation:
     ...         return self._data[index]
     ...
     ...     def __len__(self) -> int:
@@ -65,12 +49,12 @@ class ActivationStore(Dataset[ActivationStoreItem], ABC):
     """
 
     @abstractmethod
-    def append(self, item: ActivationStoreItem) -> Future | None:
+    def append(self, item: GeneratedActivation) -> Future | None:
         """Add a Single Item to the Store."""
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: ActivationStoreBatch) -> Future | None:
+    def extend(self, batch: GeneratedActivationBatch) -> Future | None:
         """Add a Batch to the Store."""
         raise NotImplementedError
 
@@ -85,7 +69,7 @@ class ActivationStore(Dataset[ActivationStoreItem], ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def __getitem__(self, index: int) -> ActivationStoreItem:
+    def __getitem__(self, index: int) -> GeneratedActivation:
         """Get an Item from the Store."""
         raise NotImplementedError
 

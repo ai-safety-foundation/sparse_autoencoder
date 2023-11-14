@@ -1,14 +1,19 @@
 """Loss function for the Sparse Autoencoder."""
-from jaxtyping import Float
 import torch
-from torch import Tensor
 from torch.nn.functional import mse_loss
+
+from sparse_autoencoder.tensor_types import (
+    BatchLoss,
+    DecodedActivationBatch,
+    InputActivationBatch,
+    LearnedActivationBatch,
+)
 
 
 def reconstruction_loss(
-    input_activations: Float[Tensor, "item input_features"],
-    output_activations: Float[Tensor, "item input_features"],
-) -> Float[Tensor, " item"]:
+    input_activations: InputActivationBatch,
+    output_activations: DecodedActivationBatch,
+) -> BatchLoss:
     """Reconstruction Loss (MSE).
 
     MSE reconstruction loss is calculated as the mean squared error between each each input vector
@@ -33,7 +38,7 @@ def reconstruction_loss(
     return mse_loss(input_activations, output_activations, reduction="none").mean(dim=-1)
 
 
-def l1_loss(learned_activations: Float[Tensor, "item learned_features"]) -> Float[Tensor, " item"]:
+def l1_loss(learned_activations: LearnedActivationBatch) -> BatchLoss:
     """L1 Loss on Learned Activations.
 
     L1 loss penalty is the absolute sum of the learned activations. The L1 penalty is this
@@ -54,10 +59,10 @@ def l1_loss(learned_activations: Float[Tensor, "item learned_features"]) -> Floa
 
 
 def sae_training_loss(
-    reconstruction_loss_mse: Float[Tensor, " item"],
-    l1_loss_learned_activations: Float[Tensor, " item"],
+    reconstruction_loss_mse: BatchLoss,
+    l1_loss_learned_activations: BatchLoss,
     l1_coefficient: float,
-) -> Float[Tensor, " item"]:
+) -> BatchLoss:
     """Loss Function for the Sparse Autoencoder.
 
     The original paper used L2 reconstruction loss, plus l1 loss on the hidden (learned)

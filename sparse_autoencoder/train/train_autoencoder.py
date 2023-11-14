@@ -1,7 +1,6 @@
 """Training Pipeline."""
-from jaxtyping import Float, Int
 import torch
-from torch import Tensor, device, set_grad_enabled
+from torch import device, set_grad_enabled
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -14,6 +13,7 @@ from sparse_autoencoder.autoencoder.loss import (
     sae_training_loss,
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.tensor_types import BatchLoss, LearnedFeatures, NeuronActivity
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
@@ -25,7 +25,7 @@ def train_autoencoder(
     previous_steps: int,
     log_interval: int = 10,
     device: device | None = None,
-) -> tuple[int, Float[Tensor, " learned_feature"]]:
+) -> tuple[int, LearnedFeatures]:
     """Sparse Autoencoder Training Loop.
 
     Args:
@@ -49,7 +49,7 @@ def train_autoencoder(
     n_dataset_items: int = len(activation_store)
     batch_size: int = sweep_parameters.batch_size
 
-    learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
+    learned_activations_fired_count: NeuronActivity = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
 
@@ -72,12 +72,12 @@ def train_autoencoder(
             learned_activations, reconstructed_activations = autoencoder(batch)
 
             # Get metrics
-            reconstruction_loss_mse: Float[Tensor, " item"] = reconstruction_loss(
+            reconstruction_loss_mse: BatchLoss = reconstruction_loss(
                 batch,
                 reconstructed_activations,
             )
-            l1_loss_learned_activations: Float[Tensor, " item"] = l1_loss(learned_activations)
-            total_loss: Float[Tensor, " item"] = sae_training_loss(
+            l1_loss_learned_activations: BatchLoss = l1_loss(learned_activations)
+            total_loss: BatchLoss = sae_training_loss(
                 reconstruction_loss_mse,
                 l1_loss_learned_activations,
                 sweep_parameters.l1_coefficient,

@@ -1,9 +1,8 @@
 """Training Pipeline."""
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
-from jaxtyping import Int
 import torch
-from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
@@ -20,6 +19,10 @@ from sparse_autoencoder.train.generate_activations import generate_activations
 from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.tensor_types import NeuronActivity
 
 
 def stateful_dataloader_iterable(
@@ -113,7 +116,7 @@ def pipeline(  # noqa: PLR0913
 
     total_steps: int = 0
     activations_since_resampling: int = 0
-    neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
+    neuron_activity: NeuronActivity = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
     total_activations: int = 0
