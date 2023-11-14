@@ -22,8 +22,7 @@ from typing import TypedDict, final
 
 from transformers import PreTrainedTokenizerBase
 
-from sparse_autoencoder.source_data.abstract_dataset import (SourceDataset,
-                                                             TokenizedPrompts)
+from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
 
 
 class GenericTextDataBatch(TypedDict):
@@ -62,7 +61,7 @@ class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
 
         # Chunk each tokenized prompt into blocks of context_size, discarding incomplete blocks.
         context_size_prompts = []
-        for encoding in list(tokenized_prompts["input_ids"]): # type: ignore
+        for encoding in list(tokenized_prompts["input_ids"]):  # type: ignore
             chunks = [
                 encoding[i : i + context_size]
                 for i in range(0, len(encoding), context_size)
