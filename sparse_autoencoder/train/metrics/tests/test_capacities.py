@@ -6,7 +6,7 @@ import pytest
 from syrupy.session import SnapshotSession
 import torch
 
-from sparse_autoencoder.tensor_types import ValidationActivationBatch, ValidationBatch
+from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchStatistic
 from sparse_autoencoder.train.metrics.capacity import calc_capacities, wandb_capacities_histogram
 
 
@@ -30,7 +30,7 @@ from sparse_autoencoder.train.metrics.capacity import calc_capacities, wandb_cap
     ],
 )
 def test_calc_capacities(
-    features: ValidationActivationBatch, expected_capacities: ValidationBatch
+    features: LearnedActivationBatch, expected_capacities: TrainBatchStatistic
 ) -> None:
     """Check that the capacity calculation is correct."""
     capacities = calc_capacities(features)

@@ -6,10 +6,10 @@ from numpy.typing import NDArray
 import torch
 import wandb
 
-from sparse_autoencoder.tensor_types import ValidationActivationBatch, ValidationBatch
+from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchStatistic
 
 
-def calc_capacities(features: ValidationActivationBatch) -> ValidationBatch:
+def calc_capacities(features: LearnedActivationBatch) -> TrainBatchStatistic:
     """Calculate capacities.
 
     Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural Networks](https://arxiv.org/pdf/2210.01892.pdf).
@@ -45,7 +45,7 @@ def calc_capacities(features: ValidationActivationBatch) -> ValidationBatch:
 
 
 def wandb_capacities_histogram(
-    capacities: ValidationBatch,
+    capacities: TrainBatchStatistic,
 ) -> wandb.Histogram:
     """Create a W&B histogram of the capacities.
 

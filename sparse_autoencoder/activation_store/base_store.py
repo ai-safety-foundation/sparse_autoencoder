@@ -6,10 +6,10 @@ from typing import final
 import torch
 from torch.utils.data import Dataset
 
-from sparse_autoencoder.tensor_types import GeneratedActivation, GeneratedActivationBatch
+from sparse_autoencoder.tensor_types import InputOutputActivationBatch, InputOutputActivationVector
 
 
-class ActivationStore(Dataset[GeneratedActivation], ABC):
+class ActivationStore(Dataset[InputOutputActivationVector], ABC):
     """Activation Store Abstract Class.
 
     Extends the `torch.utils.data.Dataset` class to provide an activation store, with additional
@@ -27,16 +27,16 @@ class ActivationStore(Dataset[GeneratedActivation], ABC):
     ...         super().__init__()
     ...         self._data = [] # In this example, we just store in a list
     ...
-    ...     def append(self, item: GeneratedActivation) -> None:
+    ...     def append(self, item) -> None:
     ...         self._data.append(item)
     ...
-    ...     def extend(self, batch: GeneratedActivationBatch):
+    ...     def extend(self, batch):
     ...         self._data.extend(batch)
     ...
     ...     def empty(self):
     ...         self._data = []
     ...
-    ...     def __getitem__(self, index: int) -> GeneratedActivation:
+    ...     def __getitem__(self, index: int):
     ...         return self._data[index]
     ...
     ...     def __len__(self) -> int:
@@ -49,12 +49,12 @@ class ActivationStore(Dataset[GeneratedActivation], ABC):
     """
 
     @abstractmethod
-    def append(self, item: GeneratedActivation) -> Future | None:
+    def append(self, item: InputOutputActivationVector) -> Future | None:
         """Add a Single Item to the Store."""
         raise NotImplementedError
 
     @abstractmethod
-    def extend(self, batch: GeneratedActivationBatch) -> Future | None:
+    def extend(self, batch: InputOutputActivationBatch) -> Future | None:
         """Add a Batch to the Store."""
         raise NotImplementedError
 
@@ -69,7 +69,7 @@ class ActivationStore(Dataset[GeneratedActivation], ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def __getitem__(self, index: int) -> GeneratedActivation:
+    def __getitem__(self, index: int) -> InputOutputActivationVector:
         """Get an Item from the Store."""
         raise NotImplementedError
 

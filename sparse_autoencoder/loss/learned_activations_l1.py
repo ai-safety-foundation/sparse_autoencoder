@@ -5,10 +5,9 @@ import torch
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import (
-    BatchItemwiseLoss,
-    DecodedActivationBatch,
+    InputOutputActivationBatch,
     LearnedActivationBatch,
-    SourceActivationBatch,
+    TrainBatchStatistic,
 )
 
 
@@ -45,10 +44,10 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: SourceActivationBatch,  # noqa: ARG002
+        source_activations: InputOutputActivationBatch,  # noqa: ARG002
         learned_activations: LearnedActivationBatch,
-        decoded_activations: DecodedActivationBatch,  # noqa: ARG002
-    ) -> BatchItemwiseLoss:
+        decoded_activations: InputOutputActivationBatch,  # noqa: ARG002
+    ) -> TrainBatchStatistic:
         """Learned activations L1 (absolute error) loss.
 
         Args:

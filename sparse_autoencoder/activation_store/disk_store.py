@@ -15,7 +15,7 @@ from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
 )
 from sparse_autoencoder.tensor_types import (
-    GeneratedActivation,
+    InputOutputActivationVector,
     SourceModelActivations,
 )
 
@@ -134,7 +134,7 @@ class DiskActivationStore(ActivationStore):
         filename = f"{self.__len__}.pt"
         torch.save(stacked_activations, self._storage_path / filename)
 
-    def append(self, item: GeneratedActivation) -> Future | None:
+    def append(self, item: InputOutputActivationVector) -> Future | None:
         """Add a Single Item to the Store.
 
         Example:
@@ -177,7 +177,7 @@ class DiskActivationStore(ActivationStore):
             Future that completes when the activation vectors have queued to be written to disk, and
             if needed, written to disk.
         """
-        items: list[GeneratedActivation] = resize_to_list_vectors(batch)
+        items: list[InputOutputActivationVector] = resize_to_list_vectors(batch)
 
         with self._cache_lock:
             self._cache.extend(items)
@@ -230,7 +230,7 @@ class DiskActivationStore(ActivationStore):
             file.unlink()
         self._disk_n_activation_vectors.value = 0
 
-    def __getitem__(self, index: int) -> GeneratedActivation:
+    def __getitem__(self, index: int) -> InputOutputActivationVector:
         """Get Item Dunder Method.
 
         Args:

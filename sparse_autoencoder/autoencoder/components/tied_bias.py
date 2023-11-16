@@ -4,8 +4,8 @@ from enum import Enum
 from torch.nn import Module
 
 from sparse_autoencoder.tensor_types import (
-    DecoderBias,
-    SourceActivationBatch,
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
 )
 
 
@@ -27,13 +27,13 @@ class TiedBias(Module):
     https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias
     """
 
-    _bias_reference: DecoderBias
+    _bias_reference: InputOutputActivationVector
 
     _bias_position: TiedBiasPosition
 
     def __init__(
         self,
-        bias: DecoderBias,
+        bias: InputOutputActivationVector,
         position: TiedBiasPosition,
     ) -> None:
         """Initialize the bias layer.
@@ -53,8 +53,8 @@ class TiedBias(Module):
 
     def forward(
         self,
-        x: SourceActivationBatch,
-    ) -> SourceActivationBatch:
+        x: InputOutputActivationBatch,
+    ) -> InputOutputActivationBatch:
         """Forward Pass.
 
         Args:

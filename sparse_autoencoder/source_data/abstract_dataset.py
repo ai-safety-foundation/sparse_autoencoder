@@ -6,7 +6,7 @@ from datasets import IterableDataset, load_dataset
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset as TorchDataset
 
-from sparse_autoencoder.tensor_types import TokenizedSourceDataBatch
+from sparse_autoencoder.tensor_types import BatchTokenizedPrompts
 
 
 TokenizedPrompt = list[int]
@@ -22,7 +22,7 @@ class TokenizedPrompts(TypedDict):
 class TorchTokenizedPrompts(TypedDict):
     """Tokenized prompts prepared for PyTorch."""
 
-    input_ids: TokenizedSourceDataBatch
+    input_ids: BatchTokenizedPrompts
 
 
 HuggingFaceDatasetItem = TypeVar("HuggingFaceDatasetItem", bound=Any)

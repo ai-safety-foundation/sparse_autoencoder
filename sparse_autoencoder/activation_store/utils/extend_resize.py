@@ -2,15 +2,15 @@
 from einops import rearrange
 
 from sparse_autoencoder.tensor_types import (
-    GeneratedActivation,
-    GeneratedActivationBatch,
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
     SourceModelActivations,
 )
 
 
 def resize_to_list_vectors(
     batched_tensor: SourceModelActivations,
-) -> list[GeneratedActivation]:
+) -> list[InputOutputActivationVector]:
     """Resize Extend List Vectors.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is
@@ -45,7 +45,7 @@ def resize_to_list_vectors(
     Returns:
         List of Activation Store Item Vectors
     """
-    rearranged: GeneratedActivationBatch = rearrange(
+    rearranged: InputOutputActivationBatch = rearrange(
         batched_tensor,
         "... neurons -> (...) neurons",
     )
@@ -55,7 +55,7 @@ def resize_to_list_vectors(
 
 def resize_to_single_item_dimension(
     batch_activations: SourceModelActivations,
-) -> GeneratedActivationBatch:
+) -> InputOutputActivationBatch:
     """Resize Extend Single Item Dimension.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is

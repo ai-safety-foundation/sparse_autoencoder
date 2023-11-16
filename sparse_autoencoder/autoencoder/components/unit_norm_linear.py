@@ -8,10 +8,10 @@ from torch.nn import Module, init
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.tensor_types import (
-    DecoderBias,
     DecoderWeights,
     EncoderWeights,
-    LearnedFeatures,
+    InputOutputActivationVector,
+    LearntActivationVector,
 )
 
 
@@ -54,7 +54,7 @@ class ConstrainedUnitNormLinear(Module):
     weight: DecoderWeights
     """Weight parameter."""
 
-    bias: DecoderBias | None
+    bias: InputOutputActivationVector | None
     """Bias parameter."""
 
     def __init__(
@@ -152,7 +152,7 @@ class ConstrainedUnitNormLinear(Module):
         # the gradient onto the dictionary vectors is the component of the gradient that is parallel
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
-        dot_product: LearnedFeatures = einops.einsum(
+        dot_product: LearntActivationVector = einops.einsum(
             grad, self.weight, "out_features in_features, out_features in_features -> out_features"
         )
 

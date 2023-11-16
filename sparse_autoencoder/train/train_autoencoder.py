@@ -11,7 +11,7 @@ from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
 from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
 from sparse_autoencoder.loss.reducer import LossReducer
-from sparse_autoencoder.tensor_types import LearnedFeatures, NeuronActivity
+from sparse_autoencoder.tensor_types import LearntActivationVector, NeuronActivity
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
@@ -23,7 +23,7 @@ def train_autoencoder(
     previous_steps: int,
     log_interval: int = 10,
     device: device | None = None,
-) -> tuple[int, LearnedFeatures]:
+) -> tuple[int, LearntActivationVector]:
     """Sparse Autoencoder Training Loop.
 
     Args:

@@ -8,10 +8,9 @@ from torch import Tensor
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import (
-    DecodedActivationBatch,
+    InputOutputActivationBatch,
     ItemTensor,
     LearnedActivationBatch,
-    SourceActivationBatch,
 )
 
 
@@ -62,9 +61,9 @@ class LossReducer(AbstractLoss):
 
     def forward(
         self,
-        source_activations: SourceActivationBatch,
+        source_activations: InputOutputActivationBatch,
         learned_activations: LearnedActivationBatch,
-        decoded_activations: DecodedActivationBatch,
+        decoded_activations: InputOutputActivationBatch,
     ) -> ItemTensor:
         """Reduce loss.
 

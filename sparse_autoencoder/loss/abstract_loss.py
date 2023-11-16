@@ -7,11 +7,10 @@ import torch
 from torch.nn import Module
 
 from sparse_autoencoder.tensor_types import (
-    BatchItemwiseLoss,
-    DecodedActivationBatch,
+    InputOutputActivationBatch,
     ItemTensor,
     LearnedActivationBatch,
-    SourceActivationBatch,
+    TrainBatchStatistic,
 )
 
 
@@ -41,10 +40,10 @@ class AbstractLoss(Module, ABC):
     @abstractmethod
     def forward(
         self,
-        source_activations: SourceActivationBatch,
+        source_activations: InputOutputActivationBatch,
         learned_activations: LearnedActivationBatch,
-        decoded_activations: DecodedActivationBatch,
-    ) -> BatchItemwiseLoss:
+        decoded_activations: InputOutputActivationBatch,
+    ) -> TrainBatchStatistic:
         """Batch itemwise loss.
 
         Args:
@@ -61,9 +60,9 @@ class AbstractLoss(Module, ABC):
     @final
     def batch_scalar_loss(
         self,
-        source_activations: SourceActivationBatch,
+        source_activations: InputOutputActivationBatch,
         learned_activations: LearnedActivationBatch,
-        decoded_activations: DecodedActivationBatch,
+        decoded_activations: InputOutputActivationBatch,
         reduction: LossReductionType = LossReductionType.MEAN,
     ) -> ItemTensor:
         """Batch scalar loss.
@@ -90,9 +89,9 @@ class AbstractLoss(Module, ABC):
     @final
     def batch_scalar_loss_with_log(
         self,
-        source_activations: SourceActivationBatch,
+        source_activations: InputOutputActivationBatch,
         learned_activations: LearnedActivationBatch,
-        decoded_activations: DecodedActivationBatch,
+        decoded_activations: InputOutputActivationBatch,
         reduction: LossReductionType = LossReductionType.MEAN,
     ) -> tuple[ItemTensor, LossLogType]:
         """Batch scalar loss.
@@ -141,9 +140,9 @@ class AbstractLoss(Module, ABC):
     @final
     def __call__(
         self,
-        source_activations: SourceActivationBatch,
+        source_activations: InputOutputActivationBatch,
         learned_activations: LearnedActivationBatch,
-        decoded_activations: DecodedActivationBatch,
+        decoded_activations: InputOutputActivationBatch,
         reduction: LossReductionType = LossReductionType.MEAN,
     ) -> tuple[ItemTensor, LossLogType]:
         """Batch scalar loss.

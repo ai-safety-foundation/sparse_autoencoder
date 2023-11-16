@@ -4,10 +4,9 @@ import torch
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
 from sparse_autoencoder.tensor_types import (
-    BatchItemwiseLoss,
-    DecodedActivationBatch,
+    InputOutputActivationBatch,
     LearnedActivationBatch,
-    SourceActivationBatch,
+    TrainBatchStatistic,
 )
 
 
@@ -16,10 +15,10 @@ class DummyLoss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: SourceActivationBatch,  # noqa: ARG002
+        source_activations: InputOutputActivationBatch,  # noqa: ARG002
         learned_activations: LearnedActivationBatch,  # noqa: ARG002
-        decoded_activations: DecodedActivationBatch,  # noqa: ARG002
-    ) -> BatchItemwiseLoss:
+        decoded_activations: InputOutputActivationBatch,  # noqa: ARG002
+    ) -> TrainBatchStatistic:
         """Batch itemwise loss."""
         # Simple dummy implementation for testing
         return torch.tensor([1.0, 2.0, 3.0])

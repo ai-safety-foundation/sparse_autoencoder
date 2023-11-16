@@ -1,6 +1,7 @@
 """Tensor Types.
 
-Tensor types with axis labels.
+Tensor types with axis labels. Note that this uses the `jaxtyping` library, which works with PyTorch
+tensors as well.
 """
 from enum import auto
 from typing import TypeAlias
@@ -13,33 +14,42 @@ from torch import Tensor
 class Axis(LowercaseStrEnum):
     """Tensor axis names.
 
-    Example:
-        Can be used directly.
+    Used to annotate tensor types.
 
-        >>> print(Axis.TRAIN_FEATURE)
-        train_feature
+    Example:
+        When used directly it prints a string:
+
+        >>> print(Axis.INPUT_OUTPUT_FEATURE)
+        input_output_feature
+
+        The primary use is to annotate tensor types:
+
+        >>> from jaxtyping import Float
+        >>> from torch import Tensor
+        >>> from typing import TypeAlias
+        >>> batch: TypeAlias = Float[Tensor, Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+        >>> print(batch)
+        <class 'jaxtyping.Float[Tensor, 'batch input_output_feature']'>
+
+        You can also join multiple axis together to represent the dimensions of a tensor:
+
+        >>> print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))
+        batch input_output_feature
     """
 
     # Batches
-    SOURCE_BATCH = auto()
-    """Source data batch (e.g. batch of prompts)."""
+    SOURCE_DATA_BATCH = auto()
+    """Batch of prompts used to generate source model activations."""
 
-    GENERATED_BATCH = auto()
-    """Generated batch."""
-
-    TRAIN_BATCH = auto()
-    """Train batch (e.g. batch of activations from the source model that are being trained on)."""
-
-    VALIDATION_BATCH = auto()
-    """Validation batch (e.g. batch of learned activations)."""
+    BATCH = auto()
+    """Batch of items that the SAE is being trained on."""
 
     ITEMS = auto()
     """Arbitrary number of items."""
 
     # Features
-
-    TRAIN_FEATURE = auto()
-    """Training feature (e.g. feature in input activation vector)."""
+    INPUT_OUTPUT_FEATURE = auto()
+    """Input or output feature (e.g. feature in activation vector from source model)."""
 
     LEARNT_FEATURE = auto()
     """Learn feature (e.g. feature in learnt activation vector)."""
@@ -63,57 +73,100 @@ class Axis(LowercaseStrEnum):
     ANY = "*any"
     """Any number of axis."""
 
+    @staticmethod
+    def dims(*axis: "Axis") -> str:
+        """Join multiple axis together, to represent the dimensions of a tensor.
 
-InputActivationsStatistic: TypeAlias = Float[Tensor, Axis.TRAIN_FEATURE]
-"""Input activation statistic."""
+        Example:
+            >>> print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))
+            batch input_output_feature
 
-TokenizedSourceDataBatch: TypeAlias = Int[Tensor, Axis.SOURCE_BATCH + " " + Axis.POSITION]
-"""Tokenized source data batch."""
+        Args:
+            *axis: Axis to join.
 
-SourceModelActivations: TypeAlias = Float[Tensor, Axis.ANY + " " + Axis.TRAIN_FEATURE]
-"""Source model activations."""
+        Returns:
+            Joined axis string.
+        """
+        return " ".join(axis)
 
-GeneratedActivation: TypeAlias = Float[Tensor, Axis.TRAIN_FEATURE]
-"""Generated activation."""
 
-GeneratedActivationBatch: TypeAlias = Float[Tensor, Axis.GENERATED_BATCH + " " + Axis.TRAIN_FEATURE]
-"""Generated activation batch."""
+# Activation vectors
+InputOutputActivationVector: TypeAlias = Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]
+"""Input/output activation vector.
 
-GeneratedActivationStore: TypeAlias = Float[Tensor, Axis.ITEMS + " " + Axis.TRAIN_FEATURE]
-"""Generated activation tensor store."""
+This is either a input activation vector from the source model, or a decoded activation vector
+from the autoencoder.
+"""
 
-LearnedActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.LEARNT_FEATURE]
-"""Learned activation batch."""
+LearntActivationVector: TypeAlias = Float[Tensor, Axis.LEARNT_FEATURE]
+"""Learned activation vector.
 
-SourceActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.TRAIN_FEATURE]
-"""Source (input) activation batch."""
+Activation vector from the hidden (learnt) layer of the autoencoder. Typically this is larger than
+the input/output activation vector.
+"""
 
-DecodedActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.TRAIN_FEATURE]
-"""Decoded activation batch."""
+# Activation batches/stores
+StoreActivations: TypeAlias = Float[Tensor, Axis.dims(Axis.ITEMS, Axis.INPUT_OUTPUT_FEATURE)]
+"""Store of activation vectors.
 
-ValidationActivationBatch: TypeAlias = Float[
-    Tensor, Axis.VALIDATION_BATCH + " " + Axis.LEARNT_FEATURE
+This is used to store large numbers of activation vectors from the source model.
+"""
+
+SourceModelActivations: TypeAlias = Float[Tensor, Axis.dims(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]
+"""Source model activations.
+
+Can have any number of proceeding dimensions (e.g. an attention head may generate activations of
+shape (batch_size, num_heads, seq_len, feature_dim).
+"""
+
+InputOutputActivationBatch: TypeAlias = Float[
+    Tensor, Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)
 ]
-"""Validation activation batch."""
+"""Input/output activation batch.
 
-ValidationBatch: TypeAlias = Float[Tensor, Axis.VALIDATION_BATCH]
-"""Validation batch."""
+This is either a batch of input activation vectors from the source model, or a batch of decoded
+activation vectors from the autoencoder.
+"""
 
-EncoderWeights: TypeAlias = Float[Tensor, Axis.LEARNT_FEATURE + " " + Axis.TRAIN_FEATURE]
-"""Encoder weights."""
+LearnedActivationBatch: TypeAlias = Float[Tensor, Axis.dims(Axis.BATCH, Axis.LEARNT_FEATURE)]
+"""Learned activation batch.
 
-LearnedFeatures: TypeAlias = Float[Tensor, Axis.LEARNT_FEATURE]
-"""Learned features."""
+This is a batch of activation vectors from the hidden (learnt) layer of the autoencoder. Typically
+the feature dimension is larger than the input/output activation vector.
+"""
 
-DecoderWeights: TypeAlias = Float[Tensor, Axis.TRAIN_FEATURE + " " + Axis.LEARNT_FEATURE]
-"""Decoder weights."""
+# Statistics
+TrainBatchStatistic: TypeAlias = Float[Tensor, Axis.BATCH]
+"""Train batch statistic.
 
-DecoderBias: TypeAlias = Float[Tensor, Axis.TRAIN_FEATURE]
-"""Decoder bias."""
+Contains one scalar value per item in the batch.
+"""
 
-BatchItemwiseLoss: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH]
-"""Batch itemwise loss"""
+# Weights and biases
+EncoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+"""Encoder weights.
 
+These weights are part of the encoder module of the autoencoder, responsible for decompressing the
+input data (activations from a source model) into a higher-dimensional representation.
+
+The dictionary vectors (basis vectors in the learnt feature space), they can be thought of as
+columns of this weight matrix, where each column corresponds to a particular feature in the
+lower-dimensional space. The sparsity constraint (hopefully) enforces that they respond relatively
+strongly to only a small portion of possible input vectors.
+"""
+
+DecoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
+"""Decoder weights.
+
+These weights form the decoder part of the autoencoder, which aims to reconstruct the original input
+data from the decompressed representation created by the encoder.
+
+The tensor's shape aligns with the training features and the learnt features. In this case, if we
+view the dictionary vectors in the context of reconstruction, they can be thought of as rows in this
+weight matrix.
+"""
+
+# Weights and biases updated
 NeuronActivity: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE]
 """Neuron activity.
 
@@ -123,14 +176,16 @@ Number of times each neuron has fired (since the last reset).
 DeadNeuronIndices: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE_IDX]
 """Dead neuron indices."""
 
-SampledDeadNeuronInputs: TypeAlias = Float[Tensor, Axis.DEAD_FEATURE + " " + Axis.TRAIN_FEATURE]
+SampledDeadNeuronInputs: TypeAlias = Float[
+    Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+]
 """Sampled dead neuron inputs."""
 
-AliveEncoderWeights: TypeAlias = Float[Tensor, Axis.LEARNT_FEATURE + " " + Axis.ALIVE_FEATURE]
+AliveEncoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.LEARNT_FEATURE, Axis.ALIVE_FEATURE)]
 """Alive encoder weights."""
 
 DeadEncoderNeuronWeightUpdates: TypeAlias = Float[
-    Tensor, Axis.DEAD_FEATURE + " " + Axis.TRAIN_FEATURE
+    Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
 ]
 """Dead encoder neuron weight updates."""
 
@@ -138,9 +193,13 @@ DeadEncoderNeuronBiasUpdates: TypeAlias = Float[Tensor, Axis.DEAD_FEATURE]
 """Dead encoder neuron bias updates."""
 
 DeadDecoderNeuronWeightUpdates: TypeAlias = Float[
-    Tensor, Axis.TRAIN_FEATURE + " " + Axis.DEAD_FEATURE
+    Tensor, Axis.dims(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)
 ]
 """Dead decoder neuron weight updates."""
+
+# Other
+BatchTokenizedPrompts: TypeAlias = Int[Tensor, Axis.dims(Axis.SOURCE_DATA_BATCH, Axis.POSITION)]
+"""Batch of tokenized prompts."""
 
 ItemTensor: TypeAlias = Float[Tensor, Axis.SINGLE_ITEM]
 """Single element item tensor."""

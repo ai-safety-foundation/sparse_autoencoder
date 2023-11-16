@@ -9,10 +9,10 @@ from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_single_item_dimension,
 )
 from sparse_autoencoder.tensor_types import (
-    GeneratedActivation,
-    GeneratedActivationBatch,
-    GeneratedActivationStore,
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
     SourceModelActivations,
+    StoreActivations,
 )
 
 
@@ -57,7 +57,7 @@ class TensorActivationStore(ActivationStore):
         torch.Size([2, 100])
     """
 
-    _data: GeneratedActivationStore
+    _data: StoreActivations
     """Underlying Tensor Data Store."""
 
     items_stored: int = 0
@@ -110,7 +110,7 @@ class TensorActivationStore(ActivationStore):
         """
         return self._data.element_size() * self._data.nelement()
 
-    def __getitem__(self, index: int) -> GeneratedActivation:
+    def __getitem__(self, index: int) -> InputOutputActivationVector:
         """Get Item Dunder Method.
 
         Example:
@@ -159,7 +159,7 @@ class TensorActivationStore(ActivationStore):
         # Use this permutation to shuffle the active data in-place
         self._data[: self.items_stored] = self._data[perm]
 
-    def append(self, item: GeneratedActivation) -> None:
+    def append(self, item: InputOutputActivationVector) -> None:
         """Add a single item to the store.
 
         Example:
@@ -206,7 +206,7 @@ class TensorActivationStore(ActivationStore):
         Raises:
             IndexError: If there is no space remaining.
         """
-        reshaped: GeneratedActivationBatch = resize_to_single_item_dimension(
+        reshaped: InputOutputActivationBatch = resize_to_single_item_dimension(
             batch,
         )
 

@@ -6,7 +6,7 @@ from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
     resize_to_single_item_dimension,
 )
-from sparse_autoencoder.tensor_types import GeneratedActivationBatch
+from sparse_autoencoder.tensor_types import InputOutputActivationBatch
 
 
 class TestResizeListVectors:
@@ -28,7 +28,7 @@ class TestResizeListVectors:
     ) -> None:
         """Check each item's shape in the resulting list."""
         input_tensor = torch.rand(input_shape)
-        result = resize_to_list_vectors(GeneratedActivationBatch(input_tensor))
+        result = resize_to_list_vectors(InputOutputActivationBatch(input_tensor))
 
         assert len(result) == expected_len, f"Expected list of length {expected_len}"
         assert all(
@@ -44,7 +44,7 @@ class TestResizeListVectors:
             torch.tensor([5.0, 6]),
             torch.tensor([7.0, 8]),
         ]
-        result = resize_to_list_vectors(GeneratedActivationBatch(input_tensor))
+        result = resize_to_list_vectors(InputOutputActivationBatch(input_tensor))
 
         for expected, output in zip(expected_output, result, strict=True):
             assert torch.all(
@@ -70,7 +70,7 @@ class TestResizeSingleItemDimension:
     ) -> None:
         """Check the resulting tensor shape."""
         input_tensor = torch.randn(input_shape)
-        result = resize_to_single_item_dimension(GeneratedActivationBatch(input_tensor))
+        result = resize_to_single_item_dimension(InputOutputActivationBatch(input_tensor))
 
         assert result.shape == expected_shape, f"Expected tensor shape {expected_shape}"
 
@@ -78,7 +78,7 @@ class TestResizeSingleItemDimension:
         """Check the resulting tensor values."""
         input_tensor = torch.tensor([[[1.0, 2], [3, 4]], [[5, 6], [7, 8]]])
         expected_output = torch.tensor([[1.0, 2], [3, 4], [5, 6], [7, 8]])
-        result = resize_to_single_item_dimension(GeneratedActivationBatch(input_tensor))
+        result = resize_to_single_item_dimension(InputOutputActivationBatch(input_tensor))
 
         assert torch.all(
             torch.eq(expected_output, result),

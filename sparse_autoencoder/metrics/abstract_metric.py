@@ -5,10 +5,8 @@ from dataclasses import dataclass
 from typing import Any, final
 
 from sparse_autoencoder.tensor_types import (
-    DecodedActivationBatch,
-    GeneratedActivationBatch,
+    InputOutputActivationBatch,
     LearnedActivationBatch,
-    SourceActivationBatch,
 )
 
 
@@ -16,18 +14,18 @@ from sparse_autoencoder.tensor_types import (
 class GenerateMetricData:
     """Generate metric data."""
 
-    generated_activations: GeneratedActivationBatch
+    generated_activations: InputOutputActivationBatch
 
 
 @dataclass
 class TrainMetricData:
     """Train metric data."""
 
-    input_activations: SourceActivationBatch
+    input_activations: InputOutputActivationBatch
 
     learned_activations: LearnedActivationBatch
 
-    decoded_activations: DecodedActivationBatch
+    decoded_activations: InputOutputActivationBatch
 
 
 @dataclass

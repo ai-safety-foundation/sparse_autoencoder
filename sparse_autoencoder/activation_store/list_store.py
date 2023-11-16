@@ -14,7 +14,7 @@ from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
 )
 from sparse_autoencoder.tensor_types import (
-    GeneratedActivation,
+    InputOutputActivationVector,
     SourceModelActivations,
 )
 
@@ -71,7 +71,7 @@ class ListActivationStore(ActivationStore):
         torch.Size([2, 100])
     """
 
-    _data: list[GeneratedActivation] | ListProxy
+    _data: list[InputOutputActivationVector] | ListProxy
     """Underlying List Data Store."""
 
     _device: torch.device | None
@@ -94,7 +94,7 @@ class ListActivationStore(ActivationStore):
 
     def __init__(
         self,
-        data: list[GeneratedActivation] | None = None,
+        data: list[InputOutputActivationVector] | None = None,
         device: torch.device | None = None,
         max_workers: int | None = None,
         *,
@@ -168,7 +168,7 @@ class ListActivationStore(ActivationStore):
 
         return total_tensors_size + list_of_pointers_size
 
-    def __getitem__(self, index: int) -> GeneratedActivation:
+    def __getitem__(self, index: int) -> InputOutputActivationVector:
         """Get Item Dunder Method.
 
         Example:
@@ -207,7 +207,7 @@ class ListActivationStore(ActivationStore):
         self.wait_for_writes_to_complete()
         random.shuffle(self._data)
 
-    def append(self, item: GeneratedActivation) -> Future | None:
+    def append(self, item: InputOutputActivationVector) -> Future | None:
         """Append a single item to the dataset.
 
         Note **append is blocking**. For better performance use extend instead with batches.
@@ -235,7 +235,7 @@ class ListActivationStore(ActivationStore):
         """
         try:
             # Unstack to a list of tensors
-            items: list[GeneratedActivation] = resize_to_list_vectors(batch)
+            items: list[InputOutputActivationVector] = resize_to_list_vectors(batch)
 
             self._data.extend(items)
         except Exception as e:  # noqa: BLE001

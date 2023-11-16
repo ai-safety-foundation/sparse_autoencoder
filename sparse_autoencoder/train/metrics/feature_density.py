@@ -7,12 +7,12 @@ from numpy.typing import NDArray
 import torch
 import wandb
 
-from sparse_autoencoder.tensor_types import LearnedFeatures, ValidationActivationBatch
+from sparse_autoencoder.tensor_types import LearnedActivationBatch, LearntActivationVector
 
 
 def calc_feature_density(
-    activations: ValidationActivationBatch, threshold: float = 0.001
-) -> LearnedFeatures:
+    activations: LearnedActivationBatch, threshold: float = 0.001
+) -> LearntActivationVector:
     """Count how many times each feature was active.
 
     Percentage of samples in which each feature was active (i.e. the neuron has "fired").
@@ -31,7 +31,7 @@ def calc_feature_density(
     Returns:
         Number of times each feature was active in a sample.
     """
-    has_fired: ValidationActivationBatch = torch.gt(activations, threshold).to(
+    has_fired: LearnedActivationBatch = torch.gt(activations, threshold).to(
         # Use float as einops requires this (64 as some features are very sparse)
         dtype=torch.float64
     )
@@ -40,7 +40,7 @@ def calc_feature_density(
 
 
 def wandb_feature_density_histogram(
-    feature_density: LearnedFeatures,
+    feature_density: LearntActivationVector,
 ) -> wandb.Histogram:
     """Create a W&B histogram of the feature density.
 

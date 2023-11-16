@@ -15,16 +15,16 @@ from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLos
 from sparse_autoencoder.loss.reducer import LossReducer
 from sparse_autoencoder.tensor_types import (
     AliveEncoderWeights,
-    BatchItemwiseLoss,
     DeadEncoderNeuronWeightUpdates,
     DeadNeuronIndices,
     DecoderWeights,
     EncoderWeights,
+    InputOutputActivationBatch,
     ItemTensor,
-    LearnedFeatures,
+    LearntActivationVector,
     NeuronActivity,
     SampledDeadNeuronInputs,
-    SourceActivationBatch,
+    TrainBatchStatistic,
 )
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
@@ -60,7 +60,7 @@ def compute_loss_and_get_activations(
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime,
     num_inputs: int,
-) -> tuple[BatchItemwiseLoss, SourceActivationBatch]:
+) -> tuple[TrainBatchStatistic, InputOutputActivationBatch]:
     """Compute the loss on a random subset of inputs.
 
     Computes the loss and also stores the input activations (for use in resampling neurons).
@@ -80,8 +80,8 @@ def compute_loss_and_get_activations(
             LearnedActivationsL1Loss(sweep_parameters.l1_coefficient),
         )
 
-        loss_batches: list[BatchItemwiseLoss] = []
-        input_activations_batches: list[SourceActivationBatch] = []
+        loss_batches: list[TrainBatchStatistic] = []
+        input_activations_batches: list[InputOutputActivationBatch] = []
         batch_size: int = sweep_parameters.batch_size
         dataloader = DataLoader(store, batch_size=batch_size)
         batches: int = num_inputs // batch_size
@@ -106,7 +106,7 @@ def compute_loss_and_get_activations(
         return loss, input_activations
 
 
-def assign_sampling_probabilities(loss: BatchItemwiseLoss) -> Tensor:
+def assign_sampling_probabilities(loss: TrainBatchStatistic) -> Tensor:
     """Assign the sampling probabilities for each input activations vector.
 
     Assign each input vector a probability of being picked that is proportional to the square of
@@ -128,8 +128,8 @@ def assign_sampling_probabilities(loss: BatchItemwiseLoss) -> Tensor:
 
 
 def sample_input(
-    probabilities: BatchItemwiseLoss,
-    input_activations: SourceActivationBatch,
+    probabilities: TrainBatchStatistic,
+    input_activations: InputOutputActivationBatch,
     num_samples: int,
 ) -> SampledDeadNeuronInputs:
     """Sample an input vector based on the provided probabilities.
@@ -279,7 +279,7 @@ def resample_dead_neurons(
 
         # Assign each input vector a probability of being picked that is proportional to the square
         # of the autoencoder's loss on that input.
-        sample_probabilities: BatchItemwiseLoss = assign_sampling_probabilities(loss)
+        sample_probabilities: TrainBatchStatistic = assign_sampling_probabilities(loss)
 
         # Get references to the encoder and decoder parameters
         encoder_linear: torch.nn.Linear = autoencoder.encoder.get_submodule("Linear")  # type: ignore
@@ -287,7 +287,7 @@ def resample_dead_neurons(
             "ConstrainedUnitNormLinear"
         )  # type: ignore
         encoder_weight: EncoderWeights = encoder_linear.weight
-        encoder_bias: LearnedFeatures = encoder_linear.bias
+        encoder_bias: LearntActivationVector = encoder_linear.bias
         decoder_weight: DecoderWeights = decoder_linear.weight
 
         # For each dead neuron sample an input according to these probabilities.

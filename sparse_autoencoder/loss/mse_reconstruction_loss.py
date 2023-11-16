@@ -5,10 +5,9 @@ from torch.nn.functional import mse_loss
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import (
-    BatchItemwiseLoss,
-    DecodedActivationBatch,
+    InputOutputActivationBatch,
     LearnedActivationBatch,
-    SourceActivationBatch,
+    TrainBatchStatistic,
 )
 
 
@@ -35,10 +34,10 @@ class MSEReconstructionLoss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: SourceActivationBatch,
+        source_activations: InputOutputActivationBatch,
         learned_activations: LearnedActivationBatch,  # noqa: ARG002
-        decoded_activations: DecodedActivationBatch,
-    ) -> BatchItemwiseLoss:
+        decoded_activations: InputOutputActivationBatch,
+    ) -> TrainBatchStatistic:
         """MSE Reconstruction loss (mean across features dimension).
 
         Args:

@@ -8,23 +8,22 @@ from torch.nn.parameter import Parameter
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
 from sparse_autoencoder.tensor_types import (
-    DecodedActivationBatch,
-    InputActivationsStatistic,
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
     LearnedActivationBatch,
-    SourceActivationBatch,
 )
 
 
 class SparseAutoencoder(Module):
     """Sparse Autoencoder Model."""
 
-    geometric_median_dataset: InputActivationsStatistic
+    geometric_median_dataset: InputOutputActivationVector
     """Estimated Geometric Median of the Dataset.
 
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: SourceActivationBatch
+    tied_bias: InputOutputActivationBatch
     """Tied Bias Parameter.
 
     The same bias is used pre-encoder and post-decoder.
@@ -52,7 +51,7 @@ class SparseAutoencoder(Module):
         self,
         n_input_features: int,
         n_learned_features: int,
-        geometric_median_dataset: InputActivationsStatistic,
+        geometric_median_dataset: InputOutputActivationVector,
         device: torch.device | None = None,
         dtype: torch.dtype | None = None,
     ) -> None:
@@ -108,10 +107,10 @@ class SparseAutoencoder(Module):
 
     def forward(
         self,
-        x: SourceActivationBatch,
+        x: InputOutputActivationBatch,
     ) -> tuple[
         LearnedActivationBatch,
-        DecodedActivationBatch,
+        InputOutputActivationBatch,
     ]:
         """Forward Pass.
 
