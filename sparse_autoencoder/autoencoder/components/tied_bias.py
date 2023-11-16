@@ -5,7 +5,7 @@ from torch.nn import Module
 
 from sparse_autoencoder.tensor_types import (
     DecoderBias,
-    InputActivationBatch,
+    SourceActivationBatch,
 )
 
 
@@ -53,8 +53,8 @@ class TiedBias(Module):
 
     def forward(
         self,
-        x: InputActivationBatch,
-    ) -> InputActivationBatch:
+        x: SourceActivationBatch,
+    ) -> SourceActivationBatch:
         """Forward Pass.
 
         Args:

@@ -18,9 +18,6 @@ class Axis(LowercaseStrEnum):
 
         >>> print(Axis.TRAIN_FEATURE)
         train_feature
-
-        >>> print(Axis.SINGLE_ITEM)
-        1
     """
 
     # Batches
@@ -60,7 +57,7 @@ class Axis(LowercaseStrEnum):
     POSITION = auto()
     """Token position."""
 
-    SINGLE_ITEM = "1"
+    SINGLE_ITEM = ""
     """Single item axis."""
 
     ANY = "*any"
@@ -88,8 +85,8 @@ GeneratedActivationStore: TypeAlias = Float[Tensor, Axis.ITEMS + " " + Axis.TRAI
 LearnedActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.LEARNT_FEATURE]
 """Learned activation batch."""
 
-InputActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.TRAIN_FEATURE]
-"""Input activation batch."""
+SourceActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.TRAIN_FEATURE]
+"""Source (input) activation batch."""
 
 DecodedActivationBatch: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH + " " + Axis.TRAIN_FEATURE]
 """Decoded activation batch."""
@@ -114,8 +111,8 @@ DecoderWeights: TypeAlias = Float[Tensor, Axis.TRAIN_FEATURE + " " + Axis.LEARNT
 DecoderBias: TypeAlias = Float[Tensor, Axis.TRAIN_FEATURE]
 """Decoder bias."""
 
-BatchLoss: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH]
-"""Batch loss"""
+BatchItemwiseLoss: TypeAlias = Float[Tensor, Axis.TRAIN_BATCH]
+"""Batch itemwise loss"""
 
 NeuronActivity: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE]
 """Neuron activity.

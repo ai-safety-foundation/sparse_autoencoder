@@ -7,8 +7,8 @@ from typing import Any, final
 from sparse_autoencoder.tensor_types import (
     DecodedActivationBatch,
     GeneratedActivationBatch,
-    InputActivationBatch,
     LearnedActivationBatch,
+    SourceActivationBatch,
 )
 
 
@@ -23,7 +23,7 @@ class GenerateMetricData:
 class TrainMetricData:
     """Train metric data."""
 
-    input_activations: InputActivationBatch
+    input_activations: SourceActivationBatch
 
     learned_activations: LearnedActivationBatch
 

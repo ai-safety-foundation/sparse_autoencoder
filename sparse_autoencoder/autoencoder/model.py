@@ -9,9 +9,9 @@ from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBi
 from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
 from sparse_autoencoder.tensor_types import (
     DecodedActivationBatch,
-    InputActivationBatch,
     InputActivationsStatistic,
     LearnedActivationBatch,
+    SourceActivationBatch,
 )
 
 
@@ -24,7 +24,7 @@ class SparseAutoencoder(Module):
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: InputActivationBatch
+    tied_bias: SourceActivationBatch
     """Tied Bias Parameter.
 
     The same bias is used pre-encoder and post-decoder.
@@ -108,7 +108,7 @@ class SparseAutoencoder(Module):
 
     def forward(
         self,
-        x: InputActivationBatch,
+        x: SourceActivationBatch,
     ) -> tuple[
         LearnedActivationBatch,
         DecodedActivationBatch,

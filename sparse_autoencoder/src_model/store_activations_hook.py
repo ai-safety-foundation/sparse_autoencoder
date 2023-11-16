@@ -7,7 +7,7 @@ from sparse_autoencoder.tensor_types import SourceModelActivations
 
 def store_activations_hook(
     value: SourceModelActivations,
-    _hook: HookPoint,
+    hook: HookPoint,  # noqa: ARG001
     store: ActivationStore,
 ) -> SourceModelActivations:
     """Store Activations Hook.

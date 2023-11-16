@@ -9,20 +9,22 @@ from torch import Tensor
 from torch.utils.data import DataLoader
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
-from sparse_autoencoder.autoencoder.loss import l1_loss, reconstruction_loss, sae_training_loss
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
+from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
+from sparse_autoencoder.loss.reducer import LossReducer
 from sparse_autoencoder.tensor_types import (
     AliveEncoderWeights,
-    BatchLoss,
+    BatchItemwiseLoss,
     DeadEncoderNeuronWeightUpdates,
     DeadNeuronIndices,
     DecoderWeights,
     EncoderWeights,
-    InputActivationBatch,
     ItemTensor,
     LearnedFeatures,
     NeuronActivity,
     SampledDeadNeuronInputs,
+    SourceActivationBatch,
 )
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
@@ -58,7 +60,7 @@ def compute_loss_and_get_activations(
     autoencoder: SparseAutoencoder,
     sweep_parameters: SweepParametersRuntime,
     num_inputs: int,
-) -> tuple[BatchLoss, InputActivationBatch]:
+) -> tuple[BatchItemwiseLoss, SourceActivationBatch]:
     """Compute the loss on a random subset of inputs.
 
     Computes the loss and also stores the input activations (for use in resampling neurons).
@@ -73,8 +75,13 @@ def compute_loss_and_get_activations(
         A tuple containing the loss per item, and all input activations.
     """
     with torch.no_grad():
-        loss_batches: list[BatchLoss] = []
-        input_activations_batches: list[InputActivationBatch] = []
+        loss, _metrics = LossReducer(
+            MSEReconstructionLoss(),
+            LearnedActivationsL1Loss(sweep_parameters.l1_coefficient),
+        )
+
+        loss_batches: list[BatchItemwiseLoss] = []
+        input_activations_batches: list[SourceActivationBatch] = []
         batch_size: int = sweep_parameters.batch_size
         dataloader = DataLoader(store, batch_size=batch_size)
         batches: int = num_inputs // batch_size
@@ -82,13 +89,7 @@ def compute_loss_and_get_activations(
         for batch_idx, batch in enumerate(iter(dataloader)):
             input_activations_batches.append(batch)
             learned_activations, reconstructed_activations = autoencoder(batch)
-            loss_batches.append(
-                sae_training_loss(
-                    reconstruction_loss(batch, reconstructed_activations),
-                    l1_loss(learned_activations),
-                    sweep_parameters.l1_coefficient,
-                )
-            )
+            loss_batches.append(loss.forward(batch, learned_activations, reconstructed_activations))
             if batch_idx >= batches:
                 break
 
@@ -105,7 +106,7 @@ def compute_loss_and_get_activations(
         return loss, input_activations
 
 
-def assign_sampling_probabilities(loss: BatchLoss) -> Tensor:
+def assign_sampling_probabilities(loss: BatchItemwiseLoss) -> Tensor:
     """Assign the sampling probabilities for each input activations vector.
 
     Assign each input vector a probability of being picked that is proportional to the square of
@@ -127,8 +128,8 @@ def assign_sampling_probabilities(loss: BatchLoss) -> Tensor:
 
 
 def sample_input(
-    probabilities: BatchLoss,
-    input_activations: InputActivationBatch,
+    probabilities: BatchItemwiseLoss,
+    input_activations: SourceActivationBatch,
     num_samples: int,
 ) -> SampledDeadNeuronInputs:
     """Sample an input vector based on the provided probabilities.
@@ -278,7 +279,7 @@ def resample_dead_neurons(
 
         # Assign each input vector a probability of being picked that is proportional to the square
         # of the autoencoder's loss on that input.
-        sample_probabilities: BatchLoss = assign_sampling_probabilities(loss)
+        sample_probabilities: BatchItemwiseLoss = assign_sampling_probabilities(loss)
 
         # Get references to the encoder and decoder parameters
         encoder_linear: torch.nn.Linear = autoencoder.encoder.get_submodule("Linear")  # type: ignore

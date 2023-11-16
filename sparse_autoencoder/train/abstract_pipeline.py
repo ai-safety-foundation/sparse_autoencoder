@@ -1,5 +1,6 @@
 """Abstract pipeline."""
 from abc import ABC, abstractmethod
+from typing import final
 
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
@@ -21,7 +22,7 @@ from sparse_autoencoder.tensor_types import NeuronActivity
 
 
 class AbstractPipeline(ABC):
-    """Abstract pipeline for training a Sparse Autoencoder.
+    """Pipeline for training a Sparse Autoencoder on TransformerLens activations.
 
     Includes all the key functionality to train a sparse autoencoder, with a specific set of
         hyperparameters.
@@ -47,6 +48,7 @@ class AbstractPipeline(ABC):
 
     progress_bar: tqdm | None
 
+    @final
     def __init__(
         self,
         generate_metrics: list[AbstractGenerateMetric],
@@ -89,6 +91,7 @@ class AbstractPipeline(ABC):
         """Get validation metrics."""
         raise NotImplementedError
 
+    @final
     def run_pipeline(
         self,
         source_batch_size: int,
