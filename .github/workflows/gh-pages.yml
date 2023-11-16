@@ -37,4 +37,24 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: documentation
-          path: docs/build
+          path: docs/generated
+
+  deploy-docs:
+    name: Deploy Docs
+    runs-on: ubuntu-latest
+    # Only run if merging a PR into main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build-docs
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Docs Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: documentation
+          path: docs/generated
+      - name: Upload to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs/generated
+          clean-exclude: |
+            *.*.*/
