@@ -51,10 +51,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: documentation
-          path: docs/build
+          path: docs/generated
       - name: Upload to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: docs/build
+          folder: docs/generated
           clean-exclude: |
             *.*.*/
