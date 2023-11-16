@@ -4,7 +4,6 @@ from functools import partial
 from typing import TYPE_CHECKING
 
 import torch
-from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import (
@@ -60,6 +59,9 @@ def generate_activations(
             than strict limit.
         device: Device to run the model on.
     """
+    # Set model to evaluation (inference) mode
+    model.eval()
+
     if isinstance(device, torch.device):
         model.to(device, print_details=False)
 
@@ -73,17 +75,10 @@ def generate_activations(
     total: int = num_items - num_items % activations_per_batch
 
     # Loop through the dataloader until the store reaches the desired size
-    with torch.no_grad(), tqdm(
-        desc="Generate Activations",
-        total=total - total % activations_per_batch,
-        colour="green",
-        leave=False,
-        dynamic_ncols=True,
-    ) as progress_bar:
+    with torch.no_grad():
         for batch in source_data:
             if len(store) + activations_per_batch > total:
                 break
 
             input_ids: BatchTokenizedPrompts = batch["input_ids"].to(device)
             model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)
-            progress_bar.update(activations_per_batch)

@@ -1,6 +1,7 @@
 """Training Pipeline."""
 from collections.abc import Iterable
 from typing import TYPE_CHECKING
+import warnings
 
 import torch
 from torch.utils.data import DataLoader
@@ -11,10 +12,7 @@ from transformer_lens import HookedTransformer
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
-from sparse_autoencoder.source_data.abstract_dataset import (
-    SourceDataset,
-    TorchTokenizedPrompts,
-)
+from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.train.generate_activations import generate_activations
 from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
@@ -23,6 +21,8 @@ from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
 if TYPE_CHECKING:
     from sparse_autoencoder.tensor_types import NeuronActivity
+
+DEFAULT_RESAMPLE_N = 819_200
 
 
 def stateful_dataloader_iterable(
@@ -120,20 +120,18 @@ def pipeline(  # noqa: PLR0913
         autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
     total_activations: int = 0
-    generate_train_iterations: int = 0
 
     # Run loop until source data is exhausted:
     with logging_redirect_tqdm(), tqdm(
         desc="Total activations trained on",
         dynamic_ncols=True,
-        colour="blue",
         total=max_activations,
-        postfix={"Generate/train iterations": 0},
+        postfix={"Current mode": "initializing"},
     ) as progress_bar:
         while total_activations < max_activations:
-            activation_store.empty()  # In case it was filled by a different run
-
             # Add activations to the store
+            activation_store.empty()  # In case it was filled by a different run
+            progress_bar.set_postfix({"Current mode": "generating"})
             generate_activations(
                 src_model,
                 src_model_activation_layer,
@@ -153,6 +151,7 @@ def pipeline(  # noqa: PLR0913
             activation_store.shuffle()
 
             # Train the autoencoder
+            progress_bar.set_postfix({"Current mode": "training"})
             train_steps, learned_activations_fired_count = train_autoencoder(
                 activation_store=activation_store,
                 autoencoder=autoencoder,
@@ -171,19 +170,32 @@ def pipeline(  # noqa: PLR0913
             progress_bar.update(len(activation_store))
 
             # Resample neurons if required
+            if len(activation_store) < DEFAULT_RESAMPLE_N:
+                warn_str = (
+                    f"Warning: activation store len {len(activation_store)} is less than "
+                    f"DEFAULT_RESAMPLE_N ({DEFAULT_RESAMPLE_N}). Resampling with"
+                    f"num_resample_inputs as {len(activation_store)}."
+                )
+                warnings.warn(
+                    warn_str,
+                    stacklevel=2,
+                )
+                num_resample_inputs = len(activation_store)
+            else:
+                num_resample_inputs = DEFAULT_RESAMPLE_N
+
             if activations_since_resampling >= resample_frequency:
+                progress_bar.set_postfix({"Current mode": "resampling"})
                 activations_since_resampling = 0
+
                 resample_dead_neurons(
                     neuron_activity=neuron_activity,
                     store=activation_store,
                     autoencoder=autoencoder,
                     sweep_parameters=sweep_parameters,
+                    num_inputs=num_resample_inputs,
                 )
                 learned_activations_fired_count.zero_()
                 optimizer.reset_state_all_parameters()
 
             activation_store.empty()
-
-            progress_bar.update(1)
-            generate_train_iterations += 1
-            progress_bar.set_postfix({"Generate/train iterations": generate_train_iterations})
