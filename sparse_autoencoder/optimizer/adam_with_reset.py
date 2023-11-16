@@ -3,6 +3,7 @@
 This reset method is useful when resampling dead neurons during training.
 """
 from collections.abc import Iterator
+from typing import final
 
 from torch import Tensor
 from torch.nn.parameter import Parameter
@@ -13,6 +14,7 @@ from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWit
 from sparse_autoencoder.tensor_types import DeadNeuronIndices
 
 
+@final
 class AdamWithReset(Adam, AbstractOptimizerWithReset):
     """Adam Optimizer with a reset method.
 
