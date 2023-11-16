@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>tied_bias - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "tied_bias";
+        var mkdocs_page_input_path = "reference/autoencoder/components/tied_bias.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_store/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_store/base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_store/disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_store/list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../activation_store/tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../activation_store/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../activation_store/utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">autoencoder</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">Index</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">components</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">tied_bias</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">autoencoder</li>
+          <li class="breadcrumb-item">components</li>
+      <li class="breadcrumb-item active">tied_bias</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.autoencoder.components.tied_bias"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Tied Biases (Pre-Encoder and Post-Decoder).</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias" class="doc doc-heading">
+          <code>TiedBias</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+  
+      <p>Tied Bias Layer.</p>
+<p>The tied pre-encoder bias is a learned bias term that is subtracted from the input before
+encoding, and added back after decoding.</p>
+<p>The bias parameter must be initialised in the parent module, and then passed to this layer.</p>
+<p>https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TiedBias</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Layer.</span>
+
+<span class="sd">    The tied pre-encoder bias is a learned bias term that is subtracted from the input before</span>
+<span class="sd">    encoding, and added back after decoding.</span>
+
+<span class="sd">    The bias parameter must be initialised in the parent module, and then passed to this layer.</span>
+
+<span class="sd">    https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span>
+
+    <span class="n">_bias_position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bias</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
+        <span class="n">position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the bias layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bias: Tied bias parameter (initialised in the parent module), used for both the</span>
+<span class="sd">                pre-encoder and post-encoder bias. The original paper initialised this using the</span>
+<span class="sd">                geometric median of the dataset.</span>
+<span class="sd">            position: Whether this is the pre-encoder or post-encoder bias.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span> <span class="o">=</span> <span class="n">bias</span>
+
+        <span class="c1"># Support string literals as well as enums</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">=</span> <span class="n">position</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Input tensor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Output of the forward pass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If this is the pre-encoder bias, we subtract the bias from the input.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">==</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span>
+
+        <span class="c1"># If it&#39;s the post-encoder bias, we add the bias to the input.</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span>
+
+    <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">bias</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the bias layer.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>bias</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tied bias parameter (initialised in the parent module), used for both the
+pre-encoder and post-encoder bias. The original paper initialised this using the
+geometric median of the dataset.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>position</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition">TiedBiasPosition</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Whether this is the pre-encoder or post-encoder bias.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">bias</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the bias layer.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bias: Tied bias parameter (initialised in the parent module), used for both the</span>
+<span class="sd">            pre-encoder and post-encoder bias. The original paper initialised this using the</span>
+<span class="sd">            geometric median of the dataset.</span>
+<span class="sd">        position: Whether this is the pre-encoder or post-encoder bias.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span> <span class="o">=</span> <span class="n">bias</span>
+
+    <span class="c1"># Support string literals as well as enums</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">=</span> <span class="n">position</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.extra_repr" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">extra_repr</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>String extra representation of the module.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.forward" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Forward Pass.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>x</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Input tensor.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
+            –
+            <div class="doc-md-description">
+              <p>Output of the forward pass.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x: Input tensor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Output of the forward pass.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># If this is the pre-encoder bias, we subtract the bias from the input.</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">==</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span>
+
+    <span class="c1"># If it&#39;s the post-encoder bias, we add the bias to the input.</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" class="doc doc-heading">
+          <code>TiedBiasPosition</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>Tied Bias Position.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TiedBiasPosition</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Position.&quot;&quot;&quot;</span>
+
+    <span class="n">PRE_ENCODER</span> <span class="o">=</span> <span class="s2">&quot;pre_encoder&quot;</span>
+    <span class="n">POST_DECODER</span> <span class="o">=</span> <span class="s2">&quot;post_decoder&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../unit_norm_linear/" class="btn btn-neutral float-right" title="unit_norm_linear">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../unit_norm_linear/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

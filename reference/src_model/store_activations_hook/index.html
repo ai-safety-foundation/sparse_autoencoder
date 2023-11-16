@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>store_activations_hook - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "store_activations_hook";
+        var mkdocs_page_input_path = "reference/src_model/store_activations_hook.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">autoencoder</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">src_model</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">store_activations_hook</a>
+    <ul class="current">
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">src_model</li>
+      <li class="breadcrumb-item active">store_activations_hook</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.src_model.store_activations_hook"></a>
+  <div class="doc doc-contents first">
+  
+      <p>TransformerLens Hook for storing activations.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="sparse_autoencoder.src_model.store_activations_hook.store_activations_hook" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">store_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">store</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Store Activations Hook.</p>
+<p>Useful for getting just the specific activations wanted, rather than the full cache.</p>
+<p>Example:
+First we'll need a source model from TransformerLens and an activation store.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from functools import partial
+from transformer_lens import HookedTransformer
+from sparse_autoencoder.activation_store.list_store import ListActivationStore
+store = ListActivationStore()
+model = HookedTransformer.from_pretrained("tiny-stories-1M")
+Loaded pretrained model tiny-stories-1M into HookedTransformer</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Next we can add the hook to specific neurons (in this case the first MLP neurons), and create
+the tokens for a forward pass.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>model.add_hook(
+...     "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
+... )
+tokens = model.to_tokens("Hello world")
+tokens.shape
+torch.Size([1, 3])</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Then when we run the model, we should get one activation vector for each token (as we just have
+one batch item). Note we also set <code>stop_at_layer=1</code> as we don't need the logits or any other
+activations after the hook point that we've specified (in this case the first MLP layer).</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>_output = model.forward("Hello world", stop_at_layer=1) # Change this layer as required
+len(store)
+3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>value</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SourceModelActivations" href="../../tensor_types/#sparse_autoencoder.tensor_types.SourceModelActivations">SourceModelActivations</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The activations to store.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>hook</code></b>
+                  (<code><span title="transformer_lens.hook_points.HookPoint">HookPoint</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The hook point.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>store</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_store.base_store.ActivationStore" href="../../activation_store/base_store/#sparse_autoencoder.activation_store.base_store.ActivationStore">ActivationStore</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The activation store. This should be pre-initialised with <code>functools.partial</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/src_model/store_activations_hook.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">store_activations_hook</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">,</span>
+    <span class="n">hook</span><span class="p">:</span> <span class="n">HookPoint</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SourceModelActivations</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Store Activations Hook.</span>
+
+<span class="sd">    Useful for getting just the specific activations wanted, rather than the full cache.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    First we&#39;ll need a source model from TransformerLens and an activation store.</span>
+
+<span class="sd">    &gt;&gt;&gt; from functools import partial</span>
+<span class="sd">    &gt;&gt;&gt; from transformer_lens import HookedTransformer</span>
+<span class="sd">    &gt;&gt;&gt; from sparse_autoencoder.activation_store.list_store import ListActivationStore</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">    &gt;&gt;&gt; model = HookedTransformer.from_pretrained(&quot;tiny-stories-1M&quot;)</span>
+<span class="sd">    Loaded pretrained model tiny-stories-1M into HookedTransformer</span>
+
+<span class="sd">    Next we can add the hook to specific neurons (in this case the first MLP neurons), and create</span>
+<span class="sd">    the tokens for a forward pass.</span>
+
+<span class="sd">    &gt;&gt;&gt; model.add_hook(</span>
+<span class="sd">    ...     &quot;blocks.0.mlp.hook_post&quot;, partial(store_activations_hook, store=store)</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; tokens = model.to_tokens(&quot;Hello world&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; tokens.shape</span>
+<span class="sd">    torch.Size([1, 3])</span>
+
+<span class="sd">    Then when we run the model, we should get one activation vector for each token (as we just have</span>
+<span class="sd">    one batch item). Note we also set `stop_at_layer=1` as we don&#39;t need the logits or any other</span>
+<span class="sd">    activations after the hook point that we&#39;ve specified (in this case the first MLP layer).</span>
+
+<span class="sd">    &gt;&gt;&gt; _output = model.forward(&quot;Hello world&quot;, stop_at_layer=1) # Change this layer as required</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    3</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: The activations to store.</span>
+<span class="sd">        hook: The hook point.</span>
+<span class="sd">        store: The activation store. This should be pre-initialised with `functools.partial`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="c1"># Return the unmodified value</span>
+    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../tensor_types/" class="btn btn-neutral float-right" title="tensor_types">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../tensor_types/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

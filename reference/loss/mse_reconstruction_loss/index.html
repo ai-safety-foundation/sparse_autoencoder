@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>mse_reconstruction_loss - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "mse_reconstruction_loss";
+        var mkdocs_page_input_path = "reference/loss/mse_reconstruction_loss.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">autoencoder</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">loss</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">mse_reconstruction_loss</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">loss</li>
+      <li class="breadcrumb-item active">mse_reconstruction_loss</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.loss.mse_reconstruction_loss"></a>
+  <div class="doc doc-contents first">
+  
+      <p>MSE Reconstruction loss.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.loss.mse_reconstruction_loss.MSEReconstructionLoss" class="doc doc-heading">
+          <code>MSEReconstructionLoss</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.loss.abstract_loss.AbstractLoss" href="../abstract_loss/#sparse_autoencoder.loss.abstract_loss.AbstractLoss">AbstractLoss</a></code></p>
+
+  
+      <p>MSE Reconstruction loss.</p>
+<p>MSE reconstruction loss is calculated as the mean squared error between each each input vector
+and it's corresponding decoded vector. The original paper found that models trained with some
+loss functions such as cross-entropy loss generally prefer to represent features
+polysemantically, whereas models trained with MSE may achieve the same loss for both
+polysemantic and monosemantic representations of true features.</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+loss = MSEReconstructionLoss()
+input_activations = torch.tensor([[5.0, 4], [3.0, 4]])
+output_activations = torch.tensor([[1.0, 5], [1.0, 5]])
+unused_activations = torch.zeros_like(input_activations)</p>
+<h3 id="sparse_autoencoder.loss.mse_reconstruction_loss.MSEReconstructionLoss--outputs-both-loss-and-metrics-to-log">Outputs both loss and metrics to log</h3>
+<p>loss(input_activations, unused_activations, output_activations)
+(tensor(5.5000), {'MSEReconstructionLoss': 5.5})</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/loss/mse_reconstruction_loss.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">class</span> <span class="nc">MSEReconstructionLoss</span><span class="p">(</span><span class="n">AbstractLoss</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MSE Reconstruction loss.</span>
+
+<span class="sd">    MSE reconstruction loss is calculated as the mean squared error between each each input vector</span>
+<span class="sd">    and it&#39;s corresponding decoded vector. The original paper found that models trained with some</span>
+<span class="sd">    loss functions such as cross-entropy loss generally prefer to represent features</span>
+<span class="sd">    polysemantically, whereas models trained with MSE may achieve the same loss for both</span>
+<span class="sd">    polysemantic and monosemantic representations of true features.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; loss = MSEReconstructionLoss()</span>
+<span class="sd">        &gt;&gt;&gt; input_activations = torch.tensor([[5.0, 4], [3.0, 4]])</span>
+<span class="sd">        &gt;&gt;&gt; output_activations = torch.tensor([[1.0, 5], [1.0, 5]])</span>
+<span class="sd">        &gt;&gt;&gt; unused_activations = torch.zeros_like(input_activations)</span>
+<span class="sd">        &gt;&gt;&gt; # Outputs both loss and metrics to log</span>
+<span class="sd">        &gt;&gt;&gt; loss(input_activations, unused_activations, output_activations)</span>
+<span class="sd">        (tensor(5.5000), {&#39;MSEReconstructionLoss&#39;: 5.5})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+        <span class="n">learned_activations</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span><span class="p">,</span>  <span class="c1"># noqa: ARG002</span>
+        <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrainBatchStatistic</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;MSE Reconstruction loss (mean across features dimension).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source_activations: Source activations (input activations to the autoencoder from the</span>
+<span class="sd">                source model).</span>
+<span class="sd">            learned_activations: Learned activations (intermediate activations in the autoencoder).</span>
+<span class="sd">            decoded_activations: Decoded activations.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Loss per batch item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">square_error_loss</span> <span class="o">=</span> <span class="n">mse_loss</span><span class="p">(</span><span class="n">source_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Mean over just the features dimension (i.e. batch itemwise loss)</span>
+        <span class="k">return</span> <span class="n">square_error_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.loss.mse_reconstruction_loss.MSEReconstructionLoss.forward" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">source_activations</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>MSE Reconstruction loss (mean across features dimension).</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>source_activations</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source activations (input activations to the autoencoder from the
+source model).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>learned_activations</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearnedActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.LearnedActivationBatch">LearnedActivationBatch</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Learned activations (intermediate activations in the autoencoder).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>decoded_activations</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Decoded activations.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.TrainBatchStatistic" href="../../tensor_types/#sparse_autoencoder.tensor_types.TrainBatchStatistic">TrainBatchStatistic</a></code>
+            –
+            <div class="doc-md-description">
+              <p>Loss per batch item.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/loss/mse_reconstruction_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span><span class="p">,</span>  <span class="c1"># noqa: ARG002</span>
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrainBatchStatistic</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MSE Reconstruction loss (mean across features dimension).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source_activations: Source activations (input activations to the autoencoder from the</span>
+<span class="sd">            source model).</span>
+<span class="sd">        learned_activations: Learned activations (intermediate activations in the autoencoder).</span>
+<span class="sd">        decoded_activations: Decoded activations.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Loss per batch item.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">square_error_loss</span> <span class="o">=</span> <span class="n">mse_loss</span><span class="p">(</span><span class="n">source_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Mean over just the features dimension (i.e. batch itemwise loss)</span>
+    <span class="k">return</span> <span class="n">square_error_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../learned_activations_l1/" class="btn btn-neutral float-left" title="learned_activations_l1"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reducer/" class="btn btn-neutral float-right" title="reducer">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../learned_activations_l1/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reducer/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

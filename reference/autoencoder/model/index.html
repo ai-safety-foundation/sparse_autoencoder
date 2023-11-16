@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>model - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "model";
+        var mkdocs_page_input_path = "reference/autoencoder/model.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">autoencoder</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">model</a>
+    <ul class="current">
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">autoencoder</li>
+      <li class="breadcrumb-item active">model</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.autoencoder.model"></a>
+  <div class="doc doc-contents first">
+  
+      <p>The Sparse Autoencoder Model.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder" class="doc doc-heading">
+          <code>SparseAutoencoder</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+
+  
+      <p>Sparse Autoencoder Model.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoder</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Autoencoder Model.&quot;&quot;&quot;</span>
+
+    <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimated Geometric Median of the Dataset.</span>
+
+<span class="sd">    Used for initialising :attr:`tied_bias`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tied_bias</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Parameter.</span>
+
+<span class="sd">    The same bias is used pre-encoder and post-decoder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of Input Features.&quot;&quot;&quot;</span>
+
+    <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of Learned Features.&quot;&quot;&quot;</span>
+
+    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Device to run the model on.&quot;&quot;&quot;</span>
+
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data type to use for the model.&quot;&quot;&quot;</span>
+
+    <span class="n">encoder</span><span class="p">:</span> <span class="n">Sequential</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encoder Module.&quot;&quot;&quot;</span>
+
+    <span class="n">decoder</span><span class="p">:</span> <span class="n">Sequential</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decoder Module.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Sparse Autoencoder Model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n_input_features: Number of input features (e.g. `d_mlp` if training on MLP activations</span>
+<span class="sd">                from TransformerLens).</span>
+<span class="sd">            n_learned_features: Number of learned features. The initial paper experimented with 1 to</span>
+<span class="sd">                256 times the number of input features, and primarily used a multiple of 8.</span>
+<span class="sd">            geometric_median_dataset: Estimated geometric median of the dataset.</span>
+<span class="sd">            device: Device to run the model on.</span>
+<span class="sd">            dtype: Data type to use for the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_input_features</span> <span class="o">=</span> <span class="n">n_input_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_learned_features</span> <span class="o">=</span> <span class="n">n_learned_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+
+        <span class="c1"># Store the geometric median of the dataset (so that we can reset parameters). This is not a</span>
+        <span class="c1"># parameter itself (the tied bias parameter is used for that), so gradients are disabled.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Initialize the tied bias</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_input_features</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">OrderedDict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;TiedBias&quot;</span><span class="p">:</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">),</span>
+                    <span class="s2">&quot;Linear&quot;</span><span class="p">:</span> <span class="n">Linear</span><span class="p">(</span>
+                        <span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span>
+                    <span class="p">),</span>
+                    <span class="s2">&quot;ReLU&quot;</span><span class="p">:</span> <span class="n">ReLU</span><span class="p">(),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">OrderedDict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;ConstrainedUnitNormLinear&quot;</span><span class="p">:</span> <span class="n">ConstrainedUnitNormLinear</span><span class="p">(</span>
+                        <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">n_input_features</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span>
+                    <span class="p">),</span>
+                    <span class="s2">&quot;TiedBias&quot;</span><span class="p">:</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+        <span class="n">LearnedActivationBatch</span><span class="p">,</span>
+        <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Input activations (e.g. activations from an MLP layer in a transformer model).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple of learned activations and decoded activations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">learned_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">decoded_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span>
+
+    <span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the tied parameters.&quot;&quot;&quot;</span>
+        <span class="c1"># The tied bias is initialised as the geometric median of the dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+            <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;reset_parameters&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+                <span class="n">module</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">save_to_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model to Hugging Face.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">load_from_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the model from Hugging Face.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.decoder" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">decoder</span><span class="p">:</span> <span class="n">Sequential</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">({</span><span class="s1">&#39;ConstrainedUnitNormLinear&#39;</span><span class="p">:</span> <span class="n">ConstrainedUnitNormLinear</span><span class="p">(</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">n_input_features</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="s1">&#39;TiedBias&#39;</span><span class="p">:</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)}))</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Decoder Module.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.device" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">device</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Device to run the model on.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.dtype" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">dtype</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Data type to use for the model.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.encoder" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">encoder</span><span class="p">:</span> <span class="n">Sequential</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">({</span><span class="s1">&#39;TiedBias&#39;</span><span class="p">:</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">),</span> <span class="s1">&#39;Linear&#39;</span><span class="p">:</span> <span class="n">Linear</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="s1">&#39;ReLU&#39;</span><span class="p">:</span> <span class="n">ReLU</span><span class="p">()}))</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Encoder Module.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.geometric_median_dataset" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span> <span class="o">=</span> <span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Estimated Geometric Median of the Dataset.</p>
+<p>Used for initialising :attr:<code>tied_bias</code>.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.n_input_features" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">n_input_features</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Number of Input Features.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.n_learned_features" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">n_learned_features</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Number of Learned Features.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.tied_bias" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">tied_bias</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Tied Bias Parameter.</p>
+<p>The same bias is used pre-encoder and post-decoder.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">geometric_median_dataset</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the Sparse Autoencoder Model.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>n_input_features</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of input features (e.g. <code>d_mlp</code> if training on MLP activations
+from TransformerLens).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_learned_features</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of learned features. The initial paper experimented with 1 to
+256 times the number of input features, and primarily used a multiple of 8.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>geometric_median_dataset</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Estimated geometric median of the dataset.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>device</code></b>
+                  (<code><span title="torch.device">device</span> | None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Device to run the model on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dtype</code></b>
+                  (<code><span title="torch.dtype">dtype</span> | None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Data type to use for the model.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Sparse Autoencoder Model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n_input_features: Number of input features (e.g. `d_mlp` if training on MLP activations</span>
+<span class="sd">            from TransformerLens).</span>
+<span class="sd">        n_learned_features: Number of learned features. The initial paper experimented with 1 to</span>
+<span class="sd">            256 times the number of input features, and primarily used a multiple of 8.</span>
+<span class="sd">        geometric_median_dataset: Estimated geometric median of the dataset.</span>
+<span class="sd">        device: Device to run the model on.</span>
+<span class="sd">        dtype: Data type to use for the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_input_features</span> <span class="o">=</span> <span class="n">n_input_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_learned_features</span> <span class="o">=</span> <span class="n">n_learned_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+
+    <span class="c1"># Store the geometric median of the dataset (so that we can reset parameters). This is not a</span>
+    <span class="c1"># parameter itself (the tied bias parameter is used for that), so gradients are disabled.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Initialize the tied bias</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_input_features</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;TiedBias&quot;</span><span class="p">:</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">),</span>
+                <span class="s2">&quot;Linear&quot;</span><span class="p">:</span> <span class="n">Linear</span><span class="p">(</span>
+                    <span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;ReLU&quot;</span><span class="p">:</span> <span class="n">ReLU</span><span class="p">(),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ConstrainedUnitNormLinear&quot;</span><span class="p">:</span> <span class="n">ConstrainedUnitNormLinear</span><span class="p">(</span>
+                    <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">n_input_features</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;TiedBias&quot;</span><span class="p">:</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.forward" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Forward Pass.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>x</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Input activations (e.g. activations from an MLP layer in a transformer model).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code>tuple[<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearnedActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.LearnedActivationBatch">LearnedActivationBatch</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a>]</code>
+            –
+            <div class="doc-md-description">
+              <p>Tuple of learned activations and decoded activations.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">LearnedActivationBatch</span><span class="p">,</span>
+    <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x: Input activations (e.g. activations from an MLP layer in a transformer model).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of learned activations and decoded activations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">learned_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">decoded_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.initialize_tied_parameters" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">initialize_tied_parameters</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the tied parameters.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the tied parameters.&quot;&quot;&quot;</span>
+    <span class="c1"># The tied bias is initialised as the geometric median of the dataset</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+        <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_hf" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">load_from_hf</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Load the model from Hugging Face.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_from_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the model from Hugging Face.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.reset_parameters" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">reset_parameters</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reset the parameters.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;reset_parameters&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.save_to_hf" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">save_to_hf</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Save the model to Hugging Face.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_to_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model to Hugging Face.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../components/unit_norm_linear/" class="btn btn-neutral float-left" title="unit_norm_linear"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../loss/" class="btn btn-neutral float-right" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../components/unit_norm_linear/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../loss/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

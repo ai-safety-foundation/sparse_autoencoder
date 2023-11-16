@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>list_store - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "list_store";
+        var mkdocs_page_input_path = "reference/activation_store/list_store.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">activation_store</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">list_store</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">autoencoder</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">activation_store</li>
+      <li class="breadcrumb-item active">list_store</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.activation_store.list_store"></a>
+  <div class="doc doc-contents first">
+  
+      <p>List Activation Store.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.activation_store.list_store.ListActivationStore" class="doc doc-heading">
+          <code>ListActivationStore</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_store.base_store.ActivationStore" href="../base_store/#sparse_autoencoder.activation_store.base_store.ActivationStore">ActivationStore</a></code></p>
+
+  
+      <p>List Activation Store.</p>
+<p>Stores pointers to activation vectors in a list (in-memory). This is primarily of use for quick
+experiments where you don't want to calculate how much memory you need in advance.</p>
+<p>Multiprocess safe if the <code>multiprocessing_enabled</code> argument is set to <code>True</code>. This works in two
+ways:</p>
+<ol>
+<li>The list of activation vectors is stored in a multiprocessing manager, which allows multiple
+    processes (typically multiple GPUs) to read/write to the list.</li>
+<li>The <code>extend</code> method is non-blocking, and uses a threadpool to write to the list in the
+    background, which allows the main process to continue working even if there is just one GPU.</li>
+</ol>
+<p>Extends the <code>torch.utils.data.Dataset</code> class to provide a list-based activation store, with
+additional :meth:<code>append</code> and :meth:<code>extend</code> methods (the latter of which is non-blocking).</p>
+<p>Note that the built-in :meth:<code>shuffle</code> method is much faster than using the <code>shuffle</code> argument
+on <code>torch.utils.data.DataLoader</code>. You should therefore call this method before passing the
+dataset to the loader and then set the DataLoader <code>shuffle</code> argument to <code>False</code>.</p>
+<p>Examples:
+Create an empty activation dataset:</p>
+<pre><code>&gt;&gt;&gt; import torch
+&gt;&gt;&gt; store = ListActivationStore()
+</code></pre>
+<p>Add a single activation vector to the dataset (this is blocking):</p>
+<pre><code>&gt;&gt;&gt; store.append(torch.randn(100))
+&gt;&gt;&gt; len(store)
+1
+</code></pre>
+<p>Add a batch of activation vectors to the dataset (non-blocking):</p>
+<pre><code>&gt;&gt;&gt; batch = torch.randn(10, 100)
+&gt;&gt;&gt; store.extend(batch)
+&gt;&gt;&gt; len(store)
+11
+</code></pre>
+<p>Shuffle the dataset <strong>before passing it to the DataLoader</strong>:</p>
+<pre><code>&gt;&gt;&gt; store.shuffle() # Faster than using the DataLoader shuffle argument
+&gt;&gt;&gt; loader = torch.utils.data.DataLoader(store, shuffle=False, batch_size=2)
+</code></pre>
+<p>Use the dataloader to iterate over the dataset:</p>
+<pre><code>&gt;&gt;&gt; next_item = next(iter(loader))
+&gt;&gt;&gt; next_item.shape
+torch.Size([2, 100])
+</code></pre>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ListActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List Activation Store.</span>
+
+<span class="sd">    Stores pointers to activation vectors in a list (in-memory). This is primarily of use for quick</span>
+<span class="sd">    experiments where you don&#39;t want to calculate how much memory you need in advance.</span>
+
+<span class="sd">    Multiprocess safe if the `multiprocessing_enabled` argument is set to `True`. This works in two</span>
+<span class="sd">    ways:</span>
+
+<span class="sd">    1. The list of activation vectors is stored in a multiprocessing manager, which allows multiple</span>
+<span class="sd">        processes (typically multiple GPUs) to read/write to the list.</span>
+<span class="sd">    2. The `extend` method is non-blocking, and uses a threadpool to write to the list in the</span>
+<span class="sd">        background, which allows the main process to continue working even if there is just one GPU.</span>
+
+<span class="sd">    Extends the `torch.utils.data.Dataset` class to provide a list-based activation store, with</span>
+<span class="sd">    additional :meth:`append` and :meth:`extend` methods (the latter of which is non-blocking).</span>
+
+<span class="sd">    Note that the built-in :meth:`shuffle` method is much faster than using the `shuffle` argument</span>
+<span class="sd">    on `torch.utils.data.DataLoader`. You should therefore call this method before passing the</span>
+<span class="sd">    dataset to the loader and then set the DataLoader `shuffle` argument to `False`.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    Create an empty activation dataset:</span>
+
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+
+<span class="sd">    Add a single activation vector to the dataset (this is blocking):</span>
+
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        1</span>
+
+<span class="sd">    Add a batch of activation vectors to the dataset (non-blocking):</span>
+
+<span class="sd">        &gt;&gt;&gt; batch = torch.randn(10, 100)</span>
+<span class="sd">        &gt;&gt;&gt; store.extend(batch)</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        11</span>
+
+<span class="sd">    Shuffle the dataset **before passing it to the DataLoader**:</span>
+
+<span class="sd">        &gt;&gt;&gt; store.shuffle() # Faster than using the DataLoader shuffle argument</span>
+<span class="sd">        &gt;&gt;&gt; loader = torch.utils.data.DataLoader(store, shuffle=False, batch_size=2)</span>
+
+<span class="sd">    Use the dataloader to iterate over the dataset:</span>
+
+<span class="sd">        &gt;&gt;&gt; next_item = next(iter(loader))</span>
+<span class="sd">        &gt;&gt;&gt; next_item.shape</span>
+<span class="sd">        torch.Size([2, 100])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]</span> <span class="o">|</span> <span class="n">ListProxy</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Underlying List Data Store.&quot;&quot;&quot;</span>
+
+    <span class="n">_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Device to Store the Activation Vectors On.&quot;&quot;&quot;</span>
+
+    <span class="n">_pool</span><span class="p">:</span> <span class="n">ProcessPoolExecutor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multiprocessing Pool.&quot;&quot;&quot;</span>
+
+    <span class="n">_pool_exceptions</span><span class="p">:</span> <span class="n">ListProxy</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pool Exceptions.</span>
+
+<span class="sd">    Used to keep track of exceptions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_pool_futures</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Future</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pool Futures.</span>
+
+<span class="sd">    Used to keep track of processes running in the pool.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">multiprocessing_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the List Activation Store.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: Data to initialize the dataset with.</span>
+<span class="sd">            device: Device to store the activation vectors on.</span>
+<span class="sd">            max_workers: Max CPU workers if multiprocessing is enabled, for writing to the list.</span>
+<span class="sd">                Default is the number of cores you have.</span>
+<span class="sd">            multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU</span>
+<span class="sd">                workers. This creates significant overhead, so you should only enable it if you have</span>
+<span class="sd">                multiple GPUs (and experiment with enabling/disabling it).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Default to empty</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># If multiprocessing is enabled, use a multiprocessing manager to create a shared list</span>
+        <span class="c1"># between processes. Otherwise, just use a normal list.</span>
+        <span class="k">if</span> <span class="n">multiprocessing_enabled</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span>
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Device for storing the activation vectors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
+
+<span class="sd">        Returns the number of activation vectors in the dataset.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__sizeof__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sizeof Dunder Method.</span>
+
+<span class="sd">        Returns the size of the dataset in bytes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># The list of tensors is really a list of pointers to tensors, so we need to account for</span>
+        <span class="c1"># this as well as the size of the tensors themselves.</span>
+        <span class="n">list_of_pointers_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span>
+
+        <span class="c1"># Handle 0 items</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">list_of_pointers_size</span>
+
+        <span class="c1"># Otherwise, get the size of the first tensor</span>
+        <span class="n">first_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">first_tensor_size</span> <span class="o">=</span> <span class="n">first_tensor</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="n">first_tensor</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span>
+        <span class="n">num_tensors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+        <span class="n">total_tensors_size</span> <span class="o">=</span> <span class="n">first_tensor_size</span> <span class="o">*</span> <span class="n">num_tensors</span>
+
+        <span class="k">return</span> <span class="n">total_tensors_size</span> <span class="o">+</span> <span class="n">list_of_pointers_size</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationVector</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5))</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5))</span>
+<span class="sd">        &gt;&gt;&gt; store[1]</span>
+<span class="sd">        tensor([1., 1., 1., 1., 1.])</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index: The index of the tensor to fetch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The activation store item at the given index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shuffle the Data In-Place.</span>
+
+<span class="sd">        This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; _seed = torch.manual_seed(42)</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([1.]))</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([2.]))</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([3.]))</span>
+<span class="sd">        &gt;&gt;&gt; store.shuffle()</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        3</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_writes_to_complete</span><span class="p">()</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Append a single item to the dataset.</span>
+
+<span class="sd">        Note **append is blocking**. For better performance use extend instead with batches.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        2</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            item: The item to append to the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend threadpool method.</span>
+
+<span class="sd">        To be called by :meth:`extend`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            batch: A batch of items to add to the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Unstack to a list of tensors</span>
+            <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]</span> <span class="o">=</span> <span class="n">resize_to_list_vectors</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend the dataset with multiple items (non-blocking).</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; import torch</span>
+<span class="sd">            &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">            &gt;&gt;&gt; batch = torch.randn(10, 100)</span>
+<span class="sd">            &gt;&gt;&gt; async_result = store.extend(batch)</span>
+<span class="sd">            &gt;&gt;&gt; len(store)</span>
+<span class="sd">            10</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            batch: A batch of items to add to the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Schedule _extend to run in a separate process</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+            <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extend</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+
+        <span class="c1"># Fallback to synchronous execution if not multiprocessing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extend</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">wait_for_writes_to_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait for Writes to Complete.</span>
+
+<span class="sd">        Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore(multiprocessing_enabled=True)</span>
+<span class="sd">        &gt;&gt;&gt; store.extend(torch.randn(3, 100))</span>
+<span class="sd">        &gt;&gt;&gt; store.wait_for_writes_to_complete()</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Restart the pool</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span><span class="p">:</span>
+            <span class="n">exceptions_report</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span><span class="p">])</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Exceptions occurred in background workers:</span><span class="se">\n</span><span class="si">{</span><span class="n">exceptions_report</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty the dataset.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        2</span>
+
+<span class="sd">        &gt;&gt;&gt; store.empty()</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_writes_to_complete</span><span class="p">()</span>
+
+        <span class="c1"># Clearing a list like this works for both standard and multiprocessing lists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete Dunder Method.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cancel_futures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.__del__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__del__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Delete Dunder Method.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete Dunder Method.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cancel_futures</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.__getitem__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get Item Dunder Method.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+store = ListActivationStore()
+store.append(torch.zeros(5))
+store.append(torch.ones(5))
+store[1]
+tensor([1., 1., 1., 1., 1.])</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>index</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>The index of the tensor to fetch.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>
+            –
+            <div class="doc-md-description">
+              <p>The activation store item at the given index.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationVector</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.zeros(5))</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.ones(5))</span>
+<span class="sd">    &gt;&gt;&gt; store[1]</span>
+<span class="sd">    tensor([1., 1., 1., 1., 1.])</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        index: The index of the tensor to fetch.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The activation store item at the given index.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">multiprocessing_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the List Activation Store.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data</code></b>
+                  (<code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a>] | None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Data to initialize the dataset with.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>device</code></b>
+                  (<code><span title="torch.device">device</span> | None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Device to store the activation vectors on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_workers</code></b>
+                  (<code>int | None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Max CPU workers if multiprocessing is enabled, for writing to the list.
+Default is the number of cores you have.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>multiprocessing_enabled</code></b>
+                  (<code>bool</code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Support reading/writing to the dataset with multiple GPU
+workers. This creates significant overhead, so you should only enable it if you have
+multiple GPUs (and experiment with enabling/disabling it).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">multiprocessing_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the List Activation Store.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: Data to initialize the dataset with.</span>
+<span class="sd">        device: Device to store the activation vectors on.</span>
+<span class="sd">        max_workers: Max CPU workers if multiprocessing is enabled, for writing to the list.</span>
+<span class="sd">            Default is the number of cores you have.</span>
+<span class="sd">        multiprocessing_enabled: Support reading/writing to the dataset with multiple GPU</span>
+<span class="sd">            workers. This creates significant overhead, so you should only enable it if you have</span>
+<span class="sd">            multiple GPUs (and experiment with enabling/disabling it).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Default to empty</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># If multiprocessing is enabled, use a multiprocessing manager to create a shared list</span>
+    <span class="c1"># between processes. Otherwise, just use a normal list.</span>
+    <span class="k">if</span> <span class="n">multiprocessing_enabled</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Device for storing the activation vectors</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.__len__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Length Dunder Method.</p>
+<p>Returns the number of activation vectors in the dataset.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+store = ListActivationStore()
+store.append(torch.randn(100))
+store.append(torch.randn(100))
+len(store)
+2</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
+
+<span class="sd">    Returns the number of activation vectors in the dataset.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.__sizeof__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">__sizeof__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sizeof Dunder Method.</p>
+<p>Returns the size of the dataset in bytes.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__sizeof__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sizeof Dunder Method.</span>
+
+<span class="sd">    Returns the size of the dataset in bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The list of tensors is really a list of pointers to tensors, so we need to account for</span>
+    <span class="c1"># this as well as the size of the tensors themselves.</span>
+    <span class="n">list_of_pointers_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span>
+
+    <span class="c1"># Handle 0 items</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">list_of_pointers_size</span>
+
+    <span class="c1"># Otherwise, get the size of the first tensor</span>
+    <span class="n">first_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">first_tensor_size</span> <span class="o">=</span> <span class="n">first_tensor</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="n">first_tensor</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span>
+    <span class="n">num_tensors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+    <span class="n">total_tensors_size</span> <span class="o">=</span> <span class="n">first_tensor_size</span> <span class="o">*</span> <span class="n">num_tensors</span>
+
+    <span class="k">return</span> <span class="n">total_tensors_size</span> <span class="o">+</span> <span class="n">list_of_pointers_size</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.append" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Append a single item to the dataset.</p>
+<p>Note <strong>append is blocking</strong>. For better performance use extend instead with batches.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+store = ListActivationStore()
+store.append(torch.randn(100))
+store.append(torch.randn(100))
+len(store)
+2</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>item</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The item to append to the dataset.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Append a single item to the dataset.</span>
+
+<span class="sd">    Note **append is blocking**. For better performance use extend instead with batches.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    2</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        item: The item to append to the dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.empty" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">empty</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Empty the dataset.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+store = ListActivationStore()
+store.append(torch.randn(100))
+store.append(torch.randn(100))
+len(store)
+2</p>
+<p>store.empty()
+len(store)
+0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty the dataset.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    2</span>
+
+<span class="sd">    &gt;&gt;&gt; store.empty()</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_writes_to_complete</span><span class="p">()</span>
+
+    <span class="c1"># Clearing a list like this works for both standard and multiprocessing lists</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.extend" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Extend the dataset with multiple items (non-blocking).</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+store = ListActivationStore()
+batch = torch.randn(10, 100)
+async_result = store.extend(batch)
+len(store)
+10</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>batch</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SourceModelActivations" href="../../tensor_types/#sparse_autoencoder.tensor_types.SourceModelActivations">SourceModelActivations</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>A batch of items to add to the dataset.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extend the dataset with multiple items (non-blocking).</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">        &gt;&gt;&gt; batch = torch.randn(10, 100)</span>
+<span class="sd">        &gt;&gt;&gt; async_result = store.extend(batch)</span>
+<span class="sd">        &gt;&gt;&gt; len(store)</span>
+<span class="sd">        10</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        batch: A batch of items to add to the dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Schedule _extend to run in a separate process</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extend</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+
+    <span class="c1"># Fallback to synchronous execution if not multiprocessing</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_extend</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.shuffle" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">shuffle</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Shuffle the Data In-Place.</p>
+<p>This is much faster than using the shuffle argument on <code>torch.utils.data.DataLoader</code>.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+_seed = torch.manual_seed(42)
+store = ListActivationStore()
+store.append(torch.tensor([1.]))
+store.append(torch.tensor([2.]))
+store.append(torch.tensor([3.]))
+store.shuffle()
+len(store)
+3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shuffle the Data In-Place.</span>
+
+<span class="sd">    This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; _seed = torch.manual_seed(42)</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([1.]))</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([2.]))</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([3.]))</span>
+<span class="sd">    &gt;&gt;&gt; store.shuffle()</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    3</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_writes_to_complete</span><span class="p">()</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.list_store.ListActivationStore.wait_for_writes_to_complete" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">wait_for_writes_to_complete</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Wait for Writes to Complete.</p>
+<p>Wait for any non-blocking writes (e.g. calls to :meth:<code>append</code>) to complete.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+store = ListActivationStore(multiprocessing_enabled=True)
+store.extend(torch.randn(3, 100))
+store.wait_for_writes_to_complete()
+len(store)
+3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/list_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">wait_for_writes_to_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for Writes to Complete.</span>
+
+<span class="sd">    Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; store = ListActivationStore(multiprocessing_enabled=True)</span>
+<span class="sd">    &gt;&gt;&gt; store.extend(torch.randn(3, 100))</span>
+<span class="sd">    &gt;&gt;&gt; store.wait_for_writes_to_complete()</span>
+<span class="sd">    &gt;&gt;&gt; len(store)</span>
+<span class="sd">    3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Restart the pool</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool_futures</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span><span class="p">:</span>
+        <span class="n">exceptions_report</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool_exceptions</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Exceptions occurred in background workers:</span><span class="se">\n</span><span class="si">{</span><span class="n">exceptions_report</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../disk_store/" class="btn btn-neutral float-left" title="disk_store"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tensor_store/" class="btn btn-neutral float-right" title="tensor_store">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../disk_store/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../tensor_store/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

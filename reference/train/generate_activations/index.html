@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>generate_activations - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "generate_activations";
+        var mkdocs_page_input_path = "reference/train/generate_activations.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">autoencoder</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">train</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">generate_activations</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">train</li>
+      <li class="breadcrumb-item active">generate_activations</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.train.generate_activations"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Generate activations for training a Sparse Autoencoder.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="sparse_autoencoder.train.generate_activations.generate_activations" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">generate_activations</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">,</span> <span class="n">store</span><span class="p">,</span> <span class="n">source_data</span><span class="p">,</span> <span class="n">context_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Generate activations for training a Sparse Autoencoder.</p>
+<p>Generates activations and updates the activation store in place.</p>
+<p>Warning:
+This function is a little confusing as it uses side effects. The way it works is to add a hook
+to the model, which will automatically store activations every time the model runs. When it has
+filled up the store to the desired size, it will return <code>None</code>. Your activations will then be
+ready in the <code>store</code> object that you passed to this function (i.e. it is updated in place). This
+approach is used as it depends on TransformerLens which uses side effects to get the
+activations.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>model</code></b>
+                  (<code><span title="transformer_lens.HookedTransformer">HookedTransformer</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The model to generate activations for.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>layer</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>The layer that you are hooking into to get activations. This is used to stop the
+model at this point rather than generating all remaining activations and logits.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cache_name</code></b>
+                  (<code>str</code>)
+              –
+              <div class="doc-md-description">
+                <p>The name of the cache hook point to get activations from. Examples include
+[<code>hook_embed</code> <code>hook_pos_embed</code>, <code>blocks.0.hook_resid_pre</code>, <code>blocks.0.ln1.hook_scale</code>,
+<code>blocks.0.ln1.hook_normalized</code>, <code>blocks.0.attn.hook_q</code>, <code>blocks.0.attn.hook_k</code>,
+<code>blocks.0.attn.hook_v</code>, <code>blocks.0.attn.hook_attn_scores</code>, <code>blocks.0.attn.hook_pattern</code>,
+<code>blocks.0.attn.hook_z</code>, <code>blocks.0.hook_attn_out</code>, <code>blocks.0.hook_resid_mid</code>,
+<code>blocks.0.ln2.hook_scale</code>, <code>blocks.0.ln2.hook_normalized</code>, <code>blocks.0.mlp.hook_pre</code>,
+<code>blocks.0.mlp.hook_post</code>, <code>blocks.0.hook_mlp_out</code>, <code>blocks.0.hook_resid_post</code>].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>store</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_store.base_store.ActivationStore" href="../../activation_store/base_store/#sparse_autoencoder.activation_store.base_store.ActivationStore">ActivationStore</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The activation store to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source_data</code></b>
+                  (<code><span title="collections.abc.Iterable">Iterable</span>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts" href="../../source_data/abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts">TorchTokenizedPrompts</a>]</code>)
+              –
+              <div class="doc-md-description">
+                <p>Stateful iterator that yields batches of data to generate activations.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>context_size</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of tokens in each prompt.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>batch_size</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>Size of each batch.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>num_items</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of activation vectors to generate. This is an approximate rather
+than strict limit.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>device</code></b>
+                  (<code><span title="torch.device">device</span> | None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Device to run the model on.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/train/generate_activations.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
+    <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
+    <span class="n">source_data</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">],</span>
+    <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_items</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations for training a Sparse Autoencoder.</span>
+
+<span class="sd">    Generates activations and updates the activation store in place.</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">    This function is a little confusing as it uses side effects. The way it works is to add a hook</span>
+<span class="sd">    to the model, which will automatically store activations every time the model runs. When it has</span>
+<span class="sd">    filled up the store to the desired size, it will return `None`. Your activations will then be</span>
+<span class="sd">    ready in the `store` object that you passed to this function (i.e. it is updated in place). This</span>
+<span class="sd">    approach is used as it depends on TransformerLens which uses side effects to get the</span>
+<span class="sd">    activations.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: The model to generate activations for.</span>
+<span class="sd">        layer: The layer that you are hooking into to get activations. This is used to stop the</span>
+<span class="sd">            model at this point rather than generating all remaining activations and logits.</span>
+<span class="sd">        cache_name: The name of the cache hook point to get activations from. Examples include</span>
+<span class="sd">            [`hook_embed` `hook_pos_embed`, `blocks.0.hook_resid_pre`, `blocks.0.ln1.hook_scale`,</span>
+<span class="sd">            `blocks.0.ln1.hook_normalized`, `blocks.0.attn.hook_q`, `blocks.0.attn.hook_k`,</span>
+<span class="sd">            `blocks.0.attn.hook_v`, `blocks.0.attn.hook_attn_scores`, `blocks.0.attn.hook_pattern`,</span>
+<span class="sd">            `blocks.0.attn.hook_z`, `blocks.0.hook_attn_out`, `blocks.0.hook_resid_mid`,</span>
+<span class="sd">            `blocks.0.ln2.hook_scale`, `blocks.0.ln2.hook_normalized`, `blocks.0.mlp.hook_pre`,</span>
+<span class="sd">            `blocks.0.mlp.hook_post`, `blocks.0.hook_mlp_out`, `blocks.0.hook_resid_post`].</span>
+<span class="sd">        store: The activation store to use.</span>
+<span class="sd">        source_data: Stateful iterator that yields batches of data to generate activations.</span>
+<span class="sd">        context_size: Number of tokens in each prompt.</span>
+<span class="sd">        batch_size: Size of each batch.</span>
+<span class="sd">        num_items: Number of activation vectors to generate. This is an approximate rather</span>
+<span class="sd">            than strict limit.</span>
+<span class="sd">        device: Device to run the model on.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Set model to evaluation (inference) mode</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">print_details</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Add the hook to the model (will automatically store the activations every time the model runs)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">remove_all_hook_fns</span><span class="p">()</span>
+    <span class="n">hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">store_activations_hook</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add_hook</span><span class="p">(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">hook</span><span class="p">)</span>
+
+    <span class="c1"># Get the input dimensions for logging</span>
+    <span class="n">activations_per_batch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">context_size</span> <span class="o">*</span> <span class="n">batch_size</span>
+    <span class="n">total</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">num_items</span> <span class="o">-</span> <span class="n">num_items</span> <span class="o">%</span> <span class="n">activations_per_batch</span>
+
+    <span class="c1"># Loop through the dataloader until the store reaches the desired size</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">source_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">+</span> <span class="n">activations_per_batch</span> <span class="o">&gt;</span> <span class="n">total</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">input_ids</span><span class="p">:</span> <span class="n">BatchTokenizedPrompts</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">stop_at_layer</span><span class="o">=</span><span class="n">layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore (TLens is typed incorrectly)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../abstract_pipeline/" class="btn btn-neutral float-left" title="abstract_pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../metrics/" class="btn btn-neutral float-right" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../abstract_pipeline/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../metrics/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

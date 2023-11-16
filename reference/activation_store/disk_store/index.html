@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>disk_store - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "disk_store";
+        var mkdocs_page_input_path = "reference/activation_store/disk_store.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">activation_store</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">disk_store</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">autoencoder</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../tensor_types/">tensor_types</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+          <li class="breadcrumb-item">activation_store</li>
+      <li class="breadcrumb-item active">disk_store</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.activation_store.disk_store"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Disk Activation Store.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore" class="doc doc-heading">
+          <code>DiskActivationStore</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_store.base_store.ActivationStore" href="../base_store/#sparse_autoencoder.activation_store.base_store.ActivationStore">ActivationStore</a></code></p>
+
+  
+      <p>Disk Activation Store.</p>
+<p>Stores activation vectors on disk (hard-drive). Makes use of a queue (buffer) to store up
+activation vectors and then write them to the disk in batches.</p>
+<p>Multiprocess safe (supports writing from multiple GPU workers).</p>
+<p>Warning:
+Unless you want to keep and use existing .pt files in the storage directory when initialized,
+set <code>empty_dir</code> to <code>True</code>.</p>
+<p>Note also that :meth:<code>close</code> must be called to ensure all activation vectors are written to disk
+after the last batch has been added to the store.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DiskActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Disk Activation Store.</span>
+
+<span class="sd">    Stores activation vectors on disk (hard-drive). Makes use of a queue (buffer) to store up</span>
+<span class="sd">    activation vectors and then write them to the disk in batches.</span>
+
+<span class="sd">    Multiprocess safe (supports writing from multiple GPU workers).</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">    Unless you want to keep and use existing .pt files in the storage directory when initialized,</span>
+<span class="sd">    set `empty_dir` to `True`.</span>
+
+<span class="sd">    Note also that :meth:`close` must be called to ensure all activation vectors are written to disk</span>
+<span class="sd">    after the last batch has been added to the store.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_storage_path</span><span class="p">:</span> <span class="n">Path</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the Directory where the Activation Vectors are Stored.&quot;&quot;&quot;</span>
+
+    <span class="n">_cache</span><span class="p">:</span> <span class="n">ListProxy</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache for Activation Vectors.</span>
+
+<span class="sd">    Activation vectors are buffered in memory until the cache is full, at which point they are</span>
+<span class="sd">    written to disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_cache_lock</span><span class="p">:</span> <span class="n">Lock</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lock for the Cache.&quot;&quot;&quot;</span>
+
+    <span class="n">_max_cache_size</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum Number of Activation Vectors to cache in Memory.&quot;&quot;&quot;</span>
+
+    <span class="n">_thread_pool</span><span class="p">:</span> <span class="n">ThreadPoolExecutor</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Threadpool for non-blocking writes to the file system.&quot;&quot;&quot;</span>
+
+    <span class="n">_disk_n_activation_vectors</span><span class="p">:</span> <span class="n">ValueProxy</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Length of the Store (on disk).</span>
+
+<span class="sd">    Minus 1 signifies not calculated yet.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">storage_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span>
+        <span class="n">max_cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
+        <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">empty_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Disk Activation Store.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            storage_path: Path to the directory where the activation vectors will be stored.</span>
+<span class="sd">            max_cache_size: The maximum number of activation vectors to cache in memory before</span>
+<span class="sd">                writing to disk. Note this is only followed approximately.</span>
+<span class="sd">            num_workers: Number of CPU workers to use for non-blocking writes to the file system (so</span>
+<span class="sd">                that the model can keep running whilst it writes the previous activations to disk).</span>
+<span class="sd">                This should be less than the number of CPU cores available. You don&#39;t need multiple</span>
+<span class="sd">                GPUs to take advantage of this feature.</span>
+<span class="sd">            empty_dir: Whether to empty the directory before writing. Generally you want to set this</span>
+<span class="sd">                to `True` as otherwise the directory may contain stale activation vectors from</span>
+<span class="sd">                previous runs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Setup the storage directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">=</span> <span class="n">storage_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Setup the Cache</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span> <span class="o">=</span> <span class="n">max_cache_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Empty the directory if needed</span>
+        <span class="k">if</span> <span class="n">empty_dir</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+
+        <span class="c1"># Create a threadpool for non-blocking writes to the cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">num_workers</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_write_to_disk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wait_for_max</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the contents of the queue to disk.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wait_for_max: Whether to wait until the cache is full before writing to disk.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span><span class="p">:</span>
+            <span class="c1"># Check we have enough items</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="n">size_to_get</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">wait_for_max</span> <span class="ow">and</span> <span class="n">size_to_get</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="c1"># Get the activations from the cache and delete them</span>
+            <span class="n">activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">size_to_get</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">size_to_get</span><span class="p">]</span>
+
+            <span class="c1"># Update the length cache</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span>
+
+        <span class="n">stacked_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="fm">__len__</span><span class="si">}</span><span class="s2">.pt&quot;</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">stacked_activations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">        &gt;&gt;&gt; future = store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; future.result()</span>
+<span class="sd">        &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">        1</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            item: Activation vector to add to the store.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Future that completes when the activation vector has queued to be written to disk, and</span>
+<span class="sd">            if needed, written to disk.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+            <span class="c1"># Write to disk if needed</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">,</span> <span class="n">wait_for_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Keep mypy happy</span>
+
+    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True)</span>
+<span class="sd">        &gt;&gt;&gt; future = store.extend(torch.randn(10, 100))</span>
+<span class="sd">        &gt;&gt;&gt; future.result()</span>
+<span class="sd">        &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">        10</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            batch: Batch of activation vectors to add to the store.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Future that completes when the activation vectors have queued to be written to disk, and</span>
+<span class="sd">            if needed, written to disk.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]</span> <span class="o">=</span> <span class="n">resize_to_list_vectors</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+            <span class="c1"># Write to disk if needed</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">,</span> <span class="n">wait_for_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Keep mypy happy</span>
+
+    <span class="k">def</span> <span class="nf">wait_for_writes_to_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait for Writes to Complete.</span>
+
+<span class="sd">        This should be called after the last batch has been added to the store. It will wait for</span>
+<span class="sd">        all activation vectors to be written to disk.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">        &gt;&gt;&gt; future = store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; store.wait_for_writes_to_complete()</span>
+<span class="sd">        &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">        1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_all_filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a List of All Activation Vector Filenames.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.pt&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty the Store.</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">        This will delete all .pt files in the top level of the storage directory.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">        &gt;&gt;&gt; future = store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; future.result()</span>
+<span class="sd">        &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">        1</span>
+
+<span class="sd">        &gt;&gt;&gt; store.empty()</span>
+<span class="sd">        &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">        0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationVector</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            index: The index of the tensor to fetch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The activation store item at the given index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Find the file containing the activation vector</span>
+        <span class="n">file_index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_index</span><span class="si">}</span><span class="s2">.pt&quot;</span>
+
+        <span class="c1"># Load the file and return the activation vector</span>
+        <span class="n">activation_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">        &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">        0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the length if not cached</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
+                <span class="n">cache_size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">cache_size</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete Dunder Method.&quot;&quot;&quot;</span>
+        <span class="c1"># Shutdown the thread pool after everything is complete</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cancel_futures</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_writes_to_complete</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.__del__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__del__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Delete Dunder Method.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete Dunder Method.&quot;&quot;&quot;</span>
+    <span class="c1"># Shutdown the thread pool after everything is complete</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cancel_futures</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_writes_to_complete</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.__getitem__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get Item Dunder Method.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>index</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>The index of the tensor to fetch.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>
+            –
+            <div class="doc-md-description">
+              <p>The activation store item at the given index.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationVector</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        index: The index of the tensor to fetch.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The activation store item at the given index.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find the file containing the activation vector</span>
+    <span class="n">file_index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_index</span><span class="si">}</span><span class="s2">.pt&quot;</span>
+
+    <span class="c1"># Load the file and return the activation vector</span>
+    <span class="n">activation_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">storage_path</span><span class="o">=</span><span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span> <span class="n">max_cache_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">empty_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the Disk Activation Store.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>storage_path</code></b>
+                  (<code><span title="pathlib.Path">Path</span></code>, default:
+                      <code><span title="sparse_autoencoder.activation_store.disk_store.DEFAULT_DISK_ACTIVATION_STORE_PATH">DEFAULT_DISK_ACTIVATION_STORE_PATH</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Path to the directory where the activation vectors will be stored.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_cache_size</code></b>
+                  (<code>int</code>, default:
+                      <code>10000</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>The maximum number of activation vectors to cache in memory before
+writing to disk. Note this is only followed approximately.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>num_workers</code></b>
+                  (<code>int</code>, default:
+                      <code>6</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of CPU workers to use for non-blocking writes to the file system (so
+that the model can keep running whilst it writes the previous activations to disk).
+This should be less than the number of CPU cores available. You don't need multiple
+GPUs to take advantage of this feature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>empty_dir</code></b>
+                  (<code>bool</code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Whether to empty the directory before writing. Generally you want to set this
+to <code>True</code> as otherwise the directory may contain stale activation vectors from
+previous runs.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">storage_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span>
+    <span class="n">max_cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">empty_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Disk Activation Store.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        storage_path: Path to the directory where the activation vectors will be stored.</span>
+<span class="sd">        max_cache_size: The maximum number of activation vectors to cache in memory before</span>
+<span class="sd">            writing to disk. Note this is only followed approximately.</span>
+<span class="sd">        num_workers: Number of CPU workers to use for non-blocking writes to the file system (so</span>
+<span class="sd">            that the model can keep running whilst it writes the previous activations to disk).</span>
+<span class="sd">            This should be less than the number of CPU cores available. You don&#39;t need multiple</span>
+<span class="sd">            GPUs to take advantage of this feature.</span>
+<span class="sd">        empty_dir: Whether to empty the directory before writing. Generally you want to set this</span>
+<span class="sd">            to `True` as otherwise the directory may contain stale activation vectors from</span>
+<span class="sd">            previous runs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="c1"># Setup the storage directory</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">=</span> <span class="n">storage_path</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Setup the Cache</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span> <span class="o">=</span> <span class="n">max_cache_size</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Empty the directory if needed</span>
+    <span class="k">if</span> <span class="n">empty_dir</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+
+    <span class="c1"># Create a threadpool for non-blocking writes to the cache</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">num_workers</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.__len__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Length Dunder Method.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+print(len(store))
+0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate the length if not cached</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
+            <span class="n">cache_size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">cache_size</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.append" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Add a Single Item to the Store.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+future = store.append(torch.randn(100))
+future.result()
+print(len(store))
+1</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>item</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Activation vector to add to the store.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code><span title="concurrent.futures.Future">Future</span> | None</code>
+            –
+            <div class="doc-md-description">
+              <p>Future that completes when the activation vector has queued to be written to disk, and</p>
+            </div>
+          </li>
+          <li>
+                <code><span title="concurrent.futures.Future">Future</span> | None</code>
+            –
+            <div class="doc-md-description">
+              <p>if needed, written to disk.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">    &gt;&gt;&gt; future = store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; future.result()</span>
+<span class="sd">    &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">    1</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        item: Activation vector to add to the store.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Future that completes when the activation vector has queued to be written to disk, and</span>
+<span class="sd">        if needed, written to disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># Write to disk if needed</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">,</span> <span class="n">wait_for_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Keep mypy happy</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.empty" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">empty</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Empty the Store.</p>
+<p>Warning:
+This will delete all .pt files in the top level of the storage directory.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+future = store.append(torch.randn(100))
+future.result()
+print(len(store))
+1</p>
+<p>store.empty()
+print(len(store))
+0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty the Store.</span>
+
+<span class="sd">    Warning:</span>
+<span class="sd">    This will delete all .pt files in the top level of the storage directory.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">    &gt;&gt;&gt; future = store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; future.result()</span>
+<span class="sd">    &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">    1</span>
+
+<span class="sd">    &gt;&gt;&gt; store.empty()</span>
+<span class="sd">    &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.extend" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Add a Batch to the Store.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>store = DiskActivationStore(max_cache_size=10, empty_dir=True)
+future = store.extend(torch.randn(10, 100))
+future.result()
+print(len(store))
+10</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>batch</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SourceModelActivations" href="../../tensor_types/#sparse_autoencoder.tensor_types.SourceModelActivations">SourceModelActivations</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Batch of activation vectors to add to the store.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code><span title="concurrent.futures.Future">Future</span> | None</code>
+            –
+            <div class="doc-md-description">
+              <p>Future that completes when the activation vectors have queued to be written to disk, and</p>
+            </div>
+          </li>
+          <li>
+                <code><span title="concurrent.futures.Future">Future</span> | None</code>
+            –
+            <div class="doc-md-description">
+              <p>if needed, written to disk.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True)</span>
+<span class="sd">    &gt;&gt;&gt; future = store.extend(torch.randn(10, 100))</span>
+<span class="sd">    &gt;&gt;&gt; future.result()</span>
+<span class="sd">    &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">    10</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        batch: Batch of activation vectors to add to the store.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Future that completes when the activation vectors have queued to be written to disk, and</span>
+<span class="sd">        if needed, written to disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]</span> <span class="o">=</span> <span class="n">resize_to_list_vectors</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_lock</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+        <span class="c1"># Write to disk if needed</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">,</span> <span class="n">wait_for_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Keep mypy happy</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.wait_for_writes_to_complete" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">wait_for_writes_to_complete</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Wait for Writes to Complete.</p>
+<p>This should be called after the last batch has been added to the store. It will wait for
+all activation vectors to be written to disk.</p>
+<p>Example:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+future = store.append(torch.randn(100))
+store.wait_for_writes_to_complete()
+print(len(store))
+1</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">wait_for_writes_to_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for Writes to Complete.</span>
+
+<span class="sd">    This should be called after the last batch has been added to the store. It will wait for</span>
+<span class="sd">    all activation vectors to be written to disk.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True)</span>
+<span class="sd">    &gt;&gt;&gt; future = store.append(torch.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; store.wait_for_writes_to_complete()</span>
+<span class="sd">    &gt;&gt;&gt; print(len(store))</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../base_store/" class="btn btn-neutral float-left" title="base_store"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../list_store/" class="btn btn-neutral float-right" title="list_store">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../base_store/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../list_store/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

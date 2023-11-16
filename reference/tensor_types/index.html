@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>tensor_types - Sparse Autoencoder</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "tensor_types";
+        var mkdocs_page_input_path = "reference/tensor_types.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Sparse Autoencoder
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../getting_started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../contributing/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../citation/">Citation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_resampler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_resampler/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_resampler/abstract_activation_resampler/">abstract_activation_resampler</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_store/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_store/base_store/">base_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_store/disk_store/">disk_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_store/list_store/">list_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../activation_store/tensor_store/">tensor_store</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../activation_store/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../activation_store/utils/extend_resize/">extend_resize</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">autoencoder</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../autoencoder/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">components</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/tied_bias/">tied_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../autoencoder/model/">model</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">loss</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../loss/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../loss/abstract_loss/">abstract_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../loss/learned_activations_l1/">learned_activations_l1</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../loss/mse_reconstruction_loss/">mse_reconstruction_loss</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../loss/reducer/">reducer</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../metrics/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../metrics/abstract_metric/">abstract_metric</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">optimizer</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../optimizer/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../optimizer/abstract_optimizer/">abstract_optimizer</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../optimizer/adam_with_reset/">adam_with_reset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">source_data</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../source_data/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../source_data/abstract_dataset/">abstract_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../source_data/pretokenized_dataset/">pretokenized_dataset</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../source_data/random_int/">random_int</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../source_data/text_dataset/">text_dataset</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">src_model</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../src_model/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../src_model/store_activations_hook/">store_activations_hook</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">tensor_types</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">train</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../train/">Index</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train/abstract_pipeline/">abstract_pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train/generate_activations/">generate_activations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">metrics</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../train/metrics/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../train/metrics/capacity/">capacity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../train/metrics/feature_density/">feature_density</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train/pipeline/">pipeline</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train/resample_neurons/">resample_neurons</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train/sweep_config/">sweep_config</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../train/train_autoencoder/">train_autoencoder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../train/utils/">Index</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../train/utils/wandb_sweep_types/">wandb_sweep_types</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Sparse Autoencoder</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Reference</li>
+      <li class="breadcrumb-item active">tensor_types</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.tensor_types"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Tensor Types.</p>
+<p>Tensor types with axis labels. Note that this uses the <code>jaxtyping</code> library, which works with PyTorch
+tensors as well.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.AliveEncoderWeights" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">AliveEncoderWeights</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">ALIVE_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Alive encoder weights.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.BatchTokenizedPrompts" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">BatchTokenizedPrompts</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SOURCE_DATA_BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">POSITION</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Batch of tokenized prompts.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.DeadDecoderNeuronWeightUpdates" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">DeadDecoderNeuronWeightUpdates</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead decoder neuron weight updates.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.DeadEncoderNeuronBiasUpdates" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">DeadEncoderNeuronBiasUpdates</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead encoder neuron bias updates.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.DeadEncoderNeuronWeightUpdates" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">DeadEncoderNeuronWeightUpdates</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead encoder neuron weight updates.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.DeadNeuronIndices" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">DeadNeuronIndices</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead neuron indices.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.DecoderWeights" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">DecoderWeights</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Decoder weights.</p>
+<p>These weights form the decoder part of the autoencoder, which aims to reconstruct the original input
+data from the decompressed representation created by the encoder.</p>
+<p>The tensor's shape aligns with the training features and the learnt features. In this case, if we
+view the dictionary vectors in the context of reconstruction, they can be thought of as rows in this
+weight matrix.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.EncoderWeights" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">EncoderWeights</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Encoder weights.</p>
+<p>These weights are part of the encoder module of the autoencoder, responsible for decompressing the
+input data (activations from a source model) into a higher-dimensional representation.</p>
+<p>The dictionary vectors (basis vectors in the learnt feature space), they can be thought of as
+columns of this weight matrix, where each column corresponds to a particular feature in the
+lower-dimensional space. The sparsity constraint (hopefully) enforces that they respond relatively
+strongly to only a small portion of possible input vectors.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.InputOutputActivationBatch" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">InputOutputActivationBatch</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Input/output activation batch.</p>
+<p>This is either a batch of input activation vectors from the source model, or a batch of decoded
+activation vectors from the autoencoder.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.InputOutputActivationVector" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">InputOutputActivationVector</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Input/output activation vector.</p>
+<p>This is either a input activation vector from the source model, or a decoded activation vector
+from the autoencoder.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.ItemTensor" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">ItemTensor</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Single element item tensor.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.LearnedActivationBatch" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">LearnedActivationBatch</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Learned activation batch.</p>
+<p>This is a batch of activation vectors from the hidden (learnt) layer of the autoencoder. Typically
+the feature dimension is larger than the input/output activation vector.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.LearntActivationVector" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">LearntActivationVector</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Learned activation vector.</p>
+<p>Activation vector from the hidden (learnt) layer of the autoencoder. Typically this is larger than
+the input/output activation vector.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.NeuronActivity" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">NeuronActivity</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Neuron activity.</p>
+<p>Number of times each neuron has fired (since the last reset).</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.SampledDeadNeuronInputs" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">SampledDeadNeuronInputs</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sampled dead neuron inputs.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.SourceModelActivations" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">SourceModelActivations</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Source model activations.</p>
+<p>Can have any number of proceeding dimensions (e.g. an attention head may generate activations of
+shape (batch_size, num_heads, seq_len, feature_dim).</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.StoreActivations" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">StoreActivations</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Store of activation vectors.</p>
+<p>This is used to store large numbers of activation vectors from the source model.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.TrainBatchStatistic" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">TrainBatchStatistic</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Train batch statistic.</p>
+<p>Contains one scalar value per item in the batch.</p>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.Axis" class="doc doc-heading">
+          <code>Axis</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="strenum.LowercaseStrEnum">LowercaseStrEnum</span></code></p>
+
+  
+      <p>Tensor axis names.</p>
+<p>Used to annotate tensor types.</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>When used directly it prints a string:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>print(Axis.INPUT_OUTPUT_FEATURE)
+input_output_feature</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>The primary use is to annotate tensor types:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from jaxtyping import Float
+from torch import Tensor
+from typing import TypeAlias
+batch: TypeAlias = Float[Tensor, Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+print(batch)
+<class 'jaxtyping.Float[Tensor, 'batch input_output_feature']'></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>You can also join multiple axis together to represent the dimensions of a tensor:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))
+batch input_output_feature</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/tensor_types.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Axis</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tensor axis names.</span>
+
+<span class="sd">    Used to annotate tensor types.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        When used directly it prints a string:</span>
+
+<span class="sd">        &gt;&gt;&gt; print(Axis.INPUT_OUTPUT_FEATURE)</span>
+<span class="sd">        input_output_feature</span>
+
+<span class="sd">        The primary use is to annotate tensor types:</span>
+
+<span class="sd">        &gt;&gt;&gt; from jaxtyping import Float</span>
+<span class="sd">        &gt;&gt;&gt; from torch import Tensor</span>
+<span class="sd">        &gt;&gt;&gt; from typing import TypeAlias</span>
+<span class="sd">        &gt;&gt;&gt; batch: TypeAlias = Float[Tensor, Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]</span>
+<span class="sd">        &gt;&gt;&gt; print(batch)</span>
+<span class="sd">        &lt;class &#39;jaxtyping.Float[Tensor, &#39;batch input_output_feature&#39;]&#39;&gt;</span>
+
+<span class="sd">        You can also join multiple axis together to represent the dimensions of a tensor:</span>
+
+<span class="sd">        &gt;&gt;&gt; print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))</span>
+<span class="sd">        batch input_output_feature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Batches</span>
+    <span class="n">SOURCE_DATA_BATCH</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Batch of prompts used to generate source model activations.&quot;&quot;&quot;</span>
+
+    <span class="n">BATCH</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Batch of items that the SAE is being trained on.&quot;&quot;&quot;</span>
+
+    <span class="n">ITEMS</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Arbitrary number of items.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Features</span>
+    <span class="n">INPUT_OUTPUT_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Input or output feature (e.g. feature in activation vector from source model).&quot;&quot;&quot;</span>
+
+    <span class="n">LEARNT_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Learn feature (e.g. feature in learnt activation vector).&quot;&quot;&quot;</span>
+
+    <span class="n">DEAD_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dead feature.&quot;&quot;&quot;</span>
+
+    <span class="n">ALIVE_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Alive feature.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Feature indices</span>
+    <span class="n">LEARNT_FEATURE_IDX</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+
+    <span class="c1"># Other</span>
+    <span class="n">POSITION</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Token position.&quot;&quot;&quot;</span>
+
+    <span class="n">SINGLE_ITEM</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Single item axis.&quot;&quot;&quot;</span>
+
+    <span class="n">ANY</span> <span class="o">=</span> <span class="s2">&quot;*any&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Any number of axis.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="o">*</span><span class="n">axis</span><span class="p">:</span> <span class="s2">&quot;Axis&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Join multiple axis together, to represent the dimensions of a tensor.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))</span>
+<span class="sd">            batch input_output_feature</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *axis: Axis to join.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Joined axis string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.ALIVE_FEATURE" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">ALIVE_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Alive feature.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.ANY" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">ANY</span> <span class="o">=</span> <span class="s1">&#39;*any&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Any number of axis.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.BATCH" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">BATCH</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Batch of items that the SAE is being trained on.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">DEAD_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead feature.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">INPUT_OUTPUT_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Input or output feature (e.g. feature in activation vector from source model).</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.ITEMS" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">ITEMS</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Arbitrary number of items.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">LEARNT_FEATURE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Learn feature (e.g. feature in learnt activation vector).</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.POSITION" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">POSITION</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Token position.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">SINGLE_ITEM</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Single item axis.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.SOURCE_DATA_BATCH" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">SOURCE_DATA_BATCH</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Batch of prompts used to generate source model activations.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.tensor_types.Axis.dims" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">dims</span><span class="p">(</span><span class="o">*</span><span class="n">axis</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Join multiple axis together, to represent the dimensions of a tensor.</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))
+batch input_output_feature</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>*axis</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis" href="#sparse_autoencoder.tensor_types.Axis">Axis</a></code>, default:
+                      <code>()</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Axis to join.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+                <code>str</code>
+            –
+            <div class="doc-md-description">
+              <p>Joined axis string.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/tensor_types.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="o">*</span><span class="n">axis</span><span class="p">:</span> <span class="s2">&quot;Axis&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Join multiple axis together, to represent the dimensions of a tensor.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; print(Axis.dims(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE))</span>
+<span class="sd">        batch input_output_feature</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        *axis: Axis to join.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Joined axis string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../src_model/store_activations_hook/" class="btn btn-neutral float-left" title="store_activations_hook"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../train/" class="btn btn-neutral float-right" title="Index">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../src_model/store_activations_hook/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../train/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
