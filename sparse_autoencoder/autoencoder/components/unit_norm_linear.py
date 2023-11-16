@@ -2,23 +2,29 @@
 import math
 
 import einops
-from jaxtyping import Float
 import torch
 from torch import Tensor
 from torch.nn import Module, init
 from torch.nn.parameter import Parameter
 
+from sparse_autoencoder.tensor_types import (
+    Axis,
+    DecoderWeights,
+    EncoderWeights,
+    InputOutputActivationVector,
+)
+
 
 class ConstrainedUnitNormLinear(Module):
-    """Constrained unit norm linear layer.
+    """Constrained unit norm linear decoder layer.
 
-    Linear layer for autoencoders, where the dictionary vectors (columns of the weight matrix) are
+    Linear layer for autoencoders, where the dictionary vectors (rows of the weight matrix) are
     constrained to have unit norm. This is done by removing the gradient information parallel to the
     dictionary vectors before applying the gradient step, using a backward hook.
 
     Motivation:
-        Unit norming the dictionary vectors, which are essentially the columns of the encoding and
-        decoding matrices, serves a few purposes:
+        Unit norming the dictionary vectors, which are essentially the rows of the decoding
+            matrices, serves a few purposes:
 
             1. It helps with numerical stability, by preventing the dictionary vectors from growing
                 too large.
@@ -36,25 +42,22 @@ class ConstrainedUnitNormLinear(Module):
         loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).
     """
 
-    in_features: int
-    """Number of input features."""
+    learnt_features: int
+    """Number of learnt features (inputs to this layer)."""
 
-    out_features: int
-    """Number of output features."""
+    decoded_features: int
+    """Number of decoded features (outputs from this layer)."""
 
-    DIMENSION_CONSTRAIN_UNIT_NORM: int = -1
-    """Dimension to constrain to unit norm."""
-
-    weight: Float[Tensor, " out_features in_features"]
+    weight: DecoderWeights
     """Weight parameter."""
 
-    bias: Float[Tensor, " out_features"] | None
+    bias: InputOutputActivationVector | None
     """Bias parameter."""
 
     def __init__(
         self,
-        in_features: int,
-        out_features: int,
+        learnt_features: int,
+        decoded_features: int,
         *,
         bias: bool = True,
         device: torch.device | None = None,
@@ -63,27 +66,27 @@ class ConstrainedUnitNormLinear(Module):
         """Initialize the constrained unit norm linear layer.
 
         Args:
-            in_features: Number of input features.
-            out_features: Number of output features.
+            learnt_features: Number of learnt features in the autoencoder.
+            decoded_features: Number of decoded (output) features in the autoencoder.
             bias: Whether to include a bias term.
             device: Device to use.
             dtype: Data type to use.
         """
         # Create the linear layer as per the standard PyTorch linear layer
         super().__init__()
-        self.in_features = in_features
-        self.out_features = out_features
+        self.learnt_features = learnt_features
+        self.decoded_features = decoded_features
         self.weight = Parameter(
-            torch.empty((out_features, in_features), device=device, dtype=dtype)
+            torch.empty((decoded_features, learnt_features), device=device, dtype=dtype)
         )
         if bias:
-            self.bias = Parameter(torch.empty(out_features, device=device, dtype=dtype))
+            self.bias = Parameter(torch.empty(decoded_features, device=device, dtype=dtype))
         else:
             self.register_parameter("bias", None)
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary
-        # vectors (columns of the weight matrix) before applying the gradient step.
+        # vectors (rows of the weight matrix) before applying the gradient step.
         self.weight.register_hook(self._weight_backward_hook)
 
     def reset_parameters(self) -> None:
@@ -91,25 +94,23 @@ class ConstrainedUnitNormLinear(Module):
 
         Example:
             >>> import torch
-            >>> layer = ConstrainedUnitNormLinear(3, 3)
+            >>> # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)
+            >>> layer = ConstrainedUnitNormLinear(learnt_features=4, decoded_features=3)
             >>> layer.reset_parameters()
-            >>> column_norms = torch.sum(layer.weight ** 2, dim=1)
-            >>> column_norms.round(decimals=3).tolist()
+            >>> # Get the norm across the rows (by summing across the columns)
+            >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
+            >>> row_norms.round(decimals=3).tolist()
             [1.0, 1.0, 1.0]
 
         """
         # Initialize the weights with a normal distribution. Note we don't use e.g. kaiming
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
-        self.weight: Float[Tensor, "out_features in_features"] = init.normal_(
-            self.weight, mean=0, std=1
-        )
+        self.weight: EncoderWeights = init.normal_(self.weight, mean=0, std=1)
 
-        # Scale so that each column has unit norm
+        # Scale so that each row has unit norm
         with torch.no_grad():
-            torch.nn.functional.normalize(
-                self.weight, dim=self.DIMENSION_CONSTRAIN_UNIT_NORM, out=self.weight
-            )
+            torch.nn.functional.normalize(self.weight, dim=-1, out=self.weight)
 
         # Initialise the bias
         # This is the standard approach used in `torch.nn.Linear.reset_parameters`
@@ -120,25 +121,14 @@ class ConstrainedUnitNormLinear(Module):
 
     def _weight_backward_hook(
         self,
-        grad: Float[Tensor, "out_features in_features"],
-    ) -> Float[Tensor, "out_features in_features"]:
+        grad: EncoderWeights,
+    ) -> EncoderWeights:
         """Unit norm backward hook.
 
         By subtracting the projection of the gradient onto the dictionary vectors, we remove the
         component of the gradient that is parallel to the dictionary vectors and just keep the
         component that is orthogonal to the dictionary vectors (i.e. moving around the hypersphere).
         The result is that the backward pass does not change the norm of the dictionary vectors.
-
-        Example:
-            >>> import torch
-            >>> layer = ConstrainedUnitNormLinear(3, 4)
-            >>> data = torch.randn((3), requires_grad=True)
-            >>> logits = layer(data)
-            >>> loss = torch.sum(logits ** 2)
-            >>> loss.backward() # The hook is applied here
-            >>> weight_norms = torch.sum(layer.weight.data ** 2, dim=1)
-            >>> weight_norms.round(decimals=3).tolist()
-            [1.0, 1.0, 1.0, 1.0]
 
         Args:
             grad: Gradient with respect to the weights.
@@ -148,18 +138,29 @@ class ConstrainedUnitNormLinear(Module):
         # the gradient onto the dictionary vectors is the component of the gradient that is parallel
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
-        dot_product: Float[Tensor, " out_features"] = einops.einsum(
-            grad, self.weight, "out_features in_features, out_features in_features -> out_features"
+        normalized_weight: EncoderWeights = self.weight / torch.norm(
+            self.weight, dim=-1, keepdim=True
         )
 
-        normalized_weight: Float[Tensor, "out_features in_features"] = self.weight / torch.norm(
-            self.weight, dim=self.DIMENSION_CONSTRAIN_UNIT_NORM, keepdim=True
+        # Calculate the dot product of the gradients with the dictionary vectors.
+        # This represents the component of the gradient parallel to each dictionary vector.
+        # The result will be a tensor of shape [decoded_features].
+        dot_product = einops.einsum(
+            grad,
+            normalized_weight,
+            f"{Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}, \
+                {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
+                -> {Axis.LEARNT_FEATURE}",
         )
 
+        # Scale the normalized weights by the dot product to get the projection.
+        # The result will be of the same shape as 'grad' and 'self.weight'.
         projection = einops.einsum(
             dot_product,
             normalized_weight,
-            "out_features, out_features in_features -> out_features in_features",
+            f"{Axis.LEARNT_FEATURE}, \
+                {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
+                -> {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}",
         )
 
         # Subtracting the parallel component from the gradient leaves only the component that is
@@ -184,15 +185,13 @@ class ConstrainedUnitNormLinear(Module):
             >>> layer = ConstrainedUnitNormLinear(3, 3)
             >>> layer.weight.data = torch.ones((3, 3)) * 10
             >>> layer.constrain_weights_unit_norm()
-            >>> column_norms = torch.sum(layer.weight ** 2, dim=1)
-            >>> column_norms.round(decimals=3).tolist()
+            >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
+            >>> row_norms.round(decimals=3).tolist()
             [1.0, 1.0, 1.0]
 
         """
         with torch.no_grad():
-            torch.nn.functional.normalize(
-                self.weight, dim=self.DIMENSION_CONSTRAIN_UNIT_NORM, out=self.weight
-            )
+            torch.nn.functional.normalize(self.weight, dim=-1, out=self.weight)
 
     def forward(self, x: Tensor) -> Tensor:
         """Forward pass.
@@ -214,6 +213,6 @@ class ConstrainedUnitNormLinear(Module):
     def extra_repr(self) -> str:
         """String extra representation of the module."""
         return (
-            f"in_features={self.in_features}, out_features={self.out_features}, "
+            f"in_features={self.learnt_features}, out_features={self.decoded_features}, "
             f"bias={self.bias is not None}"
         )

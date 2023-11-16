@@ -1,21 +1,19 @@
 """Tensor Activation Store."""
-from jaxtyping import Float
 import torch
-from torch import Tensor
 
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
-    ActivationStoreBatch,
-    ActivationStoreItem,
     StoreFullError,
 )
 from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_single_item_dimension,
 )
-
-
-TensorActivationStoreData = Float[Tensor, "item neuron"]
-"""Tensor Activation Store Dataset Item Type."""
+from sparse_autoencoder.tensor_types import (
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
+    SourceModelActivations,
+    StoreActivations,
+)
 
 
 class TensorActivationStore(ActivationStore):
@@ -59,7 +57,7 @@ class TensorActivationStore(ActivationStore):
         torch.Size([2, 100])
     """
 
-    _data: TensorActivationStoreData
+    _data: StoreActivations
     """Underlying Tensor Data Store."""
 
     items_stored: int = 0
@@ -112,7 +110,7 @@ class TensorActivationStore(ActivationStore):
         """
         return self._data.element_size() * self._data.nelement()
 
-    def __getitem__(self, index: int) -> ActivationStoreItem:
+    def __getitem__(self, index: int) -> InputOutputActivationVector:
         """Get Item Dunder Method.
 
         Example:
@@ -161,7 +159,7 @@ class TensorActivationStore(ActivationStore):
         # Use this permutation to shuffle the active data in-place
         self._data[: self.items_stored] = self._data[perm]
 
-    def append(self, item: ActivationStoreItem) -> None:
+    def append(self, item: InputOutputActivationVector) -> None:
         """Add a single item to the store.
 
         Example:
@@ -187,7 +185,7 @@ class TensorActivationStore(ActivationStore):
         )
         self.items_stored += 1
 
-    def extend(self, batch: ActivationStoreBatch) -> None:
+    def extend(self, batch: SourceModelActivations) -> None:
         """Add a batch to the store.
 
         Examples:
@@ -208,7 +206,7 @@ class TensorActivationStore(ActivationStore):
         Raises:
             IndexError: If there is no space remaining.
         """
-        reshaped: Float[Tensor, "subset_item neuron"] = resize_to_single_item_dimension(
+        reshaped: InputOutputActivationBatch = resize_to_single_item_dimension(
             batch,
         )
 

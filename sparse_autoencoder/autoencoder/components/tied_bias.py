@@ -1,9 +1,12 @@
 """Tied Biases (Pre-Encoder and Post-Decoder)."""
 from enum import Enum
 
-from jaxtyping import Float
-from torch import Tensor
 from torch.nn import Module
+
+from sparse_autoencoder.tensor_types import (
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
+)
 
 
 class TiedBiasPosition(str, Enum):
@@ -24,13 +27,13 @@ class TiedBias(Module):
     https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias
     """
 
-    _bias_reference: Float[Tensor, " input_activations"]
+    _bias_reference: InputOutputActivationVector
 
     _bias_position: TiedBiasPosition
 
     def __init__(
         self,
-        bias: Float[Tensor, " input_activations"],
+        bias: InputOutputActivationVector,
         position: TiedBiasPosition,
     ) -> None:
         """Initialize the bias layer.
@@ -50,8 +53,8 @@ class TiedBias(Module):
 
     def forward(
         self,
-        x: Float[Tensor, "*batch input_activations"],
-    ) -> Float[Tensor, "*batch input_activations"]:
+        x: InputOutputActivationBatch,
+    ) -> InputOutputActivationBatch:
         """Forward Pass.
 
         Args:

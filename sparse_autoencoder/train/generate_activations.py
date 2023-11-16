@@ -1,10 +1,9 @@
 """Generate activations for training a Sparse Autoencoder."""
 from collections.abc import Iterable
 from functools import partial
+from typing import TYPE_CHECKING
 
-from jaxtyping import Int
 import torch
-from torch import Tensor
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.base_store import (
@@ -12,6 +11,10 @@ from sparse_autoencoder.activation_store.base_store import (
 )
 from sparse_autoencoder.source_data.abstract_dataset import TorchTokenizedPrompts
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.tensor_types import BatchTokenizedPrompts
 
 
 def generate_activations(
@@ -77,5 +80,5 @@ def generate_activations(
             if len(store) + activations_per_batch > total:
                 break
 
-            input_ids: Int[Tensor, "batch pos"] = batch["input_ids"].to(device)
+            input_ids: BatchTokenizedPrompts = batch["input_ids"].to(device)
             model.forward(input_ids, stop_at_layer=layer + 1)  # type: ignore (TLens is typed incorrectly)

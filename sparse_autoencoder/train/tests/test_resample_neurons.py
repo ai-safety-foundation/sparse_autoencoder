@@ -1,7 +1,6 @@
 """Tests for the resample_neurons module."""
 import copy
 
-from jaxtyping import Float, Int
 import pytest
 import torch
 from torch import Tensor
@@ -9,6 +8,11 @@ from torch import Tensor
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.tensor_types import (
+    AliveEncoderWeights,
+    NeuronActivity,
+    SampledDeadNeuronInputs,
+)
 from sparse_autoencoder.train.resample_neurons import (
     assign_sampling_probabilities,
     compute_loss_and_get_activations,
@@ -205,10 +209,10 @@ class TestRenormalizeAndScale:
 
     @staticmethod
     def calculate_expected_output(
-        sampled_input: Float[Tensor, "dead_neuron input_feature"],
-        neuron_activity: Int[Tensor, " learned_features"],
-        encoder_weight: Float[Tensor, "learned_feature input_feature"],
-    ) -> Float[Tensor, "dead_neuron input_feature"]:
+        sampled_input: SampledDeadNeuronInputs,
+        neuron_activity: NeuronActivity,
+        encoder_weight: AliveEncoderWeights,
+    ) -> SampledDeadNeuronInputs:
         """Non-vectorized approach to compare against."""
         # Initialize variables
         total_norm = 0

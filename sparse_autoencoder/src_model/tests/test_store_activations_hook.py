@@ -6,6 +6,7 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.list_store import ListActivationStore
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
+from sparse_autoencoder.tensor_types import BatchTokenizedPrompts
 
 
 def test_hook_stores_activations() -> None:
@@ -18,7 +19,7 @@ def test_hook_stores_activations() -> None:
         partial(store_activations_hook, store=store),
     )
 
-    tokens = model.to_tokens("Hello world")
+    tokens: BatchTokenizedPrompts = model.to_tokens("Hello world")
     logits = model.forward(tokens, stop_at_layer=2)  # type: ignore
 
     number_of_tokens = tokens.numel()

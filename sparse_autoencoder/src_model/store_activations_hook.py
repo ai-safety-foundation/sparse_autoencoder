@@ -1,16 +1,15 @@
 """TransformerLens Hook for storing activations."""
-from jaxtyping import Float
-from torch import Tensor
 from transformer_lens.hook_points import HookPoint
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
+from sparse_autoencoder.tensor_types import SourceModelActivations
 
 
 def store_activations_hook(
-    value: Float[Tensor, "*any neuron"],
-    hook: HookPoint,  # noqa: ARG001 as needed by TransformerLens
+    value: SourceModelActivations,
+    hook: HookPoint,  # noqa: ARG001
     store: ActivationStore,
-) -> Float[Tensor, "*any neuron"]:
+) -> SourceModelActivations:
     """Store Activations Hook.
 
     Useful for getting just the specific activations wanted, rather than the full cache.
