@@ -10,6 +10,7 @@
     [tool.poetry.dependencies]
         einops=">=0.6"
         python=">=3.10, <3.12"
+        strenum="^0.4.15"
         torch=">=2.1"
         wandb=">=0.15.12"
         zstandard="^0.22.0"    # Required for downloading datasets such as The Pile
@@ -149,6 +150,7 @@
                 "ARG001", # Fixtures often have unused arguments
                 "PT004",  # Fixtures don't return anything
                 "S101",   # Assert is needed in PyTest
+                "TCH001", # Don't need to mark type-only imports
             ]
 
         [tool.ruff.lint.pydocstyle]

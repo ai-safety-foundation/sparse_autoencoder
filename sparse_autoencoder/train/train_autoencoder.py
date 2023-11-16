@@ -1,18 +1,16 @@
 """Training Pipeline."""
-from jaxtyping import Float, Int
 import torch
-from torch import Tensor, device
+from torch import device
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 import wandb
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
-from sparse_autoencoder.autoencoder.loss import (
-    l1_loss,
-    reconstruction_loss,
-    sae_training_loss,
-)
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
+from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
+from sparse_autoencoder.loss.reducer import LossReducer
+from sparse_autoencoder.tensor_types import LearntActivationVector, NeuronActivity
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
@@ -24,7 +22,7 @@ def train_autoencoder(
     previous_steps: int,
     log_interval: int = 10,
     device: device | None = None,
-) -> tuple[int, Float[Tensor, " learned_feature"]]:
+) -> tuple[int, LearntActivationVector]:
     """Sparse Autoencoder Training Loop.
 
     Args:
@@ -45,8 +43,13 @@ def train_autoencoder(
         batch_size=sweep_parameters.batch_size,
     )
 
-    learned_activations_fired_count: Int[Tensor, " learned_feature"] = torch.zeros(
+    learned_activations_fired_count: NeuronActivity = torch.zeros(
         autoencoder.n_learned_features, dtype=torch.int32, device=device
+    )
+
+    loss = LossReducer(
+        MSEReconstructionLoss(),
+        LearnedActivationsL1Loss(sweep_parameters.l1_coefficient),
     )
 
     step: int = 0  # Initialize step
@@ -61,15 +64,8 @@ def train_autoencoder(
         learned_activations, reconstructed_activations = autoencoder(batch)
 
         # Get metrics
-        reconstruction_loss_mse: Float[Tensor, " item"] = reconstruction_loss(
-            batch,
-            reconstructed_activations,
-        )
-        l1_loss_learned_activations: Float[Tensor, " item"] = l1_loss(learned_activations)
-        total_loss: Float[Tensor, " item"] = sae_training_loss(
-            reconstruction_loss_mse,
-            l1_loss_learned_activations,
-            sweep_parameters.l1_coefficient,
+        total_loss, metrics = loss.batch_scalar_loss_with_log(
+            batch, learned_activations, reconstructed_activations
         )
 
         # Store count of how many neurons have fired
@@ -78,18 +74,12 @@ def train_autoencoder(
             learned_activations_fired_count.add_(fired.sum(dim=0))
 
         # Backwards pass
-        total_loss.mean().backward()
+        total_loss.backward()
         optimizer.step()
 
         # Log
         if step % log_interval == 0 and wandb.run is not None:
-            wandb.log(
-                {
-                    "reconstruction_loss": reconstruction_loss_mse.mean().item(),
-                    "l1_loss": l1_loss_learned_activations.mean().item(),
-                    "loss": total_loss.mean().item(),
-                },
-            )
+            wandb.log(metrics)
 
     current_step = previous_steps + step + 1
 
