@@ -6,14 +6,28 @@ from sparse_autoencoder.activation_store import (
     TensorActivationStore,
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.loss import (
+    AbstractLoss,
+    LearnedActivationsL1Loss,
+    LossLogType,
+    LossReducer,
+    LossReductionType,
+    MSEReconstructionLoss,
+)
 from sparse_autoencoder.train.pipeline import pipeline
 
 
 __all__ = [
+    "AbstractLoss",
     "ActivationStore",
     "DiskActivationStore",
+    "LearnedActivationsL1Loss",
     "ListActivationStore",
-    "TensorActivationStore",
+    "LossLogType",
+    "LossReducer",
+    "LossReductionType",
+    "MSEReconstructionLoss",
     "SparseAutoencoder",
+    "TensorActivationStore",
     "pipeline",
 ]
