@@ -137,11 +137,3 @@ class SparseAutoencoder(Module):
         for module in self.network:
             if "reset_parameters" in dir(module):
                 module.reset_parameters()
-
-    def save_to_hf(self) -> None:
-        """Save the model to Hugging Face."""
-        raise NotImplementedError
-
-    def load_from_hf(self) -> None:
-        """Load the model from Hugging Face."""
-        raise NotImplementedError
