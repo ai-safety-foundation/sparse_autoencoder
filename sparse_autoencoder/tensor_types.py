@@ -1,7 +1,8 @@
 """Tensor Types.
 
 Tensor types with axis labels. Note that this uses the `jaxtyping` library, which works with PyTorch
-tensors as well.
+tensors as well. Note also that shape sizes are included in the docstrings as well as in the types
+as this is needed for IDEs such as VSCode to provide code hints.
 """
 from enum import auto
 from typing import TypeAlias
@@ -126,6 +127,8 @@ InputOutputActivationBatch: TypeAlias = Float[
 
 This is either a batch of input activation vectors from the source model, or a batch of decoded
 activation vectors from the autoencoder.
+
+Shape (batch, input_output_feature)
 """
 
 LearnedActivationBatch: TypeAlias = Float[Tensor, Axis.dims(Axis.BATCH, Axis.LEARNT_FEATURE)]
@@ -153,6 +156,8 @@ The dictionary vectors (basis vectors in the learnt feature space), they can be 
 columns of this weight matrix, where each column corresponds to a particular feature in the
 lower-dimensional space. The sparsity constraint (hopefully) enforces that they respond relatively
 strongly to only a small portion of possible input vectors.
+
+Shape: (learnt_feature_dim, input_output_feature_dim)
 """
 
 DecoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
@@ -161,9 +166,10 @@ DecoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.INPUT_OUTPUT_FEATURE, A
 These weights form the decoder part of the autoencoder, which aims to reconstruct the original input
 data from the decompressed representation created by the encoder.
 
-The tensor's shape aligns with the training features and the learnt features. In this case, if we
-view the dictionary vectors in the context of reconstruction, they can be thought of as rows in this
-weight matrix.
+Viewing the dictionary vectors in the context of reconstruction, they can be thought of as rows in
+this weight matrix.
+
+Shape: (input_output_feature_dim, learnt_feature_dim)
 """
 
 # Weights and biases updated
@@ -173,8 +179,11 @@ NeuronActivity: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE]
 Number of times each neuron has fired (since the last reset).
 """
 
-DeadNeuronIndices: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE_IDX]
-"""Dead neuron indices."""
+InputOutputNeuronIndices: TypeAlias = Int[Tensor, Axis.INPUT_OUTPUT_FEATURE]
+"""Input/output neuron indices."""
+
+LearntNeuronIndices: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE_IDX]
+"""Learnt neuron indices."""
 
 SampledDeadNeuronInputs: TypeAlias = Float[
     Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
@@ -185,17 +194,23 @@ AliveEncoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.LEARNT_FEATURE, Ax
 """Alive encoder weights."""
 
 DeadEncoderNeuronWeightUpdates: TypeAlias = Float[
-    Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+    Tensor, Axis.dims(Axis.LEARNT_FEATURE, Axis.DEAD_FEATURE)
 ]
-"""Dead encoder neuron weight updates."""
+"""Dead encoder neuron weight updates.
+
+Shape (learnt_feature, dead_feature)
+"""
 
 DeadEncoderNeuronBiasUpdates: TypeAlias = Float[Tensor, Axis.DEAD_FEATURE]
 """Dead encoder neuron bias updates."""
 
 DeadDecoderNeuronWeightUpdates: TypeAlias = Float[
-    Tensor, Axis.dims(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)
+    Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.LEARNT_FEATURE)
 ]
-"""Dead decoder neuron weight updates."""
+"""Dead decoder neuron weight updates.
+
+Shape (dead_feature, learnt_feature)
+"""
 
 # Other
 BatchTokenizedPrompts: TypeAlias = Int[Tensor, Axis.dims(Axis.SOURCE_DATA_BATCH, Axis.POSITION)]

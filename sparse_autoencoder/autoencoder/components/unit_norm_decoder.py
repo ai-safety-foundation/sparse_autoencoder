@@ -1,26 +1,28 @@
 """Linear layer with unit norm weights."""
-import math
+from typing import final
 
 import einops
 import torch
-from torch import Tensor
-from torch.nn import Module, init
+from torch.nn import init
 from torch.nn.parameter import Parameter
 
+from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.tensor_types import (
     Axis,
     DecoderWeights,
     EncoderWeights,
-    InputOutputActivationVector,
+    InputOutputActivationBatch,
+    LearnedActivationBatch,
 )
 
 
-class ConstrainedUnitNormLinear(Module):
+@final
+class UnitNormDecoder(AbstractDecoder):
     """Constrained unit norm linear decoder layer.
 
-    Linear layer for autoencoders, where the dictionary vectors (rows of the weight matrix) are
-    constrained to have unit norm. This is done by removing the gradient information parallel to the
-    dictionary vectors before applying the gradient step, using a backward hook.
+    Linear layer decoder, where the dictionary vectors (rows of the weight matrix) are constrained
+    to have unit norm. This is done by removing the gradient information parallel to the dictionary
+    vectors before applying the gradient step, using a backward hook.
 
     Motivation:
         Unit norming the dictionary vectors, which are essentially the rows of the decoding
@@ -42,52 +44,50 @@ class ConstrainedUnitNormLinear(Module):
         loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).
     """
 
-    learnt_features: int
+    _learnt_features: int
     """Number of learnt features (inputs to this layer)."""
 
-    decoded_features: int
+    _decoded_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    weight: DecoderWeights
+    _weight: DecoderWeights
     """Weight parameter."""
 
-    bias: InputOutputActivationVector | None
-    """Bias parameter."""
+    @property
+    def weight(self) -> DecoderWeights:
+        """Weight."""
+        return self._weight
 
     def __init__(
         self,
         learnt_features: int,
         decoded_features: int,
         *,
-        bias: bool = True,
-        device: torch.device | None = None,
-        dtype: torch.dtype | None = None,
+        enable_gradient_hook: bool = True,
     ) -> None:
         """Initialize the constrained unit norm linear layer.
 
         Args:
             learnt_features: Number of learnt features in the autoencoder.
             decoded_features: Number of decoded (output) features in the autoencoder.
-            bias: Whether to include a bias term.
-            device: Device to use.
-            dtype: Data type to use.
+            enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before
+                applying the gradient step, to maintain unit norm of the dictionary vectors).
         """
         # Create the linear layer as per the standard PyTorch linear layer
         super().__init__()
-        self.learnt_features = learnt_features
-        self.decoded_features = decoded_features
-        self.weight = Parameter(
-            torch.empty((decoded_features, learnt_features), device=device, dtype=dtype)
+        self._learnt_features = learnt_features
+        self._decoded_features = decoded_features
+        self._weight = Parameter(
+            torch.empty(
+                (decoded_features, learnt_features),
+            )
         )
-        if bias:
-            self.bias = Parameter(torch.empty(decoded_features, device=device, dtype=dtype))
-        else:
-            self.register_parameter("bias", None)
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary
         # vectors (rows of the weight matrix) before applying the gradient step.
-        self.weight.register_hook(self._weight_backward_hook)
+        if enable_gradient_hook:
+            self._weight.register_hook(self._weight_backward_hook)
 
     def reset_parameters(self) -> None:
         """Initialize or reset the parameters.
@@ -95,7 +95,7 @@ class ConstrainedUnitNormLinear(Module):
         Example:
             >>> import torch
             >>> # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)
-            >>> layer = ConstrainedUnitNormLinear(learnt_features=4, decoded_features=3)
+            >>> layer = UnitNormDecoder(learnt_features=4, decoded_features=3)
             >>> layer.reset_parameters()
             >>> # Get the norm across the rows (by summing across the columns)
             >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
@@ -106,18 +106,11 @@ class ConstrainedUnitNormLinear(Module):
         # Initialize the weights with a normal distribution. Note we don't use e.g. kaiming
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
-        self.weight: EncoderWeights = init.normal_(self.weight, mean=0, std=1)
+        self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
 
         # Scale so that each row has unit norm
         with torch.no_grad():
-            torch.nn.functional.normalize(self.weight, dim=-1, out=self.weight)
-
-        # Initialise the bias
-        # This is the standard approach used in `torch.nn.Linear.reset_parameters`
-        if self.bias is not None:
-            fan_in = self.weight.size(1)
-            bound = 1 / math.sqrt(fan_in) if fan_in > 0 else 0
-            init.uniform_(self.bias, -bound, bound)
+            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
 
     def _weight_backward_hook(
         self,
@@ -138,8 +131,8 @@ class ConstrainedUnitNormLinear(Module):
         # the gradient onto the dictionary vectors is the component of the gradient that is parallel
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
-        normalized_weight: EncoderWeights = self.weight / torch.norm(
-            self.weight, dim=-1, keepdim=True
+        normalized_weight: EncoderWeights = self._weight / torch.norm(
+            self._weight, dim=-1, keepdim=True
         )
 
         # Calculate the dot product of the gradients with the dictionary vectors.
@@ -182,7 +175,7 @@ class ConstrainedUnitNormLinear(Module):
 
         Example:
             >>> import torch
-            >>> layer = ConstrainedUnitNormLinear(3, 3)
+            >>> layer = UnitNormDecoder(3, 3)
             >>> layer.weight.data = torch.ones((3, 3)) * 10
             >>> layer.constrain_weights_unit_norm()
             >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
@@ -191,9 +184,9 @@ class ConstrainedUnitNormLinear(Module):
 
         """
         with torch.no_grad():
-            torch.nn.functional.normalize(self.weight, dim=-1, out=self.weight)
+            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
 
-    def forward(self, x: Tensor) -> Tensor:
+    def forward(self, x: LearnedActivationBatch) -> InputOutputActivationBatch:
         """Forward pass.
 
         Args:
@@ -208,11 +201,8 @@ class ConstrainedUnitNormLinear(Module):
         # gradient, but instead follow a modified gradient that includes momentum.
         self.constrain_weights_unit_norm()
 
-        return torch.nn.functional.linear(x, self.weight, self.bias)
+        return torch.nn.functional.linear(x, self._weight)
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""
-        return (
-            f"in_features={self.learnt_features}, out_features={self.decoded_features}, "
-            f"bias={self.bias is not None}"
-        )
+        return f"in_features={self._learnt_features}, out_features={self._decoded_features}"

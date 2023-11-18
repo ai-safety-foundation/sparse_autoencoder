@@ -11,7 +11,7 @@ from torch.optim import Adam
 from torch.optim.optimizer import params_t
 
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
-from sparse_autoencoder.tensor_types import DeadNeuronIndices
+from sparse_autoencoder.tensor_types import LearntNeuronIndices
 
 
 @final
@@ -143,7 +143,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     def reset_neurons_state(
         self,
         parameter_name: str,
-        neuron_indices: DeadNeuronIndices,
+        neuron_indices: LearntNeuronIndices,
         axis: int,
         parameter_group: int = 0,
     ) -> None:
@@ -160,18 +160,18 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             >>> # ... train the model and then resample some dead neurons, then do this ...
             >>> dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices
             >>> # Reset the optimizer state for parameters that have been updated
-            >>> optimizer.reset_neurons_state("encoder.Linear.weight", dead_neurons_indices, axis=0)
-            >>> optimizer.reset_neurons_state("encoder.Linear.bias", dead_neurons_indices, axis=0)
+            >>> optimizer.reset_neurons_state("_encoder._weight", dead_neurons_indices, axis=0)
+            >>> optimizer.reset_neurons_state("_encoder._bias", dead_neurons_indices, axis=0)
             >>> optimizer.reset_neurons_state(
-            ...     "decoder.ConstrainedUnitNormLinear.weight",
+            ...     "_decoder._weight",
             ...     dead_neurons_indices,
             ...     axis=1
             ... )
 
         Args:
             parameter_name: The name of the parameter. Examples from the standard sparse autoencoder
-                implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,
-                `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.
+                implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,
+                `_decoder._weight`.
             neuron_indices: The indices of the neurons to reset.
             axis: The axis of the parameter to reset.
             parameter_group: The index of the parameter group to reset (typically this is just zero,
