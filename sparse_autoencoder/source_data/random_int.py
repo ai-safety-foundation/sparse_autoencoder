@@ -90,7 +90,6 @@ class RandomIntDummyDataset(SourceDataset[RandomIntSourceData]):
             250
 
         Args:
-            tokenizer: The tokenizer to use to tokenize the prompts.
             context_size: The context size to use when returning a list of tokenized prompts.
                 *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
                 a context size of 250.

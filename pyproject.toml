@@ -34,6 +34,13 @@
             transformer-lens=">=1.9.0"
             transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
+        [tool.poetry.group.docs.dependencies]
+            mkdocs = "^1.5.3"
+            mkdocstrings = "^0.23.0"
+            mkdocstrings-python = "^1.7.3"
+            mkdocs-gen-files = "^0.5.0"
+            mkdocs-literate-nav = "^0.6.1"
+
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="All checks"
@@ -85,6 +92,24 @@
         help="  [alias for typecheck]"
         sequence=["typecheck"]
 
+    [tool.poe.tasks.clean-docs]
+        cmd="rm -rf ./docs/content/reference/"
+        help="Cleans out the automatically generated docs."
+
+    [tool.poe.tasks.gen-docs]
+        script="docs.gen_ref_pages:run"
+        help="Cleans out the automatically generated docs."
+
+    [tool.poe.tasks.make-docs]
+        deps=["clean-docs", "gen-docs"]
+        cmd="mkdocs build"
+        help="Generates our docs"
+
+    [tool.poe.tasks.docs-hot-reload]
+        deps=["clean-docs"]
+        cmd="mkdocs serve"
+        help="Starts our watch server"
+
 [build-system]
     build-backend="poetry.core.masonry.api"
     requires=["poetry-core"]
@@ -97,7 +122,6 @@
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["/.venv"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
