@@ -266,12 +266,13 @@
 
   
       <p>Abstract optimizer with reset.</p>
+<p>When implementing this interface, we recommend adding a <code>named_parameters</code> argument to the
+constructor, which can be obtained from <code>named_parameters=model.named_parameters()</code> by the end
+user. This is so that the optimizer can find the parameters to reset.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/optimizer/abstract_optimizer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
@@ -279,8 +280,45 @@
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractOptimizerWithReset</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract optimizer with reset.&quot;&quot;&quot;</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractOptimizerWithReset</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract optimizer with reset.</span>
+
+<span class="sd">    When implementing this interface, we recommend adding a `named_parameters` argument to the</span>
+<span class="sd">    constructor, which can be obtained from `named_parameters=model.named_parameters()` by the end</span>
+<span class="sd">    user. This is so that the optimizer can find the parameters to reset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">reset_state_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -288,6 +326,31 @@
 
 <span class="sd">        Resets any optimizer state (e.g. momentum). This is for use after manually editing model</span>
 <span class="sd">            parameters (e.g. with activation resampling).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">DeadNeuronIndices</span><span class="p">,</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">parameter_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parameter_name: The name of the parameter. Examples from the standard sparse autoencoder</span>
+<span class="sd">                implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,</span>
+<span class="sd">                `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.</span>
+<span class="sd">            neuron_indices: The indices of the neurons to reset.</span>
+<span class="sd">            axis: The axis of the parameter to reset.</span>
+<span class="sd">            parameter_group: The index of the parameter group to reset (typically this is just zero,</span>
+<span class="sd">                unless you have setup multiple parameter groups for e.g. different learning rates</span>
+<span class="sd">                for different parameters).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the parameter name is not found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div></td></tr></table></div>
@@ -304,6 +367,160 @@
 
 
 
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.optimizer.abstract_optimizer.AbstractOptimizerWithReset.reset_neurons_state" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">parameter_group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reset the state for specific neurons, on a specific parameter.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>parameter_name</code></b>
+                  (<code>str</code>)
+              –
+              <div class="doc-md-description">
+                <p>The name of the parameter. Examples from the standard sparse autoencoder
+implementation  include <code>tied_bias</code>, <code>encoder.Linear.weight</code>, <code>encoder.Linear.bias</code>,
+<code>decoder.Linear.weight</code>, and <code>decoder.ConstrainedUnitNormLinear.weight</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>neuron_indices</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.DeadNeuronIndices" href="../../tensor_types/#sparse_autoencoder.tensor_types.DeadNeuronIndices">DeadNeuronIndices</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The indices of the neurons to reset.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>axis</code></b>
+                  (<code>int</code>)
+              –
+              <div class="doc-md-description">
+                <p>The axis of the parameter to reset.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>parameter_group</code></b>
+                  (<code>int</code>, default:
+                      <code>0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>The index of the parameter group to reset (typically this is just zero,
+unless you have setup multiple parameter groups for e.g. different learning rates
+for different parameters).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>ValueError</code>
+              –
+              <div class="doc-md-description">
+                <p>If the parameter name is not found.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/optimizer/abstract_optimizer.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">DeadNeuronIndices</span><span class="p">,</span>
+    <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">parameter_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        parameter_name: The name of the parameter. Examples from the standard sparse autoencoder</span>
+<span class="sd">            implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,</span>
+<span class="sd">            `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.</span>
+<span class="sd">        neuron_indices: The indices of the neurons to reset.</span>
+<span class="sd">        axis: The axis of the parameter to reset.</span>
+<span class="sd">        parameter_group: The index of the parameter group to reset (typically this is just zero,</span>
+<span class="sd">            unless you have setup multiple parameter groups for e.g. different learning rates</span>
+<span class="sd">            for different parameters).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the parameter name is not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
 
 
 <div class="doc doc-object doc-function">
@@ -329,14 +546,14 @@
 
           <details class="quote">
             <summary> <code>sparse_autoencoder/optimizer/abstract_optimizer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">reset_state_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for all parameters.</span>
 
