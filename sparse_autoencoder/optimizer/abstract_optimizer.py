@@ -1,8 +1,10 @@
 """Abstract optimizer with reset."""
 from abc import ABC, abstractmethod
 
+from torch.optim import Optimizer
 
-class AbstractOptimizerWithReset(ABC):
+
+class AbstractOptimizerWithReset(Optimizer, ABC):
     """Abstract optimizer with reset."""
 
     @abstractmethod
