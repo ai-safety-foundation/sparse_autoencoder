@@ -282,10 +282,8 @@ def resample_dead_neurons(
         sample_probabilities: TrainBatchStatistic = assign_sampling_probabilities(loss)
 
         # Get references to the encoder and decoder parameters
-        encoder_linear: torch.nn.Linear = autoencoder.encoder.get_submodule("Linear")  # type: ignore
-        decoder_linear: UnitNormDecoder = autoencoder.decoder.get_submodule(
-            "ConstrainedUnitNormLinear"
-        )  # type: ignore
+        encoder_linear: torch.nn.Linear = autoencoder.encoder  # type: ignore
+        decoder_linear: UnitNormDecoder = autoencoder.decoder
         encoder_weight: EncoderWeights = encoder_linear.weight
         encoder_bias: LearntActivationVector = encoder_linear.bias
         decoder_weight: DecoderWeights = decoder_linear.weight

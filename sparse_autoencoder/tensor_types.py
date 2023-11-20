@@ -188,13 +188,16 @@ LearntNeuronIndices: TypeAlias = Int[Tensor, Axis.LEARNT_FEATURE_IDX]
 SampledDeadNeuronInputs: TypeAlias = Float[
     Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
 ]
-"""Sampled dead neuron inputs."""
+"""Sampled dead neuron inputs.
+
+Shape: (dead_feature, input_output_feature)
+"""
 
 AliveEncoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.LEARNT_FEATURE, Axis.ALIVE_FEATURE)]
 """Alive encoder weights."""
 
 DeadEncoderNeuronWeightUpdates: TypeAlias = Float[
-    Tensor, Axis.dims(Axis.LEARNT_FEATURE, Axis.DEAD_FEATURE)
+    Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
 ]
 """Dead encoder neuron weight updates.
 

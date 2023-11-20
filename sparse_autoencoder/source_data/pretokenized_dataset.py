@@ -74,6 +74,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         """Initialize a pre-tokenized dataset from Hugging Face.
 
         Example:
+            >>> # doctest:skip
             >>> data = PreTokenizedDataset(dataset_path="NeelNanda/c4-tokenized-2b")
             >>> first_item = next(iter(data))
             >>> len(first_item["input_ids"])
