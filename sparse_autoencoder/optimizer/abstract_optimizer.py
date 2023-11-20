@@ -1,10 +1,12 @@
 """Abstract optimizer with reset."""
 from abc import ABC, abstractmethod
 
-from sparse_autoencoder.tensor_types import DeadNeuronIndices
+from torch.optim import Optimizer
+
+from sparse_autoencoder.tensor_types import LearntNeuronIndices
 
 
-class AbstractOptimizerWithReset(ABC):
+class AbstractOptimizerWithReset(Optimizer, ABC):
     """Abstract optimizer with reset.
 
     When implementing this interface, we recommend adding a `named_parameters` argument to the
@@ -25,7 +27,7 @@ class AbstractOptimizerWithReset(ABC):
     def reset_neurons_state(
         self,
         parameter_name: str,
-        neuron_indices: DeadNeuronIndices,
+        neuron_indices: LearntNeuronIndices,
         axis: int,
         parameter_group: int = 0,
     ) -> None:

@@ -24,6 +24,7 @@
             pyright=">=1.1.334"
             pytest=">=7"
             pytest-cov=">=4"
+            pytest-timeout="^2.2.0"
             ruff=">=0.1.4"
             syrupy="^4.6.0"
 
@@ -116,6 +117,8 @@
 
 [tool.pytest]
     cache_dir=".cache/pytest"
+    durations=3
+    timeout=60
 
     [tool.pytest.ini_options]
         addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""

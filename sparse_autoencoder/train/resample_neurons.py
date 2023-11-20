@@ -16,12 +16,12 @@ from sparse_autoencoder.loss.reducer import LossReducer
 from sparse_autoencoder.tensor_types import (
     AliveEncoderWeights,
     DeadEncoderNeuronWeightUpdates,
-    DeadNeuronIndices,
     DecoderWeights,
     EncoderWeights,
     InputOutputActivationBatch,
     ItemTensor,
     LearntActivationVector,
+    LearntNeuronIndices,
     NeuronActivity,
     SampledDeadNeuronInputs,
     TrainBatchStatistic,
@@ -30,12 +30,12 @@ from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
 if TYPE_CHECKING:
-    from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
+    from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
 
 
 def get_dead_neuron_indices(
     neuron_activity: NeuronActivity, threshold: int = 0
-) -> DeadNeuronIndices:
+) -> LearntNeuronIndices:
     """Identify the indices of neurons that have zero activity.
 
     Example:
@@ -166,7 +166,7 @@ def sample_input(
             device=input_activations.device,
         )
 
-    sample_indices: DeadNeuronIndices = torch.multinomial(probabilities, num_samples=num_samples)
+    sample_indices: LearntNeuronIndices = torch.multinomial(probabilities, num_samples=num_samples)
     return input_activations[sample_indices, :]
 
 
@@ -282,10 +282,8 @@ def resample_dead_neurons(
         sample_probabilities: TrainBatchStatistic = assign_sampling_probabilities(loss)
 
         # Get references to the encoder and decoder parameters
-        encoder_linear: torch.nn.Linear = autoencoder.encoder.get_submodule("Linear")  # type: ignore
-        decoder_linear: ConstrainedUnitNormLinear = autoencoder.decoder.get_submodule(
-            "ConstrainedUnitNormLinear"
-        )  # type: ignore
+        encoder_linear: torch.nn.Linear = autoencoder.encoder  # type: ignore
+        decoder_linear: UnitNormDecoder = autoencoder.decoder
         encoder_weight: EncoderWeights = encoder_linear.weight
         encoder_bias: LearntActivationVector = encoder_linear.bias
         decoder_weight: DecoderWeights = decoder_linear.weight

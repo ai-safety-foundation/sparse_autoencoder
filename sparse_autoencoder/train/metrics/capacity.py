@@ -1,7 +1,7 @@
 """Capacity metrics for sets of learned features."""
 import einops
-from numpy import histogram
 import numpy as np
+from numpy import histogram
 from numpy.typing import NDArray
 import torch
 import wandb
