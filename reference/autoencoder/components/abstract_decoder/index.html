@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../../../img/favicon.ico" />
-    <title>tied_bias - Sparse Autoencoder</title>
+    <title>abstract_decoder - Sparse Autoencoder</title>
     <link rel="stylesheet" href="../../../../css/theme.css" />
     <link rel="stylesheet" href="../../../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "tied_bias";
-        var mkdocs_page_input_path = "reference/autoencoder/components/tied_bias.md";
+        var mkdocs_page_name = "abstract_decoder";
+        var mkdocs_page_input_path = "reference/autoencoder/components/abstract_decoder.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -100,7 +100,9 @@
     <ul class="current">
                 <li class="toctree-l3"><a class="reference internal" href="../">Index</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../abstract_decoder/">abstract_decoder</a>
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">abstract_decoder</a>
+    <ul class="current">
+    </ul>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="../abstract_encoder/">abstract_encoder</a>
                 </li>
@@ -108,9 +110,7 @@
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="../linear_encoder/">linear_encoder</a>
                 </li>
-                <li class="toctree-l3 current"><a class="reference internal current" href="./">tied_bias</a>
-    <ul class="current">
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../tied_bias/">tied_bias</a>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="../unit_norm_decoder/">unit_norm_decoder</a>
                 </li>
@@ -230,7 +230,7 @@
           <li class="breadcrumb-item">Reference</li>
           <li class="breadcrumb-item">autoencoder</li>
           <li class="breadcrumb-item">components</li>
-      <li class="breadcrumb-item active">tied_bias</li>
+      <li class="breadcrumb-item active">abstract_decoder</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -243,10 +243,10 @@
 
 
 
-<a id="sparse_autoencoder.autoencoder.components.tied_bias"></a>
+<a id="sparse_autoencoder.autoencoder.components.abstract_decoder"></a>
   <div class="doc doc-contents first">
   
-      <p>Tied Biases (Pre-Encoder and Post-Decoder).</p>
+      <p>Abstract Sparse Autoencoder Model.</p>
 
   
 
@@ -264,8 +264,8 @@
 
 
 
-<h2 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias" class="doc doc-heading">
-          <code>TiedBias</code>
+<h2 id="sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder" class="doc doc-heading">
+          <code>AbstractDecoder</code>
 
 
 </h2>
@@ -273,18 +273,17 @@
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.components.abstract_outer_bias.AbstractOuterBias" href="../abstract_outer_bias/#sparse_autoencoder.autoencoder.components.abstract_outer_bias.AbstractOuterBias">AbstractOuterBias</a></code></p>
+            Bases: <code><span title="torch.nn.Module">Module</span></code>, <code><span title="abc.ABC">ABC</span></code></p>
 
   
-      <p>Tied Bias Layer.</p>
-<p>The tied pre-encoder bias is a learned bias term that is subtracted from the input before
-encoding, and added back after decoding.</p>
-<p>The bias parameter must be initialised in the parent module, and then passed to this layer.</p>
-<p>https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</p>
+      <p>Abstract Decoder Module.</p>
+<p>Typically includes just a :attr:<code>weight</code> parameter.</p>
 
             <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_decoder.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
@@ -333,82 +332,58 @@ encoding, and added back after decoding.</p>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">class</span> <span class="nc">TiedBias</span><span class="p">(</span><span class="n">AbstractOuterBias</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Layer.</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractDecoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract Decoder Module.</span>
 
-<span class="sd">    The tied pre-encoder bias is a learned bias term that is subtracted from the input before</span>
-<span class="sd">    encoding, and added back after decoding.</span>
-
-<span class="sd">    The bias parameter must be initialised in the parent module, and then passed to this layer.</span>
-
-<span class="sd">    https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</span>
+<span class="sd">    Typically includes just a :attr:`weight` parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_bias_position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span>
-
-    <span class="n">_bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span>
-
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationVector</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bias.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DecoderWeights</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Weight.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
-        <span class="n">position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the bias layer.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            bias_reference: Tied bias parameter (initialised in the parent module), used for both</span>
-<span class="sd">                the pre-encoder and post-encoder bias. The original paper initialised this using the</span>
-<span class="sd">                geometric median of the dataset.</span>
-<span class="sd">            position: Whether this is the pre-encoder or post-encoder bias.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span> <span class="o">=</span> <span class="n">bias_reference</span>
-
-        <span class="c1"># Support string literals as well as enums</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">=</span> <span class="n">position</span>
-
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x: Input tensor.</span>
+<span class="sd">            x: Learned activations.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Output of the forward pass.</span>
+<span class="sd">            Decoded activations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># If this is the pre-encoder bias, we subtract the bias from the input.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">==</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-        <span class="c1"># If it&#39;s the post-encoder bias, we add the bias to the input.</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nd">@final</span>
+    <span class="k">def</span> <span class="nf">update_dictionary_vectors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dictionary_vector_indices</span><span class="p">:</span> <span class="n">InputOutputNeuronIndices</span><span class="p">,</span>
+        <span class="n">updated_weights</span><span class="p">:</span> <span class="n">DeadDecoderNeuronWeightUpdates</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update decoder dictionary vectors.</span>
+
+<span class="sd">        Updates the dictionary vectors (rows in the weight matrix) with the given values. Typically</span>
+<span class="sd">        this is used when resampling neurons (dictionary vectors) that have died.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dictionary_vector_indices: Indices of the dictionary vectors to update.</span>
+<span class="sd">            updated_weights: Updated weights for just these dictionary vectors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">updated_weights</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -427,10 +402,11 @@ encoding, and added back after decoding.</p>
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">bias</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span></code>
+<h3 id="sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder.weight" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">weight</span><span class="p">:</span> <span class="n">DecoderWeights</span></code>
   
   <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
@@ -439,7 +415,7 @@ encoding, and added back after decoding.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Bias.</p>
+      <p>Weight.</p>
   </div>
 
 </div>
@@ -452,133 +428,12 @@ encoding, and added back after decoding.</p>
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">bias_reference</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span></code>
-
-</h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Initialize the bias layer.</p>
-
-
-
-<table class="field-list">
-  <colgroup>
-    <col class="field-name" />
-    <col class="field-body" />
-  </colgroup>
-  <tbody valign="top">
-    <tr class="field">
-      <th class="field-name">Parameters:</th>
-      <td class="field-body">
-        <ul class="first simple">
-            <li>
-              <b><code>bias_reference</code></b>
-                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>)
-              –
-              <div class="doc-md-description">
-                <p>Tied bias parameter (initialised in the parent module), used for both
-the pre-encoder and post-encoder bias. The original paper initialised this using the
-geometric median of the dataset.</p>
-              </div>
-            </li>
-            <li>
-              <b><code>position</code></b>
-                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition">TiedBiasPosition</a></code>)
-              –
-              <div class="doc-md-description">
-                <p>Whether this is the pre-encoder or post-encoder bias.</p>
-              </div>
-            </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
-          <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the bias layer.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        bias_reference: Tied bias parameter (initialised in the parent module), used for both</span>
-<span class="sd">            the pre-encoder and post-encoder bias. The original paper initialised this using the</span>
-<span class="sd">            geometric median of the dataset.</span>
-<span class="sd">        position: Whether this is the pre-encoder or post-encoder bias.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span> <span class="o">=</span> <span class="n">bias_reference</span>
-
-    <span class="c1"># Support string literals as well as enums</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">=</span> <span class="n">position</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.extra_repr" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">extra_repr</span><span class="p">()</span></code>
-
-</h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>String extra representation of the module.</p>
-
-          <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.forward" class="doc doc-heading">
+<h3 id="sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder.forward" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
 
 </h3>
 
@@ -601,10 +456,10 @@ geometric median of the dataset.</p>
         <ul class="first simple">
             <li>
               <b><code>x</code></b>
-                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>)
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearnedActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.LearnedActivationBatch">LearnedActivationBatch</a></code>)
               –
               <div class="doc-md-description">
-                <p>Input tensor.</p>
+                <p>Learned activations.</p>
               </div>
             </li>
         </ul>
@@ -628,7 +483,7 @@ geometric median of the dataset.</p>
                 <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
             –
             <div class="doc-md-description">
-              <p>Output of the forward pass.</p>
+              <p>Decoded activations.</p>
             </div>
           </li>
       </ul>
@@ -637,42 +492,34 @@ geometric median of the dataset.</p>
   </tbody>
 </table>
           <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+            <summary> <code>sparse_autoencoder/autoencoder/components/abstract_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x: Input tensor.</span>
+<span class="sd">        x: Learned activations.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Output of the forward pass.</span>
+<span class="sd">        Decoded activations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># If this is the pre-encoder bias, we subtract the bias from the input.</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">==</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
-
-    <span class="c1"># If it&#39;s the post-encoder bias, we add the bias to the input.</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -680,57 +527,137 @@ geometric median of the dataset.</p>
 </div>
 
 
+<div class="doc doc-object doc-function">
 
-  </div>
 
+
+
+<h3 id="sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder.reset_parameters" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">reset_parameters</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reset the parameters.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/components/abstract_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
 </div>
 
-<div class="doc doc-object doc-class">
+
+<div class="doc doc-object doc-function">
 
 
 
 
-<h2 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" class="doc doc-heading">
-          <code>TiedBiasPosition</code>
+<h3 id="sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder.update_dictionary_vectors" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">update_dictionary_vectors</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="n">updated_weights</span><span class="p">)</span></code>
 
-
-</h2>
+</h3>
 
 
   <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
-
   
-      <p>Tied Bias Position.</p>
+      <p>Update decoder dictionary vectors.</p>
+<p>Updates the dictionary vectors (rows in the weight matrix) with the given values. Typically
+this is used when resampling neurons (dictionary vectors) that have died.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TiedBiasPosition</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Position.&quot;&quot;&quot;</span>
 
-    <span class="n">PRE_ENCODER</span> <span class="o">=</span> <span class="s2">&quot;pre_encoder&quot;</span>
-    <span class="n">POST_DECODER</span> <span class="o">=</span> <span class="s2">&quot;post_decoder&quot;</span>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>dictionary_vector_indices</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputNeuronIndices" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputNeuronIndices">InputOutputNeuronIndices</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Indices of the dictionary vectors to update.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>updated_weights</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.DeadDecoderNeuronWeightUpdates" href="../../../tensor_types/#sparse_autoencoder.tensor_types.DeadDecoderNeuronWeightUpdates">DeadDecoderNeuronWeightUpdates</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Updated weights for just these dictionary vectors.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/autoencoder/components/abstract_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">def</span> <span class="nf">update_dictionary_vectors</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">dictionary_vector_indices</span><span class="p">:</span> <span class="n">InputOutputNeuronIndices</span><span class="p">,</span>
+    <span class="n">updated_weights</span><span class="p">:</span> <span class="n">DeadDecoderNeuronWeightUpdates</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update decoder dictionary vectors.</span>
+
+<span class="sd">    Updates the dictionary vectors (rows in the weight matrix) with the given values. Typically</span>
+<span class="sd">    this is used when resampling neurons (dictionary vectors) that have died.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dictionary_vector_indices: Indices of the dictionary vectors to update.</span>
+<span class="sd">        updated_weights: Updated weights for just these dictionary vectors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">updated_weights</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+          </details>
+  </div>
 
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
+</div>
 
 
 
@@ -752,8 +679,8 @@ geometric median of the dataset.</p>
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../linear_encoder/" class="btn btn-neutral float-left" title="linear_encoder"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../unit_norm_decoder/" class="btn btn-neutral float-right" title="unit_norm_decoder">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../" class="btn btn-neutral float-left" title="Index"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../abstract_encoder/" class="btn btn-neutral float-right" title="abstract_encoder">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -776,10 +703,10 @@ geometric median of the dataset.</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../linear_encoder/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../unit_norm_decoder/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../abstract_encoder/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

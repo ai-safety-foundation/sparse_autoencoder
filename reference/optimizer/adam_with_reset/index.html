@@ -94,13 +94,23 @@
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/abstract_autoencoder/">abstract_autoencoder</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">components</a>
     <ul>
                 <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
                 </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/abstract_decoder/">abstract_decoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/abstract_encoder/">abstract_encoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/abstract_outer_bias/">abstract_outer_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/linear_encoder/">linear_encoder</a>
+                </li>
                 <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_decoder/">unit_norm_decoder</a>
                 </li>
     </ul>
                 </li>
@@ -592,7 +602,7 @@ will be incorrect if the parameters are changed.</p>
     <span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">DeadNeuronIndices</span><span class="p">,</span>
+        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span><span class="p">,</span>
         <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">parameter_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -609,18 +619,18 @@ will be incorrect if the parameters are changed.</p>
 <span class="sd">            &gt;&gt;&gt; # ... train the model and then resample some dead neurons, then do this ...</span>
 <span class="sd">            &gt;&gt;&gt; dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices</span>
 <span class="sd">            &gt;&gt;&gt; # Reset the optimizer state for parameters that have been updated</span>
-<span class="sd">            &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;encoder.Linear.weight&quot;, dead_neurons_indices, axis=0)</span>
-<span class="sd">            &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;encoder.Linear.bias&quot;, dead_neurons_indices, axis=0)</span>
+<span class="sd">            &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;_encoder._weight&quot;, dead_neurons_indices, axis=0)</span>
+<span class="sd">            &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;_encoder._bias&quot;, dead_neurons_indices, axis=0)</span>
 <span class="sd">            &gt;&gt;&gt; optimizer.reset_neurons_state(</span>
-<span class="sd">            ...     &quot;decoder.ConstrainedUnitNormLinear.weight&quot;,</span>
+<span class="sd">            ...     &quot;_decoder._weight&quot;,</span>
 <span class="sd">            ...     dead_neurons_indices,</span>
 <span class="sd">            ...     axis=1</span>
 <span class="sd">            ... )</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parameter_name: The name of the parameter. Examples from the standard sparse autoencoder</span>
-<span class="sd">                implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,</span>
-<span class="sd">                `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.</span>
+<span class="sd">                implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,</span>
+<span class="sd">                `_decoder._weight`.</span>
 <span class="sd">            neuron_indices: The indices of the neurons to reset.</span>
 <span class="sd">            axis: The axis of the parameter to reset.</span>
 <span class="sd">            parameter_group: The index of the parameter group to reset (typically this is just zero,</span>
@@ -916,10 +926,10 @@ optimizer = AdamWithReset(
 <h4 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state--train-the-model-and-then-resample-some-dead-neurons-then-do-this">... train the model and then resample some dead neurons, then do this ...</h4>
 <p>dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices</p>
 <h4 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state--reset-the-optimizer-state-for-parameters-that-have-been-updated">Reset the optimizer state for parameters that have been updated</h4>
-<p>optimizer.reset_neurons_state("encoder.Linear.weight", dead_neurons_indices, axis=0)
-optimizer.reset_neurons_state("encoder.Linear.bias", dead_neurons_indices, axis=0)
+<p>optimizer.reset_neurons_state("_encoder._weight", dead_neurons_indices, axis=0)
+optimizer.reset_neurons_state("_encoder._bias", dead_neurons_indices, axis=0)
 optimizer.reset_neurons_state(
-...     "decoder.ConstrainedUnitNormLinear.weight",
+...     "_decoder._weight",
 ...     dead_neurons_indices,
 ...     axis=1
 ... )</p>
@@ -945,13 +955,13 @@ optimizer.reset_neurons_state(
               –
               <div class="doc-md-description">
                 <p>The name of the parameter. Examples from the standard sparse autoencoder
-implementation  include <code>tied_bias</code>, <code>encoder.Linear.weight</code>, <code>encoder.Linear.bias</code>,
-<code>decoder.Linear.weight</code>, and <code>decoder.ConstrainedUnitNormLinear.weight</code>.</p>
+implementation  include <code>tied_bias</code>, <code>_encoder._weight</code>, <code>_encoder._bias</code>,
+<code>_decoder._weight</code>.</p>
               </div>
             </li>
             <li>
               <b><code>neuron_indices</code></b>
-                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.DeadNeuronIndices" href="../../tensor_types/#sparse_autoencoder.tensor_types.DeadNeuronIndices">DeadNeuronIndices</a></code>)
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearntNeuronIndices" href="../../tensor_types/#sparse_autoencoder.tensor_types.LearntNeuronIndices">LearntNeuronIndices</a></code>)
               –
               <div class="doc-md-description">
                 <p>The indices of the neurons to reset.</p>
@@ -1073,7 +1083,7 @@ for different parameters).</p>
 <span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">DeadNeuronIndices</span><span class="p">,</span>
+    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span><span class="p">,</span>
     <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">parameter_group</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1090,18 +1100,18 @@ for different parameters).</p>
 <span class="sd">        &gt;&gt;&gt; # ... train the model and then resample some dead neurons, then do this ...</span>
 <span class="sd">        &gt;&gt;&gt; dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices</span>
 <span class="sd">        &gt;&gt;&gt; # Reset the optimizer state for parameters that have been updated</span>
-<span class="sd">        &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;encoder.Linear.weight&quot;, dead_neurons_indices, axis=0)</span>
-<span class="sd">        &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;encoder.Linear.bias&quot;, dead_neurons_indices, axis=0)</span>
+<span class="sd">        &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;_encoder._weight&quot;, dead_neurons_indices, axis=0)</span>
+<span class="sd">        &gt;&gt;&gt; optimizer.reset_neurons_state(&quot;_encoder._bias&quot;, dead_neurons_indices, axis=0)</span>
 <span class="sd">        &gt;&gt;&gt; optimizer.reset_neurons_state(</span>
-<span class="sd">        ...     &quot;decoder.ConstrainedUnitNormLinear.weight&quot;,</span>
+<span class="sd">        ...     &quot;_decoder._weight&quot;,</span>
 <span class="sd">        ...     dead_neurons_indices,</span>
 <span class="sd">        ...     axis=1</span>
 <span class="sd">        ... )</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        parameter_name: The name of the parameter. Examples from the standard sparse autoencoder</span>
-<span class="sd">            implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,</span>
-<span class="sd">            `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.</span>
+<span class="sd">            implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,</span>
+<span class="sd">            `_decoder._weight`.</span>
 <span class="sd">        neuron_indices: The indices of the neurons to reset.</span>
 <span class="sd">        axis: The axis of the parameter to reset.</span>
 <span class="sd">        parameter_group: The index of the parameter group to reset (typically this is just zero,</span>

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../../../img/favicon.ico" />
-    <title>unit_norm_linear - Sparse Autoencoder</title>
+    <title>unit_norm_decoder - Sparse Autoencoder</title>
     <link rel="stylesheet" href="../../../../css/theme.css" />
     <link rel="stylesheet" href="../../../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "unit_norm_linear";
-        var mkdocs_page_input_path = "reference/autoencoder/components/unit_norm_linear.md";
+        var mkdocs_page_name = "unit_norm_decoder";
+        var mkdocs_page_input_path = "reference/autoencoder/components/unit_norm_decoder.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -94,13 +94,23 @@
     <ul class="current">
                 <li class="toctree-l2"><a class="reference internal" href="../../">Index</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../abstract_autoencoder/">abstract_autoencoder</a>
+                </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">components</a>
     <ul class="current">
                 <li class="toctree-l3"><a class="reference internal" href="../">Index</a>
                 </li>
+                <li class="toctree-l3"><a class="reference internal" href="../abstract_decoder/">abstract_decoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../abstract_encoder/">abstract_encoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../abstract_outer_bias/">abstract_outer_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../linear_encoder/">linear_encoder</a>
+                </li>
                 <li class="toctree-l3"><a class="reference internal" href="../tied_bias/">tied_bias</a>
                 </li>
-                <li class="toctree-l3 current"><a class="reference internal current" href="./">unit_norm_linear</a>
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">unit_norm_decoder</a>
     <ul class="current">
     </ul>
                 </li>
@@ -220,7 +230,7 @@
           <li class="breadcrumb-item">Reference</li>
           <li class="breadcrumb-item">autoencoder</li>
           <li class="breadcrumb-item">components</li>
-      <li class="breadcrumb-item active">unit_norm_linear</li>
+      <li class="breadcrumb-item active">unit_norm_decoder</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -233,7 +243,7 @@
 
 
 
-<a id="sparse_autoencoder.autoencoder.components.unit_norm_linear"></a>
+<a id="sparse_autoencoder.autoencoder.components.unit_norm_decoder"></a>
   <div class="doc doc-contents first">
   
       <p>Linear layer with unit norm weights.</p>
@@ -254,8 +264,8 @@
 
 
 
-<h2 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear" class="doc doc-heading">
-          <code>ConstrainedUnitNormLinear</code>
+<h2 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder" class="doc doc-heading">
+          <code>UnitNormDecoder</code>
 
 
 </h2>
@@ -263,13 +273,13 @@
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><span title="torch.nn.Module">Module</span></code></p>
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder" href="../abstract_decoder/#sparse_autoencoder.autoencoder.components.abstract_decoder.AbstractDecoder">AbstractDecoder</a></code></p>
 
   
       <p>Constrained unit norm linear decoder layer.</p>
-<p>Linear layer for autoencoders, where the dictionary vectors (rows of the weight matrix) are
-constrained to have unit norm. This is done by removing the gradient information parallel to the
-dictionary vectors before applying the gradient step, using a backward hook.</p>
+<p>Linear layer decoder, where the dictionary vectors (rows of the weight matrix) are constrained
+to have unit norm. This is done by removing the gradient information parallel to the dictionary
+vectors before applying the gradient step, using a backward hook.</p>
 
 <details class="motivation" open>
   <summary>Motivation</summary>
@@ -291,9 +301,8 @@ unit norm after each gradient step, results in a small but real reduction in tot
 loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).</p>
 </details>
             <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_linear.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
-<span class="normal"> 19</span>
+              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
 <span class="normal"> 20</span>
 <span class="normal"> 21</span>
 <span class="normal"> 22</span>
@@ -482,22 +491,13 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ConstrainedUnitNormLinear</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="normal">208</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">class</span> <span class="nc">UnitNormDecoder</span><span class="p">(</span><span class="n">AbstractDecoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Constrained unit norm linear decoder layer.</span>
 
-<span class="sd">    Linear layer for autoencoders, where the dictionary vectors (rows of the weight matrix) are</span>
-<span class="sd">    constrained to have unit norm. This is done by removing the gradient information parallel to the</span>
-<span class="sd">    dictionary vectors before applying the gradient step, using a backward hook.</span>
+<span class="sd">    Linear layer decoder, where the dictionary vectors (rows of the weight matrix) are constrained</span>
+<span class="sd">    to have unit norm. This is done by removing the gradient information parallel to the dictionary</span>
+<span class="sd">    vectors before applying the gradient step, using a backward hook.</span>
 
 <span class="sd">    Motivation:</span>
 <span class="sd">        Unit norming the dictionary vectors, which are essentially the rows of the decoding</span>
@@ -519,52 +519,50 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 <span class="sd">        loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_learnt_features</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of learnt features (inputs to this layer).&quot;&quot;&quot;</span>
 
-    <span class="n">decoded_features</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_decoded_features</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of decoded features (outputs from this layer).&quot;&quot;&quot;</span>
 
-    <span class="n">weight</span><span class="p">:</span> <span class="n">DecoderWeights</span>
+    <span class="n">_weight</span><span class="p">:</span> <span class="n">DecoderWeights</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Weight parameter.&quot;&quot;&quot;</span>
 
-    <span class="n">bias</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span> <span class="o">|</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bias parameter.&quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DecoderWeights</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Weight.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">decoded_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">bias</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">enable_gradient_hook</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the constrained unit norm linear layer.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            learnt_features: Number of learnt features in the autoencoder.</span>
 <span class="sd">            decoded_features: Number of decoded (output) features in the autoencoder.</span>
-<span class="sd">            bias: Whether to include a bias term.</span>
-<span class="sd">            device: Device to use.</span>
-<span class="sd">            dtype: Data type to use.</span>
+<span class="sd">            enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before</span>
+<span class="sd">                applying the gradient step, to maintain unit norm of the dictionary vectors).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create the linear layer as per the standard PyTorch linear layer</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decoded_features</span> <span class="o">=</span> <span class="n">decoded_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span> <span class="o">=</span> <span class="n">decoded_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span>
+            <span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">bias</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;bias&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
 
         <span class="c1"># Register backward hook to remove any gradient information parallel to the dictionary</span>
         <span class="c1"># vectors (rows of the weight matrix) before applying the gradient step.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight_backward_hook</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">enable_gradient_hook</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight_backward_hook</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize or reset the parameters.</span>
@@ -572,7 +570,7 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
 <span class="sd">            &gt;&gt;&gt; # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)</span>
-<span class="sd">            &gt;&gt;&gt; layer = ConstrainedUnitNormLinear(learnt_features=4, decoded_features=3)</span>
+<span class="sd">            &gt;&gt;&gt; layer = UnitNormDecoder(learnt_features=4, decoded_features=3)</span>
 <span class="sd">            &gt;&gt;&gt; layer.reset_parameters()</span>
 <span class="sd">            &gt;&gt;&gt; # Get the norm across the rows (by summing across the columns)</span>
 <span class="sd">            &gt;&gt;&gt; row_norms = torch.sum(layer.weight ** 2, dim=1)</span>
@@ -583,18 +581,11 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
         <span class="c1"># Initialize the weights with a normal distribution. Note we don&#39;t use e.g. kaiming</span>
         <span class="c1"># normalisation here, since we immediately scale the weights to have unit norm (so the</span>
         <span class="c1"># initial standard deviation doesn&#39;t matter). Note also that `init.normal_` is in place.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Scale so that each row has unit norm</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
-
-        <span class="c1"># Initialise the bias</span>
-        <span class="c1"># This is the standard approach used in `torch.nn.Linear.reset_parameters`</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fan_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">bound</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fan_in</span><span class="p">)</span> <span class="k">if</span> <span class="n">fan_in</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
-            <span class="n">init</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">,</span> <span class="o">-</span><span class="n">bound</span><span class="p">,</span> <span class="n">bound</span><span class="p">)</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_weight_backward_hook</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -615,8 +606,8 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
         <span class="c1"># the gradient onto the dictionary vectors is the component of the gradient that is parallel</span>
         <span class="c1"># to the dictionary vectors, i.e. the component that moves to or from the center of the</span>
         <span class="c1"># hypersphere.</span>
-        <span class="n">normalized_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">normalized_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
         <span class="c1"># Calculate the dot product of the gradients with the dictionary vectors.</span>
@@ -659,7 +650,7 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; layer = ConstrainedUnitNormLinear(3, 3)</span>
+<span class="sd">            &gt;&gt;&gt; layer = UnitNormDecoder(3, 3)</span>
 <span class="sd">            &gt;&gt;&gt; layer.weight.data = torch.ones((3, 3)) * 10</span>
 <span class="sd">            &gt;&gt;&gt; layer.constrain_weights_unit_norm()</span>
 <span class="sd">            &gt;&gt;&gt; row_norms = torch.sum(layer.weight ** 2, dim=1)</span>
@@ -668,9 +659,9 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass.</span>
 
 <span class="sd">        Args:</span>
@@ -685,14 +676,11 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
         <span class="c1"># gradient, but instead follow a modified gradient that includes momentum.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">constrain_weights_unit_norm</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decoded_features</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;bias=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -711,11 +699,11 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">bias</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span> <span class="o">|</span> <span class="kc">None</span></code>
+<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.weight" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">weight</span><span class="p">:</span> <span class="n">DecoderWeights</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -723,73 +711,7 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 
   <div class="doc doc-contents ">
   
-      <p>Bias parameter.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.decoded_features" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">decoded_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">decoded_features</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Number of decoded features (outputs from this layer).</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.learnt_features" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">learnt_features</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Number of learnt features (inputs to this layer).</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.weight" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">weight</span><span class="p">:</span> <span class="n">DecoderWeights</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Weight parameter.</p>
+      <p>Weight.</p>
   </div>
 
 </div>
@@ -802,8 +724,8 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">learnt_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">learnt_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">enable_gradient_hook</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 </h3>
 
@@ -841,33 +763,14 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
               </div>
             </li>
             <li>
-              <b><code>bias</code></b>
+              <b><code>enable_gradient_hook</code></b>
                   (<code>bool</code>, default:
                       <code>True</code>
 )
               –
               <div class="doc-md-description">
-                <p>Whether to include a bias term.</p>
-              </div>
-            </li>
-            <li>
-              <b><code>device</code></b>
-                  (<code><span title="torch.device">device</span> | None</code>, default:
-                      <code>None</code>
-)
-              –
-              <div class="doc-md-description">
-                <p>Device to use.</p>
-              </div>
-            </li>
-            <li>
-              <b><code>dtype</code></b>
-                  (<code><span title="torch.dtype">dtype</span> | None</code>, default:
-                      <code>None</code>
-)
-              –
-              <div class="doc-md-description">
-                <p>Data type to use.</p>
+                <p>Enable the gradient backwards hook (modify the gradient before
+applying the gradient step, to maintain unit norm of the dictionary vectors).</p>
               </div>
             </li>
         </ul>
@@ -876,12 +779,8 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
   </tbody>
 </table>
           <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_linear.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
+            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
@@ -915,35 +814,31 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
     <span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">decoded_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">bias</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">enable_gradient_hook</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the constrained unit norm linear layer.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        learnt_features: Number of learnt features in the autoencoder.</span>
 <span class="sd">        decoded_features: Number of decoded (output) features in the autoencoder.</span>
-<span class="sd">        bias: Whether to include a bias term.</span>
-<span class="sd">        device: Device to use.</span>
-<span class="sd">        dtype: Data type to use.</span>
+<span class="sd">        enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before</span>
+<span class="sd">            applying the gradient step, to maintain unit norm of the dictionary vectors).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create the linear layer as per the standard PyTorch linear layer</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">decoded_features</span> <span class="o">=</span> <span class="n">decoded_features</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span> <span class="o">=</span> <span class="n">decoded_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span>
+        <span class="p">)</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="n">bias</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;bias&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
 
     <span class="c1"># Register backward hook to remove any gradient information parallel to the dictionary</span>
     <span class="c1"># vectors (rows of the weight matrix) before applying the gradient step.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight_backward_hook</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">enable_gradient_hook</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight_backward_hook</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -956,7 +851,7 @@ loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#app
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.constrain_weights_unit_norm" class="doc doc-heading">
+<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.constrain_weights_unit_norm" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">constrain_weights_unit_norm</span><span class="p">()</span></code>
 
 </h3>
@@ -979,7 +874,7 @@ with asynchronous operations, etc).</p>
 <blockquote>
 <blockquote>
 <p>import torch
-layer = ConstrainedUnitNormLinear(3, 3)
+layer = UnitNormDecoder(3, 3)
 layer.weight.data = torch.ones((3, 3)) * 10
 layer.constrain_weights_unit_norm()
 row_norms = torch.sum(layer.weight ** 2, dim=1)
@@ -990,8 +885,15 @@ row_norms.round(decimals=3).tolist()
 </blockquote>
 </details>
           <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_linear.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
+            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
@@ -1007,14 +909,7 @@ row_norms.round(decimals=3).tolist()
 <span class="normal">184</span>
 <span class="normal">185</span>
 <span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">constrain_weights_unit_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">constrain_weights_unit_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Constrain the weights to have unit norm.</span>
 
 <span class="sd">    Note this must be called after each gradient step. This is because optimisers such as Adam</span>
@@ -1028,7 +923,7 @@ row_norms.round(decimals=3).tolist()
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; layer = ConstrainedUnitNormLinear(3, 3)</span>
+<span class="sd">        &gt;&gt;&gt; layer = UnitNormDecoder(3, 3)</span>
 <span class="sd">        &gt;&gt;&gt; layer.weight.data = torch.ones((3, 3)) * 10</span>
 <span class="sd">        &gt;&gt;&gt; layer.constrain_weights_unit_norm()</span>
 <span class="sd">        &gt;&gt;&gt; row_norms = torch.sum(layer.weight ** 2, dim=1)</span>
@@ -1037,7 +932,7 @@ row_norms.round(decimals=3).tolist()
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1050,7 +945,7 @@ row_norms.round(decimals=3).tolist()
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.extra_repr" class="doc doc-heading">
+<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.extra_repr" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">extra_repr</span><span class="p">()</span></code>
 
 </h3>
@@ -1061,18 +956,12 @@ row_norms.round(decimals=3).tolist()
       <p>String extra representation of the module.</p>
 
           <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_linear.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decoded_features</span><span class="si">}</span><span class="s2">, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;bias=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1085,7 +974,7 @@ row_norms.round(decimals=3).tolist()
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.forward" class="doc doc-heading">
+<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.forward" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
 
 </h3>
@@ -1109,7 +998,7 @@ row_norms.round(decimals=3).tolist()
         <ul class="first simple">
             <li>
               <b><code>x</code></b>
-                  (<code><span title="torch.Tensor">Tensor</span></code>)
+                  (<code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearnedActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.LearnedActivationBatch">LearnedActivationBatch</a></code>)
               –
               <div class="doc-md-description">
                 <p>Input tensor.</p>
@@ -1133,7 +1022,7 @@ row_norms.round(decimals=3).tolist()
     <td class="field-body">
       <ul class="first simple">
           <li>
-                <code><span title="torch.Tensor">Tensor</span></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
             –
             <div class="doc-md-description">
               <p>Output of the forward pass.</p>
@@ -1145,8 +1034,15 @@ row_norms.round(decimals=3).tolist()
   </tbody>
 </table>
           <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_linear.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
+            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
 <span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span>
@@ -1154,14 +1050,7 @@ row_norms.round(decimals=3).tolist()
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward pass.</span>
 
 <span class="sd">    Args:</span>
@@ -1176,7 +1065,7 @@ row_norms.round(decimals=3).tolist()
     <span class="c1"># gradient, but instead follow a modified gradient that includes momentum.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">constrain_weights_unit_norm</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1189,7 +1078,7 @@ row_norms.round(decimals=3).tolist()
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.reset_parameters" class="doc doc-heading">
+<h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">reset_parameters</span><span class="p">()</span></code>
 
 </h3>
@@ -1205,10 +1094,10 @@ row_norms.round(decimals=3).tolist()
 <blockquote>
 <blockquote>
 <p>import torch</p>
-<h4 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.reset_parameters--create-a-layer-with-4-columns-learnt-features-and-3-rows-decoded-features">Create a layer with 4 columns (learnt features) and 3 rows (decoded features)</h4>
-<p>layer = ConstrainedUnitNormLinear(learnt_features=4, decoded_features=3)
+<h4 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters--create-a-layer-with-4-columns-learnt-features-and-3-rows-decoded-features">Create a layer with 4 columns (learnt features) and 3 rows (decoded features)</h4>
+<p>layer = UnitNormDecoder(learnt_features=4, decoded_features=3)
 layer.reset_parameters()</p>
-<h4 id="sparse_autoencoder.autoencoder.components.unit_norm_linear.ConstrainedUnitNormLinear.reset_parameters--get-the-norm-across-the-rows-by-summing-across-the-columns">Get the norm across the rows (by summing across the columns)</h4>
+<h4 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters--get-the-norm-across-the-rows-by-summing-across-the-columns">Get the norm across the rows (by summing across the columns)</h4>
 <p>row_norms = torch.sum(layer.weight ** 2, dim=1)
 row_norms.round(decimals=3).tolist()
 [1.0, 1.0, 1.0]</p>
@@ -1217,7 +1106,7 @@ row_norms.round(decimals=3).tolist()
 </blockquote>
 </details>
           <details class="quote">
-            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_linear.py</code></summary>
+            <summary> <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 92</span>
 <span class="normal"> 93</span>
 <span class="normal"> 94</span>
@@ -1239,20 +1128,13 @@ row_norms.round(decimals=3).tolist()
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize or reset the parameters.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)</span>
-<span class="sd">        &gt;&gt;&gt; layer = ConstrainedUnitNormLinear(learnt_features=4, decoded_features=3)</span>
+<span class="sd">        &gt;&gt;&gt; layer = UnitNormDecoder(learnt_features=4, decoded_features=3)</span>
 <span class="sd">        &gt;&gt;&gt; layer.reset_parameters()</span>
 <span class="sd">        &gt;&gt;&gt; # Get the norm across the rows (by summing across the columns)</span>
 <span class="sd">        &gt;&gt;&gt; row_norms = torch.sum(layer.weight ** 2, dim=1)</span>
@@ -1263,18 +1145,11 @@ row_norms.round(decimals=3).tolist()
     <span class="c1"># Initialize the weights with a normal distribution. Note we don&#39;t use e.g. kaiming</span>
     <span class="c1"># normalisation here, since we immediately scale the weights to have unit norm (so the</span>
     <span class="c1"># initial standard deviation doesn&#39;t matter). Note also that `init.normal_` is in place.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Scale so that each row has unit norm</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
-
-    <span class="c1"># Initialise the bias</span>
-    <span class="c1"># This is the standard approach used in `torch.nn.Linear.reset_parameters`</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">fan_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">bound</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fan_in</span><span class="p">)</span> <span class="k">if</span> <span class="n">fan_in</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="n">init</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">,</span> <span class="o">-</span><span class="n">bound</span><span class="p">,</span> <span class="n">bound</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

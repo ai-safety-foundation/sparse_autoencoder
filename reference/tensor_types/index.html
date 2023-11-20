@@ -94,13 +94,23 @@
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../autoencoder/">Index</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../autoencoder/abstract_autoencoder/">abstract_autoencoder</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">components</a>
     <ul>
                 <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/">Index</a>
                 </li>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/abstract_decoder/">abstract_decoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/abstract_encoder/">abstract_encoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/abstract_outer_bias/">abstract_outer_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/linear_encoder/">linear_encoder</a>
+                </li>
                 <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/tied_bias/">tied_bias</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                <li class="toctree-l3"><a class="reference internal" href="../autoencoder/components/unit_norm_decoder/">unit_norm_decoder</a>
                 </li>
     </ul>
                 </li>
@@ -236,7 +246,8 @@
   
       <p>Tensor Types.</p>
 <p>Tensor types with axis labels. Note that this uses the <code>jaxtyping</code> library, which works with PyTorch
-tensors as well.</p>
+tensors as well. Note also that shape sizes are included in the docstrings as well as in the types
+as this is needed for IDEs such as VSCode to provide code hints.</p>
 
   
 
@@ -298,7 +309,7 @@ tensors as well.</p>
 
 
 <h2 id="sparse_autoencoder.tensor_types.DeadDecoderNeuronWeightUpdates" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">DeadDecoderNeuronWeightUpdates</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">)]</span></code>
+          <code class="highlight language-python"><span class="n">DeadDecoderNeuronWeightUpdates</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">dims</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -310,6 +321,7 @@ tensors as well.</p>
   <div class="doc doc-contents ">
   
       <p>Dead decoder neuron weight updates.</p>
+<p>Shape (dead_feature, learnt_feature)</p>
   </div>
 
 </div>
@@ -354,28 +366,7 @@ tensors as well.</p>
   <div class="doc doc-contents ">
   
       <p>Dead encoder neuron weight updates.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h2 id="sparse_autoencoder.tensor_types.DeadNeuronIndices" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">DeadNeuronIndices</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Dead neuron indices.</p>
+<p>Shape (learnt_feature, dead_feature)</p>
   </div>
 
 </div>
@@ -400,9 +391,9 @@ tensors as well.</p>
       <p>Decoder weights.</p>
 <p>These weights form the decoder part of the autoencoder, which aims to reconstruct the original input
 data from the decompressed representation created by the encoder.</p>
-<p>The tensor's shape aligns with the training features and the learnt features. In this case, if we
-view the dictionary vectors in the context of reconstruction, they can be thought of as rows in this
-weight matrix.</p>
+<p>Viewing the dictionary vectors in the context of reconstruction, they can be thought of as rows in
+this weight matrix.</p>
+<p>Shape: (input_output_feature_dim, learnt_feature_dim)</p>
   </div>
 
 </div>
@@ -431,6 +422,7 @@ input data (activations from a source model) into a higher-dimensional represent
 columns of this weight matrix, where each column corresponds to a particular feature in the
 lower-dimensional space. The sparsity constraint (hopefully) enforces that they respond relatively
 strongly to only a small portion of possible input vectors.</p>
+<p>Shape: (learnt_feature_dim, input_output_feature_dim)</p>
   </div>
 
 </div>
@@ -455,6 +447,7 @@ strongly to only a small portion of possible input vectors.</p>
       <p>Input/output activation batch.</p>
 <p>This is either a batch of input activation vectors from the source model, or a batch of decoded
 activation vectors from the autoencoder.</p>
+<p>Shape (batch, input_output_feature)</p>
   </div>
 
 </div>
@@ -479,6 +472,28 @@ activation vectors from the autoencoder.</p>
       <p>Input/output activation vector.</p>
 <p>This is either a input activation vector from the source model, or a decoded activation vector
 from the autoencoder.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="sparse_autoencoder.tensor_types.InputOutputNeuronIndices" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">InputOutputNeuronIndices</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Input/output neuron indices.</p>
   </div>
 
 </div>
@@ -558,6 +573,28 @@ the input/output activation vector.</p>
 
 
 
+<h2 id="sparse_autoencoder.tensor_types.LearntNeuronIndices" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">LearntNeuronIndices</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Learnt neuron indices.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
 <h2 id="sparse_autoencoder.tensor_types.NeuronActivity" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">NeuronActivity</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span></code>
   
@@ -594,6 +631,7 @@ the input/output activation vector.</p>
   <div class="doc doc-contents ">
   
       <p>Sampled dead neuron inputs.</p>
+<p>Shape: (dead_feature, input_output_feature)</p>
   </div>
 
 </div>
@@ -725,8 +763,7 @@ batch input_output_feature</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/tensor_types.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -801,7 +838,8 @@ batch input_output_feature</p>
 <span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span>
-<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Axis</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
+<span class="normal">90</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Axis</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tensor axis names.</span>
 
 <span class="sd">    Used to annotate tensor types.</span>
@@ -1207,8 +1245,7 @@ batch input_output_feature</p>
 </table>
           <details class="quote">
             <summary> <code>sparse_autoencoder/tensor_types.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">76</span>
-<span class="normal">77</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span>
@@ -1221,7 +1258,8 @@ batch input_output_feature</p>
 <span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span>
-<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">90</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="o">*</span><span class="n">axis</span><span class="p">:</span> <span class="s2">&quot;Axis&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Join multiple axis together, to represent the dimensions of a tensor.</span>
 

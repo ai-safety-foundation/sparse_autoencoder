@@ -94,13 +94,23 @@
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/">Index</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../autoencoder/abstract_autoencoder/">abstract_autoencoder</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">components</a>
     <ul>
                 <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/">Index</a>
                 </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/abstract_decoder/">abstract_decoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/abstract_encoder/">abstract_encoder</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/abstract_outer_bias/">abstract_outer_bias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/linear_encoder/">linear_encoder</a>
+                </li>
                 <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/tied_bias/">tied_bias</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_linear/">unit_norm_linear</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../autoencoder/components/unit_norm_decoder/">unit_norm_decoder</a>
                 </li>
     </ul>
                 </li>
@@ -646,7 +656,7 @@ times.</p>
     <td class="field-body">
       <ul class="first simple">
           <li>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.DeadNeuronIndices" href="../../tensor_types/#sparse_autoencoder.tensor_types.DeadNeuronIndices">DeadNeuronIndices</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearntNeuronIndices" href="../../tensor_types/#sparse_autoencoder.tensor_types.LearntNeuronIndices">LearntNeuronIndices</a></code>
             –
             <div class="doc-md-description">
               <p>A tensor containing the indices of neurons that are 'dead' (zero activity).</p>
@@ -680,7 +690,7 @@ times.</p>
 <span class="normal">54</span>
 <span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_dead_neuron_indices</span><span class="p">(</span>
     <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeadNeuronIndices</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LearntNeuronIndices</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Identify the indices of neurons that have zero activity.</span>
 
 <span class="sd">    Example:</span>
@@ -1126,9 +1136,7 @@ the store.</p>
 <span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
+<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
     <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
     <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
@@ -1185,10 +1193,8 @@ the store.</p>
         <span class="n">sample_probabilities</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span> <span class="o">=</span> <span class="n">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
 
         <span class="c1"># Get references to the encoder and decoder parameters</span>
-        <span class="n">encoder_linear</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">get_submodule</span><span class="p">(</span><span class="s2">&quot;Linear&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-        <span class="n">decoder_linear</span><span class="p">:</span> <span class="n">ConstrainedUnitNormLinear</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">get_submodule</span><span class="p">(</span>
-            <span class="s2">&quot;ConstrainedUnitNormLinear&quot;</span>
-        <span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">encoder_linear</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">encoder</span>  <span class="c1"># type: ignore</span>
+        <span class="n">decoder_linear</span><span class="p">:</span> <span class="n">UnitNormDecoder</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">decoder</span>
         <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">encoder_linear</span><span class="o">.</span><span class="n">weight</span>
         <span class="n">encoder_bias</span><span class="p">:</span> <span class="n">LearntActivationVector</span> <span class="o">=</span> <span class="n">encoder_linear</span><span class="o">.</span><span class="n">bias</span>
         <span class="n">decoder_weight</span><span class="p">:</span> <span class="n">DecoderWeights</span> <span class="o">=</span> <span class="n">decoder_linear</span><span class="o">.</span><span class="n">weight</span>
@@ -1423,7 +1429,7 @@ sampled_input.tolist()
             <span class="n">device</span><span class="o">=</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="n">sample_indices</span><span class="p">:</span> <span class="n">DeadNeuronIndices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
+    <span class="n">sample_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">input_activations</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">,</span> <span class="p">:]</span>
 </code></pre></div></td></tr></table></div>
           </details>
