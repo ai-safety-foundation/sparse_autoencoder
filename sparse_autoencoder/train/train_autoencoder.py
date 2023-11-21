@@ -11,7 +11,9 @@ from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1L
 from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
 from sparse_autoencoder.loss.reducer import LossReducer
 from sparse_autoencoder.metrics.abstract_metric import TrainMetricData
+from sparse_autoencoder.metrics.histogram_metric import HistogramMetric
 from sparse_autoencoder.metrics.l0_norm_metric import L0NormMetric
+from sparse_autoencoder.metrics.reducer import TrainingMetricReducer
 from sparse_autoencoder.tensor_types import LearntActivationVector, NeuronActivity
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
@@ -54,7 +56,10 @@ def train_autoencoder(
         LearnedActivationsL1Loss(sweep_parameters.l1_coefficient),
     )
 
-    metrics = L0NormMetric() # later on we can wrap this in a TrainMetricReducer
+    metrics = TrainingMetricReducer(
+        L0NormMetric(),
+        HistogramMetric(),
+    )
 
     step: int = 0  # Initialize step
     for step, store_batch in enumerate(activations_dataloader):

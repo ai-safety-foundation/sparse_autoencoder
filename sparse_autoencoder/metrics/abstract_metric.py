@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from collections import OrderedDict
 from dataclasses import dataclass
-from typing import Any, final
+from typing import Any
 
 from sparse_autoencoder.tensor_types import (
     InputOutputActivationBatch,
@@ -44,7 +44,6 @@ class AbstractMetric(ABC):
 
     _should_log_weights_and_biases: bool
 
-    @final
     def __init__(self, *, log_progress_bar: bool = False, log_weights_and_biases: bool = True):
         """Initialise the train metric."""
         self._should_log_progress_bar = log_progress_bar
