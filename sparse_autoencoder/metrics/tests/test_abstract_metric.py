@@ -1,6 +1,6 @@
 """Tests for the AbstractMetric class."""
-from typing import final, Any
 from collections import OrderedDict
+from typing import Any, final
 
 import pytest
 import torch
@@ -10,18 +10,19 @@ from sparse_autoencoder.metrics.abstract_metric import (
     TrainMetricData,
 )
 
+
 @final
 class DummyMetric(AbstractTrainMetric):
     """Dummy metric for testing.
-    
-        Returns a sum of the learned activations.
+
+    Returns a sum of the learned activations.
     """
 
     @final
     def create_progress_bar_postfix(self, data: TrainMetricData) -> OrderedDict[str, Any]:
         """Create a progress bar postfix."""
         raise NotImplementedError
-    
+
     @final
     def create_weights_and_biases_log(self, data: TrainMetricData) -> OrderedDict[str, float]:
         """Create a log item for Weights and Biases."""
@@ -45,4 +46,5 @@ def test_create_weights_and_biases_log(dummy_metric: DummyMetric) -> None:
         decoded_activations=torch.ones((1, 3)),
     )
     log = dummy_metric.create_weights_and_biases_log(data)
-    assert log["dummy_metric"] == 3.0
+    expected = 3.0
+    assert log["dummy_metric"] == expected

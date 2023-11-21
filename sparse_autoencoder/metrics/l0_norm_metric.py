@@ -9,6 +9,7 @@ from sparse_autoencoder.metrics.abstract_metric import (
     TrainMetricData,
 )
 
+
 @final
 class L0NormMetric(AbstractTrainMetric):
     """L0 (sparsity) norm metric."""
