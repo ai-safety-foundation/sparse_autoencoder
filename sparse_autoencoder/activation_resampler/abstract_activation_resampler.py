@@ -1,14 +1,33 @@
 """Abstract activation resampler."""
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.tensor_types import (
     DeadDecoderNeuronWeightUpdates,
     DeadEncoderNeuronBiasUpdates,
     DeadEncoderNeuronWeightUpdates,
+    LearntNeuronIndices,
     NeuronActivity,
 )
+
+
+@dataclass
+class ParameterUpdateResults:
+    """Parameter update results from resampling dead neurons."""
+
+    dead_neuron_indices: LearntNeuronIndices
+    """Dead neuron indices."""
+
+    dead_encoder_weight_updates: DeadEncoderNeuronWeightUpdates
+    """Dead encoder weight updates."""
+
+    dead_encoder_bias_updates: DeadEncoderNeuronBiasUpdates
+    """Dead encoder bias updates."""
+
+    dead_decoder_weight_updates: DeadDecoderNeuronWeightUpdates
+    """Dead decoder weight updates."""
 
 
 class AbstractActivationResampler(ABC):
@@ -20,9 +39,7 @@ class AbstractActivationResampler(ABC):
         neuron_activity: NeuronActivity,
         store: TensorActivationStore,
         num_input_activations: int = 819_200,
-    ) -> tuple[
-        DeadEncoderNeuronWeightUpdates, DeadEncoderNeuronBiasUpdates, DeadDecoderNeuronWeightUpdates
-    ]:
+    ) -> ParameterUpdateResults:
         """Resample dead neurons.
 
         Over the course of training, a subset of autoencoder neurons will have zero activity across
