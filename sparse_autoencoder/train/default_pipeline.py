@@ -10,6 +10,7 @@ from sparse_autoencoder.activation_store.tensor_store import TensorActivationSto
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
 from sparse_autoencoder.train.abstract_pipeline import AbstractPipeline
+from sparse_autoencoder.train.utils import get_model_device
 
 
 @final
@@ -25,13 +26,12 @@ class DefaultPipeline(AbstractPipeline):
     def generate_activations(self, store_size: int) -> TensorActivationStore:
         """Generate activations."""
         num_neurons: int = 256
-        model_device: torch.device = torch.device("mps")
+        source_model_device: torch.device = get_model_device(self.source_model)
 
         store = TensorActivationStore(store_size, num_neurons)
 
         # Set model to evaluation (inference) mode
         self.source_model.eval()
-        self.source_model.to(model_device, print_details=False)
 
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
@@ -42,7 +42,7 @@ class DefaultPipeline(AbstractPipeline):
         # Loop through the dataloader until the store reaches the desired size
         with torch.no_grad():
             for batch in self.source_data:
-                input_ids: BatchTokenizedPrompts = batch["input_ids"].to(model_device)
+                input_ids: BatchTokenizedPrompts = batch["input_ids"].to(source_model_device)
                 self.source_model.forward(input_ids, stop_at_layer=self.layer + 1)  # type: ignore (TLens is typed incorrectly)
 
                 if len(store) >= store_size:
@@ -57,8 +57,7 @@ class DefaultPipeline(AbstractPipeline):
         self, activation_store: TensorActivationStore, train_batch_size: int
     ) -> NeuronActivity:
         """Train the sparse autoencoder."""
-        # TODO: move these to config
-        model_device: torch.device = torch.device("mps")
+        autoencoder_device: torch.device = get_model_device(self.autoencoder)
 
         activations_dataloader = DataLoader(
             activation_store,
@@ -66,7 +65,7 @@ class DefaultPipeline(AbstractPipeline):
         )
 
         learned_activations_fired_count: NeuronActivity = torch.zeros(
-            self.autoencoder.n_learned_features, dtype=torch.int32, device=model_device
+            self.autoencoder.n_learned_features, dtype=torch.int32, device=autoencoder_device
         )
 
         for store_batch in activations_dataloader:
@@ -74,7 +73,7 @@ class DefaultPipeline(AbstractPipeline):
             self.optimizer.zero_grad()
 
             # Move the batch to the device (in place)
-            batch = store_batch.detach().to(model_device)
+            batch = store_batch.detach().to(autoencoder_device)
 
             # Forward pass
             learned_activations, reconstructed_activations = self.autoencoder(batch)
