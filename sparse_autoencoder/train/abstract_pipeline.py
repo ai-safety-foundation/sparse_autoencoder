@@ -249,7 +249,7 @@ class AbstractPipeline(ABC):
             By contrast if you create a stateful iterable from the dataloader, each loop will get
             different data.
 
-            >>> iterator = stateful_dataloader_iterable(data)
+            >>> iterator = AbstractPipeline.stateful_dataloader_iterable(data)
             >>> next(iterator)["int"], next(iterator)["int"]
             (tensor([0]), tensor([1]))
 
