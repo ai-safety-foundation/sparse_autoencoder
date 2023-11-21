@@ -6,6 +6,9 @@ import torch
 from torch import Tensor
 
 from sparse_autoencoder.activation_resampler import ActivationResampler
+from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
+    ParameterUpdateResults,
+)
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -262,51 +265,50 @@ class TestResampleDeadNeurons:
         store = TensorActivationStore(100, 5)
         store.extend(store_data)
         model = SparseAutoencoder(5, 10, torch.rand(5))
-        optimizer = torch.optim.Adam(model.parameters())
 
-        # Run a forward pass to initialize the optimizer state
-        _learned_activations, decoded_activations = model(store_data)
-        loss = decoded_activations.sum()  # Dummy loss
-        loss.backward()
-        optimizer.step()
-
-        current_parameters = model.state_dict()
-        ActivationResampler().resample_dead_neurons(
+        res = ActivationResampler().resample_dead_neurons(
             neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS, DEFAULT_N_ITEMS
         )
-        updated_parameters = model.state_dict()
 
-        for key in current_parameters:
-            assert torch.equal(current_parameters[key], updated_parameters[key])
+        assert res.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
+        assert res.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
+        assert res.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
+        assert res.dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
 
     def test_updates_a_dead_neuron_parameters(self) -> None:
         """Check it updates a dead neuron's parameters."""
-        neuron_activity = torch.ones(10, dtype=torch.int32)
-        dead_neuron_idx = 3
+        n_input_features = 3
+        n_learned_features = 10
+        neuron_activity = torch.ones(n_learned_features, dtype=torch.int32)
+        dead_neuron_idx = 5
         neuron_activity[dead_neuron_idx] = 0
-        store_data = torch.rand((100, 5))
-        store = TensorActivationStore(100, 5)
-        store.extend(store_data)
-        model = SparseAutoencoder(5, 10, torch.rand(5))
-        optimizer = torch.optim.Adam(model.parameters())
+        store = TensorActivationStore(100, n_input_features)
+        store.extend(torch.rand((100, n_input_features)))
+        model = SparseAutoencoder(
+            n_input_features, n_learned_features, torch.rand(n_input_features)
+        )
 
-        # Run a forward pass to initialize the optimizer state
-        _learned_activations, decoded_activations = model(store_data)
-        loss = decoded_activations.sum()  # Dummy loss
-        loss.backward()
-        optimizer.step()
-
-        current_parameters = copy.deepcopy(model.state_dict())
-        ActivationResampler().resample_dead_neurons(
+        # Get the current & updated parameters
+        current_parameters = model.state_dict()
+        updated_parameters: ParameterUpdateResults = ActivationResampler().resample_dead_neurons(
             neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS, DEFAULT_N_ITEMS
         )
-        updated_parameters = model.state_dict()
 
-        for key in current_parameters:
-            if "pre_encoder_bias" in key or "post_decoder_bias" in key or "tied" in key:
-                assert torch.equal(current_parameters[key], updated_parameters[key])
+        # Check the updated ones have changed
+        current_dead_decoder_weights = current_parameters["_decoder._weight"][:, dead_neuron_idx]
+        updated_dead_decoder_weights = updated_parameters.dead_encoder_weight_updates.squeeze()
+        assert not torch.equal(
+            current_dead_decoder_weights, updated_dead_decoder_weights
+        ), "Dead decoder weights should have changed."
 
-            else:
-                assert not torch.equal(
-                    current_parameters[key], updated_parameters[key]
-                ), f"Parameter {key} should have changed."
+        current_dead_encoder_weights = current_parameters["_encoder._weight"][dead_neuron_idx]
+        updated_dead_encoder_weights = updated_parameters.dead_encoder_weight_updates.squeeze()
+        assert not torch.equal(
+            current_dead_encoder_weights, updated_dead_encoder_weights
+        ), "Dead encoder weights should have changed."
+
+        current_dead_encoder_bias = current_parameters["_encoder._bias"][dead_neuron_idx]
+        updated_dead_encoder_bias = updated_parameters.dead_encoder_bias_updates
+        assert not torch.equal(
+            current_dead_encoder_bias, updated_dead_encoder_bias
+        ), "Dead encoder bias should have changed."
