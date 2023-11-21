@@ -14,7 +14,7 @@
       <script>
         // Current page data
         var mkdocs_page_name = "Index";
-        var mkdocs_page_input_path = "reference/activation_store/utils/index.md";
+        var mkdocs_page_input_path = "reference/metrics/validate/index.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -70,25 +70,23 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">activation_store</a>
-    <ul class="current">
-                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
+                  <li class="toctree-l1"><a class="reference internal" href="#">activation_store</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/">Index</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../base_store/">base_store</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/base_store/">base_store</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../disk_store/">disk_store</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/disk_store/">disk_store</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../list_store/">list_store</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/list_store/">list_store</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../tensor_store/">tensor_store</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../activation_store/tensor_store/">tensor_store</a>
                 </li>
-                <li class="toctree-l2 current"><a class="reference internal current" href="#">utils</a>
-    <ul class="current">
-                <li class="toctree-l3 current"><a class="reference internal current" href="./">Index</a>
-    <ul class="current">
-    </ul>
+                <li class="toctree-l2"><a class="reference internal" href="#">utils</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/">Index</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="extend_resize/">extend_resize</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../activation_store/utils/extend_resize/">extend_resize</a>
                 </li>
     </ul>
                 </li>
@@ -136,31 +134,33 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="#">metrics</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../../metrics/">Index</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">metrics</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Index</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">generate</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../../metrics/generate/">Index</a>
+                <li class="toctree-l3"><a class="reference internal" href="../generate/">Index</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../../metrics/generate/abstract_generate_metric/">abstract_generate_metric</a>
+                <li class="toctree-l3"><a class="reference internal" href="../generate/abstract_generate_metric/">abstract_generate_metric</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">train</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../../metrics/train/">Index</a>
+                <li class="toctree-l3"><a class="reference internal" href="../train/">Index</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../../metrics/train/abstract_train_metric/">abstract_train_metric</a>
+                <li class="toctree-l3"><a class="reference internal" href="../train/abstract_train_metric/">abstract_train_metric</a>
                 </li>
     </ul>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="#">validate</a>
-    <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../../metrics/validate/">Index</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">validate</a>
+    <ul class="current">
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">Index</a>
+    <ul class="current">
+    </ul>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../../metrics/validate/abstract_validate_metric/">abstract_validate_metric</a>
+                <li class="toctree-l3"><a class="reference internal" href="abstract_validate_metric/">abstract_validate_metric</a>
                 </li>
     </ul>
                 </li>
@@ -248,8 +248,8 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Reference</li>
-          <li class="breadcrumb-item">activation_store</li>
-          <li class="breadcrumb-item">utils</li>
+          <li class="breadcrumb-item">metrics</li>
+          <li class="breadcrumb-item">validate</li>
       <li class="breadcrumb-item active">Index</li>
     <li class="wy-breadcrumbs-aside">
     </li>
@@ -263,10 +263,58 @@
 
 
 
-<a id="sparse_autoencoder.activation_store.utils"></a>
+<a id="sparse_autoencoder.metrics.validate"></a>
   <div class="doc doc-contents first">
   
-      <p>Activation Store Utils.</p>
+      <p>Validate step metrics.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.metrics.validate.AbstractValidationMetric" class="doc doc-heading">
+          <code>AbstractValidationMetric</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+  
+      <p>Abstract validation metric.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/metrics/validate/abstract_validate_metric.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractValidationMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract validation metric.&quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate any metrics.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+            </details>
 
   
 
@@ -281,6 +329,50 @@
 
 
 
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.metrics.validate.AbstractValidationMetric.calculate" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculate any metrics.</p>
+
+          <details class="quote">
+            <summary> <code>sparse_autoencoder/metrics/validate/abstract_validate_metric.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate any metrics.&quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
 
   </div>
 
@@ -291,8 +383,8 @@
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../tensor_store/" class="btn btn-neutral float-left" title="tensor_store"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="extend_resize/" class="btn btn-neutral float-right" title="extend_resize">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../train/abstract_train_metric/" class="btn btn-neutral float-left" title="abstract_train_metric"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="abstract_validate_metric/" class="btn btn-neutral float-right" title="abstract_validate_metric">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -315,10 +407,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../tensor_store/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../train/abstract_train_metric/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="extend_resize/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="abstract_validate_metric/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
