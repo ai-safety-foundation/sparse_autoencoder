@@ -1,10 +1,8 @@
 """Abstract train metric."""
-from abc import abstractmethod
-from collections import OrderedDict
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
-from sparse_autoencoder.metrics.abstract_metric import AbstractMetric
 from sparse_autoencoder.tensor_types import (
     InputOutputActivationBatch,
     LearnedActivationBatch,
@@ -22,15 +20,10 @@ class TrainMetricData:
     decoded_activations: InputOutputActivationBatch
 
 
-class AbstractTrainMetric(AbstractMetric):
+class AbstractTrainMetric(ABC):
     """Abstract train metric."""
 
     @abstractmethod
-    def create_progress_bar_postfix(self, data: TrainMetricData) -> OrderedDict[str, Any]:
-        """Create a progress bar postfix."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def create_weights_and_biases_log(self, data: TrainMetricData) -> OrderedDict[str, Any]:
-        """Create a log item for Weights and Biases."""
+    def calculate(self, data: TrainMetricData) -> dict[str, Any]:
+        """Calculate any metrics."""
         raise NotImplementedError

@@ -1,10 +1,7 @@
 """Abstract metric classes."""
-from abc import abstractmethod
-from collections import OrderedDict
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
-
-from sparse_autoencoder.metrics.abstract_metric import AbstractMetric
 
 
 @dataclass
@@ -16,15 +13,10 @@ class ValidationMetricData:
     autoencoder_loss: float
 
 
-class AbstractValidationMetric(AbstractMetric):
+class AbstractValidationMetric(ABC):
     """Abstract validation metric."""
 
     @abstractmethod
-    def create_progress_bar_postfix(self, data: ValidationMetricData) -> OrderedDict[str, Any]:
-        """Create a progress bar postfix."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def create_weights_and_biases_log(self, data: ValidationMetricData) -> OrderedDict[str, Any]:
-        """Create a log item for Weights and Biases."""
+    def calculate(self, data: ValidationMetricData) -> dict[str, Any]:
+        """Calculate any metrics."""
         raise NotImplementedError

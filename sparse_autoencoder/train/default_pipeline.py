@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 import wandb
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
+from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
 from sparse_autoencoder.train.abstract_pipeline import AbstractPipeline
@@ -78,13 +79,19 @@ class DefaultPipeline(AbstractPipeline):
             # Forward pass
             learned_activations, reconstructed_activations = self.autoencoder(batch)
 
-            # Get metrics
+            # Get loss & metrics
+            metrics = {}
             total_loss, loss_metrics = self.loss.batch_scalar_loss_with_log(
                 batch, learned_activations, reconstructed_activations
             )
+            metrics = {**loss_metrics}
 
-            # for metric in self.train_metrics:
-            # TODO: Handle train metrics
+            with torch.no_grad():
+                for metric in self.train_metrics:
+                    calculated = metric.calculate(
+                        TrainMetricData(batch, learned_activations, reconstructed_activations)
+                    )
+                    metrics = {**metrics, **calculated}
 
             # Store count of how many neurons have fired
             with torch.no_grad():
@@ -96,10 +103,8 @@ class DefaultPipeline(AbstractPipeline):
             self.optimizer.step()
 
             # Log
-            # TODO: Make this commit at some point
-            # if step % log_interval == 0 and wandb.run is not None:
             if wandb.run is not None:
-                wandb.log(data=loss_metrics, step=self.total_training_steps)
+                wandb.log(data={**metrics, **loss_metrics}, step=self.total_training_steps)
             self.total_training_steps += 1
 
         return learned_activations_fired_count
