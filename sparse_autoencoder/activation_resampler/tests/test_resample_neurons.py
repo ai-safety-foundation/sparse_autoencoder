@@ -1,5 +1,4 @@
 """Tests for the resample_neurons module."""
-import copy
 
 import pytest
 import torch

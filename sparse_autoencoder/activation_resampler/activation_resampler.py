@@ -318,12 +318,6 @@ class ActivationResampler(AbstractActivationResampler):
             )
             dead_encoder_bias_updates = torch.zeros_like(dead_neuron_indices, dtype=torch.float)
 
-            print(
-                f"dead_neuron_indices : {dead_neuron_indices.shape}",
-                f"dead_encoder_bias_updates : {dead_encoder_bias_updates.shape}",
-                f"dead_decoder_weight_updates : {dead_decoder_weight_updates.shape}",
-                f"rescaled_sampled_input : {rescaled_sampled_input.shape}",
-            )
             return ParameterUpdateResults(
                 dead_neuron_indices=dead_neuron_indices,
                 dead_encoder_weight_updates=rescaled_sampled_input,
