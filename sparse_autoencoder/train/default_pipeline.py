@@ -6,16 +6,10 @@ import torch
 from torch.utils.data import DataLoader
 import wandb
 
-from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
-    ParameterUpdateResults,
-)
-from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
 from sparse_autoencoder.train.abstract_pipeline import AbstractPipeline
-from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
-from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
 @final
@@ -39,7 +33,8 @@ class DefaultPipeline(AbstractPipeline):
         self.source_model.eval()
         self.source_model.to(model_device, print_details=False)
 
-        # Add the hook to the model (will automatically store the activations every time the model runs)
+        # Add the hook to the model (will automatically store the activations every time the model
+        # runs)
         self.source_model.remove_all_hook_fns()
         hook = partial(store_activations_hook, store=store)
         self.source_model.add_hook(self.cache_name, hook)

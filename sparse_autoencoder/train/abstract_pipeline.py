@@ -59,7 +59,7 @@ class AbstractPipeline(ABC):
     progress_bar: tqdm | None
 
     @final
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         cache_name: str,
         layer: int,

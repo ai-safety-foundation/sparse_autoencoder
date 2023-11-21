@@ -26,7 +26,33 @@ from sparse_autoencoder.tensor_types import (
 
 
 class ActivationResampler(AbstractActivationResampler):
-    """Activation resampler."""
+    """Activation resampler.
+
+    Over the course of training, a subset of autoencoder neurons will have zero activity across
+    a large number of datapoints. The authors of *Towards Monosemanticity: Decomposing Language
+    Models With Dictionary Learning* found that “resampling” these dead neurons during training
+    improves the number of likely-interpretable features (i.e., those in the high density cluster)
+    and reduces total loss. This resampling may be compatible with the Lottery Ticket Hypothesis and
+    increase the number of chances the network has to find promising feature directions.
+
+    An interesting nuance around dead neurons involves the ultralow density cluster. They found that
+    if we increase the number of training steps then networks will kill off more of these ultralow
+    density neurons. This reinforces the use of the high density cluster as a useful metric because
+    there can exist neurons that are de facto dead but will not appear to be when looking at the
+    number of dead neurons alone.
+
+    This approach is designed to seed new features to fit inputs where the current autoencoder
+    performs worst. Resetting the encoder norm and bias are crucial to ensuring this resampled
+    neuron will only fire weakly for inputs similar to the one used for its reinitialization. This
+    was done to minimize interference with the rest of the network.
+
+    Warning:
+        The optimizer should be reset after applying this function, as the Adam state will be
+        incorrect for the modified weights and biases.
+
+        Note this approach is also known to create sudden loss spikes, and resampling too frequently
+        causes training to diverge.
+    """
 
     @staticmethod
     def get_dead_neuron_indices(
@@ -36,7 +62,7 @@ class ActivationResampler(AbstractActivationResampler):
 
         Example:
             >>> neuron_activity = torch.tensor([0, 0, 3, 10, 0])
-            >>> dead_neuron_indices = get_dead_neuron_indices(neuron_activity)
+            >>> dead_neuron_indices = ActivationResampler.get_dead_neuron_indices(neuron_activity)
             >>> dead_neuron_indices.tolist()
             [0, 1, 4]
 
@@ -92,7 +118,10 @@ class ActivationResampler(AbstractActivationResampler):
 
             # Check we generated enough data
             if len(loss_result) < num_inputs:
-                error_message = f"Cannot get {num_inputs} items from the store, as only {len(loss_result)} were available."
+                error_message = (
+                    f"Cannot get {num_inputs} items from the store, "
+                    f"as only {len(loss_result)} were available."
+                )
                 raise ValueError(error_message)
 
             return loss_result, input_activations
@@ -106,7 +135,7 @@ class ActivationResampler(AbstractActivationResampler):
 
         Example:
             >>> loss = torch.tensor([1.0, 2.0, 3.0])
-            >>> assign_sampling_probabilities(loss).round(decimals=1)
+            >>> ActivationResampler.assign_sampling_probabilities(loss).round(decimals=1)
             tensor([0.1000, 0.3000, 0.6000])
 
         Args:
@@ -130,7 +159,9 @@ class ActivationResampler(AbstractActivationResampler):
             >>> probabilities = torch.tensor([0.1, 0.2, 0.7])
             >>> input_activations = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
             >>> _seed = torch.manual_seed(0)  # For reproducibility in example
-            >>> sampled_input = sample_input(probabilities, input_activations, 2)
+            >>> sampled_input = ActivationResampler.sample_input(
+            ...     probabilities, input_activations, 2
+            ... )
             >>> sampled_input.tolist()
             [[5.0, 6.0], [3.0, 4.0]]
 
@@ -146,7 +177,10 @@ class ActivationResampler(AbstractActivationResampler):
             ValueError: If the number of samples is greater than the number of input activations.
         """
         if num_samples > len(input_activations):
-            exception_message = f"Cannot sample {num_samples} inputs from {len(input_activations)} input activations."
+            exception_message = (
+                f"Cannot sample {num_samples} inputs from "
+                f"{len(input_activations)} input activations."
+            )
             raise ValueError(exception_message)
 
         if num_samples == 0:
@@ -177,7 +211,7 @@ class ActivationResampler(AbstractActivationResampler):
             >>> sampled_input = torch.tensor([[3.0, 4.0]])
             >>> neuron_activity = torch.tensor([3, 0, 5, 0, 1, 3])
             >>> encoder_weight = torch.ones((6, 2))
-            >>> rescaled_input = renormalize_and_scale(
+            >>> rescaled_input = ActivationResampler.renormalize_and_scale(
             ...     sampled_input,
             ...     neuron_activity,
             ...     encoder_weight
@@ -231,32 +265,6 @@ class ActivationResampler(AbstractActivationResampler):
     ) -> ParameterUpdateResults:
         """Resample dead neurons.
 
-        Over the course of training, a subset of autoencoder neurons will have zero activity across
-        a large number of datapoints. The authors of *Towards Monosemanticity: Decomposing Language
-        Models With Dictionary Learning* found that “resampling” these dead neurons during training
-        improves the number of likely-interpretable features (i.e., those in the high density
-        cluster) and reduces total loss. This resampling may be compatible with the Lottery Ticket
-        Hypothesis and increase the number of chances the network has to find promising feature
-        directions.
-
-        An interesting nuance around dead neurons involves the ultralow density cluster. They found
-        that if we increase the number of training steps then networks will kill off more of these
-        ultralow density neurons. This reinforces the use of the high density cluster as a useful
-        metric because there can exist neurons that are de facto dead but will not appear to be when
-        looking at the number of dead neurons alone.
-
-        This approach is designed to seed new features to fit inputs where the current autoencoder
-        performs worst. Resetting the encoder norm and bias are crucial to ensuring this resampled
-        neuron will only fire weakly for inputs similar to the one used for its reinitialization.
-        This was done to minimize interference with the rest of the network.
-
-        Warning:
-            The optimizer should be reset after applying this function, as the Adam state will be
-            incorrect for the modified weights and biases.
-
-            Note this approach is also known to create sudden loss spikes, and resampling too
-            frequently causes training to diverge.
-
         Args:
             neuron_activity: Number of times each neuron fired.
             activation_store: Activation store.
@@ -280,8 +288,8 @@ class ActivationResampler(AbstractActivationResampler):
                 train_batch_size=train_batch_size,
             )
 
-            # Assign each input vector a probability of being picked that is proportional to the square
-            # of the autoencoder's loss on that input.
+            # Assign each input vector a probability of being picked that is proportional to the
+            # square of the autoencoder's loss on that input.
             sample_probabilities: TrainBatchStatistic = self.assign_sampling_probabilities(loss)
 
             # Get references to the encoder and decoder parameters
