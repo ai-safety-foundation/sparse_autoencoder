@@ -10,6 +10,8 @@ from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
 from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
 from sparse_autoencoder.loss.reducer import LossReducer
+from sparse_autoencoder.metrics.abstract_metric import TrainMetricData
+from sparse_autoencoder.metrics.l0_norm_metric import L0NormMetric
 from sparse_autoencoder.tensor_types import LearntActivationVector, NeuronActivity
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
@@ -52,6 +54,8 @@ def train_autoencoder(
         LearnedActivationsL1Loss(sweep_parameters.l1_coefficient),
     )
 
+    metrics = L0NormMetric() # later on we can wrap this in a TrainMetricReducer
+
     step: int = 0  # Initialize step
     for step, store_batch in enumerate(activations_dataloader):
         # Zero the gradients
@@ -63,8 +67,8 @@ def train_autoencoder(
         # Forward pass
         learned_activations, reconstructed_activations = autoencoder(batch)
 
-        # Get metrics
-        total_loss, metrics = loss.batch_scalar_loss_with_log(
+        # Get loss metrics
+        total_loss, loss_metrics = loss.batch_scalar_loss_with_log(
             batch, learned_activations, reconstructed_activations
         )
 
@@ -79,7 +83,14 @@ def train_autoencoder(
 
         # Log
         if step % log_interval == 0 and wandb.run is not None:
-            wandb.log(metrics)
+            # Get additional metrics
+            metric_data = TrainMetricData(
+                input_activations=batch,
+                learned_activations=learned_activations,
+                decoded_activations=reconstructed_activations,
+            )
+            metric_vals = metrics.create_weights_and_biases_log(metric_data)
+            wandb.log(loss_metrics | metric_vals)
 
     current_step = previous_steps + step + 1
 
