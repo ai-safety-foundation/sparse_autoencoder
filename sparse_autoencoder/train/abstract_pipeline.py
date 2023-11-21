@@ -9,7 +9,6 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     AbstractActivationResampler,
-    ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -104,12 +103,46 @@ class AbstractPipeline(ABC):
         """Train the sparse autoencoder."""
         raise NotImplementedError
 
-    @abstractmethod
+    @final
     def resample_neurons(
-        self, neuron_activity: NeuronActivity, activation_store: TensorActivationStore
-    ) -> ParameterUpdateResults:
-        """Resample dead neurons."""
-        raise NotImplementedError
+        self,
+        neuron_activity: NeuronActivity,
+        activation_store: TensorActivationStore,
+        train_batch_size: int,
+    ) -> None:
+        """Resample dead neurons.
+
+        Args:
+            neuron_activity: Number of times each neuron fired.
+            activation_store: Activation store.
+            train_batch_size: Train batch size (also used for resampling).
+        """
+        if self.activation_resampler is not None:
+            # Get the updates
+            parameter_updates = self.activation_resampler.resample_dead_neurons(
+                neuron_activity=neuron_activity,
+                activation_store=activation_store,
+                autoencoder=self.autoencoder,
+                loss_fn=self.loss,
+                train_batch_size=train_batch_size,
+            )
+
+            # Update the weights and biases
+            self.autoencoder.encoder.update_dictionary_vectors(
+                parameter_updates.dead_neuron_indices,
+                parameter_updates.dead_encoder_weight_updates,
+            )
+            self.autoencoder.encoder.update_bias(
+                parameter_updates.dead_neuron_indices,
+                parameter_updates.dead_encoder_bias_updates,
+            )
+            self.autoencoder.decoder.update_dictionary_vectors(
+                parameter_updates.dead_neuron_indices,
+                parameter_updates.dead_decoder_weight_updates,
+            )
+
+            # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
+            self.optimizer.reset_state_all_parameters()
 
     @abstractmethod
     def validate_sae(self) -> None:
@@ -166,27 +199,11 @@ class AbstractPipeline(ABC):
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})
                 if last_resampled > resample_frequency and self.activation_resampler is not None:
-                    # Get the updates
-                    parameter_updates = self.resample_neurons(
-                        neuron_activity, activation_store=activation_store
+                    self.resample_neurons(
+                        neuron_activity=neuron_activity,
+                        activation_store=activation_store,
+                        train_batch_size=train_batch_size,
                     )
-
-                    # Update the weights and biases
-                    self.autoencoder.encoder.update_dictionary_vectors(
-                        parameter_updates.dead_neuron_indices,
-                        parameter_updates.dead_encoder_weight_updates,
-                    )
-                    self.autoencoder.encoder.update_bias(
-                        parameter_updates.dead_neuron_indices,
-                        parameter_updates.dead_encoder_bias_updates,
-                    )
-                    self.autoencoder.decoder.update_dictionary_vectors(
-                        parameter_updates.dead_neuron_indices,
-                        parameter_updates.dead_decoder_weight_updates,
-                    )
-
-                    # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
-                    self.optimizer.reset_state_all_parameters()
 
                     # Reset
                     self.last_resampled = 0

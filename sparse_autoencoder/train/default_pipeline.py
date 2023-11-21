@@ -110,19 +110,6 @@ class DefaultPipeline(AbstractPipeline):
 
         return learned_activations_fired_count
 
-    def resample_neurons(
-        self, neuron_activity: NeuronActivity, activation_store: ActivationStore
-    ) -> ParameterUpdateResults:
-        """Resample dead neurons."""
-        resample_dead_neurons(
-            neuron_activity=neuron_activity,
-            store=activation_store,
-            autoencoder=self.autoencoder,
-            sweep_parameters=SweepParametersRuntime(),  # TODO: Move to config file
-        )
-        self.optimizer.reset_state_all_parameters()
-        return None  # type: ignore # TODO: fix later
-
     def validate_sae(self) -> None:
         """Get validation metrics."""
         # Not currently setup
