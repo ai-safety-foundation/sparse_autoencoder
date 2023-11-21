@@ -15,7 +15,7 @@ from sparse_autoencoder.train.utils import get_model_device
 
 
 @final
-class DefaultPipeline(AbstractPipeline):
+class Pipeline(AbstractPipeline):
     """Pipeline for training a Sparse Autoencoder on TransformerLens activations.
 
     Includes all the key functionality to train a sparse autoencoder, with a specific set of
