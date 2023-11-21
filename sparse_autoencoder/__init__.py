@@ -14,7 +14,6 @@ from sparse_autoencoder.loss import (
     LossReductionType,
     MSEReconstructionLoss,
 )
-from sparse_autoencoder.train.pipeline import pipeline
 
 
 __all__ = [
@@ -29,5 +28,4 @@ __all__ = [
     "MSEReconstructionLoss",
     "SparseAutoencoder",
     "TensorActivationStore",
-    "pipeline",
 ]

@@ -208,7 +208,7 @@ DeadEncoderNeuronBiasUpdates: TypeAlias = Float[Tensor, Axis.DEAD_FEATURE]
 """Dead encoder neuron bias updates."""
 
 DeadDecoderNeuronWeightUpdates: TypeAlias = Float[
-    Tensor, Axis.dims(Axis.DEAD_FEATURE, Axis.LEARNT_FEATURE)
+    Tensor, Axis.dims(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)
 ]
 """Dead decoder neuron weight updates.
 

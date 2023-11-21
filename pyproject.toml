@@ -112,7 +112,11 @@
     timeout=60
 
     [tool.pytest.ini_options]
-        addopts=["--doctest-modules", "--jaxtyping-packages=sparse_autoencoder,beartype.beartype"]
+        addopts=[
+            "--doctest-modules",
+            "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
+            "-s",
+        ]
 
 [tool.ruff]
     cache-dir=".cache/ruff"
