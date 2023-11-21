@@ -10,6 +10,7 @@
     [tool.poetry.dependencies]
         einops=">=0.6"
         python=">=3.10, <3.12"
+        strenum="^0.4.15"
         torch=">=2.1"
         wandb=">=0.15.12"
         zstandard="^0.22.0"    # Required for downloading datasets such as The Pile
@@ -19,10 +20,10 @@
             jupyter=">=1"
             plotly=">=5"
             poethepoet=">=0.24.2"
-            pre-commit=">=3.5.0"
             pyright=">=1.1.334"
             pytest=">=7"
             pytest-cov=">=4"
+            pytest-timeout="^2.2.0"
             ruff=">=0.1.4"
             syrupy="^4.6.0"
 
@@ -33,6 +34,13 @@
             transformer-lens=">=1.9.0"
             transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
+        [tool.poetry.group.docs.dependencies]
+            mkdocs="^1.5.3"
+            mkdocs-gen-files="^0.5.0"
+            mkdocs-literate-nav="^0.6.1"
+            mkdocstrings="^0.23.0"
+            mkdocstrings-python="^1.7.3"
+
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="All checks"
@@ -40,11 +48,11 @@
         sequence=["check-lock", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
-        cmd="ruff format sparse_autoencoder"
+        cmd="ruff format ."
         help="Format code (with autofix)"
 
     [tool.poe.tasks.lint]
-        cmd="ruff check sparse_autoencoder --fix"
+        cmd="ruff check . --fix"
         help="Lint (with autofix)"
 
     [tool.poe.tasks.ruff]
@@ -55,14 +63,6 @@
     [tool.poe.tasks.check-lock]
         cmd="poetry check"
         help="Check the Poetry lockfile"
-
-    [tool.poe.tasks.precommit]
-        cmd="pre-commit run --all-files"
-        help="Run pre-commit hooks"
-
-    [tool.poe.tasks.precommit-setup]
-        cmd="pre-commit install"
-        help="Install pre-commit hooks"
 
     [tool.poe.tasks.snapshot-update]
         cmd="pytest --snapshot-update"
@@ -84,19 +84,39 @@
         help="  [alias for typecheck]"
         sequence=["typecheck"]
 
+    [tool.poe.tasks.clean-docs]
+        cmd="rm -rf ./docs/content/reference/"
+        help="Cleans out the automatically generated docs."
+
+    [tool.poe.tasks.gen-docs]
+        help="Cleans out the automatically generated docs."
+        script="docs.gen_ref_pages:run"
+
+    [tool.poe.tasks.make-docs]
+        cmd="mkdocs build"
+        deps=["clean-docs", "gen-docs"]
+        help="Generates our docs"
+
+    [tool.poe.tasks.docs-hot-reload]
+        cmd="mkdocs serve"
+        deps=["clean-docs"]
+        help="Starts our watch server"
+
 [build-system]
     build-backend="poetry.core.masonry.api"
     requires=["poetry-core"]
 
 [tool.pytest]
     cache_dir=".cache/pytest"
+    durations=3
+    timeout=60
 
     [tool.pytest.ini_options]
-        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
+        addopts=["--doctest-modules", "--jaxtyping-packages=sparse_autoencoder,beartype.beartype"]
 
 [tool.ruff]
     cache-dir=".cache/ruff"
-    exclude=["/.venv"]
+    extend-include=["*.ipynb"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
@@ -121,10 +141,17 @@
             lines-after-imports=2
 
         [tool.ruff.lint.per-file-ignores]
+            "**/*.ipynb"=[
+                "B018", # Useless variables are used for printing
+                "D100", # No file docstring needed
+                "E402", # Imports don't need to be at the top
+                "T201", # Print is fine
+            ]
             "**/tests/*"=[
                 "ARG001", # Fixtures often have unused arguments
                 "PT004",  # Fixtures don't return anything
                 "S101",   # Assert is needed in PyTest
+                "TCH001", # Don't need to mark type-only imports
             ]
 
         [tool.ruff.lint.pydocstyle]
@@ -137,7 +164,7 @@
     # All rules apart from base are shown explicitly below
     deprecateTypingAliases=true
     disableBytesTypePromotions=true
-    include=["sparse_autoencoder"]
+    include=["."]
     reportAssertAlwaysTrue=true
     reportConstantRedefinition=true
     reportDeprecated=true

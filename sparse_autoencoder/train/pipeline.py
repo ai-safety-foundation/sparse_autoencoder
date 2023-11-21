@@ -2,11 +2,10 @@
 from collections.abc import Iterable
 from pathlib import Path
 import uuid
+from typing import TYPE_CHECKING
 import warnings
 
-from jaxtyping import Int
 import torch
-from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
@@ -22,6 +21,9 @@ from sparse_autoencoder.train.resample_neurons import resample_dead_neurons
 from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 from sparse_autoencoder.train.train_autoencoder import train_autoencoder
 
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.tensor_types import NeuronActivity
 
 DEFAULT_RESAMPLE_N = 819_200
 DEFAULT_SAVE_FOLDER = "models"
@@ -122,10 +124,8 @@ def pipeline(  # noqa: PLR0913
 
     total_steps: int = 0
     activations_since_resampling: int = 0
-    neuron_activity: Int[Tensor, " learned_features"] = torch.zeros(
-        autoencoder.n_learned_features,
-        dtype=torch.int32,
-        device=device,
+    neuron_activity: NeuronActivity = torch.zeros(
+        autoencoder.n_learned_features, dtype=torch.int32, device=device
     )
     total_activations: int = 0
 

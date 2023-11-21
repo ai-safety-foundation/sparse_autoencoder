@@ -1,15 +1,15 @@
 """Capacity metrics for sets of learned features."""
 import einops
-from jaxtyping import Float
-from numpy import histogram
 import numpy as np
+from numpy import histogram
 from numpy.typing import NDArray
 import torch
-from torch import Tensor
 import wandb
 
+from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchStatistic
 
-def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor, " n_feats"]:
+
+def calc_capacities(features: LearnedActivationBatch) -> TrainBatchStatistic:
     """Calculate capacities.
 
     Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural Networks](https://arxiv.org/pdf/2210.01892.pdf).
@@ -45,7 +45,7 @@ def calc_capacities(features: Float[Tensor, "n_feats feat_dim"]) -> Float[Tensor
 
 
 def wandb_capacities_histogram(
-    capacities: Float[Tensor, " n_feats"],
+    capacities: TrainBatchStatistic,
 ) -> wandb.Histogram:
     """Create a W&B histogram of the capacities.
 

@@ -35,11 +35,3 @@ For a full list of available commands (e.g. `test` or `typecheck`), run this in 
 ```shell
 poe
 ```
-
-### Pre-Commit Hooks
-
-You can install the pre-commit hooks, to automatically check for common issues before you commit, as follows:
-
-```shell
-poe precommit-setup
-```

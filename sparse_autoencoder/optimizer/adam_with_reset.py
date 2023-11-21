@@ -3,15 +3,19 @@
 This reset method is useful when resampling dead neurons during training.
 """
 from collections.abc import Iterator
+from typing import final
 
-from jaxtyping import Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Adam
 from torch.optim.optimizer import params_t
 
+from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
+from sparse_autoencoder.tensor_types import LearntNeuronIndices
 
-class AdamWithReset(Adam):
+
+@final
+class AdamWithReset(Adam, AbstractOptimizerWithReset):
     """Adam Optimizer with a reset method.
 
     The :meth:`reset_state_all_parameters` and :meth:`reset_neurons_state` methods are useful when
@@ -139,7 +143,7 @@ class AdamWithReset(Adam):
     def reset_neurons_state(
         self,
         parameter_name: str,
-        neuron_indices: Int[Tensor, " neuron_idx"],
+        neuron_indices: LearntNeuronIndices,
         axis: int,
         parameter_group: int = 0,
     ) -> None:
@@ -156,18 +160,18 @@ class AdamWithReset(Adam):
             >>> # ... train the model and then resample some dead neurons, then do this ...
             >>> dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices
             >>> # Reset the optimizer state for parameters that have been updated
-            >>> optimizer.reset_neurons_state("encoder.Linear.weight", dead_neurons_indices, axis=0)
-            >>> optimizer.reset_neurons_state("encoder.Linear.bias", dead_neurons_indices, axis=0)
+            >>> optimizer.reset_neurons_state("_encoder._weight", dead_neurons_indices, axis=0)
+            >>> optimizer.reset_neurons_state("_encoder._bias", dead_neurons_indices, axis=0)
             >>> optimizer.reset_neurons_state(
-            ...     "decoder.ConstrainedUnitNormLinear.weight",
+            ...     "_decoder._weight",
             ...     dead_neurons_indices,
             ...     axis=1
             ... )
 
         Args:
             parameter_name: The name of the parameter. Examples from the standard sparse autoencoder
-                implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,
-                `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.
+                implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,
+                `_decoder._weight`.
             neuron_indices: The indices of the neurons to reset.
             axis: The axis of the parameter to reset.
             parameter_group: The index of the parameter group to reset (typically this is just zero,
