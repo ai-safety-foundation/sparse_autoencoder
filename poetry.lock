@@ -1915,6 +1915,23 @@ griffe = ">=0.37"
 mkdocstrings = ">=0.20"
 
 [[package]]
+name = "mknotebooks"
+version = "0.8.0"
+description = "Plugin for mkdocs to generate markdown documents from jupyter notebooks."
+optional = false
+python-versions = "*"
+files = [
+    {file = "mknotebooks-0.8.0-py3-none-any.whl", hash = "sha256:4a9b998260c09bcc311455a19a44cc395a30ee82dc1e86e3316dd09f2445ebd3"},
+]
+
+[package.dependencies]
+gitpython = "*"
+jupyter-client = "*"
+markdown = ">=3.3.3"
+mkdocs = ">=1.5.0"
+nbconvert = ">=6.0.0"
+
+[[package]]
 name = "mpmath"
 version = "1.3.0"
 description = "Python library for arbitrary-precision floating-point arithmetic"
@@ -4787,4 +4804,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "afe2711c841c787b9174c7ae0d4812dc9a8bb984546e36f932d5a8055551c50f"
+content-hash = "e802589e54cdda73b75d2853f5d1ce3ad9a4a5b07cfb4debbd278c99b47de016"

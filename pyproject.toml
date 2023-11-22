@@ -43,6 +43,7 @@
             mkdocstrings={extras=["python"], version=">=0.24.0"}
             mkdocstrings-python=">=1.7.3"
             pytkdocs-tweaks=">=0.0.7"
+        mknotebooks = "^0.8.0"
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
@@ -94,15 +95,12 @@
     [tool.poe.tasks.gen-docs]
         help="Cleans out the automatically generated docs."
         script="docs.gen_ref_pages:run"
-
     [tool.poe.tasks.make-docs]
         cmd="mkdocs build"
-        deps=["clean-docs", "gen-docs"]
         help="Generates our docs"
 
     [tool.poe.tasks.docs-hot-reload]
         cmd="mkdocs serve"
-        deps=["clean-docs"]
         help="Starts our watch server"
 
 [build-system]

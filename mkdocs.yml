@@ -8,9 +8,6 @@ repo_name: ai-safety-foundation/sparse_autoencoder
 
 theme:
   name: material
-  features:
-    - navigation.sections # Sections are included in the navigation on the left.
-    - toc.integrate # Table of contents is integrated on the left; does not appear separately on the right.
   palette:
     - scheme: default
       primary: white
@@ -26,14 +23,15 @@ theme:
         name: Switch to light mode
   icon:
     repo: fontawesome/brands/github # GitHub logo in top right
-    # logo: "material/circle-opacity" # Equinox logo in top left
-  # favicon: "_static/favicon.png"
 
 extra_javascript:
   # The below three make MathJax work, see https://squidfunk.github.io/mkdocs-material/reference/mathjax/
-  - _static/mathjax.js
+  - javascript/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - "css/material_extra.css"
 
 markdown_extensions:
   - pymdownx.arithmatex: # Render LaTeX via MathJax
@@ -41,7 +39,7 @@ markdown_extensions:
   - pymdownx.superfences # Seems to enable syntax highlighting when used with the Material theme.
   - pymdownx.details # Allowing hidden expandable regions denoted by ???
   - pymdownx.snippets: # Include one Markdown file into another
-      base_path: docs
+      base_path: docs/content
   - admonition # Adds admonition blocks (e.g. warning, note, tip, etc.)
   - toc:
       permalink: "¤" # Adds a clickable permalink to each section heading
@@ -50,21 +48,17 @@ markdown_extensions:
 plugins:
   - search
   - autorefs
-  - gen-files:
-      scripts:
-        - docs/gen_ref_pages.py
+  # - gen-files:
+  #     scripts:
+  #       - docs/gen_ref_pages.py
   - section-index
-  - mkdocstrings:
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - mknotebooks
+  - mkdocstrings: # https://mkdocstrings.github.io
       handlers:
         python:
           options:
             docstring_style: google
             line_length: 100
-            members_order: source # Order methods according to their appearance in the source code, not alphabetical order
-            # setup_commands:
-            #   - import pytkdocs_tweaks
-            #   - pytkdocs_tweaks.main()
-            #   - import jaxtyping
-            #   - jaxtyping.set_array_name_format("array")
-  - literate-nav:
-      nav_file: SUMMARY.md
+            show_symbol_type_heading: true
