@@ -2,6 +2,7 @@
 from transformer_lens.hook_points import HookPoint
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
+from sparse_autoencoder.source_model.reshape_methods import ReshapeMethod
 from sparse_autoencoder.tensor_types import SourceModelActivations
 
 
@@ -9,6 +10,7 @@ def store_activations_hook(
     value: SourceModelActivations,
     hook: HookPoint,  # noqa: ARG001
     store: ActivationStore,
+    reshape_method: ReshapeMethod,
 ) -> SourceModelActivations:
     """Store Activations Hook.
 
@@ -20,6 +22,7 @@ def store_activations_hook(
     >>> from functools import partial
     >>> from transformer_lens import HookedTransformer
     >>> from sparse_autoencoder.activation_store.list_store import ListActivationStore
+    >>> from sparse_autoencoder.source_model.reshape_methods import reshape_to_last_dimension
     >>> store = ListActivationStore()
     >>> model = HookedTransformer.from_pretrained("tiny-stories-1M")
     Loaded pretrained model tiny-stories-1M into HookedTransformer
@@ -28,7 +31,12 @@ def store_activations_hook(
     the tokens for a forward pass.
 
     >>> model.add_hook(
-    ...     "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
+    ...     "blocks.0.mlp.hook_post",
+    ...     partial(
+    ...         store_activations_hook,
+    ...         store=store,
+    ...         reshape_method=reshape_to_last_dimension,
+    ...     ),
     ... )
     >>> tokens = model.to_tokens("Hello world")
     >>> tokens.shape
@@ -46,8 +54,11 @@ def store_activations_hook(
         value: The activations to store.
         hook: The hook point.
         store: The activation store. This should be pre-initialised with `functools.partial`.
+        reshape_method: The method to reshape the activations before storing.
     """
-    store.extend(value)
+    reshaped = reshape_method(value)
+
+    store.extend(reshaped)
 
     # Return the unmodified value
     return value

@@ -11,12 +11,9 @@ import torch
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
 )
-from sparse_autoencoder.activation_store.utils.extend_resize import (
-    resize_to_list_vectors,
-)
 from sparse_autoencoder.tensor_types import (
+    InputOutputActivationBatch,
     InputOutputActivationVector,
-    SourceModelActivations,
 )
 
 
@@ -160,7 +157,7 @@ class DiskActivationStore(ActivationStore):
 
         return None  # Keep mypy happy
 
-    def extend(self, batch: SourceModelActivations) -> Future | None:
+    def extend(self, batch: InputOutputActivationBatch) -> Future | None:
         """Add a Batch to the Store.
 
         Example:
@@ -177,7 +174,7 @@ class DiskActivationStore(ActivationStore):
             Future that completes when the activation vectors have queued to be written to disk, and
             if needed, written to disk.
         """
-        items: list[InputOutputActivationVector] = resize_to_list_vectors(batch)
+        items: list[InputOutputActivationVector] = list(batch.unbind(0))
 
         with self._cache_lock:
             self._cache.extend(items)

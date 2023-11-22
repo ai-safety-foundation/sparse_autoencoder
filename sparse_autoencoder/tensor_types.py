@@ -113,11 +113,10 @@ StoreActivations: TypeAlias = Float[Tensor, Axis.dims(Axis.ITEMS, Axis.INPUT_OUT
 This is used to store large numbers of activation vectors from the source model.
 """
 
-SourceModelActivations: TypeAlias = Float[Tensor, Axis.dims(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]
+SourceModelActivations: TypeAlias = Float[Tensor, Axis.dims(Axis.ANY)]
 """Source model activations.
 
-Can have any number of proceeding dimensions (e.g. an attention head may generate activations of
-shape (batch_size, num_heads, seq_len, feature_dim).
+An unstructured tensor that is reshaped into an InputOutputActivationBatch by a ReshapeMethod.
 """
 
 InputOutputActivationBatch: TypeAlias = Float[

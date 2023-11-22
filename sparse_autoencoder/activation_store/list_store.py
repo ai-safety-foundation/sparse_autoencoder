@@ -10,12 +10,9 @@ import torch
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
 )
-from sparse_autoencoder.activation_store.utils.extend_resize import (
-    resize_to_list_vectors,
-)
 from sparse_autoencoder.tensor_types import (
+    InputOutputActivationBatch,
     InputOutputActivationVector,
-    SourceModelActivations,
 )
 
 
@@ -225,7 +222,7 @@ class ListActivationStore(ActivationStore):
         """
         self._data.append(item.to(self._device))
 
-    def _extend(self, batch: SourceModelActivations) -> None:
+    def _extend(self, batch: InputOutputActivationBatch) -> None:
         """Extend threadpool method.
 
         To be called by :meth:`extend`.
@@ -235,13 +232,11 @@ class ListActivationStore(ActivationStore):
         """
         try:
             # Unstack to a list of tensors
-            items: list[InputOutputActivationVector] = resize_to_list_vectors(batch)
-
-            self._data.extend(items)
+            self._data.extend(batch)
         except Exception as e:  # noqa: BLE001
             self._pool_exceptions.append(e)
 
-    def extend(self, batch: SourceModelActivations) -> Future | None:
+    def extend(self, batch: InputOutputActivationBatch) -> Future | None:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:

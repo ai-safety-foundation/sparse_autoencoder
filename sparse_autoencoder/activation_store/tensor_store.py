@@ -5,13 +5,9 @@ from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     StoreFullError,
 )
-from sparse_autoencoder.activation_store.utils.extend_resize import (
-    resize_to_single_item_dimension,
-)
 from sparse_autoencoder.tensor_types import (
     InputOutputActivationBatch,
     InputOutputActivationVector,
-    SourceModelActivations,
     StoreActivations,
 )
 
@@ -185,7 +181,7 @@ class TensorActivationStore(ActivationStore):
         )
         self.items_stored += 1
 
-    def extend(self, batch: SourceModelActivations) -> None:
+    def extend(self, batch: InputOutputActivationBatch) -> None:
         """Add a batch to the store.
 
         Examples:
@@ -201,21 +197,17 @@ class TensorActivationStore(ActivationStore):
         Raises:
             IndexError: If there is no space remaining.
         """
-        reshaped: InputOutputActivationBatch = resize_to_single_item_dimension(
-            batch,
-        )
-
         # Check we have space
-        num_activation_tensors: int = reshaped.shape[0]
+        num_activation_tensors: int = batch.shape[0]
         if self.items_stored + num_activation_tensors > self._max_items:
-            if reshaped.shape[0] > self._max_items:
+            if batch.shape[0] > self._max_items:
                 msg = f"Single batch of {num_activation_tensors} activations is larger than the \
                     total maximum in the store of {self._max_items}."
                 raise ValueError(msg)
 
             raise StoreFullError
 
-        self._data[self.items_stored : self.items_stored + num_activation_tensors] = reshaped.to(
+        self._data[self.items_stored : self.items_stored + num_activation_tensors] = batch.to(
             self._data.device
         )
         self.items_stored += num_activation_tensors

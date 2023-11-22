@@ -7,8 +7,6 @@ from .tensor_store import TensorActivationStore
 
 _all__ = [
     ActivationStore,
-    UnshapedActivationBatch,
-    ReshapeMethod,
     DiskActivationStore,
     ListActivationStore,
     TensorActivationStore,

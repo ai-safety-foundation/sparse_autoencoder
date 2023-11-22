@@ -26,6 +26,7 @@
             pytest-timeout="^2.2.0"
             ruff=">=0.1.4"
             syrupy="^4.6.0"
+        strenum = "^0.4.15"
 
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
