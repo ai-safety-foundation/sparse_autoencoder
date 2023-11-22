@@ -66,6 +66,7 @@ def test_reset_parameters_method(mock_encoder: MockEncoder) -> None:
 
 def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) -> None:
     """Test update_dictionary_vectors with 0 neurons to update."""
+    torch.random.manual_seed(0)
     original_weight = mock_encoder.weight.clone()  # Save original weight for comparison
 
     dictionary_vector_indices: InputOutputNeuronIndices = torch.empty(

@@ -47,6 +47,7 @@
         "loguniformvalues",
         "maxiter",
         "miniter",
+        "mkdocs",
         "monosemantic",
         "monosemanticity",
         "multipled",
