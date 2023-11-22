@@ -8,11 +8,11 @@ import wandb
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
+from sparse_autoencoder.source_model.reshape_methods import reshape_to_last_dimension
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
 from sparse_autoencoder.train.abstract_pipeline import AbstractPipeline
 from sparse_autoencoder.train.utils import get_model_device
-from sparse_autoencoder.source_model.reshape_methods import reshape_to_last_dimension
 
 
 @final
@@ -38,7 +38,9 @@ class Pipeline(AbstractPipeline):
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
         self.source_model.remove_all_hook_fns()
-        hook = partial(store_activations_hook, store=store, reshape_method=reshape_to_last_dimension)
+        hook = partial(
+            store_activations_hook, store=store, reshape_method=reshape_to_last_dimension
+        )
         self.source_model.add_hook(self.cache_name, hook)
 
         # Loop through the dataloader until the store reaches the desired size
