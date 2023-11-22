@@ -1,9 +1,9 @@
 """Metric reducer."""
 from collections import OrderedDict
 from collections.abc import Iterator
-from typing import Any, final
+from typing import final
 
-from sparse_autoencoder.metrics.abstract_metric import (
+from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
 )
@@ -42,19 +42,11 @@ class TrainingMetricReducer(AbstractTrainMetric):
             raise ValueError(error_message)
 
     @final
-    def create_progress_bar_postfix(self, data: TrainMetricData) -> OrderedDict[str, Any]:
-        """Create a progress bar postfix."""
-        result = OrderedDict()
-        for module in self._modules:
-            result.update(module.create_progress_bar_postfix(data))
-        return result
-
-    @final
-    def create_weights_and_biases_log(self, data: TrainMetricData) -> OrderedDict[str, float]:
+    def calculate(self, data: TrainMetricData) -> OrderedDict[str, float]:
         """Create a log item for Weights and Biases."""
         result = OrderedDict()
         for module in self._modules:
-            result.update(module.create_weights_and_biases_log(data))
+            result.update(module.calculate(data))
         return result
 
     def __dir__(self) -> list[str]:
