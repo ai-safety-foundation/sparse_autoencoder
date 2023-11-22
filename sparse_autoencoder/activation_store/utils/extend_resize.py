@@ -2,19 +2,17 @@
 from math import prod
 
 from einops import rearrange
-from jaxtyping import Float
-from torch import Tensor
 
-from sparse_autoencoder.activation_store.base_store import (
-    ActivationStoreBatch,
-    ActivationStoreItem,
-    UnshapedActivationBatch,
+from sparse_autoencoder.tensor_types import (
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
+    SourceModelActivations,
 )
 
 
 def resize_to_list_vectors(
-    batched_tensor: UnshapedActivationBatch,
-) -> list[ActivationStoreItem]:
+    batched_tensor: SourceModelActivations,
+) -> list[InputOutputActivationVector]:
     """Resize Extend List Vectors.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is
@@ -49,7 +47,7 @@ def resize_to_list_vectors(
     Returns:
         List of Activation Store Item Vectors
     """
-    rearranged: Float[Tensor, "batch neuron"] = rearrange(
+    rearranged: InputOutputActivationBatch = rearrange(
         batched_tensor,
         "... neurons -> (...) neurons",
     )
@@ -58,8 +56,8 @@ def resize_to_list_vectors(
 
 
 def resize_to_single_item_dimension(
-    batch_activations: UnshapedActivationBatch,
-) -> ActivationStoreBatch:
+    batch_activations: SourceModelActivations,
+) -> InputOutputActivationBatch:
     """Resize Extend Single Item Dimension.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is

@@ -31,8 +31,8 @@
   "evenBetterToml.schema.enabled": true,
   "evenBetterToml.schema.links": true,
   "evenBetterToml.syntax.semanticTokens": false,
-  "notebook.formatOnCellExecution": true,
-  "notebook.formatOnSave.enabled": true,
+  "notebook.formatOnCellExecution": false,
+  "notebook.formatOnSave.enabled": false,
   "python.analysis.autoFormatStrings": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.inlayHints.functionReturnTypes": false,
@@ -41,7 +41,6 @@
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.testing.pytestEnabled": true,
   "rewrap.autoWrap.enabled": true,
-  "rewrap.reformat": false,
   "rewrap.wrappingColumn": 100,
   "python.analysis.diagnosticMode": "workspace",
   "python.formatting.provider": "none"

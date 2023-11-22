@@ -1,0 +1,9 @@
+# serializer version: 1
+# name: test_extra_repr
+  '''
+  LinearEncoder(
+    in_features=10, out_features=5
+    (activation_function): ReLU()
+  )
+  '''
+# ---

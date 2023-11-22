@@ -1,26 +1,32 @@
 """The Sparse Autoencoder Model."""
-from collections import OrderedDict
 
-from jaxtyping import Float
+from typing import final
+
 import torch
-from torch import Tensor
-from torch.nn import Linear, Module, ReLU, Sequential
 from torch.nn.parameter import Parameter
 
+from sparse_autoencoder.autoencoder.abstract_autoencoder import AbstractAutoencoder
+from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
-from sparse_autoencoder.autoencoder.components.unit_norm_linear import ConstrainedUnitNormLinear
+from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
+from sparse_autoencoder.tensor_types import (
+    InputOutputActivationBatch,
+    InputOutputActivationVector,
+    LearnedActivationBatch,
+)
 
 
-class SparseAutoencoder(Module):
+@final
+class SparseAutoencoder(AbstractAutoencoder):
     """Sparse Autoencoder Model."""
 
-    geometric_median_dataset: Float[Tensor, " input_activations"]
+    geometric_median_dataset: InputOutputActivationVector
     """Estimated Geometric Median of the Dataset.
 
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: Float[Parameter, " input_activations"]
+    tied_bias: InputOutputActivationBatch
     """Tied Bias Parameter.
 
     The same bias is used pre-encoder and post-decoder.
@@ -32,25 +38,39 @@ class SparseAutoencoder(Module):
     n_learned_features: int
     """Number of Learned Features."""
 
-    device: torch.device | None
-    """Device to run the model on."""
+    _pre_encoder_bias: TiedBias
 
-    dtype: torch.dtype | None
-    """Data type to use for the model."""
+    _encoder: LinearEncoder
 
-    encoder: Sequential
-    """Encoder Module."""
+    _decoder: UnitNormDecoder
 
-    decoder: Sequential
-    """Decoder Module."""
+    _post_decoder_bias: TiedBias
+
+    @property
+    def pre_encoder_bias(self) -> TiedBias:
+        """Pre-encoder bias."""
+        return self._pre_encoder_bias
+
+    @property
+    def encoder(self) -> LinearEncoder:
+        """Encoder."""
+        return self._encoder
+
+    @property
+    def decoder(self) -> UnitNormDecoder:
+        """Decoder."""
+        return self._decoder
+
+    @property
+    def post_decoder_bias(self) -> TiedBias:
+        """Post-decoder bias."""
+        return self._post_decoder_bias
 
     def __init__(
         self,
         n_input_features: int,
         n_learned_features: int,
-        geometric_median_dataset: Float[Tensor, " input_activations"],
-        device: torch.device | None = None,
-        dtype: torch.dtype | None = None,
+        geometric_median_dataset: InputOutputActivationVector,
     ) -> None:
         """Initialize the Sparse Autoencoder Model.
 
@@ -60,15 +80,11 @@ class SparseAutoencoder(Module):
             n_learned_features: Number of learned features. The initial paper experimented with 1 to
                 256 times the number of input features, and primarily used a multiple of 8.
             geometric_median_dataset: Estimated geometric median of the dataset.
-            device: Device to run the model on.
-            dtype: Data type to use for the model.
         """
         super().__init__()
 
         self.n_input_features = n_input_features
         self.n_learned_features = n_learned_features
-        self.device = device
-        self.dtype = dtype
 
         # Store the geometric median of the dataset (so that we can reset parameters). This is not a
         # parameter itself (the tied bias parameter is used for that), so gradients are disabled.
@@ -76,38 +92,27 @@ class SparseAutoencoder(Module):
         self.geometric_median_dataset.requires_grad = False
 
         # Initialize the tied bias
-        self.tied_bias = Parameter(torch.empty((n_input_features), device=device, dtype=dtype))
+        self.tied_bias = Parameter(torch.empty(n_input_features))
         self.initialize_tied_parameters()
 
-        self.encoder = Sequential(
-            OrderedDict(
-                {
-                    "TiedBias": TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER),
-                    "Linear": Linear(
-                        n_input_features, n_learned_features, bias=False, device=device, dtype=dtype
-                    ),
-                    "ReLU": ReLU(),
-                }
-            )
+        self._pre_encoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER)
+
+        self._encoder = LinearEncoder(
+            input_features=n_input_features, learnt_features=n_learned_features
         )
 
-        self.decoder = Sequential(
-            OrderedDict(
-                {
-                    "ConstrainedUnitNormLinear": ConstrainedUnitNormLinear(
-                        n_learned_features, n_input_features, bias=False, device=device, dtype=dtype
-                    ),
-                    "TiedBias": TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER),
-                }
-            )
+        self._decoder = UnitNormDecoder(
+            learnt_features=n_learned_features, decoded_features=n_input_features
         )
+
+        self._post_decoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER)
 
     def forward(
         self,
-        x: Float[Tensor, "batch input_activations"],
+        x: InputOutputActivationBatch,
     ) -> tuple[
-        Float[Tensor, "batch learned_activations"],
-        Float[Tensor, "batch input_activations"],
+        LearnedActivationBatch,
+        InputOutputActivationBatch,
     ]:
         """Forward Pass.
 
@@ -117,16 +122,16 @@ class SparseAutoencoder(Module):
         Returns:
             Tuple of learned activations and decoded activations.
         """
-        learned_activations = self.encoder(x)
-        decoded_activations = self.decoder(learned_activations)
+        x = self._pre_encoder_bias(x)
+        learned_activations = self._encoder(x)
+        x = self._decoder(learned_activations)
+        decoded_activations = self._post_decoder_bias(x)
         return learned_activations, decoded_activations
 
     def initialize_tied_parameters(self) -> None:
         """Initialize the tied parameters."""
         # The tied bias is initialised as the geometric median of the dataset
-        self.tied_bias.data = self.geometric_median_dataset.clone().to(
-            device=self.device, dtype=self.dtype
-        )
+        self.tied_bias.data = self.geometric_median_dataset
 
     def reset_parameters(self) -> None:
         """Reset the parameters."""
@@ -134,11 +139,3 @@ class SparseAutoencoder(Module):
         for module in self.network:
             if "reset_parameters" in dir(module):
                 module.reset_parameters()
-
-    def save_to_hf(self) -> None:
-        """Save the model to Hugging Face."""
-        raise NotImplementedError
-
-    def load_from_hf(self) -> None:
-        """Load the model from Hugging Face."""
-        raise NotImplementedError

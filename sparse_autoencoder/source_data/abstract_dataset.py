@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 from typing import Any, Generic, TypedDict, TypeVar, final
 
 from datasets import IterableDataset, load_dataset
-from jaxtyping import Int
-from torch import Tensor
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset as TorchDataset
+
+from sparse_autoencoder.tensor_types import BatchTokenizedPrompts
 
 
 TokenizedPrompt = list[int]
@@ -22,7 +22,7 @@ class TokenizedPrompts(TypedDict):
 class TorchTokenizedPrompts(TypedDict):
     """Tokenized prompts prepared for PyTorch."""
 
-    input_ids: Int[Tensor, "batch pos"]
+    input_ids: BatchTokenizedPrompts
 
 
 HuggingFaceDatasetItem = TypeVar("HuggingFaceDatasetItem", bound=Any)
