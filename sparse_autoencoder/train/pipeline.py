@@ -8,7 +8,7 @@ import wandb
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
-from sparse_autoencoder.src_model.store_activations_hook import store_activations_hook
+from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
 from sparse_autoencoder.train.abstract_pipeline import AbstractPipeline
 from sparse_autoencoder.train.utils import get_model_device
