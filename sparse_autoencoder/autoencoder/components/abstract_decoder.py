@@ -65,4 +65,4 @@ class AbstractDecoder(Module, ABC):
             return
 
         with torch.no_grad():
-            self.weight[dictionary_vector_indices, :] = updated_weights
+            self.weight[:, dictionary_vector_indices] = updated_weights

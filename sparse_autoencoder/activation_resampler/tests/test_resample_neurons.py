@@ -89,11 +89,10 @@ class TestComputeLossAndGetActivations:
         input_activations_fixture: Tensor,
     ) -> None:
         """Test it gets loss and also returns the input activations."""
-        loss, input_activations = ActivationResampler.compute_loss_and_get_activations(
+        loss, input_activations = ActivationResampler().compute_loss_and_get_activations(
             store=activation_store_fixture,
             autoencoder=autoencoder_model_fixture,
             loss_fn=MSEReconstructionLoss(),
-            num_inputs=DEFAULT_N_ITEMS,
             train_batch_size=DEFAULT_N_ITEMS,
         )
 
@@ -115,11 +114,12 @@ class TestComputeLossAndGetActivations:
             ValueError,
             match=r"Cannot get \d+ items from the store, as only \d+ were available.",
         ):
-            ActivationResampler.compute_loss_and_get_activations(
+            ActivationResampler(
+                resample_dataset_size=DEFAULT_N_ITEMS + 1
+            ).compute_loss_and_get_activations(
                 store=activation_store_fixture,
                 autoencoder=autoencoder_model_fixture,
                 loss_fn=MSEReconstructionLoss(),
-                num_inputs=DEFAULT_N_ITEMS + 1,
                 train_batch_size=DEFAULT_N_ITEMS + 1,
             )
 
@@ -266,7 +266,7 @@ class TestResampleDeadNeurons:
         model = SparseAutoencoder(5, 10, torch.rand(5))
 
         res = ActivationResampler().resample_dead_neurons(
-            neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS, DEFAULT_N_ITEMS
+            neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
         )
 
         assert res.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
@@ -290,7 +290,7 @@ class TestResampleDeadNeurons:
         # Get the current & updated parameters
         current_parameters = model.state_dict()
         updated_parameters: ParameterUpdateResults = ActivationResampler().resample_dead_neurons(
-            neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS, DEFAULT_N_ITEMS
+            neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
         )
 
         # Check the updated ones have changed

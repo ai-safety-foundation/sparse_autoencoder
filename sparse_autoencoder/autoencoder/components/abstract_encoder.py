@@ -64,7 +64,7 @@ class AbstractEncoder(Module, ABC):
             return
 
         with torch.no_grad():
-            self.weight[:, dictionary_vector_indices] = updated_dictionary_weights
+            self.weight[dictionary_vector_indices, :] = updated_dictionary_weights
 
     @final
     def update_bias(

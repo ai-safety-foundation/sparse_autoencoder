@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import final
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -35,6 +36,21 @@ class ParameterUpdateResults:
 class AbstractActivationResampler(ABC):
     """Abstract activation resampler."""
 
+    _resample_dataset_size: int | None = None
+    """Resample dataset size.
+
+    If none, will use the train dataset size.
+    """
+
+    @final
+    def __init__(self, resample_dataset_size: int | None = None) -> None:
+        """Initialize the abstract activation resampler.
+
+        Args:
+            resample_dataset_size: Resample dataset size. If none, will use the train dataset size.
+        """
+        self._resample_dataset_size = resample_dataset_size
+
     @abstractmethod
     def resample_dead_neurons(
         self,
@@ -43,7 +59,6 @@ class AbstractActivationResampler(ABC):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-        num_inputs: int = 819_200,
     ) -> ParameterUpdateResults:
         """Resample dead neurons.
 
@@ -53,8 +68,5 @@ class AbstractActivationResampler(ABC):
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
-            num_inputs: Number of input activations to use when resampling. Will be rounded down to
-                be divisible by the batch size, and cannot be larger than the number of items
-                currently in the store.
         """
         raise NotImplementedError

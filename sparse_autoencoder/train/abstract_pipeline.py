@@ -1,8 +1,10 @@
 """Abstract pipeline."""
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
+from pathlib import Path
 from typing import final
 
+import torch
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
@@ -58,6 +60,8 @@ class AbstractPipeline(ABC):
 
     progress_bar: tqdm | None
 
+    total_training_steps: int = 1
+
     @final
     def __init__(  # noqa: PLR0913
         self,
@@ -73,6 +77,7 @@ class AbstractPipeline(ABC):
         train_metrics: list[AbstractTrainMetric] | None = None,
         validation_metrics: list[AbstractValidationMetric] | None = None,
         source_data_batch_size: int = 12,
+        checkpoint_directory: Path | None = None,
     ):
         """Initialize the pipeline."""
         self.cache_name = cache_name
@@ -87,6 +92,7 @@ class AbstractPipeline(ABC):
         self.optimizer = optimizer
         self.loss = loss
         self.source_data_batch_size = source_data_batch_size
+        self.checkpoint_directory = checkpoint_directory
 
         source_dataloader = source_dataset.get_dataloader(source_data_batch_size)
         self.source_data = self.stateful_dataloader_iterable(source_dataloader)
@@ -149,10 +155,14 @@ class AbstractPipeline(ABC):
         """Get validation metrics."""
         raise NotImplementedError
 
-    @abstractmethod
+    @final
     def save_checkpoint(self) -> None:
         """Save the model as a checkpoint."""
-        raise NotImplementedError
+        if self.checkpoint_directory:
+            file_path: Path = (
+                self.checkpoint_directory / f"sae_state_dict-{self.total_training_steps}.pt"
+            )
+            torch.save(self.autoencoder.state_dict(), file_path)
 
     @final
     def run_pipeline(
@@ -195,6 +205,11 @@ class AbstractPipeline(ABC):
                     neuron_activity.add_(detached_neuron_activity)
                 else:
                     neuron_activity = detached_neuron_activity
+
+                # Update the counters
+                last_resampled += store_size
+                last_validated += store_size
+                last_checkpoint += store_size
 
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})
