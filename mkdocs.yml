@@ -1,14 +1,70 @@
 site_name: Sparse Autoencoder
+site_description: Sparse Autoencoder for Mechanistic Interpretability
 docs_dir: docs/content
 site_dir: docs/generated
+repo_url: https://github.com/ai-safety-foundation/sparse_autoencoder
+repo_name: ai-safety-foundation/sparse_autoencoder
+# strict: true
+
 theme:
-  name: readthedocs
+  name: material
+  features:
+    - navigation.sections # Sections are included in the navigation on the left.
+    - toc.integrate # Table of contents is integrated on the left; does not appear separately on the right.
+  palette:
+    - scheme: default
+      primary: white
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github # GitHub logo in top right
+    # logo: "material/circle-opacity" # Equinox logo in top left
+  # favicon: "_static/favicon.png"
+
+extra_javascript:
+  # The below three make MathJax work, see https://squidfunk.github.io/mkdocs-material/reference/mathjax/
+  - _static/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+markdown_extensions:
+  - pymdownx.arithmatex: # Render LaTeX via MathJax
+      generic: true
+  - pymdownx.superfences # Seems to enable syntax highlighting when used with the Material theme.
+  - pymdownx.details # Allowing hidden expandable regions denoted by ???
+  - pymdownx.snippets: # Include one Markdown file into another
+      base_path: docs
+  - admonition # Adds admonition blocks (e.g. warning, note, tip, etc.)
+  - toc:
+      permalink: "¤" # Adds a clickable permalink to each section heading
+      toc_depth: 4
+
 plugins:
-  - gen-files:
-      scripts:
-      - docs/gen_ref_pages.py
-  - mkdocstrings
   - search
   - autorefs
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+  - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            line_length: 100
+            members_order: source # Order methods according to their appearance in the source code, not alphabetical order
+            # setup_commands:
+            #   - import pytkdocs_tweaks
+            #   - pytkdocs_tweaks.main()
+            #   - import jaxtyping
+            #   - jaxtyping.set_array_name_format("array")
   - literate-nav:
       nav_file: SUMMARY.md
