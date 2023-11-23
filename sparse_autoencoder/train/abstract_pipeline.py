@@ -8,6 +8,7 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
+import wandb
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     AbstractActivationResampler,
@@ -15,11 +16,8 @@ from sparse_autoencoder.activation_resampler.abstract_activation_resampler impor
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
-from sparse_autoencoder.metrics import (
-    AbstractGenerateMetric,
-    AbstractTrainMetric,
-    AbstractValidationMetric,
-)
+from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
+from sparse_autoencoder.metrics.resample.abstract_resample_metric import ResampleMetricData
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.tensor_types import (
@@ -34,11 +32,7 @@ class AbstractPipeline(ABC):
         hyperparameters.
     """
 
-    generate_metrics: list[AbstractGenerateMetric]
-
-    train_metrics: list[AbstractTrainMetric]
-
-    validation_metrics: list[AbstractValidationMetric]
+    metrics: MetricsContainer
 
     source_model: HookedTransformer
 
@@ -73,18 +67,14 @@ class AbstractPipeline(ABC):
         optimizer: AbstractOptimizerWithReset,
         loss: AbstractLoss,
         activation_resampler: AbstractActivationResampler | None,
-        generate_metrics: list[AbstractGenerateMetric] | None = None,
-        train_metrics: list[AbstractTrainMetric] | None = None,
-        validation_metrics: list[AbstractValidationMetric] | None = None,
+        metrics: MetricsContainer | None = None,
         source_data_batch_size: int = 12,
         checkpoint_directory: Path | None = None,
     ):
         """Initialize the pipeline."""
         self.cache_name = cache_name
         self.layer = layer
-        self.generate_metrics = generate_metrics if generate_metrics else []
-        self.train_metrics = train_metrics if train_metrics else []
-        self.validation_metrics = validation_metrics if validation_metrics else []
+        self.metrics = metrics or default_metrics
         self.source_model = source_model
         self.source_dataset = source_dataset
         self.autoencoder = autoencoder
@@ -159,6 +149,19 @@ class AbstractPipeline(ABC):
                 parameter_updates.dead_neuron_indices,
                 parameter_updates.dead_decoder_weight_updates,
             )
+
+            # Log any metrics
+            with torch.no_grad():
+                metrics = {}
+                if wandb.run is not None:
+                    for metric in self.metrics.resample_metrics:
+                        calculated = metric.calculate(
+                            ResampleMetricData(
+                                neuron_activity=neuron_activity,
+                            )
+                        )
+                        metrics.update(calculated)
+                    wandb.log(metrics, commit=False)
 
             # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
             self.optimizer.reset_state_all_parameters()

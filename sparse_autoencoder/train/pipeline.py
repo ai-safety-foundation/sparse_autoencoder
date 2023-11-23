@@ -99,14 +99,14 @@ class Pipeline(AbstractPipeline):
             total_loss, loss_metrics = self.loss.batch_scalar_loss_with_log(
                 batch, learned_activations, reconstructed_activations
             )
-            metrics = {**loss_metrics}
+            metrics.update(loss_metrics)
 
             with torch.no_grad():
-                for metric in self.train_metrics:
+                for metric in self.metrics.train_metrics:
                     calculated = metric.calculate(
                         TrainMetricData(batch, learned_activations, reconstructed_activations)
                     )
-                    metrics = {**metrics, **calculated}
+                    metrics.update(calculated)
 
             # Store count of how many neurons have fired
             with torch.no_grad():
