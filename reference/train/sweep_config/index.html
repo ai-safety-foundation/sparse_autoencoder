@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../reference/train/utils/wandb_sweep_types/">
+        <link rel="prev" href="../pipeline/">
       
       
-        <link rel="next" href="../citation/">
+        <link rel="next" href="../utils/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
-        <title>Contributing - Sparse Autoencoder</title>
+        <title>sweep_config - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -48,17 +48,17 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../css/material_extra.css">
+      <link rel="stylesheet" href="../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#contributing" class="md-skip">
+        <a href="#sparse_autoencoder.train.sweep_config" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Contributing
+              sweep_config
             
           </span>
         </div>
@@ -233,7 +233,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -262,7 +262,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -281,7 +281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../demo/" class="md-nav__link">
+      <a href="../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -298,18 +298,20 @@
       
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -323,7 +325,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -336,7 +338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -370,7 +372,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/activation_resampler/" class="md-nav__link ">
+            <a href="../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -400,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -420,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -462,7 +464,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/activation_store/" class="md-nav__link ">
+            <a href="../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -492,7 +494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/base_store/" class="md-nav__link">
+      <a href="../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -512,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/disk_store/" class="md-nav__link">
+      <a href="../../activation_store/disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -532,7 +534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/list_store/" class="md-nav__link">
+      <a href="../../activation_store/list_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -552,7 +554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -586,7 +588,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/activation_store/utils/" class="md-nav__link ">
+            <a href="../../activation_store/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -616,7 +618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/utils/extend_resize/" class="md-nav__link">
+      <a href="../../activation_store/utils/extend_resize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +668,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/autoencoder/" class="md-nav__link ">
+            <a href="../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -696,7 +698,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -730,7 +732,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/autoencoder/components/" class="md-nav__link ">
+            <a href="../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -760,7 +762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -780,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -800,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -820,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -840,7 +842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -860,7 +862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -888,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/model/" class="md-nav__link">
+      <a href="../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -930,7 +932,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/loss/" class="md-nav__link ">
+            <a href="../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -960,7 +962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/abstract_loss/" class="md-nav__link">
+      <a href="../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -980,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1000,7 +1002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/mse_reconstruction_loss/" class="md-nav__link">
+      <a href="../../loss/mse_reconstruction_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1020,7 +1022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/reducer/" class="md-nav__link">
+      <a href="../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1062,7 +1064,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/" class="md-nav__link ">
+            <a href="../../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1106,7 +1108,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/generate/" class="md-nav__link ">
+            <a href="../../metrics/generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1136,7 +1138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1178,7 +1180,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/train/" class="md-nav__link ">
+            <a href="../../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1208,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1250,7 +1252,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/validate/" class="md-nav__link ">
+            <a href="../../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1280,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1330,7 +1332,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/optimizer/" class="md-nav__link ">
+            <a href="../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1360,7 +1362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1380,7 +1382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1422,7 +1424,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/source_data/" class="md-nav__link ">
+            <a href="../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1452,7 +1454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1472,7 +1474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1492,7 +1494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/random_int/" class="md-nav__link">
+      <a href="../../source_data/random_int/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1512,7 +1514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/text_dataset/" class="md-nav__link">
+      <a href="../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1554,7 +1556,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/source_model/" class="md-nav__link ">
+            <a href="../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1584,7 +1586,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1612,7 +1614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/tensor_types/" class="md-nav__link">
+      <a href="../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1630,23 +1632,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_11" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/train/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1663,7 +1667,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_11_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_11_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_11">
             <span class="md-nav__icon md-icon"></span>
             train
@@ -1676,7 +1680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/abstract_pipeline/" class="md-nav__link">
+      <a href="../abstract_pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1710,7 +1714,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/train/metrics/" class="md-nav__link ">
+            <a href="../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1740,7 +1744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/metrics/capacity/" class="md-nav__link">
+      <a href="../metrics/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1760,7 +1764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/metrics/feature_density/" class="md-nav__link">
+      <a href="../metrics/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1788,7 +1792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/pipeline/" class="md-nav__link">
+      <a href="../pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1806,9 +1810,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../reference/train/sweep_config/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    sweep_config
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1817,6 +1839,159 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      sweep_config
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      SweepConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SweepConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepConfig.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      SweepParameterConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SweepParameterConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_beta_1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_beta_2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_epsilon" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_epsilon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_weight_decay" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_weight_decay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.batch_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      batch_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.l1_coefficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      l1_coefficient
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.lr" class="md-nav__link">
+    <span class="md-ellipsis">
+      lr
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParametersRuntime" class="md-nav__link">
+    <span class="md-ellipsis">
+      SweepParametersRuntime
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SweepParametersRuntime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParametersRuntime.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1842,7 +2017,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/train/utils/" class="md-nav__link ">
+            <a href="../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1872,7 +2047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/utils/get_model_device/" class="md-nav__link">
+      <a href="../utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1892,7 +2067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1933,29 +2108,9 @@
       
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Contributing
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1964,101 +2119,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Setup
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Checks
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#docstring-style-guide" class="md-nav__link">
-    <span class="md-ellipsis">
-      Docstring Style Guide
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Docstring Style Guide">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sections-and-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sections and Order
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#supported-sphinx-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      Supported Sphinx Properties
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#markup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Markup
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2069,7 +2129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../citation/" class="md-nav__link">
+      <a href="../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2099,8 +2159,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2109,65 +2167,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#sparse_autoencoder.train.sweep_config" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      sweep_config
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#checks" class="md-nav__link">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepConfig" class="md-nav__link">
     <span class="md-ellipsis">
-      Checks
+      SweepConfig
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Documentation">
+    <nav class="md-nav" aria-label="SweepConfig">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#docstring-style-guide" class="md-nav__link">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepConfig.to_dict" class="md-nav__link">
     <span class="md-ellipsis">
-      Docstring Style Guide
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Docstring Style Guide">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sections-and-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sections and Order
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#supported-sphinx-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      Supported Sphinx Properties
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#markup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Markup
+      to_dict()
     </span>
   </a>
   
@@ -2175,6 +2196,103 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      SweepParameterConfig
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SweepParameterConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_beta_1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_beta_2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_epsilon" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_epsilon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_weight_decay" class="md-nav__link">
+    <span class="md-ellipsis">
+      adam_weight_decay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.batch_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      batch_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.l1_coefficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      l1_coefficient
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.lr" class="md-nav__link">
+    <span class="md-ellipsis">
+      lr
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParametersRuntime" class="md-nav__link">
+    <span class="md-ellipsis">
+      SweepParametersRuntime
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SweepParametersRuntime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.sweep_config.SweepParametersRuntime.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict()
+    </span>
+  </a>
   
 </li>
         
@@ -2201,100 +2319,579 @@
   
 
 
-<h1 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">¤</a></h1>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">¤</a></h2>
-<p>This project uses <a href="https://python-poetry.org">Poetry</a> for dependency management, and
-<a href="https://poethepoet.natn.io/installation.html">PoeThePoet</a> for scripts. After checking out the repo,
-we recommend setting poetry's config to create the <code>.venv</code> in the root directory (note this is a
-global setting) and then installing with the dev and demos dependencies.</p>
-<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.in-project<span class="w"> </span><span class="nb">true</span>
-poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span>dev,demos
-</code></pre></div>
-<p>If you are using VSCode we highly recommend installing the recommended extensions as well (it will
-prompt you to do this when you checkout the repo).</p>
-<h2 id="checks">Checks<a class="headerlink" href="#checks" title="Permanent link">¤</a></h2>
-<p>For a full list of available commands (e.g. <code>test</code> or <code>typecheck</code>), run this in your terminal
-(assumes the venv is active already).</p>
-<div class="highlight"><pre><span></span><code>poe
-</code></pre></div>
-<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h2>
-<p>Please make sure to add thorough documentation for any features you add. You should do this directly
-in the docstring, and this will then automatically generate the API docs when merged into <code>main</code>.
-They will also be automatically checked with <a href="https://docs.pytest.org/">pytest</a> (via
-<a href="https://docs.python.org/3/library/doctest.html">doctest</a>).</p>
-<p>If you want to view your documentation changes, run <code>poe docs-hot-reload</code>. This will give you
-hot-reloading docs (they change in real time as you edit docstrings).</p>
-<h3 id="docstring-style-guide">Docstring Style Guide<a class="headerlink" href="#docstring-style-guide" title="Permanent link">¤</a></h3>
-<p>We follow the <a href="https://google.github.io/styleguide/pyguide.html">Google Python Docstring Style</a> for
-writing docstrings. Some important details below:</p>
-<h4 id="sections-and-order">Sections and Order<a class="headerlink" href="#sections-and-order" title="Permanent link">¤</a></h4>
-<p>You should follow this order:</p>
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Title In Title Case.</span>
+  <h1>sweep_config</h1>
 
-<span class="sd">A description of what the function/class does, including as much detail as is necessary to fully understand it.</span>
+<div class="doc doc-object doc-module">
 
-<span class="sd">Warning:</span>
 
-<span class="sd">Any warnings to the user (e.g. common pitfalls).</span>
 
-<span class="sd">Examples:</span>
+<a id="sparse_autoencoder.train.sweep_config"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Sweep Config.</p>
 
-<span class="sd">Include any examples here. They will be checked with doctest.</span>
+  
 
-<span class="sd">  &gt;&gt;&gt; print(1 + 2)</span>
-<span class="sd">  3</span>
+  <div class="doc doc-children">
 
-<span class="sd">Args:</span>
-<span class="sd">    param_without_type_signature:</span>
-<span class="sd">        Each description should be indented once more.</span>
-<span class="sd">    param_2:</span>
-<span class="sd">        Another example parameter.</span>
 
-<span class="sd">Returns:</span>
-<span class="sd">    Returns description without type signature.</span>
 
-<span class="sd">Raises:</span>
-<span class="sd">    Information about the error it may raise (if any).</span>
-<span class="sd">&quot;&quot;&quot;</span>
-</code></pre></div>
-<h4 id="supported-sphinx-properties">Supported Sphinx Properties<a class="headerlink" href="#supported-sphinx-properties" title="Permanent link">¤</a></h4>
-<h5 id="references-to-other-functionsclasses">References to Other Functions/Classes<a class="headerlink" href="#references-to-other-functionsclasses" title="Permanent link">¤</a></h5>
-<p>You can reference other parts of the codebase using
-<a href="https://www.sphinx-doc.org/en/master/usage/domains/python.html#cross-referencing-python-objects">cross-referencing</a>
-(noting that you can omit the full path if it is in the same file).</p>
-<div class="highlight"><pre><span></span><code>:mod:transformer_lens # Function or module
 
-<span class="na">:const:</span><span class="nv">`transformer_lens.loading_from_pretrained.OFFICIAL_MODEL_NAMES`</span>
 
-<span class="na">:class:</span><span class="nv">`transformer_lens.HookedTransformer`</span>
 
-<span class="na">:meth:</span><span class="nv">`transformer_lens.HookedTransformer.from_pretrained`</span>
 
-<span class="na">:attr:</span><span class="nv">`transformer_lens.HookedTransformer.cfg`</span>
-</code></pre></div>
-<h5 id="maths">Maths<a class="headerlink" href="#maths" title="Permanent link">¤</a></h5>
-<p>You can use LaTeX, but note that as you're placing this in python strings the backwards slash (<code>\</code>)
-must be repeated (i.e. <code>\\</code>). You can write LaTeX inline, or in "display mode".</p>
-<div class="highlight"><pre><span></span><code><span class="na">:math:</span><span class="nv">`(a + b)^2 = a^2 + 2ab + b^2`</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
-   <span class="nc">:nowrap:</span>
 
-   \\begin{eqnarray}
-      y    &amp; = &amp; ax^2 + bx + c \\
-      f(x) &amp; = &amp; x^2 + 2xy + y^2
-   \\end{eqnarray}
-</code></pre></div>
-<h4 id="markup">Markup<a class="headerlink" href="#markup" title="Permanent link">¤</a></h4>
-<ul>
-<li>Italics - <code>*text*</code></li>
-<li>Bold - <code>**text**</code></li>
-<li>Code - <code>``code``</code></li>
-<li>List items - <code>*item</code></li>
-<li>Numbered items - <code>1. Item</code></li>
-<li>Quotes - indent one level</li>
-<li>External links = <code>`Link text &lt;https://domain.invalid/&gt;`</code></li>
-</ul>
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.train.sweep_config.SweepConfig" class="doc doc-heading">
+          <code>SweepConfig</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepConfig" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.train.utils.wandb_sweep_types.WandbSweepConfig" href="../utils/wandb_sweep_types/#sparse_autoencoder.train.utils.wandb_sweep_types.WandbSweepConfig">WandbSweepConfig</a></code></p>
+
+  
+      <p>Sweep Config.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SweepConfig</span><span class="p">(</span><span class="n">WandbSweepConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sweep Config.&quot;&quot;&quot;</span>
+
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">SweepParameterConfig</span>
+
+    <span class="n">method</span><span class="p">:</span> <span class="n">Method</span> <span class="o">=</span> <span class="n">Method</span><span class="o">.</span><span class="n">grid</span>
+
+    <span class="n">metric</span><span class="p">:</span> <span class="n">Metric</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Metric</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict representation of this object.&quot;&quot;&quot;</span>
+        <span class="n">dict_representation</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Convert StrEnums to strings</span>
+        <span class="n">dict_representation</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict_representation</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">dict_representation</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepConfig.to_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepConfig.to_dict" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return dict representation of this object.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return dict representation of this object.&quot;&quot;&quot;</span>
+    <span class="n">dict_representation</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># Convert StrEnums to strings</span>
+    <span class="n">dict_representation</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict_representation</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">dict_representation</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig" class="doc doc-heading">
+          <code>SweepParameterConfig</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="sparse_autoencoder.train.utils.wandb_sweep_types.Parameters">Parameters</span></code></p>
+
+  
+      <p>Sweep Parameter Config.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SweepParameterConfig</span><span class="p">(</span><span class="n">Parameters</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sweep Parameter Config.&quot;&quot;&quot;</span>
+
+    <span class="n">lr</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Learning Rate.&quot;&quot;&quot;</span>
+
+    <span class="n">adam_beta_1</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Beta 1.</span>
+
+<span class="sd">    The exponential decay rate for the first moment estimates (mean) of the gradient.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">adam_beta_2</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Beta 2.</span>
+
+<span class="sd">    The exponential decay rate for the second moment estimates (variance) of the gradient.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">adam_epsilon</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Epsilon.</span>
+
+<span class="sd">    A small constant for numerical stability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">adam_weight_decay</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Weight Decay.</span>
+
+<span class="sd">    Weight decay (L2 penalty).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">l1_coefficient</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;L1 Penalty Coefficient.</span>
+
+<span class="sd">    The L1 penalty is the absolute sum of learned (hidden) activations, multiplied by this constant.</span>
+<span class="sd">    The penalty encourages sparsity in the learned activations. This loss penalty can be reduced by</span>
+<span class="sd">    using more features, or using a lower L1 coefficient.</span>
+
+<span class="sd">    Default values from the [original</span>
+<span class="sd">    paper](https://transformer-circuits.pub/2023/monosemantic-features/index.html).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">batch_size</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Batch size.</span>
+
+<span class="sd">    Used in SAE Forward Pass.&quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_1" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">adam_beta_1</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_1" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Adam Beta 1.</p>
+<p>The exponential decay rate for the first moment estimates (mean) of the gradient.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_2" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">adam_beta_2</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_beta_2" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Adam Beta 2.</p>
+<p>The exponential decay rate for the second moment estimates (variance) of the gradient.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_epsilon" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">adam_epsilon</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_epsilon" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Adam Epsilon.</p>
+<p>A small constant for numerical stability.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_weight_decay" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">adam_weight_decay</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.adam_weight_decay" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Adam Weight Decay.</p>
+<p>Weight decay (L2 penalty).</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.batch_size" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">batch_size</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.batch_size" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Batch size.</p>
+<p>Used in SAE Forward Pass.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.l1_coefficient" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">l1_coefficient</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.l1_coefficient" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>L1 Penalty Coefficient.</p>
+<p>The L1 penalty is the absolute sum of learned (hidden) activations, multiplied by this constant.
+The penalty encourages sparsity in the learned activations. This loss penalty can be reduced by
+using more features, or using a lower L1 coefficient.</p>
+<p>Default values from the <a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html">original
+paper</a>.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParameterConfig.lr" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">lr</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParameterConfig.lr" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Adam Learning Rate.</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.train.sweep_config.SweepParametersRuntime" class="doc doc-heading">
+          <code>SweepParametersRuntime</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParametersRuntime" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code>dict[str, <span title="typing.Any">Any</span>]</code></p>
+
+  
+      <p>Sweep parameter runtime values.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SweepParametersRuntime</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sweep parameter runtime values.&quot;&quot;&quot;</span>
+
+    <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+    <span class="n">adam_beta_1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span>
+
+    <span class="n">adam_beta_2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.999</span>
+
+    <span class="n">adam_epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+    <span class="n">adam_weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">l1_coefficient</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4096</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict representation of this object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.train.sweep_config.SweepParametersRuntime.to_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+<a href="#sparse_autoencoder.train.sweep_config.SweepParametersRuntime.to_dict" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return dict representation of this object.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return dict representation of this object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
@@ -2333,12 +2930,12 @@ must be repeated (i.e. <code>\\</code>). You can write LaTeX inline, or in "disp
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
-        <script src="../javascript/mathjax.js"></script>
+        <script src="../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

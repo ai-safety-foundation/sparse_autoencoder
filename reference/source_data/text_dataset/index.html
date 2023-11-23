@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../reference/train/utils/wandb_sweep_types/">
+        <link rel="prev" href="../random_int/">
       
       
-        <link rel="next" href="../citation/">
+        <link rel="next" href="../../source_model/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
-        <title>Contributing - Sparse Autoencoder</title>
+        <title>text_dataset - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -48,17 +48,17 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../css/material_extra.css">
+      <link rel="stylesheet" href="../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#contributing" class="md-skip">
+        <a href="#sparse_autoencoder.source_data.text_dataset" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Contributing
+              text_dataset
             
           </span>
         </div>
@@ -233,7 +233,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -262,7 +262,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -281,7 +281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../demo/" class="md-nav__link">
+      <a href="../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -298,18 +298,20 @@
       
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -323,7 +325,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -336,7 +338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -370,7 +372,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/activation_resampler/" class="md-nav__link ">
+            <a href="../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -400,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -420,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -462,7 +464,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/activation_store/" class="md-nav__link ">
+            <a href="../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -492,7 +494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/base_store/" class="md-nav__link">
+      <a href="../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -512,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/disk_store/" class="md-nav__link">
+      <a href="../../activation_store/disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -532,7 +534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/list_store/" class="md-nav__link">
+      <a href="../../activation_store/list_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -552,7 +554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -586,7 +588,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/activation_store/utils/" class="md-nav__link ">
+            <a href="../../activation_store/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -616,7 +618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/activation_store/utils/extend_resize/" class="md-nav__link">
+      <a href="../../activation_store/utils/extend_resize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +668,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/autoencoder/" class="md-nav__link ">
+            <a href="../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -696,7 +698,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -730,7 +732,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/autoencoder/components/" class="md-nav__link ">
+            <a href="../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -760,7 +762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -780,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -800,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -820,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -840,7 +842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -860,7 +862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -888,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/model/" class="md-nav__link">
+      <a href="../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -930,7 +932,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/loss/" class="md-nav__link ">
+            <a href="../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -960,7 +962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/abstract_loss/" class="md-nav__link">
+      <a href="../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -980,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1000,7 +1002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/mse_reconstruction_loss/" class="md-nav__link">
+      <a href="../../loss/mse_reconstruction_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1020,7 +1022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/loss/reducer/" class="md-nav__link">
+      <a href="../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1062,7 +1064,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/" class="md-nav__link ">
+            <a href="../../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1106,7 +1108,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/generate/" class="md-nav__link ">
+            <a href="../../metrics/generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1136,7 +1138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1178,7 +1180,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/train/" class="md-nav__link ">
+            <a href="../../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1208,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1250,7 +1252,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/metrics/validate/" class="md-nav__link ">
+            <a href="../../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1280,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1330,7 +1332,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/optimizer/" class="md-nav__link ">
+            <a href="../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1360,7 +1362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1380,7 +1382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1406,23 +1408,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/source_data/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1439,7 +1443,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_8">
             <span class="md-nav__icon md-icon"></span>
             source_data
@@ -1452,7 +1456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1472,7 +1476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1492,7 +1496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_data/random_int/" class="md-nav__link">
+      <a href="../random_int/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1510,9 +1514,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../reference/source_data/text_dataset/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    text_dataset
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1521,6 +1543,75 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.source_data.text_dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      text_dataset
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      GenericTextDataBatch
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      GenericTextDataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GenericTextDataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset.preprocess" class="md-nav__link">
+    <span class="md-ellipsis">
+      preprocess()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1554,7 +1645,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/source_model/" class="md-nav__link ">
+            <a href="../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1584,7 +1675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1612,7 +1703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/tensor_types/" class="md-nav__link">
+      <a href="../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1646,7 +1737,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/train/" class="md-nav__link ">
+            <a href="../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1676,7 +1767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/abstract_pipeline/" class="md-nav__link">
+      <a href="../../train/abstract_pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1710,7 +1801,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/train/metrics/" class="md-nav__link ">
+            <a href="../../train/metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1740,7 +1831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/metrics/capacity/" class="md-nav__link">
+      <a href="../../train/metrics/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1760,7 +1851,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/metrics/feature_density/" class="md-nav__link">
+      <a href="../../train/metrics/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1788,7 +1879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/pipeline/" class="md-nav__link">
+      <a href="../../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1808,7 +1899,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/sweep_config/" class="md-nav__link">
+      <a href="../../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1842,7 +1933,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../reference/train/utils/" class="md-nav__link ">
+            <a href="../../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1872,7 +1963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/utils/get_model_device/" class="md-nav__link">
+      <a href="../../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1892,7 +1983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1933,29 +2024,9 @@
       
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Contributing
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1964,101 +2035,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Setup
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Checks
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#docstring-style-guide" class="md-nav__link">
-    <span class="md-ellipsis">
-      Docstring Style Guide
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Docstring Style Guide">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sections-and-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sections and Order
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#supported-sphinx-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      Supported Sphinx Properties
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#markup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Markup
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2069,7 +2045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../citation/" class="md-nav__link">
+      <a href="../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2099,8 +2075,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2109,72 +2083,48 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#sparse_autoencoder.source_data.text_dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      text_dataset
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#checks" class="md-nav__link">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="md-nav__link">
     <span class="md-ellipsis">
-      Checks
+      GenericTextDataBatch
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation
+      GenericTextDataset
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Documentation">
+    <nav class="md-nav" aria-label="GenericTextDataset">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#docstring-style-guide" class="md-nav__link">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      Docstring Style Guide
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Docstring Style Guide">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sections-and-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sections and Order
+      __init__()
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#supported-sphinx-properties" class="md-nav__link">
+  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset.preprocess" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Sphinx Properties
+      preprocess()
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#markup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Markup
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -2201,100 +2151,625 @@
   
 
 
-<h1 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">¤</a></h1>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">¤</a></h2>
-<p>This project uses <a href="https://python-poetry.org">Poetry</a> for dependency management, and
-<a href="https://poethepoet.natn.io/installation.html">PoeThePoet</a> for scripts. After checking out the repo,
-we recommend setting poetry's config to create the <code>.venv</code> in the root directory (note this is a
-global setting) and then installing with the dev and demos dependencies.</p>
-<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.in-project<span class="w"> </span><span class="nb">true</span>
-poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span>dev,demos
-</code></pre></div>
-<p>If you are using VSCode we highly recommend installing the recommended extensions as well (it will
-prompt you to do this when you checkout the repo).</p>
-<h2 id="checks">Checks<a class="headerlink" href="#checks" title="Permanent link">¤</a></h2>
-<p>For a full list of available commands (e.g. <code>test</code> or <code>typecheck</code>), run this in your terminal
-(assumes the venv is active already).</p>
-<div class="highlight"><pre><span></span><code>poe
-</code></pre></div>
-<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h2>
-<p>Please make sure to add thorough documentation for any features you add. You should do this directly
-in the docstring, and this will then automatically generate the API docs when merged into <code>main</code>.
-They will also be automatically checked with <a href="https://docs.pytest.org/">pytest</a> (via
-<a href="https://docs.python.org/3/library/doctest.html">doctest</a>).</p>
-<p>If you want to view your documentation changes, run <code>poe docs-hot-reload</code>. This will give you
-hot-reloading docs (they change in real time as you edit docstrings).</p>
-<h3 id="docstring-style-guide">Docstring Style Guide<a class="headerlink" href="#docstring-style-guide" title="Permanent link">¤</a></h3>
-<p>We follow the <a href="https://google.github.io/styleguide/pyguide.html">Google Python Docstring Style</a> for
-writing docstrings. Some important details below:</p>
-<h4 id="sections-and-order">Sections and Order<a class="headerlink" href="#sections-and-order" title="Permanent link">¤</a></h4>
-<p>You should follow this order:</p>
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Title In Title Case.</span>
+  <h1>text_dataset</h1>
 
-<span class="sd">A description of what the function/class does, including as much detail as is necessary to fully understand it.</span>
+<div class="doc doc-object doc-module">
 
-<span class="sd">Warning:</span>
 
-<span class="sd">Any warnings to the user (e.g. common pitfalls).</span>
 
-<span class="sd">Examples:</span>
+<a id="sparse_autoencoder.source_data.text_dataset"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Generic Text Dataset Module for Hugging Face Datasets.</p>
+<p>GenericTextDataset should work with the following datasets:
+- monology/pile-uncopyrighted
+- the_pile_openwebtext2
+- roneneldan/TinyStories-33M
+- roneneldan/TinyStories-8M
+- roneneldan/TinyStories-3M
+- roneneldan/TinyStories-1Layer-21M
+- roneneldan/TinyStories-1M
+- roneneldan/TinyStories-2Layers-33M
+- roneneldan/TinyStories-Instruct-2Layers-33M
+- roneneldan/TinyStories-Instruct-28M
+- roneneldan/TinyStories-Instruct-33M
+- roneneldan/TinyStories-Instruct-8M
+- roneneldan/TinyStories-Instruct-3M
+- roneneldan/TinyStories-Instruct-1M
+- roneneldan/TinyStories-Instuct-1Layer-21M
+- roneneldan/TinyStories-28M</p>
 
-<span class="sd">Include any examples here. They will be checked with doctest.</span>
+  
 
-<span class="sd">  &gt;&gt;&gt; print(1 + 2)</span>
-<span class="sd">  3</span>
+  <div class="doc doc-children">
 
-<span class="sd">Args:</span>
-<span class="sd">    param_without_type_signature:</span>
-<span class="sd">        Each description should be indented once more.</span>
-<span class="sd">    param_2:</span>
-<span class="sd">        Another example parameter.</span>
 
-<span class="sd">Returns:</span>
-<span class="sd">    Returns description without type signature.</span>
 
-<span class="sd">Raises:</span>
-<span class="sd">    Information about the error it may raise (if any).</span>
-<span class="sd">&quot;&quot;&quot;</span>
-</code></pre></div>
-<h4 id="supported-sphinx-properties">Supported Sphinx Properties<a class="headerlink" href="#supported-sphinx-properties" title="Permanent link">¤</a></h4>
-<h5 id="references-to-other-functionsclasses">References to Other Functions/Classes<a class="headerlink" href="#references-to-other-functionsclasses" title="Permanent link">¤</a></h5>
-<p>You can reference other parts of the codebase using
-<a href="https://www.sphinx-doc.org/en/master/usage/domains/python.html#cross-referencing-python-objects">cross-referencing</a>
-(noting that you can omit the full path if it is in the same file).</p>
-<div class="highlight"><pre><span></span><code>:mod:transformer_lens # Function or module
 
-<span class="na">:const:</span><span class="nv">`transformer_lens.loading_from_pretrained.OFFICIAL_MODEL_NAMES`</span>
 
-<span class="na">:class:</span><span class="nv">`transformer_lens.HookedTransformer`</span>
 
-<span class="na">:meth:</span><span class="nv">`transformer_lens.HookedTransformer.from_pretrained`</span>
 
-<span class="na">:attr:</span><span class="nv">`transformer_lens.HookedTransformer.cfg`</span>
-</code></pre></div>
-<h5 id="maths">Maths<a class="headerlink" href="#maths" title="Permanent link">¤</a></h5>
-<p>You can use LaTeX, but note that as you're placing this in python strings the backwards slash (<code>\</code>)
-must be repeated (i.e. <code>\\</code>). You can write LaTeX inline, or in "display mode".</p>
-<div class="highlight"><pre><span></span><code><span class="na">:math:</span><span class="nv">`(a + b)^2 = a^2 + 2ab + b^2`</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
-   <span class="nc">:nowrap:</span>
 
-   \\begin{eqnarray}
-      y    &amp; = &amp; ax^2 + bx + c \\
-      f(x) &amp; = &amp; x^2 + 2xy + y^2
-   \\end{eqnarray}
-</code></pre></div>
-<h4 id="markup">Markup<a class="headerlink" href="#markup" title="Permanent link">¤</a></h4>
-<ul>
-<li>Italics - <code>*text*</code></li>
-<li>Bold - <code>**text**</code></li>
-<li>Code - <code>``code``</code></li>
-<li>List items - <code>*item</code></li>
-<li>Numbered items - <code>1. Item</code></li>
-<li>Quotes - indent one level</li>
-<li>External links = <code>`Link text &lt;https://domain.invalid/&gt;`</code></li>
-</ul>
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="doc doc-heading">
+          <code>GenericTextDataBatch</code>
+
+
+<a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+
+  
+      <p>Generic Text Dataset Batch.</p>
+<p>Assumes the dataset provides a 'text' field with a list of strings.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GenericTextDataBatch</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic Text Dataset Batch.</span>
+
+<span class="sd">    Assumes the dataset provides a &#39;text&#39; field with a list of strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">text</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">meta</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>  <span class="c1"># Optional, depending on the dataset structure.</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.source_data.text_dataset.GenericTextDataset" class="doc doc-heading">
+          <code>GenericTextDataset</code>
+
+
+<a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch">GenericTextDataBatch</a>]</code></p>
+
+  
+      <p>Generic Text Dataset for any text-based dataset from Hugging Face.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">class</span> <span class="nc">GenericTextDataset</span><span class="p">(</span><span class="n">SourceDataset</span><span class="p">[</span><span class="n">GenericTextDataBatch</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic Text Dataset for any text-based dataset from Hugging Face.&quot;&quot;&quot;</span>
+
+    <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span>
+
+    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source_batch</span><span class="p">:</span> <span class="n">GenericTextDataBatch</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Preprocess a batch of prompts.</span>
+
+<span class="sd">        Tokenizes and chunks text data into lists of tokenized prompts with specified context size.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source_batch: A batch of source data, including &#39;text&#39; with a list of strings.</span>
+<span class="sd">            context_size: Context size for tokenized prompts.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tokenized prompts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+        <span class="n">tokenized_prompts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Chunk each tokenized prompt into blocks of context_size, discarding incomplete blocks.</span>
+        <span class="n">context_size_prompts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">tokenized_prompts</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]):</span>  <span class="c1"># type: ignore</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="n">context_size</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">])</span> <span class="o">==</span> <span class="n">context_size</span>
+            <span class="p">]</span>
+            <span class="n">context_size_prompts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">context_size_prompts</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span><span class="p">,</span>
+        <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;monology/pile-uncopyrighted&quot;</span><span class="p">,</span>
+        <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a generic text dataset from Hugging Face.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tokenizer: Tokenizer to process text data.</span>
+<span class="sd">            context_size: Context size for tokenized prompts.</span>
+<span class="sd">            buffer_size: Buffer size for shuffling the dataset.</span>
+<span class="sd">            preprocess_batch_size: Batch size for preprocessing.</span>
+<span class="sd">            dataset_path: Path to the dataset on Hugging Face.</span>
+<span class="sd">            dataset_split: Dataset split (e.g., &#39;train&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
+            <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
+            <span class="n">context_size</span><span class="o">=</span><span class="n">context_size</span><span class="p">,</span>
+            <span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span>
+            <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.source_data.text_dataset.GenericTextDataset.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_path</span><span class="o">=</span><span class="s1">&#39;monology/pile-uncopyrighted&#39;</span><span class="p">,</span> <span class="n">dataset_split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize a generic text dataset from Hugging Face.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>tokenizer</code></td>
+          <td>
+                <code><span title="transformers.PreTrainedTokenizerBase">PreTrainedTokenizerBase</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Tokenizer to process text data.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>context_size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Context size for tokenized prompts.</p>
+            </div>
+          </td>
+          <td>
+                <code>250</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>buffer_size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Buffer size for shuffling the dataset.</p>
+            </div>
+          </td>
+          <td>
+                <code>1000</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>preprocess_batch_size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Batch size for preprocessing.</p>
+            </div>
+          </td>
+          <td>
+                <code>1000</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>dataset_path</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to the dataset on Hugging Face.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;monology/pile-uncopyrighted&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>dataset_split</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Dataset split (e.g., 'train').</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;train&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span><span class="p">,</span>
+    <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;monology/pile-uncopyrighted&quot;</span><span class="p">,</span>
+    <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a generic text dataset from Hugging Face.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tokenizer: Tokenizer to process text data.</span>
+<span class="sd">        context_size: Context size for tokenized prompts.</span>
+<span class="sd">        buffer_size: Buffer size for shuffling the dataset.</span>
+<span class="sd">        preprocess_batch_size: Batch size for preprocessing.</span>
+<span class="sd">        dataset_path: Path to the dataset on Hugging Face.</span>
+<span class="sd">        dataset_split: Dataset split (e.g., &#39;train&#39;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
+
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
+        <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
+        <span class="n">context_size</span><span class="o">=</span><span class="n">context_size</span><span class="p">,</span>
+        <span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span>
+        <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.source_data.text_dataset.GenericTextDataset.preprocess" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">preprocess</span><span class="p">(</span><span class="n">source_batch</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">context_size</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataset.preprocess" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Preprocess a batch of prompts.</p>
+<p>Tokenizes and chunks text data into lists of tokenized prompts with specified context size.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>source_batch</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch">GenericTextDataBatch</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A batch of source data, including 'text' with a list of strings.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>context_size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Context size for tokenized prompts.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TokenizedPrompts" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TokenizedPrompts">TokenizedPrompts</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Tokenized prompts.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source_batch</span><span class="p">:</span> <span class="n">GenericTextDataBatch</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Preprocess a batch of prompts.</span>
+
+<span class="sd">    Tokenizes and chunks text data into lists of tokenized prompts with specified context size.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source_batch: A batch of source data, including &#39;text&#39; with a list of strings.</span>
+<span class="sd">        context_size: Context size for tokenized prompts.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tokenized prompts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+
+    <span class="n">tokenized_prompts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Chunk each tokenized prompt into blocks of context_size, discarding incomplete blocks.</span>
+    <span class="n">context_size_prompts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">tokenized_prompts</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="n">context_size</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">])</span> <span class="o">==</span> <span class="n">context_size</span>
+        <span class="p">]</span>
+        <span class="n">context_size_prompts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">context_size_prompts</span><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
@@ -2333,12 +2808,12 @@ must be repeated (i.e. <code>\\</code>). You can write LaTeX inline, or in "disp
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
-        <script src="../javascript/mathjax.js"></script>
+        <script src="../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

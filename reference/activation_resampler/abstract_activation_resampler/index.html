@@ -11,23 +11,25 @@
       
       
       
+        <link rel="prev" href="../">
       
-        <link rel="next" href="demo/">
+      
+        <link rel="next" href="../activation_resampler/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
-        <title>Sparse Autoencoder</title>
+        <title>abstract_activation_resampler - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -46,17 +48,17 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="css/material_extra.css">
+      <link rel="stylesheet" href="../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -85,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#home" class="md-skip">
+        <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +103,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -121,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              abstract_activation_resampler
             
           </span>
         </div>
@@ -231,7 +233,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -258,29 +260,9 @@
       
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -289,35 +271,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -328,7 +281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="demo/" class="md-nav__link">
+      <a href="../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -345,18 +298,20 @@
       
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -370,7 +325,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -383,7 +338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -401,23 +356,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/activation_resampler/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -434,7 +391,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             activation_resampler
@@ -445,9 +402,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="reference/activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    abstract_activation_resampler
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -456,6 +431,117 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      abstract_activation_resampler
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      AbstractActivationResampler
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AbstractActivationResampler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.resample_dead_neurons" class="md-nav__link">
+    <span class="md-ellipsis">
+      resample_dead_neurons()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults" class="md-nav__link">
+    <span class="md-ellipsis">
+      ParameterUpdateResults
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ParameterUpdateResults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_decoder_weight_updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_decoder_weight_updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_bias_updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_encoder_bias_updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_weight_updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_encoder_weight_updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_neuron_indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_neuron_indices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -467,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -509,7 +595,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/activation_store/" class="md-nav__link ">
+            <a href="../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -539,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/base_store/" class="md-nav__link">
+      <a href="../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -559,7 +645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/disk_store/" class="md-nav__link">
+      <a href="../../activation_store/disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -579,7 +665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/list_store/" class="md-nav__link">
+      <a href="../../activation_store/list_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -599,7 +685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -633,7 +719,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/activation_store/utils/" class="md-nav__link ">
+            <a href="../../activation_store/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -663,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/utils/extend_resize/" class="md-nav__link">
+      <a href="../../activation_store/utils/extend_resize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -713,7 +799,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/autoencoder/" class="md-nav__link ">
+            <a href="../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -743,7 +829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -777,7 +863,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/autoencoder/components/" class="md-nav__link ">
+            <a href="../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -807,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -827,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -847,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -867,7 +953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -887,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -907,7 +993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -935,7 +1021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/model/" class="md-nav__link">
+      <a href="../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -977,7 +1063,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/loss/" class="md-nav__link ">
+            <a href="../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1007,7 +1093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/abstract_loss/" class="md-nav__link">
+      <a href="../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1027,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1047,7 +1133,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/mse_reconstruction_loss/" class="md-nav__link">
+      <a href="../../loss/mse_reconstruction_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1067,7 +1153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/reducer/" class="md-nav__link">
+      <a href="../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1109,7 +1195,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/" class="md-nav__link ">
+            <a href="../../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1153,7 +1239,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/generate/" class="md-nav__link ">
+            <a href="../../metrics/generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1183,7 +1269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1225,7 +1311,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/train/" class="md-nav__link ">
+            <a href="../../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1255,7 +1341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1297,7 +1383,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/validate/" class="md-nav__link ">
+            <a href="../../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1327,7 +1413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1377,7 +1463,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/optimizer/" class="md-nav__link ">
+            <a href="../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1407,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1427,7 +1513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1469,7 +1555,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/source_data/" class="md-nav__link ">
+            <a href="../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1499,7 +1585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1519,7 +1605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,7 +1625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/random_int/" class="md-nav__link">
+      <a href="../../source_data/random_int/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1559,7 +1645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/text_dataset/" class="md-nav__link">
+      <a href="../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1601,7 +1687,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/source_model/" class="md-nav__link ">
+            <a href="../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1631,7 +1717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1659,7 +1745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/tensor_types/" class="md-nav__link">
+      <a href="../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1693,7 +1779,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/train/" class="md-nav__link ">
+            <a href="../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1723,7 +1809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/abstract_pipeline/" class="md-nav__link">
+      <a href="../../train/abstract_pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1757,7 +1843,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/train/metrics/" class="md-nav__link ">
+            <a href="../../train/metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1787,7 +1873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/metrics/capacity/" class="md-nav__link">
+      <a href="../../train/metrics/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1807,7 +1893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/metrics/feature_density/" class="md-nav__link">
+      <a href="../../train/metrics/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1835,7 +1921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/pipeline/" class="md-nav__link">
+      <a href="../../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1855,7 +1941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/sweep_config/" class="md-nav__link">
+      <a href="../../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1889,7 +1975,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/train/utils/" class="md-nav__link ">
+            <a href="../../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1919,7 +2005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/utils/get_model_device/" class="md-nav__link">
+      <a href="../../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1939,7 +2025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1982,7 +2068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2001,7 +2087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="citation/" class="md-nav__link">
+      <a href="../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2031,8 +2117,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2041,11 +2125,95 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler" class="md-nav__link">
     <span class="md-ellipsis">
-      Demo
+      abstract_activation_resampler
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      AbstractActivationResampler
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AbstractActivationResampler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.resample_dead_neurons" class="md-nav__link">
+    <span class="md-ellipsis">
+      resample_dead_neurons()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults" class="md-nav__link">
+    <span class="md-ellipsis">
+      ParameterUpdateResults
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ParameterUpdateResults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_decoder_weight_updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_decoder_weight_updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_bias_updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_encoder_bias_updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_weight_updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_encoder_weight_updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_neuron_indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      dead_neuron_indices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2067,16 +2235,568 @@
   
 
 
-<h1 id="home">Home<a class="headerlink" href="#home" title="Permanent link">¤</a></h1>
-<p><a href="https://pypi.org/project/transformer-lens/"><img alt="PyPI" src="https://img.shields.io/pypi/v/sparse_autoencoder?color=blue" /></a>
-<img alt="PyPI -
-License" src="https://img.shields.io/pypi/l/sparse_autoencoder?color=blue" /> <a href="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/checks.yml"><img alt="Checks" src="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/checks.yml/badge.svg" /></a>
-<a href="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/release.yml"><img alt="Release" src="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/release.yml/badge.svg" /></a></p>
-<p>A sparse autoencoder for mechanistic interpretability research.</p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>sparse_autoencoder
-</code></pre></div>
-<h2 id="demo">Demo<a class="headerlink" href="#demo" title="Permanent link">¤</a></h2>
-<p>Check out the <a href="demo">demo notebook</a> for a guide to using this library.</p>
+  <h1>abstract_activation_resampler</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.activation_resampler.abstract_activation_resampler"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Abstract activation resampler.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler" class="doc doc-heading">
+          <code>AbstractActivationResampler</code>
+
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+  
+      <p>Abstract activation resampler.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/activation_resampler/abstract_activation_resampler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractActivationResampler</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract activation resampler.&quot;&quot;&quot;</span>
+
+    <span class="n">_resample_dataset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resample dataset size.</span>
+
+<span class="sd">    If none, will use the train dataset size.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@final</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resample_dataset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the abstract activation resampler.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            resample_dataset_size: Resample dataset size. If none, will use the train dataset size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="o">=</span> <span class="n">resample_dataset_size</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
+        <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span>
+        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+        <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
+        <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterUpdateResults</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resample dead neurons.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            neuron_activity: Number of times each neuron fired.</span>
+<span class="sd">            activation_store: Activation store.</span>
+<span class="sd">            autoencoder: Sparse autoencoder model.</span>
+<span class="sd">            loss_fn: Loss function.</span>
+<span class="sd">            train_batch_size: Train batch size (also used for resampling).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">resample_dataset_size</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.__init__" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the abstract activation resampler.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>resample_dataset_size</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Resample dataset size. If none, will use the train dataset size.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/activation_resampler/abstract_activation_resampler.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resample_dataset_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the abstract activation resampler.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        resample_dataset_size: Resample dataset size. If none, will use the train dataset size.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="o">=</span> <span class="n">resample_dataset_size</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.resample_dead_neurons" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">resample_dead_neurons</span><span class="p">(</span><span class="n">neuron_activity</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">,</span> <span class="n">autoencoder</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler.resample_dead_neurons" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Resample dead neurons.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>neuron_activity</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.NeuronActivity" href="../../tensor_types/#sparse_autoencoder.tensor_types.NeuronActivity">NeuronActivity</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of times each neuron fired.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>activation_store</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_store.tensor_store.TensorActivationStore" href="../../activation_store/tensor_store/#sparse_autoencoder.activation_store.tensor_store.TensorActivationStore">TensorActivationStore</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Activation store.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>autoencoder</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Sparse autoencoder model.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>loss_fn</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.loss.abstract_loss.AbstractLoss" href="../../loss/abstract_loss/#sparse_autoencoder.loss.abstract_loss.AbstractLoss">AbstractLoss</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Loss function.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>train_batch_size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Train batch size (also used for resampling).</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults" href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults">ParameterUpdateResults</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Indices of dead neurons, and the updates for the encoder and decoder weights and biases.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/activation_resampler/abstract_activation_resampler.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
+    <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span>
+    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+    <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
+    <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterUpdateResults</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resample dead neurons.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        neuron_activity: Number of times each neuron fired.</span>
+<span class="sd">        activation_store: Activation store.</span>
+<span class="sd">        autoencoder: Sparse autoencoder model.</span>
+<span class="sd">        loss_fn: Loss function.</span>
+<span class="sd">        train_batch_size: Train batch size (also used for resampling).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Indices of dead neurons, and the updates for the encoder and decoder weights and biases.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults" class="doc doc-heading">
+          <code>ParameterUpdateResults</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Parameter update results from resampling dead neurons.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/activation_resampler/abstract_activation_resampler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ParameterUpdateResults</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter update results from resampling dead neurons.&quot;&quot;&quot;</span>
+
+    <span class="n">dead_neuron_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dead neuron indices.&quot;&quot;&quot;</span>
+
+    <span class="n">dead_encoder_weight_updates</span><span class="p">:</span> <span class="n">DeadEncoderNeuronWeightUpdates</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dead encoder weight updates.&quot;&quot;&quot;</span>
+
+    <span class="n">dead_encoder_bias_updates</span><span class="p">:</span> <span class="n">DeadEncoderNeuronBiasUpdates</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dead encoder bias updates.&quot;&quot;&quot;</span>
+
+    <span class="n">dead_decoder_weight_updates</span><span class="p">:</span> <span class="n">DeadDecoderNeuronWeightUpdates</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dead decoder weight updates.&quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_decoder_weight_updates" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">dead_decoder_weight_updates</span><span class="p">:</span> <span class="n">DeadDecoderNeuronWeightUpdates</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_decoder_weight_updates" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead decoder weight updates.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_bias_updates" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">dead_encoder_bias_updates</span><span class="p">:</span> <span class="n">DeadEncoderNeuronBiasUpdates</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_bias_updates" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead encoder bias updates.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_weight_updates" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">dead_encoder_weight_updates</span><span class="p">:</span> <span class="n">DeadEncoderNeuronWeightUpdates</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_encoder_weight_updates" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead encoder weight updates.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_neuron_indices" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">dead_neuron_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults.dead_neuron_indices" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Dead neuron indices.</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
@@ -2115,12 +2835,12 @@ License" src="https://img.shields.io/pypi/l/sparse_autoencoder?color=blue" /> <a
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
-        <script src="javascript/mathjax.js"></script>
+        <script src="../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

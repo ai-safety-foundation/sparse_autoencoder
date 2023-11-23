@@ -11,23 +11,25 @@
       
       
       
+        <link rel="prev" href="../">
       
-        <link rel="next" href="demo/">
+      
+        <link rel="next" href="../../../autoencoder/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
-        <title>Sparse Autoencoder</title>
+        <title>extend_resize - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -46,17 +48,17 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="css/material_extra.css">
+      <link rel="stylesheet" href="../../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -85,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#home" class="md-skip">
+        <a href="#sparse_autoencoder.activation_store.utils.extend_resize" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +103,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -121,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              extend_resize
             
           </span>
         </div>
@@ -231,7 +233,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -258,29 +260,9 @@
       
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -289,35 +271,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -328,7 +281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="demo/" class="md-nav__link">
+      <a href="../../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -345,18 +298,20 @@
       
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -370,7 +325,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -383,7 +338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="../../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +372,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/activation_resampler/" class="md-nav__link ">
+            <a href="../../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -447,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -467,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -493,23 +448,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/activation_store/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -526,7 +483,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             activation_store
@@ -539,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/base_store/" class="md-nav__link">
+      <a href="../../base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -559,7 +516,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/disk_store/" class="md-nav__link">
+      <a href="../../disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -579,7 +536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/list_store/" class="md-nav__link">
+      <a href="../../list_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -599,7 +556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -617,23 +574,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/activation_store/utils/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -650,7 +609,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3_5">
             <span class="md-nav__icon md-icon"></span>
             utils
@@ -661,9 +620,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="reference/activation_store/utils/extend_resize/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    extend_resize
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -672,6 +649,51 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_store.utils.extend_resize" class="md-nav__link">
+    <span class="md-ellipsis">
+      extend_resize
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_store.utils.extend_resize.resize_to_list_vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      resize_to_list_vectors()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_store.utils.extend_resize.resize_to_single_item_dimension" class="md-nav__link">
+    <span class="md-ellipsis">
+      resize_to_single_item_dimension()
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -713,7 +735,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/autoencoder/" class="md-nav__link ">
+            <a href="../../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -743,7 +765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -777,7 +799,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/autoencoder/components/" class="md-nav__link ">
+            <a href="../../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -807,7 +829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -827,7 +849,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -847,7 +869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -867,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -887,7 +909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -907,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -935,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/autoencoder/model/" class="md-nav__link">
+      <a href="../../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -977,7 +999,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/loss/" class="md-nav__link ">
+            <a href="../../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1007,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/abstract_loss/" class="md-nav__link">
+      <a href="../../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1027,7 +1049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1047,7 +1069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/mse_reconstruction_loss/" class="md-nav__link">
+      <a href="../../../loss/mse_reconstruction_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1067,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/loss/reducer/" class="md-nav__link">
+      <a href="../../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1109,7 +1131,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/" class="md-nav__link ">
+            <a href="../../../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1153,7 +1175,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/generate/" class="md-nav__link ">
+            <a href="../../../metrics/generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1183,7 +1205,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1225,7 +1247,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/train/" class="md-nav__link ">
+            <a href="../../../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1255,7 +1277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1297,7 +1319,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/metrics/validate/" class="md-nav__link ">
+            <a href="../../../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1327,7 +1349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1377,7 +1399,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/optimizer/" class="md-nav__link ">
+            <a href="../../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1407,7 +1429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1427,7 +1449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1469,7 +1491,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/source_data/" class="md-nav__link ">
+            <a href="../../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1499,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1519,7 +1541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,7 +1561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/random_int/" class="md-nav__link">
+      <a href="../../../source_data/random_int/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1559,7 +1581,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_data/text_dataset/" class="md-nav__link">
+      <a href="../../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1601,7 +1623,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/source_model/" class="md-nav__link ">
+            <a href="../../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1631,7 +1653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1659,7 +1681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/tensor_types/" class="md-nav__link">
+      <a href="../../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1693,7 +1715,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/train/" class="md-nav__link ">
+            <a href="../../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1723,7 +1745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/abstract_pipeline/" class="md-nav__link">
+      <a href="../../../train/abstract_pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1757,7 +1779,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/train/metrics/" class="md-nav__link ">
+            <a href="../../../train/metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1787,7 +1809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/metrics/capacity/" class="md-nav__link">
+      <a href="../../../train/metrics/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1807,7 +1829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/metrics/feature_density/" class="md-nav__link">
+      <a href="../../../train/metrics/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1835,7 +1857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/pipeline/" class="md-nav__link">
+      <a href="../../../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1855,7 +1877,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/sweep_config/" class="md-nav__link">
+      <a href="../../../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1889,7 +1911,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="reference/train/utils/" class="md-nav__link ">
+            <a href="../../../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1919,7 +1941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/utils/get_model_device/" class="md-nav__link">
+      <a href="../../../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1939,7 +1961,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../../../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1982,7 +2004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2001,7 +2023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="citation/" class="md-nav__link">
+      <a href="../../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2031,8 +2053,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2041,9 +2061,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
+  <a href="#sparse_autoencoder.activation_store.utils.extend_resize" class="md-nav__link">
     <span class="md-ellipsis">
-      Demo
+      extend_resize
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_store.utils.extend_resize.resize_to_list_vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      resize_to_list_vectors()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.activation_store.utils.extend_resize.resize_to_single_item_dimension" class="md-nav__link">
+    <span class="md-ellipsis">
+      resize_to_single_item_dimension()
     </span>
   </a>
   
@@ -2067,16 +2105,426 @@
   
 
 
-<h1 id="home">Home<a class="headerlink" href="#home" title="Permanent link">¤</a></h1>
-<p><a href="https://pypi.org/project/transformer-lens/"><img alt="PyPI" src="https://img.shields.io/pypi/v/sparse_autoencoder?color=blue" /></a>
-<img alt="PyPI -
-License" src="https://img.shields.io/pypi/l/sparse_autoencoder?color=blue" /> <a href="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/checks.yml"><img alt="Checks" src="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/checks.yml/badge.svg" /></a>
-<a href="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/release.yml"><img alt="Release" src="https://github.com/alan-cooney/sparse_autoencoder/actions/workflows/release.yml/badge.svg" /></a></p>
-<p>A sparse autoencoder for mechanistic interpretability research.</p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>sparse_autoencoder
-</code></pre></div>
-<h2 id="demo">Demo<a class="headerlink" href="#demo" title="Permanent link">¤</a></h2>
-<p>Check out the <a href="demo">demo notebook</a> for a guide to using this library.</p>
+  <h1>extend_resize</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="sparse_autoencoder.activation_store.utils.extend_resize"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Resize Tensors for Extend Methods.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="sparse_autoencoder.activation_store.utils.extend_resize.resize_to_list_vectors" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">resize_to_list_vectors</span><span class="p">(</span><span class="n">batched_tensor</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.activation_store.utils.extend_resize.resize_to_list_vectors" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Resize Extend List Vectors.</p>
+<p>Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is
+the neurons dimension), and returns a list of vectors each of size [neurons].</p>
+<p>Examples:
+With 2 axis (e.g. pos neuron):</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+input = torch.rand(3, 100)
+res = resize_to_list_vectors(input)
+f"{len(res)} items of shape {res[0].shape}"
+'3 items of shape torch.Size([100])'</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>With 3 axis (e.g. batch, pos, neuron):</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>input = torch.randn(3, 3, 100)
+res = resize_to_list_vectors(input)
+f"{len(res)} items of shape {res[0].shape}"
+'9 items of shape torch.Size([100])'</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>With 4 axis (e.g. batch, pos, head_idx, neuron)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>input = torch.rand(3, 3, 3, 100)
+res = resize_to_list_vectors(input)
+f"{len(res)} items of shape {res[0].shape}"
+'27 items of shape torch.Size([100])'</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>batched_tensor</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SourceModelActivations" href="../../../tensor_types/#sparse_autoencoder.tensor_types.SourceModelActivations">SourceModelActivations</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Input Activation Store Batch</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of Activation Store Item Vectors</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/activation_store/utils/extend_resize.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resize_to_list_vectors</span><span class="p">(</span>
+    <span class="n">batched_tensor</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationVector</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize Extend List Vectors.</span>
+
+<span class="sd">    Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is</span>
+<span class="sd">    the neurons dimension), and returns a list of vectors each of size [neurons].</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    With 2 axis (e.g. pos neuron):</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; input = torch.rand(3, 100)</span>
+<span class="sd">    &gt;&gt;&gt; res = resize_to_list_vectors(input)</span>
+<span class="sd">    &gt;&gt;&gt; f&quot;{len(res)} items of shape {res[0].shape}&quot;</span>
+<span class="sd">    &#39;3 items of shape torch.Size([100])&#39;</span>
+
+<span class="sd">    With 3 axis (e.g. batch, pos, neuron):</span>
+
+<span class="sd">    &gt;&gt;&gt; input = torch.randn(3, 3, 100)</span>
+<span class="sd">    &gt;&gt;&gt; res = resize_to_list_vectors(input)</span>
+<span class="sd">    &gt;&gt;&gt; f&quot;{len(res)} items of shape {res[0].shape}&quot;</span>
+<span class="sd">    &#39;9 items of shape torch.Size([100])&#39;</span>
+
+<span class="sd">    With 4 axis (e.g. batch, pos, head_idx, neuron)</span>
+
+<span class="sd">    &gt;&gt;&gt; input = torch.rand(3, 3, 3, 100)</span>
+<span class="sd">    &gt;&gt;&gt; res = resize_to_list_vectors(input)</span>
+<span class="sd">    &gt;&gt;&gt; f&quot;{len(res)} items of shape {res[0].shape}&quot;</span>
+<span class="sd">    &#39;27 items of shape torch.Size([100])&#39;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        batched_tensor: Input Activation Store Batch</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of Activation Store Item Vectors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rearranged</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span> <span class="o">=</span> <span class="n">rearrange</span><span class="p">(</span>
+        <span class="n">batched_tensor</span><span class="p">,</span>
+        <span class="s2">&quot;... neurons -&gt; (...) neurons&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">rearranged</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="sparse_autoencoder.activation_store.utils.extend_resize.resize_to_single_item_dimension" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">resize_to_single_item_dimension</span><span class="p">(</span><span class="n">batch_activations</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.activation_store.utils.extend_resize.resize_to_single_item_dimension" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Resize Extend Single Item Dimension.</p>
+<p>Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is
+the neurons dimension), and returns a single tensor of size [item, neurons].</p>
+<p>Examples:
+With 2 axis (e.g. pos neuron):</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+input = torch.rand(3, 100)
+res = resize_to_single_item_dimension(input)
+res.shape
+torch.Size([3, 100])</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>With 3 axis (e.g. batch, pos, neuron):</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>input = torch.randn(3, 3, 100)
+res = resize_to_single_item_dimension(input)
+res.shape
+torch.Size([9, 100])</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>With 4 axis (e.g. batch, pos, head_idx, neuron)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>input = torch.rand(3, 3, 3, 100)
+res = resize_to_single_item_dimension(input)
+res.shape
+torch.Size([27, 100])</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>batch_activations</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SourceModelActivations" href="../../../tensor_types/#sparse_autoencoder.tensor_types.SourceModelActivations">SourceModelActivations</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Input Activation Store Batch</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Single Tensor of Activation Store Items</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/activation_store/utils/extend_resize.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resize_to_single_item_dimension</span><span class="p">(</span>
+    <span class="n">batch_activations</span><span class="p">:</span> <span class="n">SourceModelActivations</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resize Extend Single Item Dimension.</span>
+
+<span class="sd">    Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is</span>
+<span class="sd">    the neurons dimension), and returns a single tensor of size [item, neurons].</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    With 2 axis (e.g. pos neuron):</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; input = torch.rand(3, 100)</span>
+<span class="sd">    &gt;&gt;&gt; res = resize_to_single_item_dimension(input)</span>
+<span class="sd">    &gt;&gt;&gt; res.shape</span>
+<span class="sd">    torch.Size([3, 100])</span>
+
+<span class="sd">    With 3 axis (e.g. batch, pos, neuron):</span>
+
+<span class="sd">    &gt;&gt;&gt; input = torch.randn(3, 3, 100)</span>
+<span class="sd">    &gt;&gt;&gt; res = resize_to_single_item_dimension(input)</span>
+<span class="sd">    &gt;&gt;&gt; res.shape</span>
+<span class="sd">    torch.Size([9, 100])</span>
+
+<span class="sd">    With 4 axis (e.g. batch, pos, head_idx, neuron)</span>
+
+<span class="sd">    &gt;&gt;&gt; input = torch.rand(3, 3, 3, 100)</span>
+<span class="sd">    &gt;&gt;&gt; res = resize_to_single_item_dimension(input)</span>
+<span class="sd">    &gt;&gt;&gt; res.shape</span>
+<span class="sd">    torch.Size([27, 100])</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        batch_activations: Input Activation Store Batch</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Single Tensor of Activation Store Items</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rearrange</span><span class="p">(</span><span class="n">batch_activations</span><span class="p">,</span> <span class="s2">&quot;... neurons -&gt; (...) neurons&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
@@ -2115,12 +2563,12 @@ License" src="https://img.shields.io/pypi/l/sparse_autoencoder?color=blue" /> <a
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
-        <script src="javascript/mathjax.js"></script>
+        <script src="../../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
