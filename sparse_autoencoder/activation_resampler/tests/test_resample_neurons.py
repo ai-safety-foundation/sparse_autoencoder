@@ -89,7 +89,8 @@ class TestComputeLossAndGetActivations:
         input_activations_fixture: Tensor,
     ) -> None:
         """Test it gets loss and also returns the input activations."""
-        loss, input_activations = ActivationResampler().compute_loss_and_get_activations(
+        resampler = ActivationResampler()
+        loss, input_activations = resampler.compute_loss_and_get_activations(
             store=activation_store_fixture,
             autoencoder=autoencoder_model_fixture,
             loss_fn=MSEReconstructionLoss(),
@@ -265,14 +266,17 @@ class TestResampleDeadNeurons:
         store.extend(store_data)
         model = SparseAutoencoder(5, 10, torch.rand(5))
 
-        res = ActivationResampler().resample_dead_neurons(
-            neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
+        resampler = ActivationResampler()
+        resampler.neuron_activity = neuron_activity
+        updates = resampler.resample_dead_neurons(
+            store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
         )
 
-        assert res.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
-        assert res.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
-        assert res.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
-        assert res.dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
+        assert updates is not None, "Should have updated after 2 steps"
+        assert updates.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
+        assert updates.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
+        assert updates.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
+        assert updates.dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
 
     def test_updates_a_dead_neuron_parameters(self) -> None:
         """Check it updates a dead neuron's parameters."""
@@ -289,8 +293,10 @@ class TestResampleDeadNeurons:
 
         # Get the current & updated parameters
         current_parameters = model.state_dict()
-        updated_parameters: ParameterUpdateResults = ActivationResampler().resample_dead_neurons(
-            neuron_activity, store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
+        resampler = ActivationResampler()
+        resampler.neuron_activity = neuron_activity
+        updated_parameters: ParameterUpdateResults = resampler.resample_dead_neurons(
+            store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
         )
 
         # Check the updated ones have changed
@@ -311,3 +317,53 @@ class TestResampleDeadNeurons:
         assert not torch.equal(
             current_dead_encoder_bias, updated_dead_encoder_bias
         ), "Dead encoder bias should have changed."
+
+    def test_max_updates(self) -> None:
+        """Check if max_updates, resample_interval and n_steps_collate are respected."""
+        neuron_activity = torch.ones(10, dtype=torch.int32)
+        store_data = torch.rand((100, 5))
+        store = TensorActivationStore(100, 5)
+        store.extend(store_data)
+        model = SparseAutoencoder(5, 10, torch.rand(5))
+
+        max_updates = 5
+        n_steps_collate = 2
+        resample_interval = 4
+
+        resampler = ActivationResampler(
+            resample_interval=resample_interval,
+            max_resamples=max_updates,
+            n_steps_collate=n_steps_collate,
+        )
+        last_resampled = 0
+        for _ in range(max_updates):
+            for i in range(resample_interval):
+                last_resampled += 1
+                updates = resampler.step_resampler(
+                    last_resampled=last_resampled,
+                    batch_neuron_activity=neuron_activity,
+                    activation_store=store,
+                    autoencoder=model,
+                    loss_fn=MSEReconstructionLoss(),
+                    train_batch_size=DEFAULT_N_ITEMS,
+                )
+                if i < resample_interval - 1:
+                    assert updates is None, "Should not have updated"
+                else:
+                    assert updates is not None, "Should have updated after 2 steps"
+
+                if resample_interval - last_resampled > n_steps_collate:
+                    assert resampler.neuron_activity is None, "Should have cleared neuron activity"
+
+            last_resampled = 0
+
+        for _ in range(resample_interval):
+            updates = resampler.step_resampler(
+                last_resampled=1,
+                batch_neuron_activity=neuron_activity,
+                activation_store=store,
+                autoencoder=model,
+                loss_fn=MSEReconstructionLoss(),
+                train_batch_size=DEFAULT_N_ITEMS,
+            )
+            assert updates is None, "Should not have updated after max_interval updates"
