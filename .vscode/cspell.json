@@ -87,6 +87,7 @@
         "typecheck",
         "ultralow",
         "uncopyrighted",
+        "ungraphed",
         "unsqueeze",
         "venv",
         "virtualenv",

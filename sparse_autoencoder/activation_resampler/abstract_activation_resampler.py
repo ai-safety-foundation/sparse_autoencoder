@@ -68,5 +68,7 @@ class AbstractActivationResampler(ABC):
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
+
+        Returns:
+            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
         """
-        raise NotImplementedError

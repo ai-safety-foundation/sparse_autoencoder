@@ -22,7 +22,7 @@ def is_source_file(file: Path) -> bool:
     """Check if the provided file is a source file for Sparse Encoder.
 
     Args:
-        file (Path): The file path to check.
+        file: The file path to check.
 
     Returns:
         bool: True if the file is a source file, False otherwise.
@@ -34,11 +34,10 @@ def process_path(path: Path) -> tuple[Path, Path, Path]:
     """Process the given path for documentation generation.
 
     Args:
-        path (Path): The file path to process.
+        path: The file path to process.
 
     Returns:
-        tuple[Path, Path, Path]: A tuple containing module path, documentation path,
-                                 and full documentation path.
+        A tuple containing module path, documentation path, and full documentation path.
     """
     module_path = path.relative_to(PROJECT_ROOT).with_suffix("")
     doc_path = path.relative_to(PROJECT_ROOT).with_suffix(".md")
@@ -56,9 +55,9 @@ def generate_documentation(path: Path, module_path: Path, full_doc_path: Path) -
     """Generate documentation for the given source file.
 
     Args:
-        path (Path): The source file path.
-        module_path (Path): The module path.
-        full_doc_path (Path): The full documentation file path.
+        path: The source file path.
+        module_path: The module path.
+        full_doc_path: The full documentation file path.
     """
     if module_path.name == "__main__":
         return
@@ -77,8 +76,8 @@ def generate_nav_file(nav: mkdocs_gen_files.nav.Nav, reference_dir: Path) -> Non
     """Generate the navigation file for the documentation.
 
     Args:
-        nav (mkdocs_gen_files.Nav): The navigation object.
-        reference_dir (Path): The directory to write the navigation file.
+        nav: The navigation object.
+        reference_dir: The directory to write the navigation file.
     """
     with mkdocs_gen_files.open(reference_dir / "SUMMARY.md", "w") as nav_file:
         nav_file.writelines(nav.build_literate_nav())

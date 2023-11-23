@@ -27,13 +27,11 @@ class AbstractEncoder(Module, ABC):
     @abstractmethod
     def weight(self) -> EncoderWeights:
         """Weight."""
-        raise NotImplementedError
 
     @property
     @abstractmethod
     def bias(self) -> LearntActivationVector:
         """Bias."""
-        raise NotImplementedError
 
     @abstractmethod
     def forward(self, x: InputOutputActivationBatch) -> LearnedActivationBatch:
@@ -45,7 +43,6 @@ class AbstractEncoder(Module, ABC):
         Returns:
             Resulting activations.
         """
-        raise NotImplementedError
 
     @final
     def update_dictionary_vectors(

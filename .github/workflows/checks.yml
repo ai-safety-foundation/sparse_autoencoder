@@ -52,6 +52,8 @@ jobs:
       run: poetry run pyright
     - name: Ruff lint
       run: poetry run ruff check . --output-format=github
+    - name: Docstrings lint
+      run: poetry run pydoclint .
     - name: Ruff format
       run: poetry run ruff format . --check
     - name: Pytest

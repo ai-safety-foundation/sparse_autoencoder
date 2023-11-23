@@ -96,6 +96,9 @@ class ActivationResampler(AbstractActivationResampler):
 
         Returns:
             A tuple containing the loss per item, and all input activations.
+
+        Raises:
+            ValueError: If the number of items in the store is less than the number of inputs
         """
         with torch.no_grad():
             loss_batches: list[TrainBatchStatistic] = []
@@ -274,6 +277,9 @@ class ActivationResampler(AbstractActivationResampler):
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
+
+        Returns:
+            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
         """
         with torch.no_grad():
             dead_neuron_indices = self.get_dead_neuron_indices(neuron_activity)

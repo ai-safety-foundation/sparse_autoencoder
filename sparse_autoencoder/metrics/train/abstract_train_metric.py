@@ -25,5 +25,11 @@ class AbstractTrainMetric(ABC):
 
     @abstractmethod
     def calculate(self, data: TrainMetricData) -> dict[str, Any]:
-        """Calculate any metrics."""
-        raise NotImplementedError
+        """Calculate any metrics.
+
+        Args:
+            data: Train metric data.
+
+        Returns:
+            Dictionary of metrics.
+        """

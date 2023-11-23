@@ -251,9 +251,12 @@ class DiskActivationStore(ActivationStore):
         """Length Dunder Method.
 
         Example:
-        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
-        >>> print(len(store))
-        0
+            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True)
+            >>> print(len(store))
+            0
+
+        Returns:
+            The number of activation vectors in the dataset.
         """
         # Calculate the length if not cached
         if self._disk_n_activation_vectors.value == -1:

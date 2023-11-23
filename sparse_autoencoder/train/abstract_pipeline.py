@@ -99,15 +99,28 @@ class AbstractPipeline(ABC):
 
     @abstractmethod
     def generate_activations(self, store_size: int) -> TensorActivationStore:
-        """Generate activations."""
-        raise NotImplementedError
+        """Generate activations.
+
+        Args:
+            store_size: Number of activations to generate.
+
+        Returns:
+            Activation store for the train section.
+        """
 
     @abstractmethod
     def train_autoencoder(
         self, activation_store: TensorActivationStore, train_batch_size: int
     ) -> NeuronActivity:
-        """Train the sparse autoencoder."""
-        raise NotImplementedError
+        """Train the sparse autoencoder.
+
+        Args:
+            activation_store: Activation store from the generate section.
+            train_batch_size: Train batch size.
+
+        Returns:
+            Number of times each neuron fired.
+        """
 
     @final
     def resample_neurons(
@@ -153,7 +166,6 @@ class AbstractPipeline(ABC):
     @abstractmethod
     def validate_sae(self) -> None:
         """Get validation metrics."""
-        raise NotImplementedError
 
     @final
     def save_checkpoint(self) -> None:
@@ -174,7 +186,18 @@ class AbstractPipeline(ABC):
         validate_frequency: int | None = None,
         checkpoint_frequency: int | None = None,
     ) -> None:
-        """Run the full training pipeline."""
+        """Run the full training pipeline.
+
+        Args:
+            train_batch_size: Train batch size.
+            max_store_size: Maximum size of the activation store.
+            max_activations: Maximum total number of activations to train on (the original paper
+                used 8bn, although others have had success with 100m+).
+            resample_frequency: Frequency at which to resample dead neurons (the original paper used
+                every 200m).
+            validate_frequency: Frequency at which to get validation metrics.
+            checkpoint_frequency: Frequency at which to save a checkpoint.
+        """
         last_resampled: int = 0
         last_validated: int = 0
         last_checkpoint: int = 0
@@ -207,9 +230,9 @@ class AbstractPipeline(ABC):
                     neuron_activity = detached_neuron_activity
 
                 # Update the counters
-                last_resampled += store_size
-                last_validated += store_size
-                last_checkpoint += store_size
+                last_resampled += len(activation_store)
+                last_validated += len(activation_store)
+                last_checkpoint += len(activation_store)
 
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})
@@ -273,5 +296,8 @@ class AbstractPipeline(ABC):
 
         Returns:
             Stateful iterable over the data in the dataloader.
+
+        Yields:
+            Data from the dataloader.
         """
         yield from dataloader

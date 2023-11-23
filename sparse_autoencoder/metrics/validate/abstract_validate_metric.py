@@ -19,4 +19,3 @@ class AbstractValidationMetric(ABC):
     @abstractmethod
     def calculate(self, data: ValidationMetricData) -> dict[str, Any]:
         """Calculate any metrics."""
-        raise NotImplementedError

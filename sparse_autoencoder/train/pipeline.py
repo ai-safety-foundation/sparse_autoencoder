@@ -25,7 +25,14 @@ class Pipeline(AbstractPipeline):
     total_training_steps: int = 1
 
     def generate_activations(self, store_size: int) -> TensorActivationStore:
-        """Generate activations."""
+        """Generate activations.
+
+        Args:
+            store_size: Number of activations to generate.
+
+        Returns:
+            Activation store for the train section.
+        """
         num_neurons: int = 256
         source_model_device: torch.device = get_model_device(self.source_model)
 
@@ -57,7 +64,15 @@ class Pipeline(AbstractPipeline):
     def train_autoencoder(
         self, activation_store: TensorActivationStore, train_batch_size: int
     ) -> NeuronActivity:
-        """Train the sparse autoencoder."""
+        """Train the sparse autoencoder.
+
+        Args:
+            activation_store: Activation store from the generate section.
+            train_batch_size: Train batch size.
+
+        Returns:
+            Number of times each neuron fired.
+        """
         autoencoder_device: torch.device = get_model_device(self.autoencoder)
 
         activations_dataloader = DataLoader(

@@ -24,7 +24,6 @@ class AbstractDecoder(Module, ABC):
     @abstractmethod
     def weight(self) -> DecoderWeights:
         """Weight."""
-        raise NotImplementedError
 
     @abstractmethod
     def forward(
@@ -39,12 +38,10 @@ class AbstractDecoder(Module, ABC):
         Returns:
             Decoded activations.
         """
-        raise NotImplementedError
 
     @abstractmethod
     def reset_parameters(self) -> None:
         """Reset the parameters."""
-        raise NotImplementedError
 
     @final
     def update_dictionary_vectors(
