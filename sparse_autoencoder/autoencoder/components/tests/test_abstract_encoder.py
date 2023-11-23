@@ -45,7 +45,7 @@ class MockEncoder(AbstractEncoder):
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
+        self._weight: EncoderWeights = init.kaiming_normal_(self._weight)
 
 
 @pytest.fixture()
