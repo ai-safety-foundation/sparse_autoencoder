@@ -73,43 +73,21 @@ Raises:
 """
 ```
 
-#### Supported Sphinx Properties
+#### LaTeX support
 
-##### References to Other Functions/Classes
+You can use LaTeX, inside `$$` for blocks or `$` for inline
 
-You can reference other parts of the codebase using
-[cross-referencing](https://www.sphinx-doc.org/en/master/usage/domains/python.html#cross-referencing-python-objects)
-(noting that you can omit the full path if it is in the same file).
-
-```reStructuredText
-:mod:transformer_lens # Function or module
-
-:const:`transformer_lens.loading_from_pretrained.OFFICIAL_MODEL_NAMES`
-
-:class:`transformer_lens.HookedTransformer`
-
-:meth:`transformer_lens.HookedTransformer.from_pretrained`
-
-:attr:`transformer_lens.HookedTransformer.cfg`
+```markdown
+Some text $(a + b)^2 = a^2 + 2ab + b^2$
 ```
 
-##### Maths
+```markdown
+Some text:
 
-You can use LaTeX, but note that as you're placing this in python strings the backwards slash (`\`)
-must be repeated (i.e. `\\`). You can write LaTeX inline, or in "display mode".
-
-```reStructuredText
-:math:`(a + b)^2 = a^2 + 2ab + b^2`
-```
-
-```reStructuredText
-.. math::
-   :nowrap:
-
-   \\begin{eqnarray}
-      y    & = & ax^2 + bx + c \\
-      f(x) & = & x^2 + 2xy + y^2
-   \\end{eqnarray}
+$$
+y    & = & ax^2 + bx + c \\
+f(x) & = & x^2 + 2xy + y^2
+$$
 ```
 
 #### Markup
