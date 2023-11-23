@@ -686,9 +686,7 @@ activations (storing them in ram), and training the SAE on said activations.</p>
 <div class="output_area">
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-<code>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-Using device: mps
+<code>Using device: mps
 </code>
 </pre>
 </div>
@@ -1012,18 +1010,27 @@ wandb. </p>
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+<code>Failed to detect the name of this notebook, you can set it manually with the WANDB_NOTEBOOK_NAME environment variable to enable code saving.
+<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Currently logged in as: <span class="ansi-yellow-fg">alan-cooney</span>. Use <span class="ansi-bold">`wandb login --relogin`</span> to force relogin
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
 <div class="output_html rendered_html output_subarea">
 Tracking run with wandb version 0.16.0
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
-Run data is saved locally in <code>.cache/wandb/run-20231121_190511-5pvpkttg</code>
+Run data is saved locally in <code>.cache/wandb/run-20231122_191929-kc45kj7w</code>
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
-Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/5pvpkttg" target="_blank">pious-yogurt-57</a></strong> to <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">Weights &amp; Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/>
+Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/kc45kj7w" target="_blank">young-frog-69</a></strong> to <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">Weights &amp; Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/>
 </div>
 </div>
 <div class="output_area">
@@ -1033,15 +1040,24 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
- View run at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/5pvpkttg" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/5pvpkttg</a>
+ View run at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/kc45kj7w" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/kc45kj7w</a>
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea output_execute_result">
-<button onclick="this.nextSibling.style.display='block';this.style.display='none';">Display W&amp;B run</button><iframe src="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/5pvpkttg?jupyter=true" style="border:none;width:100%;height:420px;display:none;"></iframe>
+<button onclick="this.nextSibling.style.display='block';this.style.display='none';">Display W&amp;B run</button><iframe src="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/kc45kj7w?jupyter=true" style="border:none;width:100%;height:420px;display:none;"></iframe>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../.checkpoints&quot;</span><span class="p">)</span>
+<span class="n">checkpoint_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
@@ -1057,14 +1073,16 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
     <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
     <span class="n">activation_resampler</span><span class="o">=</span><span class="n">activation_resampler</span><span class="p">,</span>
     <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">checkpoint_directory</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">pipeline</span><span class="o">.</span><span class="n">run_pipeline</span><span class="p">(</span>
     <span class="n">train_batch_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;train_batch_size&quot;</span><span class="p">]),</span>
-    <span class="n">max_store_size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span>
+    <span class="n">max_store_size</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
     <span class="c1"># Sizes for demo purposes (you probably want to scale these by 10x)</span>
     <span class="n">max_activations</span><span class="o">=</span><span class="mi">10_000_000</span><span class="p">,</span>
-    <span class="n">resample_frequency</span><span class="o">=</span><span class="mi">2_500_000</span><span class="p">,</span>
+    <span class="n">resample_frequency</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
+    <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1079,360 +1097,12 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
 </div>
 </div>
 <div class="output_area">
-<div class="output_subarea output_text output_error">
+<div class="output_subarea output_stream output_stderr output_text">
 <pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">RemoteDisconnected</span>                        Traceback (most recent call last)
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py:790</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="ansi-green-intense-fg ansi-bold">    789</span> # Make the request on the HTTPConnection object
-<span class="ansi-green-fg">--&gt; 790</span> response = self._make_request(
-<span class="ansi-green-intense-fg ansi-bold">    791</span>     conn,
-<span class="ansi-green-intense-fg ansi-bold">    792</span>     method,
-<span class="ansi-green-intense-fg ansi-bold">    793</span>     url,
-<span class="ansi-green-intense-fg ansi-bold">    794</span>     timeout=timeout_obj,
-<span class="ansi-green-intense-fg ansi-bold">    795</span>     body=body,
-<span class="ansi-green-intense-fg ansi-bold">    796</span>     headers=headers,
-<span class="ansi-green-intense-fg ansi-bold">    797</span>     chunked=chunked,
-<span class="ansi-green-intense-fg ansi-bold">    798</span>     retries=retries,
-<span class="ansi-green-intense-fg ansi-bold">    799</span>     response_conn=response_conn,
-<span class="ansi-green-intense-fg ansi-bold">    800</span>     preload_content=preload_content,
-<span class="ansi-green-intense-fg ansi-bold">    801</span>     decode_content=decode_content,
-<span class="ansi-green-intense-fg ansi-bold">    802</span>     **response_kw,
-<span class="ansi-green-intense-fg ansi-bold">    803</span> )
-<span class="ansi-green-intense-fg ansi-bold">    805</span> # Everything went great!
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py:536</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool._make_request</span><span class="ansi-blue-fg">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
-<span class="ansi-green-intense-fg ansi-bold">    535</span> try:
-<span class="ansi-green-fg">--&gt; 536</span>     response = conn.getresponse()
-<span class="ansi-green-intense-fg ansi-bold">    537</span> except (BaseSSLError, OSError) as e:
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connection.py:461</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    460</span> # Get the response from http.client.HTTPConnection
-<span class="ansi-green-fg">--&gt; 461</span> httplib_response = super().getresponse()
-<span class="ansi-green-intense-fg ansi-bold">    463</span> try:
-
-File <span class="ansi-green-fg">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py:1378</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1377</span> try:
-<span class="ansi-green-fg">-&gt; 1378</span>     response.begin()
-<span class="ansi-green-intense-fg ansi-bold">   1379</span> except ConnectionError:
-
-File <span class="ansi-green-fg">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py:318</span>, in <span class="ansi-cyan-fg">HTTPResponse.begin</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    317</span> while True:
-<span class="ansi-green-fg">--&gt; 318</span>     version, status, reason = self._read_status()
-<span class="ansi-green-intense-fg ansi-bold">    319</span>     if status != CONTINUE:
-
-File <span class="ansi-green-fg">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py:287</span>, in <span class="ansi-cyan-fg">HTTPResponse._read_status</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    284</span> if not line:
-<span class="ansi-green-intense-fg ansi-bold">    285</span>     # Presumably, the server closed the connection before
-<span class="ansi-green-intense-fg ansi-bold">    286</span>     # sending a valid response.
-<span class="ansi-green-fg">--&gt; 287</span>     raise RemoteDisconnected("Remote end closed connection without"
-<span class="ansi-green-intense-fg ansi-bold">    288</span>                              " response")
-<span class="ansi-green-intense-fg ansi-bold">    289</span> try:
-
-<span class="ansi-red-fg">RemoteDisconnected</span>: Remote end closed connection without response
-
-During handling of the above exception, another exception occurred:
-
-<span class="ansi-red-fg">ProtocolError</span>                             Traceback (most recent call last)
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/requests/adapters.py:486</span>, in <span class="ansi-cyan-fg">HTTPAdapter.send</span><span class="ansi-blue-fg">(self, request, stream, timeout, verify, cert, proxies)</span>
-<span class="ansi-green-intense-fg ansi-bold">    485</span> try:
-<span class="ansi-green-fg">--&gt; 486</span>     resp = conn.urlopen(
-<span class="ansi-green-intense-fg ansi-bold">    487</span>         method=request.method,
-<span class="ansi-green-intense-fg ansi-bold">    488</span>         url=url,
-<span class="ansi-green-intense-fg ansi-bold">    489</span>         body=request.body,
-<span class="ansi-green-intense-fg ansi-bold">    490</span>         headers=request.headers,
-<span class="ansi-green-intense-fg ansi-bold">    491</span>         redirect=False,
-<span class="ansi-green-intense-fg ansi-bold">    492</span>         assert_same_host=False,
-<span class="ansi-green-intense-fg ansi-bold">    493</span>         preload_content=False,
-<span class="ansi-green-intense-fg ansi-bold">    494</span>         decode_content=False,
-<span class="ansi-green-intense-fg ansi-bold">    495</span>         retries=self.max_retries,
-<span class="ansi-green-intense-fg ansi-bold">    496</span>         timeout=timeout,
-<span class="ansi-green-intense-fg ansi-bold">    497</span>         chunked=chunked,
-<span class="ansi-green-intense-fg ansi-bold">    498</span>     )
-<span class="ansi-green-intense-fg ansi-bold">    500</span> except (ProtocolError, OSError) as err:
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py:844</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="ansi-green-intense-fg ansi-bold">    842</span>     new_e = ProtocolError("Connection aborted.", new_e)
-<span class="ansi-green-fg">--&gt; 844</span> retries = retries.increment(
-<span class="ansi-green-intense-fg ansi-bold">    845</span>     method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
-<span class="ansi-green-intense-fg ansi-bold">    846</span> )
-<span class="ansi-green-intense-fg ansi-bold">    847</span> retries.sleep()
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/util/retry.py:470</span>, in <span class="ansi-cyan-fg">Retry.increment</span><span class="ansi-blue-fg">(self, method, url, response, error, _pool, _stacktrace)</span>
-<span class="ansi-green-intense-fg ansi-bold">    469</span> if read is False or method is None or not self._is_method_retryable(method):
-<span class="ansi-green-fg">--&gt; 470</span>     raise reraise(type(error), error, _stacktrace)
-<span class="ansi-green-intense-fg ansi-bold">    471</span> elif read is not None:
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/util/util.py:38</span>, in <span class="ansi-cyan-fg">reraise</span><span class="ansi-blue-fg">(tp, value, tb)</span>
-<span class="ansi-green-intense-fg ansi-bold">     37</span> if value.__traceback__ is not tb:
-<span class="ansi-green-fg">---&gt; 38</span>     raise value.with_traceback(tb)
-<span class="ansi-green-intense-fg ansi-bold">     39</span> raise value
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py:790</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool.urlopen</span><span class="ansi-blue-fg">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
-<span class="ansi-green-intense-fg ansi-bold">    789</span> # Make the request on the HTTPConnection object
-<span class="ansi-green-fg">--&gt; 790</span> response = self._make_request(
-<span class="ansi-green-intense-fg ansi-bold">    791</span>     conn,
-<span class="ansi-green-intense-fg ansi-bold">    792</span>     method,
-<span class="ansi-green-intense-fg ansi-bold">    793</span>     url,
-<span class="ansi-green-intense-fg ansi-bold">    794</span>     timeout=timeout_obj,
-<span class="ansi-green-intense-fg ansi-bold">    795</span>     body=body,
-<span class="ansi-green-intense-fg ansi-bold">    796</span>     headers=headers,
-<span class="ansi-green-intense-fg ansi-bold">    797</span>     chunked=chunked,
-<span class="ansi-green-intense-fg ansi-bold">    798</span>     retries=retries,
-<span class="ansi-green-intense-fg ansi-bold">    799</span>     response_conn=response_conn,
-<span class="ansi-green-intense-fg ansi-bold">    800</span>     preload_content=preload_content,
-<span class="ansi-green-intense-fg ansi-bold">    801</span>     decode_content=decode_content,
-<span class="ansi-green-intense-fg ansi-bold">    802</span>     **response_kw,
-<span class="ansi-green-intense-fg ansi-bold">    803</span> )
-<span class="ansi-green-intense-fg ansi-bold">    805</span> # Everything went great!
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connectionpool.py:536</span>, in <span class="ansi-cyan-fg">HTTPConnectionPool._make_request</span><span class="ansi-blue-fg">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
-<span class="ansi-green-intense-fg ansi-bold">    535</span> try:
-<span class="ansi-green-fg">--&gt; 536</span>     response = conn.getresponse()
-<span class="ansi-green-intense-fg ansi-bold">    537</span> except (BaseSSLError, OSError) as e:
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/urllib3/connection.py:461</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    460</span> # Get the response from http.client.HTTPConnection
-<span class="ansi-green-fg">--&gt; 461</span> httplib_response = super().getresponse()
-<span class="ansi-green-intense-fg ansi-bold">    463</span> try:
-
-File <span class="ansi-green-fg">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py:1378</span>, in <span class="ansi-cyan-fg">HTTPConnection.getresponse</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1377</span> try:
-<span class="ansi-green-fg">-&gt; 1378</span>     response.begin()
-<span class="ansi-green-intense-fg ansi-bold">   1379</span> except ConnectionError:
-
-File <span class="ansi-green-fg">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py:318</span>, in <span class="ansi-cyan-fg">HTTPResponse.begin</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    317</span> while True:
-<span class="ansi-green-fg">--&gt; 318</span>     version, status, reason = self._read_status()
-<span class="ansi-green-intense-fg ansi-bold">    319</span>     if status != CONTINUE:
-
-File <span class="ansi-green-fg">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/http/client.py:287</span>, in <span class="ansi-cyan-fg">HTTPResponse._read_status</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    284</span> if not line:
-<span class="ansi-green-intense-fg ansi-bold">    285</span>     # Presumably, the server closed the connection before
-<span class="ansi-green-intense-fg ansi-bold">    286</span>     # sending a valid response.
-<span class="ansi-green-fg">--&gt; 287</span>     raise RemoteDisconnected("Remote end closed connection without"
-<span class="ansi-green-intense-fg ansi-bold">    288</span>                              " response")
-<span class="ansi-green-intense-fg ansi-bold">    289</span> try:
-
-<span class="ansi-red-fg">ProtocolError</span>: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
-
-During handling of the above exception, another exception occurred:
-
-<span class="ansi-red-fg">ConnectionError</span>                           Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb Cell 26</span> line <span class="ansi-cyan-fg">1
-</span><span class="ansi-green-intense-fg ansi-bold">      &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=0'&gt;1&lt;/a&gt;</span> pipeline = Pipeline(
-<span class="ansi-green-intense-fg ansi-bold">      &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=1'&gt;2&lt;/a&gt;</span>     cache_name=src_model_activation_hook_point,
-<span class="ansi-green-intense-fg ansi-bold">      &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=2'&gt;3&lt;/a&gt;</span>     layer=src_model_activation_layer,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=9'&gt;10&lt;/a&gt;</span>     source_data_batch_size=8,
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=10'&gt;11&lt;/a&gt;</span> )
-<span class="ansi-green-fg">---&gt; &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=12'&gt;13&lt;/a&gt;</span> pipeline.run_pipeline(
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=13'&gt;14&lt;/a&gt;</span>     train_batch_size=int(hyperparameters["train_batch_size"]),
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=14'&gt;15&lt;/a&gt;</span>     max_store_size=1_000_000,
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=15'&gt;16&lt;/a&gt;</span>     # Sizes for demo purposes (you probably want to scale these by 10x)
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=16'&gt;17&lt;/a&gt;</span>     max_activations=10_000_000,
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=17'&gt;18&lt;/a&gt;</span>     resample_frequency=2_500_000,
-<span class="ansi-green-intense-fg ansi-bold">     &lt;a href='vscode-notebook-cell:/Users/alan/Documents/Repos/sparse_autoencoder/demo.ipynb#Y104sZmlsZQ%3D%3D?line=18'&gt;19&lt;/a&gt;</span> )
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/sparse_autoencoder/train/abstract_pipeline.py:186</span>, in <span class="ansi-cyan-fg">AbstractPipeline.run_pipeline</span><span class="ansi-blue-fg">(self, train_batch_size, max_store_size, max_activations, resample_frequency, validate_frequency, checkpoint_frequency)</span>
-<span class="ansi-green-intense-fg ansi-bold">    183</span> for _ in range(0, max_activations, store_size):
-<span class="ansi-green-intense-fg ansi-bold">    184</span>     # Generate
-<span class="ansi-green-intense-fg ansi-bold">    185</span>     progress_bar.set_postfix({"stage": "generate"})
-<span class="ansi-green-fg">--&gt; 186</span>     activation_store: TensorActivationStore = self.generate_activations(store_size)
-<span class="ansi-green-intense-fg ansi-bold">    188</span>     # Train
-<span class="ansi-green-intense-fg ansi-bold">    189</span>     progress_bar.set_postfix({"stage": "train"})
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/sparse_autoencoder/train/pipeline.py:45</span>, in <span class="ansi-cyan-fg">Pipeline.generate_activations</span><span class="ansi-blue-fg">(self, store_size)</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span> # Loop through the dataloader until the store reaches the desired size
-<span class="ansi-green-intense-fg ansi-bold">     44</span> with torch.no_grad():
-<span class="ansi-green-fg">---&gt; 45</span>     for batch in self.source_data:
-<span class="ansi-green-intense-fg ansi-bold">     46</span>         input_ids: BatchTokenizedPrompts = batch["input_ids"].to(source_model_device)
-<span class="ansi-green-intense-fg ansi-bold">     47</span>         self.source_model.forward(input_ids, stop_at_layer=self.layer + 1)  # type: ignore (TLens is typed incorrectly)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/sparse_autoencoder/train/abstract_pipeline.py:262</span>, in <span class="ansi-cyan-fg">AbstractPipeline.stateful_dataloader_iterable</span><span class="ansi-blue-fg">(dataloader)</span>
-<span class="ansi-green-intense-fg ansi-bold">    227</span> @staticmethod
-<span class="ansi-green-intense-fg ansi-bold">    228</span> def stateful_dataloader_iterable(
-<span class="ansi-green-intense-fg ansi-bold">    229</span>     dataloader: DataLoader[TorchTokenizedPrompts]
-<span class="ansi-green-intense-fg ansi-bold">    230</span> ) -&gt; Iterable[TorchTokenizedPrompts]:
-<span class="ansi-green-intense-fg ansi-bold">    231</span>     """Create a stateful dataloader iterable.
-<span class="ansi-green-intense-fg ansi-bold">    232</span> 
-<span class="ansi-green-intense-fg ansi-bold">    233</span>     Create an iterable that maintains it's position in the dataloader between loops.
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">    260</span>         Stateful iterable over the data in the dataloader.
-<span class="ansi-green-intense-fg ansi-bold">    261</span>     """
-<span class="ansi-green-fg">--&gt; 262</span>     yield from dataloader
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/torch/utils/data/dataloader.py:630</span>, in <span class="ansi-cyan-fg">_BaseDataLoaderIter.__next__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    627</span> if self._sampler_iter is None:
-<span class="ansi-green-intense-fg ansi-bold">    628</span>     # TODO(https://github.com/pytorch/pytorch/issues/76750)
-<span class="ansi-green-intense-fg ansi-bold">    629</span>     self._reset()  # type: ignore[call-arg]
-<span class="ansi-green-fg">--&gt; 630</span> data = self._next_data()
-<span class="ansi-green-intense-fg ansi-bold">    631</span> self._num_yielded += 1
-<span class="ansi-green-intense-fg ansi-bold">    632</span> if self._dataset_kind == _DatasetKind.Iterable and \
-<span class="ansi-green-intense-fg ansi-bold">    633</span>         self._IterableDataset_len_called is not None and \
-<span class="ansi-green-intense-fg ansi-bold">    634</span>         self._num_yielded &gt; self._IterableDataset_len_called:
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/torch/utils/data/dataloader.py:674</span>, in <span class="ansi-cyan-fg">_SingleProcessDataLoaderIter._next_data</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    672</span> def _next_data(self):
-<span class="ansi-green-intense-fg ansi-bold">    673</span>     index = self._next_index()  # may raise StopIteration
-<span class="ansi-green-fg">--&gt; 674</span>     data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
-<span class="ansi-green-intense-fg ansi-bold">    675</span>     if self._pin_memory:
-<span class="ansi-green-intense-fg ansi-bold">    676</span>         data = _utils.pin_memory.pin_memory(data, self._pin_memory_device)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py:32</span>, in <span class="ansi-cyan-fg">_IterableDatasetFetcher.fetch</span><span class="ansi-blue-fg">(self, possibly_batched_index)</span>
-<span class="ansi-green-intense-fg ansi-bold">     30</span> for _ in possibly_batched_index:
-<span class="ansi-green-intense-fg ansi-bold">     31</span>     try:
-<span class="ansi-green-fg">---&gt; 32</span>         data.append(next(self.dataset_iter))
-<span class="ansi-green-intense-fg ansi-bold">     33</span>     except StopIteration:
-<span class="ansi-green-intense-fg ansi-bold">     34</span>         self.ended = True
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/iterable_dataset.py:1379</span>, in <span class="ansi-cyan-fg">IterableDataset.__iter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1376</span>         yield formatter.format_row(pa_table)
-<span class="ansi-green-intense-fg ansi-bold">   1377</span>     return
-<span class="ansi-green-fg">-&gt; 1379</span> for key, example in ex_iterable:
-<span class="ansi-green-intense-fg ansi-bold">   1380</span>     if self.features:
-<span class="ansi-green-intense-fg ansi-bold">   1381</span>         # `IterableDataset` automatically fills missing columns with None.
-<span class="ansi-green-intense-fg ansi-bold">   1382</span>         # This is done with `_apply_feature_types_on_example`.
-<span class="ansi-green-intense-fg ansi-bold">   1383</span>         example = _apply_feature_types_on_example(
-<span class="ansi-green-intense-fg ansi-bold">   1384</span>             example, self.features, token_per_repo_id=self._token_per_repo_id
-<span class="ansi-green-intense-fg ansi-bold">   1385</span>         )
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/iterable_dataset.py:982</span>, in <span class="ansi-cyan-fg">BufferShuffledExamplesIterable.__iter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    980</span> # this is the shuffle buffer that we keep in memory
-<span class="ansi-green-intense-fg ansi-bold">    981</span> mem_buffer = []
-<span class="ansi-green-fg">--&gt; 982</span> for x in self.ex_iterable:
-<span class="ansi-green-intense-fg ansi-bold">    983</span>     if len(mem_buffer) == buffer_size:  # if the buffer is full, pick and example from it
-<span class="ansi-green-intense-fg ansi-bold">    984</span>         i = next(indices_iterator)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/iterable_dataset.py:678</span>, in <span class="ansi-cyan-fg">MappedExamplesIterable.__iter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    676</span>     yield from ArrowExamplesIterable(self._iter_arrow, {})
-<span class="ansi-green-intense-fg ansi-bold">    677</span> else:
-<span class="ansi-green-fg">--&gt; 678</span>     yield from self._iter()
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/iterable_dataset.py:693</span>, in <span class="ansi-cyan-fg">MappedExamplesIterable._iter</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    690</span>     format_dict = None
-<span class="ansi-green-intense-fg ansi-bold">    692</span> if self.batched:
-<span class="ansi-green-fg">--&gt; 693</span>     for key, example in iterator:
-<span class="ansi-green-intense-fg ansi-bold">    694</span>         # If `batched`, first build the batch, if `batch_size` is None or &lt;=0, then the batch is the whole dataset
-<span class="ansi-green-intense-fg ansi-bold">    695</span>         iterator_batch = (
-<span class="ansi-green-intense-fg ansi-bold">    696</span>             iterator
-<span class="ansi-green-intense-fg ansi-bold">    697</span>             if self.batch_size is None or self.batch_size &lt;= 0
-<span class="ansi-green-intense-fg ansi-bold">    698</span>             else islice(iterator, self.batch_size - 1)
-<span class="ansi-green-intense-fg ansi-bold">    699</span>         )
-<span class="ansi-green-intense-fg ansi-bold">    700</span>         key_examples_list = [(key, example)] + list(iterator_batch)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/iterable_dataset.py:1114</span>, in <span class="ansi-cyan-fg">TypedExamplesIterable.__iter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1111</span> def __iter__(self):
-<span class="ansi-green-intense-fg ansi-bold">   1112</span>     # Then for each example, `TypedExamplesIterable` automatically fills missing columns with None.
-<span class="ansi-green-intense-fg ansi-bold">   1113</span>     # This is done with `_apply_feature_types_on_example`.
-<span class="ansi-green-fg">-&gt; 1114</span>     for key, example in self.ex_iterable:
-<span class="ansi-green-intense-fg ansi-bold">   1115</span>         yield key, _apply_feature_types_on_example(
-<span class="ansi-green-intense-fg ansi-bold">   1116</span>             example, self.features, token_per_repo_id=self.token_per_repo_id
-<span class="ansi-green-intense-fg ansi-bold">   1117</span>         )
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/iterable_dataset.py:320</span>, in <span class="ansi-cyan-fg">ShuffledDataSourcesArrowExamplesIterable.__iter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    318</span> kwargs_with_shuffled_shards = _shuffle_gen_kwargs(rng, self.kwargs)
-<span class="ansi-green-intense-fg ansi-bold">    319</span> formatter = PythonFormatter()
-<span class="ansi-green-fg">--&gt; 320</span> for key, pa_table in self.generate_tables_fn(**kwargs_with_shuffled_shards):
-<span class="ansi-green-intense-fg ansi-bold">    321</span>     for pa_subtable in pa_table.to_reader(max_chunksize=config.ARROW_READER_BATCH_SIZE_IN_DATASET_ITER):
-<span class="ansi-green-intense-fg ansi-bold">    322</span>         formatted_batch = formatter.format_batch(pa_subtable)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/packaged_modules/parquet/parquet.py:87</span>, in <span class="ansi-cyan-fg">Parquet._generate_tables</span><span class="ansi-blue-fg">(self, files)</span>
-<span class="ansi-green-intense-fg ansi-bold">     85</span> parquet_file = pq.ParquetFile(f)
-<span class="ansi-green-intense-fg ansi-bold">     86</span> try:
-<span class="ansi-green-fg">---&gt; 87</span>     for batch_idx, record_batch in enumerate(
-<span class="ansi-green-intense-fg ansi-bold">     88</span>         parquet_file.iter_batches(batch_size=self.config.batch_size, columns=self.config.columns)
-<span class="ansi-green-intense-fg ansi-bold">     89</span>     ):
-<span class="ansi-green-intense-fg ansi-bold">     90</span>         pa_table = pa.Table.from_batches([record_batch])
-<span class="ansi-green-intense-fg ansi-bold">     91</span>         # Uncomment for debugging (will print the Arrow table size and elements)
-<span class="ansi-green-intense-fg ansi-bold">     92</span>         # logger.warning(f"pa_table: {pa_table} num rows: {pa_table.num_rows}")
-<span class="ansi-green-intense-fg ansi-bold">     93</span>         # logger.warning('\n'.join(str(pa_table.slice(i, 1).to_pydict()) for i in range(pa_table.num_rows)))
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/pyarrow/_parquet.pyx:1366</span>, in <span class="ansi-cyan-fg">iter_batches</span><span class="ansi-blue-fg">()</span>
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/pyarrow/types.pxi:88</span>, in <span class="ansi-cyan-fg">pyarrow.lib._datatype_to_pep3118</span><span class="ansi-blue-fg">()</span>
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/datasets/download/streaming_download_manager.py:333</span>, in <span class="ansi-cyan-fg">_add_retries_to_file_obj_read_method.&lt;locals&gt;.read_with_retries</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    331</span> for retry in range(1, max_retries + 1):
-<span class="ansi-green-intense-fg ansi-bold">    332</span>     try:
-<span class="ansi-green-fg">--&gt; 333</span>         out = read(*args, **kwargs)
-<span class="ansi-green-intense-fg ansi-bold">    334</span>         break
-<span class="ansi-green-intense-fg ansi-bold">    335</span>     except (ClientError, TimeoutError) as err:
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/fsspec/spec.py:1856</span>, in <span class="ansi-cyan-fg">AbstractBufferedFile.read</span><span class="ansi-blue-fg">(self, length)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1853</span> if length == 0:
-<span class="ansi-green-intense-fg ansi-bold">   1854</span>     # don't even bother calling fetch
-<span class="ansi-green-intense-fg ansi-bold">   1855</span>     return b""
-<span class="ansi-green-fg">-&gt; 1856</span> out = self.cache._fetch(self.loc, self.loc + length)
-<span class="ansi-green-intense-fg ansi-bold">   1857</span> self.loc += len(out)
-<span class="ansi-green-intense-fg ansi-bold">   1858</span> return out
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/fsspec/caching.py:189</span>, in <span class="ansi-cyan-fg">ReadAheadCache._fetch</span><span class="ansi-blue-fg">(self, start, end)</span>
-<span class="ansi-green-intense-fg ansi-bold">    187</span>     part = b""
-<span class="ansi-green-intense-fg ansi-bold">    188</span> end = min(self.size, end + self.blocksize)
-<span class="ansi-green-fg">--&gt; 189</span> self.cache = self.fetcher(start, end)  # new block replaces old
-<span class="ansi-green-intense-fg ansi-bold">    190</span> self.start = start
-<span class="ansi-green-intense-fg ansi-bold">    191</span> self.end = self.start + len(self.cache)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/huggingface_hub/hf_file_system.py:444</span>, in <span class="ansi-cyan-fg">HfFileSystemFile._fetch_range</span><span class="ansi-blue-fg">(self, start, end)</span>
-<span class="ansi-green-intense-fg ansi-bold">    433</span> headers = {
-<span class="ansi-green-intense-fg ansi-bold">    434</span>     "range": f"bytes={start}-{end - 1}",
-<span class="ansi-green-intense-fg ansi-bold">    435</span>     **self.fs._api._build_hf_headers(),
-<span class="ansi-green-intense-fg ansi-bold">    436</span> }
-<span class="ansi-green-intense-fg ansi-bold">    437</span> url = hf_hub_url(
-<span class="ansi-green-intense-fg ansi-bold">    438</span>     repo_id=self.resolved_path.repo_id,
-<span class="ansi-green-intense-fg ansi-bold">    439</span>     revision=self.resolved_path.revision,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">    442</span>     endpoint=self.fs.endpoint,
-<span class="ansi-green-intense-fg ansi-bold">    443</span> )
-<span class="ansi-green-fg">--&gt; 444</span> r = http_backoff("GET", url, headers=headers)
-<span class="ansi-green-intense-fg ansi-bold">    445</span> hf_raise_for_status(r)
-<span class="ansi-green-intense-fg ansi-bold">    446</span> return r.content
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/huggingface_hub/utils/_http.py:267</span>, in <span class="ansi-cyan-fg">http_backoff</span><span class="ansi-blue-fg">(method, url, max_retries, base_wait_time, max_wait_time, retry_on_exceptions, retry_on_status_codes, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    264</span>     kwargs["data"].seek(io_obj_initial_pos)
-<span class="ansi-green-intense-fg ansi-bold">    266</span> # Perform request and return if status_code is not in the retry list.
-<span class="ansi-green-fg">--&gt; 267</span> response = session.request(method=method, url=url, **kwargs)
-<span class="ansi-green-intense-fg ansi-bold">    268</span> if response.status_code not in retry_on_status_codes:
-<span class="ansi-green-intense-fg ansi-bold">    269</span>     return response
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/requests/sessions.py:589</span>, in <span class="ansi-cyan-fg">Session.request</span><span class="ansi-blue-fg">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
-<span class="ansi-green-intense-fg ansi-bold">    584</span> send_kwargs = {
-<span class="ansi-green-intense-fg ansi-bold">    585</span>     "timeout": timeout,
-<span class="ansi-green-intense-fg ansi-bold">    586</span>     "allow_redirects": allow_redirects,
-<span class="ansi-green-intense-fg ansi-bold">    587</span> }
-<span class="ansi-green-intense-fg ansi-bold">    588</span> send_kwargs.update(settings)
-<span class="ansi-green-fg">--&gt; 589</span> resp = self.send(prep, **send_kwargs)
-<span class="ansi-green-intense-fg ansi-bold">    591</span> return resp
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/requests/sessions.py:703</span>, in <span class="ansi-cyan-fg">Session.send</span><span class="ansi-blue-fg">(self, request, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    700</span> start = preferred_clock()
-<span class="ansi-green-intense-fg ansi-bold">    702</span> # Send the request
-<span class="ansi-green-fg">--&gt; 703</span> r = adapter.send(request, **kwargs)
-<span class="ansi-green-intense-fg ansi-bold">    705</span> # Total elapsed time of the request (approximately)
-<span class="ansi-green-intense-fg ansi-bold">    706</span> elapsed = preferred_clock() - start
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/huggingface_hub/utils/_http.py:63</span>, in <span class="ansi-cyan-fg">UniqueRequestIdAdapter.send</span><span class="ansi-blue-fg">(self, request, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     61</span> """Catch any RequestException to append request id to the error message for debugging."""
-<span class="ansi-green-intense-fg ansi-bold">     62</span> try:
-<span class="ansi-green-fg">---&gt; 63</span>     return super().send(request, *args, **kwargs)
-<span class="ansi-green-intense-fg ansi-bold">     64</span> except requests.RequestException as e:
-<span class="ansi-green-intense-fg ansi-bold">     65</span>     request_id = request.headers.get(X_AMZN_TRACE_ID)
-
-File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/requests/adapters.py:501</span>, in <span class="ansi-cyan-fg">HTTPAdapter.send</span><span class="ansi-blue-fg">(self, request, stream, timeout, verify, cert, proxies)</span>
-<span class="ansi-green-intense-fg ansi-bold">    486</span>     resp = conn.urlopen(
-<span class="ansi-green-intense-fg ansi-bold">    487</span>         method=request.method,
-<span class="ansi-green-intense-fg ansi-bold">    488</span>         url=url,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">    497</span>         chunked=chunked,
-<span class="ansi-green-intense-fg ansi-bold">    498</span>     )
-<span class="ansi-green-intense-fg ansi-bold">    500</span> except (ProtocolError, OSError) as err:
-<span class="ansi-green-fg">--&gt; 501</span>     raise ConnectionError(err, request=request)
-<span class="ansi-green-intense-fg ansi-bold">    503</span> except MaxRetryError as e:
-<span class="ansi-green-intense-fg ansi-bold">    504</span>     if isinstance(e.reason, ConnectTimeoutError):
-<span class="ansi-green-intense-fg ansi-bold">    505</span>         # TODO: Remove this in 3.0.0: see #2811
-
-<span class="ansi-red-fg">ConnectionError</span>: (ProtocolError('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')), '(Request ID: a88fef33-195d-468c-b527-20ad75eccf2d)')</pre>
+<code>/Users/alan/Documents/Repos/sparse_autoencoder/.venv/lib/python3.11/site-packages/torch/autograd/__init__.py:251: UserWarning: The operator 'aten::sgn.out' is not currently supported on the MPS backend and will fall back to run on the CPU. This may have performance implications. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/mps/MPSFallback.mm:13.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+</code>
+</pre>
 </div>
 </div>
 </div>
@@ -1469,18 +1139,18 @@ File <span class="ansi-green-fg">~/Documents/Repos/sparse_autoencoder/.venv/lib/
     .wandb-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; width: 100% }
     .wandb-col { display: flex; flex-direction: column; flex-basis: 100%; flex: 1; padding: 10px; }
     </style>
-<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>LearnedActivationsL1Loss</td><td>█▃▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</td></tr><tr><td>LossReducer</td><td>█▃▃▃▂▂▂▂▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</td></tr><tr><td>MSEReconstructionLoss</td><td>█▅▅▅▄▃▃▃▂▂▂▂▂▂▁▂▁▁▁▂▁▁▂▂▂▁▁▁▁▁▁▁▂▂▂▂▁▂▁▂</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>LearnedActivationsL1Loss</td><td>0.00027</td></tr><tr><td>LossReducer</td><td>0.01715</td></tr><tr><td>MSEReconstructionLoss</td><td>0.01688</td></tr></table><br/></div>
+<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>LearnedActivationsL1Loss</td><td>█▃▁▁▁▂▁▂▁▃▃▂▄▄▅▄▅▆▆▇▄▂▄▂▃▃▂▂▃▃▃▅▃▂▄▄▃▄▇▇</td></tr><tr><td>LossReducer</td><td>█▃▂▁▁▁▁▂▁▃▃▂▃▃▅▄▄▅▅▆▄▂▃▂▃▂▂▂▂▂▃▄▄▂▅▄▃▃▆▆</td></tr><tr><td>MSEReconstructionLoss</td><td>█▄▄▂▁▁▁▁▁▂▂▂▂▂▄▃▃▂▃▃▂▃▁▂▂▁▁▁▂▁▄▁▄▁▇▂▁▃▂▃</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>LearnedActivationsL1Loss</td><td>0.00548</td></tr><tr><td>LossReducer</td><td>0.02247</td></tr><tr><td>MSEReconstructionLoss</td><td>0.01698</td></tr></table><br/></div>
 </div>
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
- View run <strong style="color:#cdcd00">effortless-donkey-54</strong> at: <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/1teoia5b" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/1teoia5b</a><br/>Synced 5 W&amp;B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+ View run <strong style="color:#cdcd00">young-frog-69</strong> at: <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/kc45kj7w" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/kc45kj7w</a><br/>Synced 5 W&amp;B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
-Find logs at: <code>.cache/wandb/run-20231120_211221-1teoia5b/logs</code>
+Find logs at: <code>.cache/wandb/run-20231122_191929-kc45kj7w/logs</code>
 </div>
 </div>
 </div>
@@ -1496,6 +1166,14 @@ Find logs at: <code>.cache/wandb/run-20231120_211221-1teoia5b/logs</code>
 <li>Can't be sure features are useful until you dig into them more. </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
