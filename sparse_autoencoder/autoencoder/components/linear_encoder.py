@@ -2,9 +2,8 @@
 import math
 from typing import final
 
-import einops
 import torch
-from torch.nn import Parameter, ReLU, init
+from torch.nn import Parameter, ReLU, functional, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.tensor_types import (
@@ -17,7 +16,12 @@ from sparse_autoencoder.tensor_types import (
 
 @final
 class LinearEncoder(AbstractEncoder):
-    """Linear encoder layer."""
+    r"""Linear encoder layer.
+
+    $$
+    y = W_e \overline{x} + b_e
+    $$
+    """
 
     _learnt_features: int
     """Number of learnt features (inputs to this layer)."""
@@ -83,22 +87,7 @@ class LinearEncoder(AbstractEncoder):
         Returns:
             Output of the forward pass.
         """
-        learned_activation_batch: LearnedActivationBatch = einops.einsum(
-            x,
-            self.weight,
-            "batch input_output_feature, \
-                learnt_feature_dim input_output_feature_dim \
-                -> batch learnt_feature_dim",
-        )
-
-        learned_activation_batch = einops.einsum(
-            learned_activation_batch,
-            self.bias,
-            "batch learnt_feature_dim, \
-                learnt_feature_dim -> batch learnt_feature_dim",
-        )
-
-        return self.activation_function(learned_activation_batch)
+        return functional.linear(x, self.weight, self.bias)
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""
