@@ -12,6 +12,7 @@ from sparse_autoencoder.tensor_types import (
     InputOutputNeuronIndices,
     LearnedActivationBatch,
     LearntActivationVector,
+    LearntNeuronIndices,
 )
 
 
@@ -49,7 +50,7 @@ class AbstractEncoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: InputOutputNeuronIndices,
+        dictionary_vector_indices: LearntNeuronIndices,
         updated_dictionary_weights: DeadEncoderNeuronWeightUpdates,
     ) -> None:
         """Update encoder dictionary vectors.

@@ -89,10 +89,10 @@ def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) ->
 @pytest.mark.parametrize(
     ("dictionary_vector_indices", "updates"),
     [
-        (torch.tensor([1]), torch.rand((3, 1))),  # Test with 1 neuron to update
+        (torch.tensor([1]), torch.rand((1, 4))),  # Test with 1 neuron to update
         (
             torch.tensor([0, 2]),
-            torch.rand((3, 2)),
+            torch.rand((2, 4)),
         ),  # Test with 2 neurons to update
     ],
 )
@@ -106,5 +106,5 @@ def test_update_dictionary_vectors_with_neurons(
 
     # Check if the specified neurons are updated correctly
     assert torch.allclose(
-        mock_encoder.weight[:, dictionary_vector_indices], updates
+        mock_encoder.weight[dictionary_vector_indices, :], updates
     ), "update_dictionary_vectors should update the weights correctly."
