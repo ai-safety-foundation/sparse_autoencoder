@@ -46,6 +46,9 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         Args:
             source_batch: A batch of source data.
             context_size: The context size to use for tokenized prompts.
+
+        Returns:
+            Tokenized prompts.
         """
         tokenized_prompts: list[list[int]] = source_batch["tokens"]
 

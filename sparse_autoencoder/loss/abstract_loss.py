@@ -55,7 +55,6 @@ class AbstractLoss(Module, ABC):
         Returns:
             Loss per batch item.
         """
-        raise NotImplementedError
 
     @final
     def batch_scalar_loss(

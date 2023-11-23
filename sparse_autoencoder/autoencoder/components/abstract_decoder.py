@@ -9,8 +9,8 @@ from sparse_autoencoder.tensor_types import (
     DeadDecoderNeuronWeightUpdates,
     DecoderWeights,
     InputOutputActivationBatch,
-    InputOutputNeuronIndices,
     LearnedActivationBatch,
+    LearntNeuronIndices,
 )
 
 
@@ -24,7 +24,6 @@ class AbstractDecoder(Module, ABC):
     @abstractmethod
     def weight(self) -> DecoderWeights:
         """Weight."""
-        raise NotImplementedError
 
     @abstractmethod
     def forward(
@@ -39,17 +38,15 @@ class AbstractDecoder(Module, ABC):
         Returns:
             Decoded activations.
         """
-        raise NotImplementedError
 
     @abstractmethod
     def reset_parameters(self) -> None:
         """Reset the parameters."""
-        raise NotImplementedError
 
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: InputOutputNeuronIndices,
+        dictionary_vector_indices: LearntNeuronIndices,
         updated_weights: DeadDecoderNeuronWeightUpdates,
     ) -> None:
         """Update decoder dictionary vectors.
@@ -65,4 +62,4 @@ class AbstractDecoder(Module, ABC):
             return
 
         with torch.no_grad():
-            self.weight[dictionary_vector_indices, :] = updated_weights
+            self.weight[:, dictionary_vector_indices] = updated_weights

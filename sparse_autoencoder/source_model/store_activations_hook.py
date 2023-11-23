@@ -46,6 +46,9 @@ def store_activations_hook(
         value: The activations to store.
         hook: The hook point.
         store: The activation store. This should be pre-initialised with `functools.partial`.
+
+    Returns:
+        Unmodified activations.
     """
     store.extend(value)
 

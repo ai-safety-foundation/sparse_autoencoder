@@ -13,4 +13,4 @@ pip install sparse_autoencoder
 
 ## Demo
 
-Check out the demo notebook for a guide to using this library.
+Check out the [demo notebook](demo) for a guide to using this library.

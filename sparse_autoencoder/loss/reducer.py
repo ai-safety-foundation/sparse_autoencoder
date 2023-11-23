@@ -45,7 +45,7 @@ class LossReducer(AbstractLoss):
         """Initialize the loss reducer.
 
         Args:
-            loss_modules: Loss modules to reduce.
+            *loss_modules: Loss modules to reduce.
 
         Raises:
             ValueError: If the loss reducer has no loss modules.

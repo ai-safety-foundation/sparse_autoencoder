@@ -54,6 +54,9 @@ class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
         Args:
             source_batch: A batch of source data, including 'text' with a list of strings.
             context_size: Context size for tokenized prompts.
+
+        Returns:
+            Tokenized prompts.
         """
         prompts: list[str] = source_batch["text"]
 

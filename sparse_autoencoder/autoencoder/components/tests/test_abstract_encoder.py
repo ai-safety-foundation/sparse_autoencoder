@@ -45,7 +45,7 @@ class MockEncoder(AbstractEncoder):
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
+        self._weight: EncoderWeights = init.kaiming_normal_(self._weight)
 
 
 @pytest.fixture()
@@ -66,6 +66,7 @@ def test_reset_parameters_method(mock_encoder: MockEncoder) -> None:
 
 def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) -> None:
     """Test update_dictionary_vectors with 0 neurons to update."""
+    torch.random.manual_seed(0)
     original_weight = mock_encoder.weight.clone()  # Save original weight for comparison
 
     dictionary_vector_indices: InputOutputNeuronIndices = torch.empty(
@@ -88,10 +89,10 @@ def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) ->
 @pytest.mark.parametrize(
     ("dictionary_vector_indices", "updates"),
     [
-        (torch.tensor([1]), torch.rand((3, 1))),  # Test with 1 neuron to update
+        (torch.tensor([1]), torch.rand((1, 4))),  # Test with 1 neuron to update
         (
             torch.tensor([0, 2]),
-            torch.rand((3, 2)),
+            torch.rand((2, 4)),
         ),  # Test with 2 neurons to update
     ],
 )
@@ -105,5 +106,5 @@ def test_update_dictionary_vectors_with_neurons(
 
     # Check if the specified neurons are updated correctly
     assert torch.allclose(
-        mock_encoder.weight[:, dictionary_vector_indices], updates
+        mock_encoder.weight[dictionary_vector_indices, :], updates
     ), "update_dictionary_vectors should update the weights correctly."

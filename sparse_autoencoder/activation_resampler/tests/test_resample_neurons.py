@@ -1,28 +1,23 @@
 """Tests for the resample_neurons module."""
-import copy
 
 import pytest
 import torch
 from torch import Tensor
 
+from sparse_autoencoder.activation_resampler import ActivationResampler
+from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
+    ParameterUpdateResults,
+)
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
 from sparse_autoencoder.tensor_types import (
     AliveEncoderWeights,
     EncoderWeights,
     NeuronActivity,
     SampledDeadNeuronInputs,
 )
-from sparse_autoencoder.train.resample_neurons import (
-    assign_sampling_probabilities,
-    compute_loss_and_get_activations,
-    get_dead_neuron_indices,
-    renormalize_and_scale,
-    resample_dead_neurons,
-    sample_input,
-)
-from sparse_autoencoder.train.sweep_config import SweepParametersRuntime
 
 
 DEFAULT_N_ITEMS: int = 100
@@ -55,12 +50,6 @@ def activation_store_fixture(
 
 
 @pytest.fixture()
-def sweep_parameters_fixture() -> SweepParametersRuntime:
-    """Create a dummy sweep parameters object."""
-    return SweepParametersRuntime()
-
-
-@pytest.fixture()
 def autoencoder_model_fixture(n_input_neurons: int = DEFAULT_N_INPUT_NEURONS) -> SparseAutoencoder:
     """Create a dummy autoencoder model."""
     return SparseAutoencoder(
@@ -76,17 +65,19 @@ class TestGetDeadNeuronIndices:
     @pytest.mark.parametrize(
         ("neuron_activity", "threshold", "expected_indices"),
         [
-            (torch.tensor([1, 0, 3, 9, 0]), 0, torch.tensor([1, 4])),
-            (torch.tensor([1, 2, 3, 4, 5]), 0, torch.tensor([])),
-            (torch.tensor([1, 0, 3, 9, 0]), 1, torch.tensor([0, 1, 4])),
-            (torch.tensor([1, 2, 3, 4, 5]), 1, torch.tensor([0])),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4])),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.0, torch.tensor([])),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4])),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0])),
         ],
     )
     def test_get_dead_neuron_indices(
-        self, neuron_activity: Tensor, threshold: int, expected_indices: Tensor
+        self, neuron_activity: Tensor, threshold: float, expected_indices: Tensor
     ) -> None:
         """Test the dead neuron indices match manually created examples."""
-        res = get_dead_neuron_indices(neuron_activity, threshold)
+        res = ActivationResampler.get_dead_neuron_indices(
+            neuron_activity=neuron_activity, threshold=threshold, neuron_activity_sample_size=10
+        )
         assert torch.equal(res, expected_indices), f"Expected {expected_indices}, got {res}"
 
 
@@ -97,15 +88,14 @@ class TestComputeLossAndGetActivations:
         self,
         activation_store_fixture: ActivationStore,
         autoencoder_model_fixture: SparseAutoencoder,
-        sweep_parameters_fixture: SweepParametersRuntime,
         input_activations_fixture: Tensor,
     ) -> None:
         """Test it gets loss and also returns the input activations."""
-        loss, input_activations = compute_loss_and_get_activations(
-            activation_store_fixture,
-            autoencoder_model_fixture,
-            sweep_parameters_fixture,
-            DEFAULT_N_ITEMS,
+        loss, input_activations = ActivationResampler().compute_loss_and_get_activations(
+            store=activation_store_fixture,
+            autoencoder=autoencoder_model_fixture,
+            loss_fn=MSEReconstructionLoss(),
+            train_batch_size=DEFAULT_N_ITEMS,
         )
 
         assert isinstance(loss, Tensor)
@@ -120,18 +110,19 @@ class TestComputeLossAndGetActivations:
         self,
         activation_store_fixture: ActivationStore,
         autoencoder_model_fixture: SparseAutoencoder,
-        sweep_parameters_fixture: SweepParametersRuntime,
     ) -> None:
         """Test that an error is raised if there are more items than in the store."""
         with pytest.raises(
             ValueError,
             match=r"Cannot get \d+ items from the store, as only \d+ were available.",
         ):
-            compute_loss_and_get_activations(
-                activation_store_fixture,
-                autoencoder_model_fixture,
-                sweep_parameters_fixture,
-                DEFAULT_N_ITEMS + 1,
+            ActivationResampler(
+                resample_dataset_size=DEFAULT_N_ITEMS + 1
+            ).compute_loss_and_get_activations(
+                store=activation_store_fixture,
+                autoencoder=autoencoder_model_fixture,
+                loss_fn=MSEReconstructionLoss(),
+                train_batch_size=DEFAULT_N_ITEMS + 1,
             )
 
 
@@ -148,7 +139,7 @@ class TestAssignSamplingProbabilities:
     )
     def test_assign_sampling_probabilities(self, loss: Tensor) -> None:
         """Test that sampling probabilities are correctly assigned based on loss."""
-        probabilities = assign_sampling_probabilities(loss)
+        probabilities = ActivationResampler.assign_sampling_probabilities(loss)
 
         # Compare against non-vectorized implementation
         squared_loss = [batch_item_loss.item() ** 2 for batch_item_loss in loss]
@@ -173,7 +164,7 @@ class TestSampleInput:
         results = [0, 0, 0]
         for _ in range(10_000):
             input_activations = torch.tensor([[0.0, 0], [1, 1], [2, 2]])
-            sampled_input = sample_input(probabilities, input_activations, 1)
+            sampled_input = ActivationResampler.sample_input(probabilities, input_activations, 1)
 
             # Get the input activation index (the first element is also the index)
             sampled_activation_idx = sampled_input[0][0].item()
@@ -190,7 +181,7 @@ class TestSampleInput:
         """Test where there are no dead neurons."""
         probabilities = torch.tensor([0.0, 0.0, 1.0])
         input_activations = torch.tensor([[0.0, 0], [1, 1], [2, 2]])
-        sampled_input = sample_input(probabilities, input_activations, 0)
+        sampled_input = ActivationResampler.sample_input(probabilities, input_activations, 0)
         assert sampled_input.shape == (0, 2), "Should return an empty tensor"
 
     def test_sample_input_raises_value_error(self) -> None:
@@ -202,7 +193,7 @@ class TestSampleInput:
         with pytest.raises(
             ValueError, match=r"Cannot sample \d+ inputs from \d+ input activations."
         ):
-            sample_input(probabilities, input_activations, num_samples)
+            ActivationResampler.sample_input(probabilities, input_activations, num_samples)
 
 
 class TestRenormalizeAndScale:
@@ -242,7 +233,9 @@ class TestRenormalizeAndScale:
         neuron_activity: NeuronActivity = torch.tensor([1, 0, 1, 0, 1, 1])
         encoder_weight: EncoderWeights = torch.ones((6, 2))
 
-        rescaled_input = renormalize_and_scale(sampled_input, neuron_activity, encoder_weight)
+        rescaled_input = ActivationResampler.renormalize_and_scale(
+            sampled_input, neuron_activity, encoder_weight
+        )
 
         expected_output = self.calculate_expected_output(
             sampled_input, neuron_activity, encoder_weight
@@ -256,7 +249,9 @@ class TestRenormalizeAndScale:
         neuron_activity = torch.tensor([1, 4, 1, 3, 1, 1])
         encoder_weight = torch.ones((6, 2))
 
-        rescaled_input = renormalize_and_scale(sampled_input, neuron_activity, encoder_weight)
+        rescaled_input = ActivationResampler.renormalize_and_scale(
+            sampled_input, neuron_activity, encoder_weight
+        )
 
         assert rescaled_input.shape == (0, 2), "Should return an empty tensor"
 
@@ -270,50 +265,61 @@ class TestResampleDeadNeurons:
         store_data = torch.rand((100, 5))
         store = TensorActivationStore(100, 5)
         store.extend(store_data)
-        sweep_parameters = SweepParametersRuntime()
         model = SparseAutoencoder(5, 10, torch.rand(5))
-        optimizer = torch.optim.Adam(model.parameters())
 
-        # Run a forward pass to initialize the optimizer state
-        _learned_activations, decoded_activations = model(store_data)
-        loss = decoded_activations.sum()  # Dummy loss
-        loss.backward()
-        optimizer.step()
+        res = ActivationResampler().resample_dead_neurons(
+            neuron_activity=neuron_activity,
+            activation_store=store,
+            autoencoder=model,
+            loss_fn=MSEReconstructionLoss(),
+            train_batch_size=DEFAULT_N_ITEMS,
+            neuron_activity_sample_size=int(DEFAULT_N_ITEMS / 2),
+        )
 
-        current_parameters = model.state_dict()
-        resample_dead_neurons(neuron_activity, store, model, sweep_parameters, 100)
-        updated_parameters = model.state_dict()
-
-        for key in current_parameters:
-            assert torch.equal(current_parameters[key], updated_parameters[key])
+        assert res.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
+        assert res.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
+        assert res.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
+        assert res.dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
 
     def test_updates_a_dead_neuron_parameters(self) -> None:
         """Check it updates a dead neuron's parameters."""
-        neuron_activity = torch.ones(10, dtype=torch.int32)
-        dead_neuron_idx = 3
+        n_input_features = 3
+        n_learned_features = 10
+        neuron_activity = torch.ones(n_learned_features, dtype=torch.int32)
+        dead_neuron_idx = 5
         neuron_activity[dead_neuron_idx] = 0
-        store_data = torch.rand((100, 5))
-        store = TensorActivationStore(100, 5)
-        store.extend(store_data)
-        sweep_parameters = SweepParametersRuntime()
-        model = SparseAutoencoder(5, 10, torch.rand(5))
-        optimizer = torch.optim.Adam(model.parameters())
+        store = TensorActivationStore(100, n_input_features)
+        store.extend(torch.rand((100, n_input_features)))
+        model = SparseAutoencoder(
+            n_input_features, n_learned_features, torch.rand(n_input_features)
+        )
 
-        # Run a forward pass to initialize the optimizer state
-        _learned_activations, decoded_activations = model(store_data)
-        loss = decoded_activations.sum()  # Dummy loss
-        loss.backward()
-        optimizer.step()
+        # Get the current & updated parameters
+        current_parameters = model.state_dict()
+        updated_parameters: ParameterUpdateResults = ActivationResampler().resample_dead_neurons(
+            activation_store=store,
+            autoencoder=model,
+            loss_fn=MSEReconstructionLoss(),
+            neuron_activity=neuron_activity,
+            train_batch_size=DEFAULT_N_ITEMS,
+            neuron_activity_sample_size=int(DEFAULT_N_ITEMS / 2),
+        )
 
-        current_parameters = copy.deepcopy(model.state_dict())
-        resample_dead_neurons(neuron_activity, store, model, sweep_parameters, 100)
-        updated_parameters = model.state_dict()
+        # Check the updated ones have changed
+        current_dead_decoder_weights = current_parameters["_decoder._weight"][:, dead_neuron_idx]
+        updated_dead_decoder_weights = updated_parameters.dead_encoder_weight_updates.squeeze()
+        assert not torch.equal(
+            current_dead_decoder_weights, updated_dead_decoder_weights
+        ), "Dead decoder weights should have changed."
 
-        for key in current_parameters:
-            if "pre_encoder_bias" in key or "post_decoder_bias" in key or "tied" in key:
-                assert torch.equal(current_parameters[key], updated_parameters[key])
+        current_dead_encoder_weights = current_parameters["_encoder._weight"][dead_neuron_idx]
+        updated_dead_encoder_weights = updated_parameters.dead_encoder_weight_updates.squeeze()
+        assert not torch.equal(
+            current_dead_encoder_weights, updated_dead_encoder_weights
+        ), "Dead encoder weights should have changed."
 
-            else:
-                assert not torch.equal(
-                    current_parameters[key], updated_parameters[key]
-                ), f"Parameter {key} should have changed."
+        current_dead_encoder_bias = current_parameters["_encoder._bias"][dead_neuron_idx]
+        updated_dead_encoder_bias = updated_parameters.dead_encoder_bias_updates
+        assert not torch.equal(
+            current_dead_encoder_bias, updated_dead_encoder_bias
+        ), "Dead encoder bias should have changed."

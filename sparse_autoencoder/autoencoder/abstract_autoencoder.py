@@ -19,25 +19,21 @@ class AbstractAutoencoder(Module, ABC):
     @abstractmethod
     def encoder(self) -> AbstractEncoder:
         """Encoder."""
-        raise NotImplementedError
 
     @property
     @abstractmethod
     def decoder(self) -> AbstractDecoder:
         """Decoder."""
-        raise NotImplementedError
 
     @property
     @abstractmethod
     def pre_encoder_bias(self) -> AbstractOuterBias:
         """Pre-encoder bias."""
-        raise NotImplementedError
 
     @property
     @abstractmethod
     def post_decoder_bias(self) -> AbstractOuterBias:
         """Post-decoder bias."""
-        raise NotImplementedError
 
     @abstractmethod
     def forward(
@@ -55,9 +51,7 @@ class AbstractAutoencoder(Module, ABC):
         Returns:
             Tuple of learned activations and decoded activations.
         """
-        raise NotImplementedError
 
     @abstractmethod
     def reset_parameters(self) -> None:
         """Reset the parameters."""
-        raise NotImplementedError
