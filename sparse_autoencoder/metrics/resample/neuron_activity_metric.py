@@ -1,7 +1,6 @@
 """Neuron activity metric."""
 from typing import Any
 
-import pandas as pd
 import wandb
 
 from sparse_autoencoder.metrics.resample.abstract_resample_metric import (

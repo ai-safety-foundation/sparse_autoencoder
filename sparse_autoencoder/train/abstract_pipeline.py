@@ -32,57 +32,89 @@ class AbstractPipeline(ABC):
         hyperparameters.
     """
 
-    metrics: MetricsContainer
-
-    source_model: HookedTransformer
-
-    source_dataset: SourceDataset
-
-    source_data: Iterable[TorchTokenizedPrompts]
+    activation_resampler: AbstractActivationResampler | None
+    """Activation resampler to use."""
 
     autoencoder: SparseAutoencoder
-
-    loss: AbstractLoss
+    """Sparse autoencoder to train."""
 
     cache_name: str
+    """Name of the cache to use in the source model (hook point)."""
 
     layer: int
+    """Layer to get activations from with the source model."""
+
+    log_frequency: int
+    """Frequency at which to log metrics (in steps)."""
+
+    loss: AbstractLoss
+    """Loss function to use."""
+
+    metrics: MetricsContainer
+    """Metrics to use."""
 
     optimizer: AbstractOptimizerWithReset
-
-    activation_resampler: AbstractActivationResampler | None
+    """Optimizer to use."""
 
     progress_bar: tqdm | None
+    """Progress bar for the pipeline."""
+
+    source_data: Iterable[TorchTokenizedPrompts]
+    """Iterable over the source data."""
+
+    source_dataset: SourceDataset
+    """Source dataset to generate activation data from (tokenized prompts)."""
+
+    source_model: HookedTransformer
+    """Source model to get activations from."""
 
     total_training_steps: int = 1
+    """Total number of training steps state."""
 
     @final
     def __init__(  # noqa: PLR0913
         self,
+        activation_resampler: AbstractActivationResampler | None,
+        autoencoder: SparseAutoencoder,
         cache_name: str,
         layer: int,
-        source_model: HookedTransformer,
-        autoencoder: SparseAutoencoder,
-        source_dataset: SourceDataset,
-        optimizer: AbstractOptimizerWithReset,
         loss: AbstractLoss,
-        activation_resampler: AbstractActivationResampler | None,
-        metrics: MetricsContainer | None = None,
-        source_data_batch_size: int = 12,
+        optimizer: AbstractOptimizerWithReset,
+        source_dataset: SourceDataset,
+        source_model: HookedTransformer,
         checkpoint_directory: Path | None = None,
+        log_frequency: int = 100,
+        metrics: MetricsContainer = default_metrics,
+        source_data_batch_size: int = 12,
     ):
-        """Initialize the pipeline."""
-        self.cache_name = cache_name
-        self.layer = layer
-        self.metrics = metrics or default_metrics
-        self.source_model = source_model
-        self.source_dataset = source_dataset
-        self.autoencoder = autoencoder
+        """Initialize the pipeline.
+
+        Args:
+            activation_resampler: Activation resampler to use.
+            autoencoder: Sparse autoencoder to train.
+            cache_name: Name of the cache to use in the source model (hook point).
+            layer: Layer to get activations from with the source model.
+            loss: Loss function to use.
+            optimizer: Optimizer to use.
+            source_dataset: Source dataset to get data from.
+            source_model: Source model to get activations from.
+            checkpoint_directory: Directory to save checkpoints to.
+            log_frequency: Frequency at which to log metrics (in steps)
+            metrics: Metrics to use.
+            source_data_batch_size: Batch size for the source data.
+        """
         self.activation_resampler = activation_resampler
-        self.optimizer = optimizer
-        self.loss = loss
-        self.source_data_batch_size = source_data_batch_size
+        self.autoencoder = autoencoder
+        self.cache_name = cache_name
         self.checkpoint_directory = checkpoint_directory
+        self.layer = layer
+        self.log_frequency = log_frequency
+        self.loss = loss
+        self.metrics = metrics
+        self.optimizer = optimizer
+        self.source_data_batch_size = source_data_batch_size
+        self.source_dataset = source_dataset
+        self.source_model = source_model
 
         source_dataloader = source_dataset.get_dataloader(source_data_batch_size)
         self.source_data = self.stateful_dataloader_iterable(source_dataloader)

@@ -118,8 +118,10 @@ class Pipeline(AbstractPipeline):
             self.optimizer.step()
 
             # Log
-            if wandb.run is not None:
-                wandb.log(data={**metrics, **loss_metrics}, step=self.total_training_steps)
+            if wandb.run is not None and self.total_training_steps % self.log_frequency == 0:
+                wandb.log(
+                    data={**metrics, **loss_metrics}, step=self.total_training_steps, commit=True
+                )
             self.total_training_steps += 1
 
         return learned_activations_fired_count
