@@ -1,11 +1,10 @@
 """Tests for the AbstractMetric class."""
-from collections import OrderedDict
-from typing import Any, final
+from typing import final
 
 import pytest
 import torch
 
-from sparse_autoencoder.metrics.abstract_metric import (
+from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
 )
@@ -18,33 +17,30 @@ class DummyMetric(AbstractTrainMetric):
     Returns a sum of the learned activations.
     """
 
-    @final
-    def create_progress_bar_postfix(self, data: TrainMetricData) -> OrderedDict[str, Any]:
-        """Create a progress bar postfix."""
-        raise NotImplementedError
-
-    @final
-    def create_weights_and_biases_log(self, data: TrainMetricData) -> OrderedDict[str, float]:
+    def calculate(self, data: TrainMetricData) -> dict[str, float]:
         """Create a log item for Weights and Biases."""
-        return OrderedDict(dummy_metric=data.learned_activations.sum().item())
+        return {"dummy_metric": data.learned_activations.sum().item()}
+
 
 @pytest.fixture()
 def dummy_metric() -> DummyMetric:
     """Dummy metric for testing."""
     return DummyMetric()
 
+
 def test_abstract_class_enforced() -> None:
     """Test that initializing the abstract class raises an error."""
     with pytest.raises(TypeError):
         AbstractTrainMetric()  # type: ignore
 
+
 def test_create_weights_and_biases_log(dummy_metric: DummyMetric) -> None:
-    """Test the create_weights_and_biases_log method."""
+    """Test the calculate method."""
     data = TrainMetricData(
         input_activations=torch.ones((1, 3)),
         learned_activations=torch.ones((1, 3)),
         decoded_activations=torch.ones((1, 3)),
     )
-    log = dummy_metric.create_weights_and_biases_log(data)
+    log = dummy_metric.calculate(data)
     expected = 3.0
     assert log["dummy_metric"] == expected
