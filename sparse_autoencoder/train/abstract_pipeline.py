@@ -147,25 +147,28 @@ class AbstractPipeline(ABC):
     @final
     def resample_neurons(
         self,
-        neuron_activity: NeuronActivity,
         activation_store: TensorActivationStore,
+        neuron_activity_sample_size: int,
+        neuron_activity: NeuronActivity,
         train_batch_size: int,
     ) -> None:
         """Resample dead neurons.
 
         Args:
-            neuron_activity: Number of times each neuron fired.
             activation_store: Activation store.
+            neuron_activity_sample_size: Sample size for resampling.
+            neuron_activity: Number of times each neuron fired.
             train_batch_size: Train batch size (also used for resampling).
         """
         if self.activation_resampler is not None:
             # Get the updates
             parameter_updates = self.activation_resampler.resample_dead_neurons(
-                neuron_activity=neuron_activity,
                 activation_store=activation_store,
                 autoencoder=self.autoencoder,
                 loss_fn=self.loss,
+                neuron_activity=neuron_activity,
                 train_batch_size=train_batch_size,
+                neuron_activity_sample_size=neuron_activity_sample_size,
             )
 
             # Update the weights and biases
@@ -234,9 +237,10 @@ class AbstractPipeline(ABC):
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
         last_resampled: int = 0
+        neuron_activity_sample_size: int = 0
         last_validated: int = 0
         last_checkpoint: int = 0
-        neuron_activity: NeuronActivity | None = None
+        neuron_activity: NeuronActivity = torch.zeros(self.autoencoder.n_learned_features)
 
         # Get the store size
         store_size: int = (
@@ -253,33 +257,36 @@ class AbstractPipeline(ABC):
                 progress_bar.set_postfix({"stage": "generate"})
                 activation_store: TensorActivationStore = self.generate_activations(store_size)
 
+                # Update the counters
+                num_activation_vectors_in_store = len(activation_store)
+                last_resampled += num_activation_vectors_in_store
+                last_validated += num_activation_vectors_in_store
+                last_checkpoint += num_activation_vectors_in_store
+
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
                 batch_neuron_activity: NeuronActivity = self.train_autoencoder(
                     activation_store, train_batch_size=train_batch_size
                 )
                 detached_neuron_activity = batch_neuron_activity.detach().cpu()
-                if neuron_activity is not None:
+                is_second_half_resample: bool = last_resampled > resample_frequency / 2
+                if is_second_half_resample:
+                    neuron_activity_sample_size += num_activation_vectors_in_store
                     neuron_activity.add_(detached_neuron_activity)
-                else:
-                    neuron_activity = detached_neuron_activity
-
-                # Update the counters
-                last_resampled += len(activation_store)
-                last_validated += len(activation_store)
-                last_checkpoint += len(activation_store)
 
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})
-                if last_resampled > resample_frequency and self.activation_resampler is not None:
+                if last_resampled >= resample_frequency and self.activation_resampler is not None:
                     self.resample_neurons(
-                        neuron_activity=neuron_activity,
                         activation_store=activation_store,
+                        neuron_activity_sample_size=neuron_activity_sample_size,
+                        neuron_activity=neuron_activity,
                         train_batch_size=train_batch_size,
                     )
 
                     # Reset
-                    self.last_resampled = 0
+                    last_resampled = 0
+                    neuron_activity_sample_size = 0
                     neuron_activity.zero_()
 
                 # Get validation metrics (if needed)
