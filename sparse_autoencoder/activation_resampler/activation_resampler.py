@@ -55,6 +55,31 @@ class ActivationResampler(AbstractActivationResampler):
         causes training to diverge.
     """
 
+    def __init__(
+        self,
+        resample_interval: int = 200_000_000,
+        max_resamples: int = 4,
+        n_steps_collate: int = 100_000_000,
+        resample_dataset_size: int | None = None,
+    ) -> None:
+        """Initialize the activation resampler.
+
+        Defaults to values using in Towards Monosemanticity
+
+        Args:
+            resample_interval: Interval in datapoints between resampling.
+            max_resamples: Maximum number of resamples.
+            n_steps_collate: Number of steps of feature activations to collate before resampling.
+            resample_dataset_size: Number of datapoints to use for resampling.
+        """
+        super().__init__()
+        self.resample_interval = resample_interval
+        self.max_resamples = max_resamples
+        self.n_steps_collate = n_steps_collate
+        self.neuron_activity: NeuronActivity | None = None
+        self.n_resamples = 0
+        self._resample_dataset_size = resample_dataset_size
+
     @staticmethod
     def get_dead_neuron_indices(
         neuron_activity: NeuronActivity, threshold: int = 0
@@ -261,9 +286,39 @@ class ActivationResampler(AbstractActivationResampler):
         )
         return renormalized_input * (average_alive_norm * 0.2)
 
+    def step_resampler(
+        self,
+        last_resampled: int,
+        batch_neuron_activity: NeuronActivity,
+        activation_store: ActivationStore,
+        autoencoder: SparseAutoencoder,
+        loss_fn: AbstractLoss,
+        train_batch_size: int,
+    ) -> ParameterUpdateResults | None:
+        """Step the resampler, collating neuron activity and resampling if necessary."""
+        if self.n_resamples >= self.max_resamples:
+            return None
+
+        # If the number of steps before resampling > n_steps_collate, then we don't need to collate
+        if self.resample_interval - last_resampled > self.n_steps_collate:
+            return None
+
+        # Collate the neuron activity
+        if self.neuron_activity is None:
+            self.neuron_activity = batch_neuron_activity.detach().cpu().clone()
+        else:
+            detached_neuron_activity = batch_neuron_activity.detach().cpu()
+            self.neuron_activity.add_(detached_neuron_activity)
+
+        # Check if we should resample.
+        if last_resampled % self.resample_interval != 0:
+            return None
+
+        # Resample
+        return self.resample_dead_neurons(activation_store, autoencoder, loss_fn, train_batch_size)
+
     def resample_dead_neurons(
         self,
-        neuron_activity: NeuronActivity,
         activation_store: ActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
@@ -272,7 +327,6 @@ class ActivationResampler(AbstractActivationResampler):
         """Resample dead neurons.
 
         Args:
-            neuron_activity: Number of times each neuron fired.
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
@@ -280,9 +334,16 @@ class ActivationResampler(AbstractActivationResampler):
 
         Returns:
             Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
+
+        Raises:
+            ValueError: If neuron activity is not set.
         """
+        if self.neuron_activity is None:
+            error_str = "Cannot resample without neuron activity."
+            raise ValueError(error_str)
+
         with torch.no_grad():
-            dead_neuron_indices = self.get_dead_neuron_indices(neuron_activity)
+            dead_neuron_indices = self.get_dead_neuron_indices(self.neuron_activity)
 
             # Compute the loss for the current model on a random subset of inputs and get the
             # activations.
@@ -319,13 +380,16 @@ class ActivationResampler(AbstractActivationResampler):
             # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
             # encoder bias element to zero.
             rescaled_sampled_input = self.renormalize_and_scale(
-                sampled_input, neuron_activity, encoder_weight
+                sampled_input, self.neuron_activity, encoder_weight
             )
             dead_encoder_bias_updates = torch.zeros_like(
                 dead_neuron_indices,
                 dtype=dead_decoder_weight_updates.dtype,
                 device=dead_decoder_weight_updates.device,
             )
+
+            self.n_resamples += 1
+            self.neuron_activity = None
 
             return ParameterUpdateResults(
                 dead_neuron_indices=dead_neuron_indices,

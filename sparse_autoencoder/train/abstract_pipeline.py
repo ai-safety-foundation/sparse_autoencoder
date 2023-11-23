@@ -11,6 +11,7 @@ from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     AbstractActivationResampler,
+    ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -22,9 +23,7 @@ from sparse_autoencoder.metrics import (
 )
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
-from sparse_autoencoder.tensor_types import (
-    NeuronActivity,
-)
+from sparse_autoencoder.tensor_types import NeuronActivity
 
 
 class AbstractPipeline(ABC):
@@ -123,45 +122,31 @@ class AbstractPipeline(ABC):
         """
 
     @final
-    def resample_neurons(
-        self,
-        neuron_activity: NeuronActivity,
-        activation_store: TensorActivationStore,
-        train_batch_size: int,
-    ) -> None:
-        """Resample dead neurons.
+    def update_parameters(self, parameter_updates: ParameterUpdateResults) -> None:
+        #         """Resample dead neurons.
 
-        Args:
-            neuron_activity: Number of times each neuron fired.
-            activation_store: Activation store.
-            train_batch_size: Train batch size (also used for resampling).
-        """
-        if self.activation_resampler is not None:
-            # Get the updates
-            parameter_updates = self.activation_resampler.resample_dead_neurons(
-                neuron_activity=neuron_activity,
-                activation_store=activation_store,
-                autoencoder=self.autoencoder,
-                loss_fn=self.loss,
-                train_batch_size=train_batch_size,
-            )
+        # Args:
+        #     neuron_activity: Number of times each neuron fired.
+        #     activation_store: Activation store.
+        #     train_batch_size: Train batch size (also used for resampling).
+        # """
+        """Update the parameters of the model from the results of the resampler."""
+        # Update the weights and biases
+        self.autoencoder.encoder.update_dictionary_vectors(
+            parameter_updates.dead_neuron_indices,
+            parameter_updates.dead_encoder_weight_updates,
+        )
+        self.autoencoder.encoder.update_bias(
+            parameter_updates.dead_neuron_indices,
+            parameter_updates.dead_encoder_bias_updates,
+        )
+        self.autoencoder.decoder.update_dictionary_vectors(
+            parameter_updates.dead_neuron_indices,
+            parameter_updates.dead_decoder_weight_updates,
+        )
 
-            # Update the weights and biases
-            self.autoencoder.encoder.update_dictionary_vectors(
-                parameter_updates.dead_neuron_indices,
-                parameter_updates.dead_encoder_weight_updates,
-            )
-            self.autoencoder.encoder.update_bias(
-                parameter_updates.dead_neuron_indices,
-                parameter_updates.dead_encoder_bias_updates,
-            )
-            self.autoencoder.decoder.update_dictionary_vectors(
-                parameter_updates.dead_neuron_indices,
-                parameter_updates.dead_decoder_weight_updates,
-            )
-
-            # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
-            self.optimizer.reset_state_all_parameters()
+        # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
+        self.optimizer.reset_state_all_parameters()
 
     @abstractmethod
     def validate_sae(self) -> None:
@@ -182,7 +167,6 @@ class AbstractPipeline(ABC):
         train_batch_size: int,
         max_store_size: int,
         max_activations: int,
-        resample_frequency: int,
         validate_frequency: int | None = None,
         checkpoint_frequency: int | None = None,
     ) -> None:
@@ -193,15 +177,12 @@ class AbstractPipeline(ABC):
             max_store_size: Maximum size of the activation store.
             max_activations: Maximum total number of activations to train on (the original paper
                 used 8bn, although others have had success with 100m+).
-            resample_frequency: Frequency at which to resample dead neurons (the original paper used
-                every 200m).
             validate_frequency: Frequency at which to get validation metrics.
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
         last_resampled: int = 0
         last_validated: int = 0
         last_checkpoint: int = 0
-        neuron_activity: NeuronActivity | None = None
 
         # Get the store size
         store_size: int = (
@@ -223,11 +204,6 @@ class AbstractPipeline(ABC):
                 batch_neuron_activity: NeuronActivity = self.train_autoencoder(
                     activation_store, train_batch_size=train_batch_size
                 )
-                detached_neuron_activity = batch_neuron_activity.detach().cpu()
-                if neuron_activity is not None:
-                    neuron_activity.add_(detached_neuron_activity)
-                else:
-                    neuron_activity = detached_neuron_activity
 
                 # Update the counters
                 last_resampled += len(activation_store)
@@ -236,16 +212,20 @@ class AbstractPipeline(ABC):
 
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})
-                if last_resampled > resample_frequency and self.activation_resampler is not None:
-                    self.resample_neurons(
-                        neuron_activity=neuron_activity,
+                if self.activation_resampler is not None:
+                    # Get the updates
+                    parameter_updates = self.activation_resampler.step_resampler(
+                        last_resampled=last_resampled,
+                        batch_neuron_activity=batch_neuron_activity,
                         activation_store=activation_store,
+                        autoencoder=self.autoencoder,
+                        loss_fn=self.loss,
                         train_batch_size=train_batch_size,
                     )
-
-                    # Reset
-                    self.last_resampled = 0
-                    neuron_activity.zero_()
+                    if parameter_updates is not None:
+                        # Update the parameters
+                        self.update_parameters(parameter_updates)
+                        last_resampled = 0
 
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})
