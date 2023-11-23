@@ -2140,9 +2140,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#supported-sphinx-properties" class="md-nav__link">
+  <a href="#latex-support" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Sphinx Properties
+      LaTeX support
     </span>
   </a>
   
@@ -2268,9 +2268,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#supported-sphinx-properties" class="md-nav__link">
+  <a href="#latex-support" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Sphinx Properties
+      LaTeX support
     </span>
   </a>
   
@@ -2369,33 +2369,16 @@ writing docstrings. Some important details below:</p>
 <span class="sd">    Information about the error it may raise (if any).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
-<h4 id="supported-sphinx-properties">Supported Sphinx Properties<a class="headerlink" href="#supported-sphinx-properties" title="Permanent link">¤</a></h4>
-<h5 id="references-to-other-functionsclasses">References to Other Functions/Classes<a class="headerlink" href="#references-to-other-functionsclasses" title="Permanent link">¤</a></h5>
-<p>You can reference other parts of the codebase using
-<a href="https://www.sphinx-doc.org/en/master/usage/domains/python.html#cross-referencing-python-objects">cross-referencing</a>
-(noting that you can omit the full path if it is in the same file).</p>
-<div class="highlight"><pre><span></span><code>:mod:transformer_lens # Function or module
-
-<span class="na">:const:</span><span class="nv">`transformer_lens.loading_from_pretrained.OFFICIAL_MODEL_NAMES`</span>
-
-<span class="na">:class:</span><span class="nv">`transformer_lens.HookedTransformer`</span>
-
-<span class="na">:meth:</span><span class="nv">`transformer_lens.HookedTransformer.from_pretrained`</span>
-
-<span class="na">:attr:</span><span class="nv">`transformer_lens.HookedTransformer.cfg`</span>
+<h4 id="latex-support">LaTeX support<a class="headerlink" href="#latex-support" title="Permanent link">¤</a></h4>
+<p>You can use LaTeX, inside <code>$$</code> for blocks or <code>$</code> for inline</p>
+<div class="highlight"><pre><span></span><code>Some text $(a + b)^2 = a^2 + 2ab + b^2$
 </code></pre></div>
-<h5 id="maths">Maths<a class="headerlink" href="#maths" title="Permanent link">¤</a></h5>
-<p>You can use LaTeX, but note that as you're placing this in python strings the backwards slash (<code>\</code>)
-must be repeated (i.e. <code>\\</code>). You can write LaTeX inline, or in "display mode".</p>
-<div class="highlight"><pre><span></span><code><span class="na">:math:</span><span class="nv">`(a + b)^2 = a^2 + 2ab + b^2`</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">..</span> <span class="ow">math</span><span class="p">::</span>
-   <span class="nc">:nowrap:</span>
+<div class="highlight"><pre><span></span><code>Some text:
 
-   \\begin{eqnarray}
-      y    &amp; = &amp; ax^2 + bx + c \\
-      f(x) &amp; = &amp; x^2 + 2xy + y^2
-   \\end{eqnarray}
+$$
+y    &amp; = &amp; ax^2 + bx + c \\
+f(x) &amp; = &amp; x^2 + 2xy + y^2
+$$
 </code></pre></div>
 <h4 id="markup">Markup<a class="headerlink" href="#markup" title="Permanent link">¤</a></h4>
 <ul>
