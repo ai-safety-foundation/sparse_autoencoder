@@ -100,6 +100,7 @@
     [tool.poe.tasks.gen-docs]
         help="Cleans out the automatically generated docs."
         script="docs.gen_ref_pages:run"
+
     [tool.poe.tasks.make-docs]
         cmd="mkdocs build"
         help="Generates our docs"
