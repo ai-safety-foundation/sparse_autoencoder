@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../abstract_dataset/">
+        <link rel="prev" href="../abstract_resample_metric/">
       
       
-        <link rel="next" href="../random_int/">
+        <link rel="next" href="../../train/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
-        <title>pretokenized_dataset - Sparse Autoencoder</title>
+        <title>neuron_activity_metric - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fad675c6.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -48,17 +48,17 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../css/material_extra.css">
+      <link rel="stylesheet" href="../../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../../../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sparse_autoencoder.source_data.pretokenized_dataset" class="md-skip">
+        <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              pretokenized_dataset
+              neuron_activity_metric
             
           </span>
         </div>
@@ -233,7 +233,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -262,7 +262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -281,7 +281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../demo/" class="md-nav__link">
+      <a href="../../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -338,7 +338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -372,7 +372,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../activation_resampler/" class="md-nav__link ">
+            <a href="../../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -402,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -422,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -464,7 +464,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../activation_store/" class="md-nav__link ">
+            <a href="../../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -494,7 +494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/base_store/" class="md-nav__link">
+      <a href="../../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -514,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/disk_store/" class="md-nav__link">
+      <a href="../../../activation_store/disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -534,7 +534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/list_store/" class="md-nav__link">
+      <a href="../../../activation_store/list_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -554,7 +554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -588,7 +588,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../activation_store/utils/" class="md-nav__link ">
+            <a href="../../../activation_store/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -618,7 +618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/utils/extend_resize/" class="md-nav__link">
+      <a href="../../../activation_store/utils/extend_resize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -668,7 +668,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../autoencoder/" class="md-nav__link ">
+            <a href="../../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -698,7 +698,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -732,7 +732,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../autoencoder/components/" class="md-nav__link ">
+            <a href="../../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -762,7 +762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -782,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -802,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -822,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -842,7 +842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -862,7 +862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -890,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/model/" class="md-nav__link">
+      <a href="../../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -932,7 +932,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../loss/" class="md-nav__link ">
+            <a href="../../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -962,7 +962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/abstract_loss/" class="md-nav__link">
+      <a href="../../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -982,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1002,7 +1002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/mse_reconstruction_loss/" class="md-nav__link">
+      <a href="../../../loss/mse_reconstruction_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1022,7 +1022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/reducer/" class="md-nav__link">
+      <a href="../../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1048,23 +1048,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1081,7 +1083,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_6">
             <span class="md-nav__icon md-icon"></span>
             metrics
@@ -1108,7 +1110,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/generate/" class="md-nav__link ">
+            <a href="../../generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1138,7 +1140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1166,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/metrics_container/" class="md-nav__link">
+      <a href="../../metrics_container/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1184,23 +1186,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/resample/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1217,7 +1221,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_6_3">
             <span class="md-nav__icon md-icon"></span>
             resample
@@ -1230,7 +1234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/resample/abstract_resample_metric/" class="md-nav__link">
+      <a href="../abstract_resample_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1248,9 +1252,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../metrics/resample/neuron_activity_metric/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    neuron_activity_metric
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1259,6 +1281,57 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      neuron_activity_metric
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric" class="md-nav__link">
+    <span class="md-ellipsis">
+      NeuronActivityMetric
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NeuronActivityMetric">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric.calculate" class="md-nav__link">
+    <span class="md-ellipsis">
+      calculate()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1292,7 +1365,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/train/" class="md-nav__link ">
+            <a href="../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1322,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1364,7 +1437,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/validate/" class="md-nav__link ">
+            <a href="../../validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1394,7 +1467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1444,7 +1517,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../optimizer/" class="md-nav__link ">
+            <a href="../../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1474,7 +1547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1494,7 +1567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1520,25 +1593,23 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1555,7 +1626,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_8">
             <span class="md-nav__icon md-icon"></span>
             source_data
@@ -1568,7 +1639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../abstract_dataset/" class="md-nav__link">
+      <a href="../../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1586,27 +1657,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    pretokenized_dataset
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1615,75 +1668,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      pretokenized_dataset
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="md-nav__link">
-    <span class="md-ellipsis">
-      PreTokenizedDataBatch
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      PreTokenizedDataset
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PreTokenizedDataset">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __init__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.preprocess" class="md-nav__link">
-    <span class="md-ellipsis">
-      preprocess()
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1695,7 +1679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../random_int/" class="md-nav__link">
+      <a href="../../../source_data/random_int/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1715,7 +1699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../text_dataset/" class="md-nav__link">
+      <a href="../../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1757,7 +1741,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../source_model/" class="md-nav__link ">
+            <a href="../../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1787,7 +1771,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1815,7 +1799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tensor_types/" class="md-nav__link">
+      <a href="../../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1849,7 +1833,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../train/" class="md-nav__link ">
+            <a href="../../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1879,7 +1863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/abstract_pipeline/" class="md-nav__link">
+      <a href="../../../train/abstract_pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1913,7 +1897,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../train/metrics/" class="md-nav__link ">
+            <a href="../../../train/metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1943,7 +1927,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/metrics/capacity/" class="md-nav__link">
+      <a href="../../../train/metrics/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1963,7 +1947,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/metrics/feature_density/" class="md-nav__link">
+      <a href="../../../train/metrics/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1991,7 +1975,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/pipeline/" class="md-nav__link">
+      <a href="../../../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2011,7 +1995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/sweep_config/" class="md-nav__link">
+      <a href="../../../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2045,7 +2029,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../train/utils/" class="md-nav__link ">
+            <a href="../../../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2075,7 +2059,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/utils/get_model_device/" class="md-nav__link">
+      <a href="../../../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2095,7 +2079,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../../../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2138,7 +2122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../contributing/" class="md-nav__link">
+      <a href="../../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2157,7 +2141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../citation/" class="md-nav__link">
+      <a href="../../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2195,46 +2179,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric" class="md-nav__link">
     <span class="md-ellipsis">
-      pretokenized_dataset
+      neuron_activity_metric
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric" class="md-nav__link">
     <span class="md-ellipsis">
-      PreTokenizedDataBatch
+      NeuronActivityMetric
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      PreTokenizedDataset
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PreTokenizedDataset">
+    <nav class="md-nav" aria-label="NeuronActivityMetric">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.__init__" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.preprocess" class="md-nav__link">
-    <span class="md-ellipsis">
-      preprocess()
+      calculate()
     </span>
   </a>
   
@@ -2263,24 +2229,16 @@
   
 
 
-  <h1>pretokenized_dataset</h1>
+  <h1>neuron_activity_metric</h1>
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.source_data.pretokenized_dataset"></a>
+<a id="sparse_autoencoder.metrics.resample.neuron_activity_metric"></a>
   <div class="doc doc-contents first">
   
-      <p>Pre-Tokenized Dataset from Hugging Face.</p>
-<p>PreTokenizedDataset should work with any of the following tokenized datasets:
-- NeelNanda/pile-small-tokenized-2b
-- NeelNanda/pile-tokenized-10b
-- NeelNanda/openwebtext-tokenized-9b
-- NeelNanda/c4-tokenized-2b
-- NeelNanda/code-tokenized
-- NeelNanda/c4-code-tokenized-2b
-- NeelNanda/pile-old-tokenized-2b</p>
+      <p>Neuron activity metric.</p>
 
   
 
@@ -2298,24 +2256,29 @@
 
 
 
-<h2 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="doc doc-heading">
-          <code>PreTokenizedDataBatch</code>
+<h2 id="sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric" class="doc doc-heading">
+          <code>NeuronActivityMetric</code>
 
 
-<a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="headerlink" title="Permanent link">¤</a></h2>
+<a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric" class="headerlink" title="Permanent link">¤</a></h2>
 
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.resample.abstract_resample_metric.AbstractResampleMetric" href="../abstract_resample_metric/#sparse_autoencoder.metrics.resample.abstract_resample_metric.AbstractResampleMetric">AbstractResampleMetric</a></code></p>
 
   
-      <p>General Pre-Tokenized Dataset Item.</p>
-<p>Structure depends on the specific dataset from Hugging Face.</p>
+      <p>Neuron activity metric.</p>
 
             <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+              <summary>Source code in <code>sparse_autoencoder/metrics/resample/neuron_activity_metric.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
@@ -2323,185 +2286,37 @@
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PreTokenizedDataBatch</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;General Pre-Tokenized Dataset Item.</span>
-
-<span class="sd">    Structure depends on the specific dataset from Hugging Face.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
-        <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-    <span class="p">]</span>  <span class="c1"># This assumes that the dataset structure is similar to the original Neel Nanda dataset.</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="doc doc-heading">
-          <code>PreTokenizedDataset</code>
-
-
-<a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch">PreTokenizedDataBatch</a>]</code></p>
-
-  
-      <p>General Pre-Tokenized Dataset from Hugging Face.</p>
-<p>Can be used for various datasets available on Hugging Face.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">class</span> <span class="nc">PreTokenizedDataset</span><span class="p">(</span><span class="n">SourceDataset</span><span class="p">[</span><span class="n">PreTokenizedDataBatch</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;General Pre-Tokenized Dataset from Hugging Face.</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuronActivityMetric</span><span class="p">(</span><span class="n">AbstractResampleMetric</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuron activity metric.&quot;&quot;&quot;</span>
 
-<span class="sd">    Can be used for various datasets available on Hugging Face.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">source_batch</span><span class="p">:</span> <span class="n">PreTokenizedDataBatch</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Preprocess a batch of prompts.</span>
-
-<span class="sd">        The method splits each pre-tokenized item based on the context size.</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ResampleMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the neuron activity metrics.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source_batch: A batch of source data.</span>
-<span class="sd">            context_size: The context size to use for tokenized prompts.</span>
+<span class="sd">            data: Resample metric data.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tokenized prompts.</span>
+<span class="sd">            Dictionary of metrics.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tokenized_prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span>
+        <span class="n">neuron_activity</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">neuron_activity</span>
+        <span class="n">neuron_activity_list</span> <span class="o">=</span> <span class="n">neuron_activity</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
-        <span class="c1"># Chunk each tokenized prompt into blocks of context_size,</span>
-        <span class="c1"># discarding the last block if too small.</span>
-        <span class="n">context_size_prompts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="n">tokenized_prompts</span><span class="p">:</span>
-            <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="n">context_size</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">])</span> <span class="o">==</span> <span class="n">context_size</span>
-            <span class="p">]</span>
-            <span class="n">context_size_prompts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+        <span class="c1"># Histogram of neuron activity</span>
+        <span class="n">histogram</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">neuron_activity_list</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">context_size_prompts</span><span class="p">}</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
-        <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a pre-tokenized dataset from Hugging Face.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            dataset_path: The path to the dataset on Hugging Face.</span>
-<span class="sd">            context_size: The context size for tokenized prompts.</span>
-<span class="sd">            buffer_size: Buffer size for shuffling the dataset.</span>
-<span class="sd">            preprocess_batch_size: Batch size for preprocessing.</span>
-<span class="sd">            dataset_split: Dataset split (e.g., `train`).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
-            <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
-            <span class="n">context_size</span><span class="o">=</span><span class="n">context_size</span><span class="p">,</span>
-            <span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span>
-            <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;resample_alive_neuron_count&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">neuron_activity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;resample_dead_neuron_count&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">neuron_activity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;resample_neuron_activity_histogram&quot;</span><span class="p">:</span> <span class="n">histogram</span><span class="p">,</span>
+        <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2523,15 +2338,15 @@
 
 
 
-<h3 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric.calculate" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.metrics.resample.neuron_activity_metric.NeuronActivityMetric.calculate" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Initialize a pre-tokenized dataset from Hugging Face.</p>
+      <p>Calculate the neuron activity metrics.</p>
 
 
 
@@ -2547,185 +2362,13 @@
     </thead>
     <tbody>
         <tr>
-          <td><code>dataset_path</code></td>
+          <td><code>data</code></td>
           <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.resample.abstract_resample_metric.ResampleMetricData" href="../abstract_resample_metric/#sparse_autoencoder.metrics.resample.abstract_resample_metric.ResampleMetricData">ResampleMetricData</a></code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The path to the dataset on Hugging Face.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>context_size</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The context size for tokenized prompts.</p>
-            </div>
-          </td>
-          <td>
-                <code>250</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>buffer_size</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Buffer size for shuffling the dataset.</p>
-            </div>
-          </td>
-          <td>
-                <code>1000</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>preprocess_batch_size</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Batch size for preprocessing.</p>
-            </div>
-          </td>
-          <td>
-                <code>1000</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>dataset_split</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Dataset split (e.g., <code>train</code>).</p>
-            </div>
-          </td>
-          <td>
-                <code>&#39;train&#39;</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
-    <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-    <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-    <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a pre-tokenized dataset from Hugging Face.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        dataset_path: The path to the dataset on Hugging Face.</span>
-<span class="sd">        context_size: The context size for tokenized prompts.</span>
-<span class="sd">        buffer_size: Buffer size for shuffling the dataset.</span>
-<span class="sd">        preprocess_batch_size: Batch size for preprocessing.</span>
-<span class="sd">        dataset_split: Dataset split (e.g., `train`).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
-        <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
-        <span class="n">context_size</span><span class="o">=</span><span class="n">context_size</span><span class="p">,</span>
-        <span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span>
-        <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
-    <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.preprocess" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">preprocess</span><span class="p">(</span><span class="n">source_batch</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">context_size</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.preprocess" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Preprocess a batch of prompts.</p>
-<p>The method splits each pre-tokenized item based on the context size.</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>source_batch</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch">PreTokenizedDataBatch</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A batch of source data.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>context_size</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The context size to use for tokenized prompts.</p>
+              <p>Resample metric data.</p>
             </div>
           </td>
           <td>
@@ -2748,11 +2391,11 @@
     <tbody>
         <tr>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TokenizedPrompts" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TokenizedPrompts">TokenizedPrompts</a></code>
+                <code>dict[str, <span title="typing.Any">Any</span>]</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Tokenized prompts.</p>
+              <p>Dictionary of metrics.</p>
             </div>
           </td>
         </tr>
@@ -2760,68 +2403,46 @@
   </table>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">source_batch</span><span class="p">:</span> <span class="n">PreTokenizedDataBatch</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Preprocess a batch of prompts.</span>
-
-<span class="sd">    The method splits each pre-tokenized item based on the context size.</span>
+            <summary>Source code in <code>sparse_autoencoder/metrics/resample/neuron_activity_metric.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ResampleMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the neuron activity metrics.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source_batch: A batch of source data.</span>
-<span class="sd">        context_size: The context size to use for tokenized prompts.</span>
+<span class="sd">        data: Resample metric data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Tokenized prompts.</span>
+<span class="sd">        Dictionary of metrics.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tokenized_prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span>
+    <span class="n">neuron_activity</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">neuron_activity</span>
+    <span class="n">neuron_activity_list</span> <span class="o">=</span> <span class="n">neuron_activity</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
-    <span class="c1"># Chunk each tokenized prompt into blocks of context_size,</span>
-    <span class="c1"># discarding the last block if too small.</span>
-    <span class="n">context_size_prompts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="n">tokenized_prompts</span><span class="p">:</span>
-        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="n">context_size</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">])</span> <span class="o">==</span> <span class="n">context_size</span>
-        <span class="p">]</span>
-        <span class="n">context_size_prompts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+    <span class="c1"># Histogram of neuron activity</span>
+    <span class="n">histogram</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">neuron_activity_list</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">context_size_prompts</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;resample_alive_neuron_count&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">neuron_activity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s2">&quot;resample_dead_neuron_count&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">neuron_activity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s2">&quot;resample_neuron_activity_histogram&quot;</span><span class="p">:</span> <span class="n">histogram</span><span class="p">,</span>
+    <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -2882,12 +2503,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
-        <script src="../../../javascript/mathjax.js"></script>
+        <script src="../../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
