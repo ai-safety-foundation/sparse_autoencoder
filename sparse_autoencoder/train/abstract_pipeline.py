@@ -240,6 +240,7 @@ class AbstractPipeline(ABC):
         neuron_activity_sample_size: int = 0
         last_validated: int = 0
         last_checkpoint: int = 0
+        total_activations: int = 0
         neuron_activity: NeuronActivity = torch.zeros(self.autoencoder.n_learned_features)
 
         # Get the store size
@@ -262,6 +263,9 @@ class AbstractPipeline(ABC):
                 last_resampled += num_activation_vectors_in_store
                 last_validated += num_activation_vectors_in_store
                 last_checkpoint += num_activation_vectors_in_store
+                total_activations += num_activation_vectors_in_store
+                if wandb.run is not None:
+                    wandb.log({"total_activations": total_activations}, commit=False)
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
