@@ -21,7 +21,6 @@ class AbstractOptimizerWithReset(Optimizer, ABC):
         Resets any optimizer state (e.g. momentum). This is for use after manually editing model
             parameters (e.g. with activation resampling).
         """
-        raise NotImplementedError
 
     @abstractmethod
     def reset_neurons_state(
@@ -46,4 +45,3 @@ class AbstractOptimizerWithReset(Optimizer, ABC):
         Raises:
             ValueError: If the parameter name is not found.
         """
-        raise NotImplementedError

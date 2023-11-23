@@ -7,10 +7,10 @@ def get_model_device(model: Module) -> torch.device:
     """Get the device on which a PyTorch model is on.
 
     Args:
-        model (nn.Module): The PyTorch model.
+        model: The PyTorch model.
 
     Returns:
-        torch.device: The device ('cuda' or 'cpu') where the model is located.
+        The device ('cuda' or 'cpu') where the model is located.
 
     Raises:
         ValueError: If the model has no parameters.

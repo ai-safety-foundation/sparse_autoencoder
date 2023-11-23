@@ -141,13 +141,13 @@ frozenlist = ">=1.1.0"
 
 [[package]]
 name = "anyio"
-version = "4.0.0"
+version = "4.1.0"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "anyio-4.0.0-py3-none-any.whl", hash = "sha256:cfdb2b588b9fc25ede96d8db56ed50848b0b649dca3dd1df0b11f683bb9e0b5f"},
-    {file = "anyio-4.0.0.tar.gz", hash = "sha256:f7ed51751b2c2add651e5747c891b47e26d2a21be5d32d9311dfe9692f3e5d7a"},
+    {file = "anyio-4.1.0-py3-none-any.whl", hash = "sha256:56a415fbc462291813a94528a779597226619c8e78af7de0507333f700011e5f"},
+    {file = "anyio-4.1.0.tar.gz", hash = "sha256:5a0bec7085176715be77df87fc66d6c9d70626bd752fcc85f57cdbee5b3760da"},
 ]
 
 [package.dependencies]
@@ -156,9 +156,9 @@ idna = ">=2.8"
 sniffio = ">=1.1"
 
 [package.extras]
-doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)"]
-test = ["anyio[trio]", "coverage[toml] (>=7)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
-trio = ["trio (>=0.22)"]
+doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
+test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
+trio = ["trio (>=0.23)"]
 
 [[package]]
 name = "appdirs"
@@ -789,6 +789,17 @@ files = [
 
 [package.dependencies]
 six = ">=1.4.0"
+
+[[package]]
+name = "docstring-parser-fork"
+version = "0.0.5"
+description = "Parse Python docstrings in reST, Google and Numpydoc format"
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "docstring_parser_fork-0.0.5-py3-none-any.whl", hash = "sha256:d521dea9b9cc6c60ab5569fa0c1115e3b84a83e6413266fb111a7c81cb935997"},
+    {file = "docstring_parser_fork-0.0.5.tar.gz", hash = "sha256:395ae8ee6a359e268670ebc4fe9a40dab917a94f6decd7cda8e86f9bea5c9456"},
+]
 
 [[package]]
 name = "einops"
@@ -1459,13 +1470,13 @@ jupyter-server = ">=1.1.2"
 
 [[package]]
 name = "jupyter-server"
-version = "2.11.0"
+version = "2.10.1"
 description = "The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyter_server-2.11.0-py3-none-any.whl", hash = "sha256:c9bd6e6d71dc5a2a25df167dc323422997f14682b008bfecb5d7920a55020ea7"},
-    {file = "jupyter_server-2.11.0.tar.gz", hash = "sha256:78c97ec8049f9062f0151725bc8a1364dfed716646a66819095e0e8a24793eba"},
+    {file = "jupyter_server-2.10.1-py3-none-any.whl", hash = "sha256:20519e355d951fc5e1b6ac5952854fe7620d0cfb56588fa4efe362a758977ed3"},
+    {file = "jupyter_server-2.10.1.tar.gz", hash = "sha256:e6da2657a954a7879eed28cc08e0817b01ffd81d7eab8634660397b55f926472"},
 ]
 
 [package.dependencies]
@@ -1849,13 +1860,13 @@ recommended = ["mkdocs-minify-plugin (>=0.7,<1.0)", "mkdocs-redirects (>=1.2,<2.
 
 [[package]]
 name = "mkdocs-material-extensions"
-version = "1.3"
+version = "1.3.1"
 description = "Extension pack for Python Markdown and MkDocs Material."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_material_extensions-1.3-py3-none-any.whl", hash = "sha256:0297cc48ba68a9fdd1ef3780a3b41b534b0d0df1d1181a44676fda5f464eeadc"},
-    {file = "mkdocs_material_extensions-1.3.tar.gz", hash = "sha256:f0446091503acb110a7cab9349cbc90eeac51b58d1caa92a704a81ca1e24ddbd"},
+    {file = "mkdocs_material_extensions-1.3.1-py3-none-any.whl", hash = "sha256:adff8b62700b25cb77b53358dad940f3ef973dd6db797907c49e3c2ef3ab4e31"},
+    {file = "mkdocs_material_extensions-1.3.1.tar.gz", hash = "sha256:10c9511cea88f568257f960358a467d12b970e1f7b2c0e5fb2bb48cab1928443"},
 ]
 
 [[package]]
@@ -2804,6 +2815,25 @@ files = [
 ]
 
 [[package]]
+name = "pydoclint"
+version = "0.3.8"
+description = "A Python docstring linter that checks arguments, returns, yields, and raises sections"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pydoclint-0.3.8-py2.py3-none-any.whl", hash = "sha256:8e5e020071bb64056fd3f1d68f3b1162ffeb8a3fd6424f73fef7272dac62c166"},
+    {file = "pydoclint-0.3.8.tar.gz", hash = "sha256:5a9686a5fb410343e998402686b87cc07df647ea3ab92528c0b0cf8505584e44"},
+]
+
+[package.dependencies]
+click = ">=8.0.0"
+docstring-parser-fork = ">=0.0.5"
+tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
+
+[package.extras]
+flake8 = ["flake8 (>=4)"]
+
+[[package]]
 name = "pygments"
 version = "2.17.2"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -2838,13 +2868,13 @@ extra = ["pygments (>=2.12)"]
 
 [[package]]
 name = "pyright"
-version = "1.1.336"
+version = "1.1.337"
 description = "Command line wrapper for pyright"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pyright-1.1.336-py3-none-any.whl", hash = "sha256:8f6a8f365730c8d6c1af840d937371fd5cf0137b6e1827b8b066bc0bb7327aa6"},
-    {file = "pyright-1.1.336.tar.gz", hash = "sha256:f92d6d6845e4175833ea60dee5b1ef4d5d66663438fdaedccc1c3ba0f8efa3e3"},
+    {file = "pyright-1.1.337-py3-none-any.whl", hash = "sha256:8cbd4ef71797258f816a8393a758c9c91213479f472082d0e3a735ef7ab5f65a"},
+    {file = "pyright-1.1.337.tar.gz", hash = "sha256:81d81f839d1750385390c4c4a7b84b062ece2f9a078f87055d4d2a5914ef2a08"},
 ]
 
 [package.dependencies]
@@ -4804,4 +4834,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "e802589e54cdda73b75d2853f5d1ce3ad9a4a5b07cfb4debbd278c99b47de016"
+content-hash = "aa4b0f481f5d94eab4e6708bf9e21b9c6f006b5e231a21f9335b7a69666a4d85"

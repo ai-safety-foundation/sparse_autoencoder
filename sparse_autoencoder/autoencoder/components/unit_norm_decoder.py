@@ -125,6 +125,10 @@ class UnitNormDecoder(AbstractDecoder):
 
         Args:
             grad: Gradient with respect to the weights.
+
+        Returns:
+            Gradient with respect to the weights, with the component parallel to the dictionary
+            vectors removed.
         """
         # Project the gradients onto the dictionary vectors. Intuitively the dictionary vectors can
         # be thought of as vectors that end on the circumference of a hypersphere. The projection of

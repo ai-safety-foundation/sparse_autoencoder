@@ -32,7 +32,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     The names of the parameters, so that we can find them later when resetting the state.
     """
 
-    def __init__(  # noqa: PLR0913 , D417 (extending existing implementation)
+    def __init__(  # noqa: PLR0913 (extending existing implementation)
         self,
         params: params_t,
         lr: float | Tensor = 1e-3,
@@ -64,9 +64,31 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             >>> optimizer.reset_state_all_parameters()
 
         Args:
-            named_parameters (Iterator[tuple[str, Parameter]]): An iterator over the named
-                parameters of the model. This is used to find the parameters when resetting their
-                state. You should set this as `model.named_parameters()`.
+            params: Iterable of parameters to optimize or dicts defining parameter groups.
+            lr: Learning rate. A Tensor LR is not yet fully supported for all implementations. Use a
+                float LR unless specifying fused=True or capturable=True.
+            betas: Coefficients used for computing running averages of gradient and its square.
+            eps: Term added to the denominator to improve numerical stability.
+            weight_decay: Weight decay (L2 penalty).
+            amsgrad: Whether to use the AMSGrad variant of this algorithm from the paper "On the
+                Convergence of Adam and Beyond".
+            foreach: Whether foreach implementation of optimizer is used. If None, foreach is used
+                over the for-loop implementation on CUDA if more performant. Note that foreach uses
+                more peak memory.
+            maximize: If True, maximizes the parameters based on the objective, instead of
+                minimizing.
+            capturable: Whether this instance is safe to capture in a CUDA graph. True can impair
+                ungraphed performance.
+            differentiable: Whether autograd should occur through the optimizer step in training.
+                Setting to True can impair performance.
+            fused: Whether the fused implementation (CUDA only) is used. Supports torch.float64,
+                torch.float32, torch.float16, and torch.bfloat16.
+            named_parameters: An iterator over the named parameters of the model. This is used to
+                find the parameters when resetting their state. You should set this as
+                `model.named_parameters()`.
+
+        Raises:
+            ValueError: If the number of parameter names does not match the number of parameters.
         """
         # Initialise the parent class (note we repeat the parameter names so that type hints work).
         super().__init__(
@@ -126,7 +148,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         """Get the index of a parameter name.
 
         Args:
-            parameter_name (str): The name of the parameter.
+            parameter_name: The name of the parameter.
 
         Returns:
             int: The index of the parameter name.
@@ -177,9 +199,6 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             parameter_group: The index of the parameter group to reset (typically this is just zero,
                 unless you have setup multiple parameter groups for e.g. different learning rates
                 for different parameters).
-
-        Raises:
-            ValueError: If the parameter name is not found.
         """
         # Get the state of the parameter
         group = self.param_groups[parameter_group]

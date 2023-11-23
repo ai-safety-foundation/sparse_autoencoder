@@ -22,7 +22,6 @@ class AbstractOuterBias(Module, ABC):
 
         May be a reference to a bias parameter in the parent module, if using e.g. a tied bias.
         """
-        raise NotImplementedError
 
     @abstractmethod
     def forward(
@@ -37,4 +36,3 @@ class AbstractOuterBias(Module, ABC):
         Returns:
             Resulting activations.
         """
-        raise NotImplementedError

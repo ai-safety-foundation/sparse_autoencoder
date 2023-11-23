@@ -20,7 +20,8 @@
             jupyter=">=1"
             plotly=">=5"
             poethepoet=">=0.24.2"
-            pyright=">=1.1.334"
+            pydoclint="^0.3.8"
+            pyright=">=1.1.337"
             pytest=">=7"
             pytest-cov=">=4"
             pytest-timeout=">=2.2.0"
@@ -42,14 +43,14 @@
             mkdocs-section-index=">=0.3.8"
             mkdocstrings={extras=["python"], version=">=0.24.0"}
             mkdocstrings-python=">=1.7.3"
+            mknotebooks="^0.8.0"
             pytkdocs-tweaks=">=0.0.7"
-        mknotebooks = "^0.8.0"
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="All checks"
         ignore_fail=false
-        sequence=["check-lock", "format", "lint", "test", "typecheck"]
+        sequence=["check-lock", "docstring-lint", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
         cmd="ruff format ."
@@ -58,6 +59,10 @@
     [tool.poe.tasks.lint]
         cmd="ruff check . --fix"
         help="Lint (with autofix)"
+
+    [tool.poe.tasks.docstring-lint]
+        cmd="pydoclint ."
+        help="Lint docstrings"
 
     [tool.poe.tasks.ruff]
         help="  [alias for lint && format]"
@@ -95,6 +100,7 @@
     [tool.poe.tasks.gen-docs]
         help="Cleans out the automatically generated docs."
         script="docs.gen_ref_pages:run"
+
     [tool.poe.tasks.make-docs]
         cmd="mkdocs build"
         help="Generates our docs"
@@ -225,3 +231,11 @@
     strictListInference=true
     strictParameterNoneValue=true
     strictSetInference=true
+
+[tool.pydoclint]
+    allow-init-docstring=true
+    arg-type-hints-in-docstring=false
+    check-return-types=false
+    check-yield-types=false
+    exclude='\.venv'
+    style="google"

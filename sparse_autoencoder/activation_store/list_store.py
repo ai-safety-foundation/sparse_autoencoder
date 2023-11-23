@@ -138,19 +138,23 @@ class ListActivationStore(ActivationStore):
         Returns the number of activation vectors in the dataset.
 
         Example:
-        >>> import torch
-        >>> store = ListActivationStore()
-        >>> store.append(torch.randn(100))
-        >>> store.append(torch.randn(100))
-        >>> len(store)
-        2
+            >>> import torch
+            >>> store = ListActivationStore()
+            >>> store.append(torch.randn(100))
+            >>> store.append(torch.randn(100))
+            >>> len(store)
+            2
+
+        Returns:
+            The number of activation vectors in the dataset.
         """
         return len(self._data)
 
     def __sizeof__(self) -> int:
         """Sizeof Dunder Method.
 
-        Returns the size of the dataset in bytes.
+        Returns:
+            The size of the dataset in bytes.
         """
         # The list of tensors is really a list of pointers to tensors, so we need to account for
         # this as well as the size of the tensors themselves.
@@ -222,6 +226,10 @@ class ListActivationStore(ActivationStore):
 
         Args:
             item: The item to append to the dataset.
+
+        Returns:
+            Future that completes when the activation vector has queued to be written to disk, and
+            if needed, written to disk.
         """
         self._data.append(item.to(self._device))
 
@@ -254,6 +262,10 @@ class ListActivationStore(ActivationStore):
 
         Args:
             batch: A batch of items to add to the dataset.
+
+        Returns:
+            Future that completes when the activation vectors have queued to be written to disk, and
+            if needed, written to disk.
         """
         # Schedule _extend to run in a separate process
         if self._pool:
@@ -269,12 +281,15 @@ class ListActivationStore(ActivationStore):
         Wait for any non-blocking writes (e.g. calls to :meth:`append`) to complete.
 
         Example:
-        >>> import torch
-        >>> store = ListActivationStore(multiprocessing_enabled=True)
-        >>> store.extend(torch.randn(3, 100))
-        >>> store.wait_for_writes_to_complete()
-        >>> len(store)
-        3
+            >>> import torch
+            >>> store = ListActivationStore(multiprocessing_enabled=True)
+            >>> store.extend(torch.randn(3, 100))
+            >>> store.wait_for_writes_to_complete()
+            >>> len(store)
+            3
+
+        Raises:
+            RuntimeError: If any exceptions occurred in the background workers.
         """
         # Restart the pool
         if self._pool:
