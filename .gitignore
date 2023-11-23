@@ -135,3 +135,6 @@ dmypy.json
 
 # Generated docs
 docs/content/reference
+
+# Checkpoints directory
+.checkpoints

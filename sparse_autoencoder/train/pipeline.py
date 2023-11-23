@@ -113,8 +113,3 @@ class Pipeline(AbstractPipeline):
         """Get validation metrics."""
         # Not currently setup
         return
-
-    def save_checkpoint(self) -> None:
-        """Save the model as a checkpoint."""
-        # Not currently setup
-        return

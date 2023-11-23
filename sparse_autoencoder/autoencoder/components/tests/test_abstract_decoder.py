@@ -38,7 +38,9 @@ class MockDecoder(AbstractDecoder):
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
+        self._weight: EncoderWeights = init.kaiming_normal_(
+            self._weight,
+        )
 
 
 @pytest.fixture()
@@ -81,10 +83,10 @@ def test_update_dictionary_vectors_with_no_neurons(mock_decoder: MockDecoder) ->
 @pytest.mark.parametrize(
     ("dictionary_vector_indices", "updates"),
     [
-        (torch.tensor([1]), torch.tensor([[0.5, 0.3, 0.2]])),  # Test with 1 neuron to update
+        (torch.tensor([1]), torch.rand(4, 1)),  # Test with 1 neuron to update
         (
             torch.tensor([0, 2]),
-            torch.tensor([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
+            torch.rand(4, 2),
         ),  # Test with 2 neurons to update
     ],
 )
@@ -98,5 +100,5 @@ def test_update_dictionary_vectors_with_neurons(
 
     # Check if the specified neurons are updated correctly
     assert torch.allclose(
-        mock_decoder.weight[dictionary_vector_indices, :], updates
+        mock_decoder.weight[:, dictionary_vector_indices], updates
     ), "update_dictionary_vectors should update the weights correctly."

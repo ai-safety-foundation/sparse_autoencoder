@@ -23,6 +23,7 @@ from sparse_autoencoder.tensor_types import (
     SampledDeadNeuronInputs,
     TrainBatchStatistic,
 )
+from sparse_autoencoder.train.utils import get_model_device
 
 
 class ActivationResampler(AbstractActivationResampler):
@@ -76,12 +77,11 @@ class ActivationResampler(AbstractActivationResampler):
         """
         return torch.where(neuron_activity <= threshold)[0]
 
-    @staticmethod
     def compute_loss_and_get_activations(
+        self,
         store: ActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
-        num_inputs: int,
         train_batch_size: int,
     ) -> tuple[TrainBatchStatistic, InputOutputActivationBatch]:
         """Compute the loss on a random subset of inputs.
@@ -92,7 +92,6 @@ class ActivationResampler(AbstractActivationResampler):
             store: Activation store.
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
-            num_inputs: Number of input activations to use.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
@@ -102,19 +101,24 @@ class ActivationResampler(AbstractActivationResampler):
             loss_batches: list[TrainBatchStatistic] = []
             input_activations_batches: list[InputOutputActivationBatch] = []
             dataloader = DataLoader(store, batch_size=train_batch_size)
+            num_inputs = self._resample_dataset_size or len(store)
             batches: int = num_inputs // train_batch_size
+            model_device: torch.device = get_model_device(autoencoder)
 
             for batch_idx, batch in enumerate(iter(dataloader)):
                 input_activations_batches.append(batch)
-                learned_activations, reconstructed_activations = autoencoder(batch)
+                source_activations = batch.to(model_device)
+                learned_activations, reconstructed_activations = autoencoder(source_activations)
                 loss_batches.append(
-                    loss_fn.forward(batch, learned_activations, reconstructed_activations)
+                    loss_fn.forward(
+                        source_activations, learned_activations, reconstructed_activations
+                    )
                 )
                 if batch_idx >= batches:
                     break
 
-            loss_result = torch.cat(loss_batches)
-            input_activations = torch.cat(input_activations_batches)
+            loss_result = torch.cat(loss_batches).to(model_device)
+            input_activations = torch.cat(input_activations_batches).to(model_device)
 
             # Check we generated enough data
             if len(loss_result) < num_inputs:
@@ -188,7 +192,7 @@ class ActivationResampler(AbstractActivationResampler):
                 (0, input_activations.shape[-1]),
                 dtype=input_activations.dtype,
                 device=input_activations.device,
-            )
+            ).to(input_activations.device)
 
         sample_indices: LearntNeuronIndices = torch.multinomial(
             probabilities, num_samples=num_samples
@@ -261,7 +265,6 @@ class ActivationResampler(AbstractActivationResampler):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-        num_inputs: int = 819_200,
     ) -> ParameterUpdateResults:
         """Resample dead neurons.
 
@@ -271,9 +274,6 @@ class ActivationResampler(AbstractActivationResampler):
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
-            num_inputs: Number of input activations to use when resampling. Will be rounded down
-                to divisible by the batch size, and cannot be larger than the number of items
-                currently in the store.
         """
         with torch.no_grad():
             dead_neuron_indices = self.get_dead_neuron_indices(neuron_activity)
@@ -284,7 +284,6 @@ class ActivationResampler(AbstractActivationResampler):
                 store=activation_store,
                 autoencoder=autoencoder,
                 loss_fn=loss_fn,
-                num_inputs=num_inputs,
                 train_batch_size=train_batch_size,
             )
 
@@ -316,7 +315,11 @@ class ActivationResampler(AbstractActivationResampler):
             rescaled_sampled_input = self.renormalize_and_scale(
                 sampled_input, neuron_activity, encoder_weight
             )
-            dead_encoder_bias_updates = torch.zeros_like(dead_neuron_indices, dtype=torch.float)
+            dead_encoder_bias_updates = torch.zeros_like(
+                dead_neuron_indices,
+                dtype=dead_decoder_weight_updates.dtype,
+                device=dead_decoder_weight_updates.device,
+            )
 
             return ParameterUpdateResults(
                 dead_neuron_indices=dead_neuron_indices,
