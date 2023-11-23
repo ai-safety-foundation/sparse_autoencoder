@@ -8,6 +8,7 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
+import wandb
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     AbstractActivationResampler,
@@ -15,11 +16,8 @@ from sparse_autoencoder.activation_resampler.abstract_activation_resampler impor
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
-from sparse_autoencoder.metrics import (
-    AbstractGenerateMetric,
-    AbstractTrainMetric,
-    AbstractValidationMetric,
-)
+from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
+from sparse_autoencoder.metrics.resample.abstract_resample_metric import ResampleMetricData
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.tensor_types import (
@@ -34,65 +32,89 @@ class AbstractPipeline(ABC):
         hyperparameters.
     """
 
-    generate_metrics: list[AbstractGenerateMetric]
-
-    train_metrics: list[AbstractTrainMetric]
-
-    validation_metrics: list[AbstractValidationMetric]
-
-    source_model: HookedTransformer
-
-    source_dataset: SourceDataset
-
-    source_data: Iterable[TorchTokenizedPrompts]
+    activation_resampler: AbstractActivationResampler | None
+    """Activation resampler to use."""
 
     autoencoder: SparseAutoencoder
-
-    loss: AbstractLoss
+    """Sparse autoencoder to train."""
 
     cache_name: str
+    """Name of the cache to use in the source model (hook point)."""
 
     layer: int
+    """Layer to get activations from with the source model."""
+
+    log_frequency: int
+    """Frequency at which to log metrics (in steps)."""
+
+    loss: AbstractLoss
+    """Loss function to use."""
+
+    metrics: MetricsContainer
+    """Metrics to use."""
 
     optimizer: AbstractOptimizerWithReset
-
-    activation_resampler: AbstractActivationResampler | None
+    """Optimizer to use."""
 
     progress_bar: tqdm | None
+    """Progress bar for the pipeline."""
+
+    source_data: Iterable[TorchTokenizedPrompts]
+    """Iterable over the source data."""
+
+    source_dataset: SourceDataset
+    """Source dataset to generate activation data from (tokenized prompts)."""
+
+    source_model: HookedTransformer
+    """Source model to get activations from."""
 
     total_training_steps: int = 1
+    """Total number of training steps state."""
 
     @final
     def __init__(  # noqa: PLR0913
         self,
+        activation_resampler: AbstractActivationResampler | None,
+        autoencoder: SparseAutoencoder,
         cache_name: str,
         layer: int,
-        source_model: HookedTransformer,
-        autoencoder: SparseAutoencoder,
-        source_dataset: SourceDataset,
-        optimizer: AbstractOptimizerWithReset,
         loss: AbstractLoss,
-        activation_resampler: AbstractActivationResampler | None,
-        generate_metrics: list[AbstractGenerateMetric] | None = None,
-        train_metrics: list[AbstractTrainMetric] | None = None,
-        validation_metrics: list[AbstractValidationMetric] | None = None,
-        source_data_batch_size: int = 12,
+        optimizer: AbstractOptimizerWithReset,
+        source_dataset: SourceDataset,
+        source_model: HookedTransformer,
         checkpoint_directory: Path | None = None,
+        log_frequency: int = 100,
+        metrics: MetricsContainer = default_metrics,
+        source_data_batch_size: int = 12,
     ):
-        """Initialize the pipeline."""
-        self.cache_name = cache_name
-        self.layer = layer
-        self.generate_metrics = generate_metrics if generate_metrics else []
-        self.train_metrics = train_metrics if train_metrics else []
-        self.validation_metrics = validation_metrics if validation_metrics else []
-        self.source_model = source_model
-        self.source_dataset = source_dataset
-        self.autoencoder = autoencoder
+        """Initialize the pipeline.
+
+        Args:
+            activation_resampler: Activation resampler to use.
+            autoencoder: Sparse autoencoder to train.
+            cache_name: Name of the cache to use in the source model (hook point).
+            layer: Layer to get activations from with the source model.
+            loss: Loss function to use.
+            optimizer: Optimizer to use.
+            source_dataset: Source dataset to get data from.
+            source_model: Source model to get activations from.
+            checkpoint_directory: Directory to save checkpoints to.
+            log_frequency: Frequency at which to log metrics (in steps)
+            metrics: Metrics to use.
+            source_data_batch_size: Batch size for the source data.
+        """
         self.activation_resampler = activation_resampler
-        self.optimizer = optimizer
-        self.loss = loss
-        self.source_data_batch_size = source_data_batch_size
+        self.autoencoder = autoencoder
+        self.cache_name = cache_name
         self.checkpoint_directory = checkpoint_directory
+        self.layer = layer
+        self.log_frequency = log_frequency
+        self.loss = loss
+        self.metrics = metrics
+        self.optimizer = optimizer
+        self.source_data_batch_size = source_data_batch_size
+        self.source_dataset = source_dataset
+        self.source_model = source_model
 
         source_dataloader = source_dataset.get_dataloader(source_data_batch_size)
         self.source_data = self.stateful_dataloader_iterable(source_dataloader)
@@ -125,25 +147,28 @@ class AbstractPipeline(ABC):
     @final
     def resample_neurons(
         self,
-        neuron_activity: NeuronActivity,
         activation_store: TensorActivationStore,
+        neuron_activity_sample_size: int,
+        neuron_activity: NeuronActivity,
         train_batch_size: int,
     ) -> None:
         """Resample dead neurons.
 
         Args:
-            neuron_activity: Number of times each neuron fired.
             activation_store: Activation store.
+            neuron_activity_sample_size: Sample size for resampling.
+            neuron_activity: Number of times each neuron fired.
             train_batch_size: Train batch size (also used for resampling).
         """
         if self.activation_resampler is not None:
             # Get the updates
             parameter_updates = self.activation_resampler.resample_dead_neurons(
-                neuron_activity=neuron_activity,
                 activation_store=activation_store,
                 autoencoder=self.autoencoder,
                 loss_fn=self.loss,
+                neuron_activity=neuron_activity,
                 train_batch_size=train_batch_size,
+                neuron_activity_sample_size=neuron_activity_sample_size,
             )
 
             # Update the weights and biases
@@ -159,6 +184,19 @@ class AbstractPipeline(ABC):
                 parameter_updates.dead_neuron_indices,
                 parameter_updates.dead_decoder_weight_updates,
             )
+
+            # Log any metrics
+            with torch.no_grad():
+                metrics = {}
+                if wandb.run is not None:
+                    for metric in self.metrics.resample_metrics:
+                        calculated = metric.calculate(
+                            ResampleMetricData(
+                                neuron_activity=neuron_activity,
+                            )
+                        )
+                        metrics.update(calculated)
+                    wandb.log(metrics, commit=False)
 
             # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
             self.optimizer.reset_state_all_parameters()
@@ -199,9 +237,11 @@ class AbstractPipeline(ABC):
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
         last_resampled: int = 0
+        neuron_activity_sample_size: int = 0
         last_validated: int = 0
         last_checkpoint: int = 0
-        neuron_activity: NeuronActivity | None = None
+        total_activations: int = 0
+        neuron_activity: NeuronActivity = torch.zeros(self.autoencoder.n_learned_features)
 
         # Get the store size
         store_size: int = (
@@ -218,33 +258,39 @@ class AbstractPipeline(ABC):
                 progress_bar.set_postfix({"stage": "generate"})
                 activation_store: TensorActivationStore = self.generate_activations(store_size)
 
+                # Update the counters
+                num_activation_vectors_in_store = len(activation_store)
+                last_resampled += num_activation_vectors_in_store
+                last_validated += num_activation_vectors_in_store
+                last_checkpoint += num_activation_vectors_in_store
+                total_activations += num_activation_vectors_in_store
+                if wandb.run is not None:
+                    wandb.log({"total_activations": total_activations}, commit=False)
+
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
                 batch_neuron_activity: NeuronActivity = self.train_autoencoder(
                     activation_store, train_batch_size=train_batch_size
                 )
                 detached_neuron_activity = batch_neuron_activity.detach().cpu()
-                if neuron_activity is not None:
+                is_second_half_resample: bool = last_resampled > resample_frequency / 2
+                if is_second_half_resample:
+                    neuron_activity_sample_size += num_activation_vectors_in_store
                     neuron_activity.add_(detached_neuron_activity)
-                else:
-                    neuron_activity = detached_neuron_activity
-
-                # Update the counters
-                last_resampled += len(activation_store)
-                last_validated += len(activation_store)
-                last_checkpoint += len(activation_store)
 
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})
-                if last_resampled > resample_frequency and self.activation_resampler is not None:
+                if last_resampled >= resample_frequency and self.activation_resampler is not None:
                     self.resample_neurons(
-                        neuron_activity=neuron_activity,
                         activation_store=activation_store,
+                        neuron_activity_sample_size=neuron_activity_sample_size,
+                        neuron_activity=neuron_activity,
                         train_batch_size=train_batch_size,
                     )
 
                     # Reset
-                    self.last_resampled = 0
+                    last_resampled = 0
+                    neuron_activity_sample_size = 0
                     neuron_activity.zero_()
 
                 # Get validation metrics (if needed)

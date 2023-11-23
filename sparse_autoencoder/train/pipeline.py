@@ -99,14 +99,14 @@ class Pipeline(AbstractPipeline):
             total_loss, loss_metrics = self.loss.batch_scalar_loss_with_log(
                 batch, learned_activations, reconstructed_activations
             )
-            metrics = {**loss_metrics}
+            metrics.update(loss_metrics)
 
             with torch.no_grad():
-                for metric in self.train_metrics:
+                for metric in self.metrics.train_metrics:
                     calculated = metric.calculate(
                         TrainMetricData(batch, learned_activations, reconstructed_activations)
                     )
-                    metrics = {**metrics, **calculated}
+                    metrics.update(calculated)
 
             # Store count of how many neurons have fired
             with torch.no_grad():
@@ -118,8 +118,10 @@ class Pipeline(AbstractPipeline):
             self.optimizer.step()
 
             # Log
-            if wandb.run is not None:
-                wandb.log(data={**metrics, **loss_metrics}, step=self.total_training_steps)
+            if wandb.run is not None and self.total_training_steps % self.log_frequency == 0:
+                wandb.log(
+                    data={**metrics, **loss_metrics}, step=self.total_training_steps, commit=True
+                )
             self.total_training_steps += 1
 
         return learned_activations_fired_count

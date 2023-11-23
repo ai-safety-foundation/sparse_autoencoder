@@ -54,19 +54,21 @@ class AbstractActivationResampler(ABC):
     @abstractmethod
     def resample_dead_neurons(
         self,
-        neuron_activity: NeuronActivity,
         activation_store: TensorActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
+        neuron_activity_sample_size: int,
+        neuron_activity: NeuronActivity,
         train_batch_size: int,
     ) -> ParameterUpdateResults:
         """Resample dead neurons.
 
         Args:
-            neuron_activity: Number of times each neuron fired.
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
+            neuron_activity_sample_size: Sample size for resampling.
+            neuron_activity: Number of times each neuron fired.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
