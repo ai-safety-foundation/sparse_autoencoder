@@ -26,7 +26,7 @@ class NeuronActivityMetric(AbstractResampleMetric):
         neuron_activity_list = neuron_activity.detach().cpu().tolist()
 
         # Histogram of neuron activity
-        histogram = wandb.Histogram(neuron_activity_list, num_bins=10)
+        histogram = wandb.Histogram(neuron_activity_list)
 
         return {
             "resample_alive_neuron_count": (neuron_activity > 0).sum().item(),
