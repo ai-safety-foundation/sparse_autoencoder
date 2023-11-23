@@ -16,12 +16,10 @@ from sparse_autoencoder.tensor_types import (
 
 @final
 class LinearEncoder(AbstractEncoder):
-    """Linear encoder layer.
-
-    Applies a linear transformation to the incoming data:
+    r"""Linear encoder layer.
 
     $$
-    y = xW^T + b
+    y = W_e \overline{x} + b_e
     $$
     """
 
