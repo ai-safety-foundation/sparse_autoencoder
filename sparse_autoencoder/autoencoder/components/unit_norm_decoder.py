@@ -18,11 +18,15 @@ from sparse_autoencoder.tensor_types import (
 
 @final
 class UnitNormDecoder(AbstractDecoder):
-    """Constrained unit norm linear decoder layer.
+    r"""Constrained unit norm linear decoder layer.
 
     Linear layer decoder, where the dictionary vectors (rows of the weight matrix) are constrained
     to have unit norm. This is done by removing the gradient information parallel to the dictionary
     vectors before applying the gradient step, using a backward hook.
+
+    $$
+    y = f W_d^T + b_d
+    $$
 
     Motivation:
         Unit norming the dictionary vectors, which are essentially the rows of the decoding
@@ -89,6 +93,31 @@ class UnitNormDecoder(AbstractDecoder):
         if enable_gradient_hook:
             self._weight.register_hook(self._weight_backward_hook)
 
+    def constrain_weights_unit_norm(self) -> None:
+        """Constrain the weights to have unit norm.
+
+        Note this must be called after each gradient step. This is because optimisers such as Adam
+        don't strictly follow the gradient, but instead follow a modified gradient that includes
+        momentum. This means that the gradient step can change the norm of the dictionary vectors,
+        even when the hook :meth:`_weight_backward_hook` is applied.
+
+        Note this can't be applied directly in the backward hook, as it would interfere with a
+        variety of use cases (e.g. gradient accumulation across mini-batches, concurrency issues
+        with asynchronous operations, etc).
+
+        Example:
+            >>> import torch
+            >>> layer = UnitNormDecoder(3, 3)
+            >>> layer.weight.data = torch.ones((3, 3)) * 10
+            >>> layer.constrain_weights_unit_norm()
+            >>> row_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=1))
+            >>> row_norms.round(decimals=3).tolist()
+            [1.0, 1.0, 1.0]
+
+        """
+        with torch.no_grad():
+            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
+
     def reset_parameters(self) -> None:
         """Initialize or reset the parameters.
 
@@ -109,8 +138,7 @@ class UnitNormDecoder(AbstractDecoder):
         self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
 
         # Scale so that each row has unit norm
-        with torch.no_grad():
-            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
+        self.constrain_weights_unit_norm()
 
     def _weight_backward_hook(
         self,
@@ -164,31 +192,6 @@ class UnitNormDecoder(AbstractDecoder):
         # orthogonal to the dictionary vectors, i.e. the component that moves around the surface of
         # the hypersphere.
         return grad - projection
-
-    def constrain_weights_unit_norm(self) -> None:
-        """Constrain the weights to have unit norm.
-
-        Note this must be called after each gradient step. This is because optimisers such as Adam
-        don't strictly follow the gradient, but instead follow a modified gradient that includes
-        momentum. This means that the gradient step can change the norm of the dictionary vectors,
-        even when the hook :meth:`_weight_backward_hook` is applied.
-
-        Note this can't be applied directly in the backward hook, as it would interfere with a
-        variety of use cases (e.g. gradient accumulation across mini-batches, concurrency issues
-        with asynchronous operations, etc).
-
-        Example:
-            >>> import torch
-            >>> layer = UnitNormDecoder(3, 3)
-            >>> layer.weight.data = torch.ones((3, 3)) * 10
-            >>> layer.constrain_weights_unit_norm()
-            >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
-            >>> row_norms.round(decimals=3).tolist()
-            [1.0, 1.0, 1.0]
-
-        """
-        with torch.no_grad():
-            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
 
     def forward(self, x: LearnedActivationBatch) -> InputOutputActivationBatch:
         """Forward pass.
