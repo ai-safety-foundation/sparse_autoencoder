@@ -8,11 +8,11 @@ from sparse_autoencoder.activation_store import (
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss import (
     AbstractLoss,
+    L2ReconstructionLoss,
     LearnedActivationsL1Loss,
     LossLogType,
     LossReducer,
     LossReductionType,
-    MSEReconstructionLoss,
 )
 
 
@@ -25,7 +25,7 @@ __all__ = [
     "LossLogType",
     "LossReducer",
     "LossReductionType",
-    "MSEReconstructionLoss",
+    "L2ReconstructionLoss",
     "SparseAutoencoder",
     "TensorActivationStore",
 ]

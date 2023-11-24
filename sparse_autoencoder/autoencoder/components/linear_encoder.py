@@ -19,7 +19,7 @@ class LinearEncoder(AbstractEncoder):
     r"""Linear encoder layer.
 
     $$
-    y = W_e \overline{x} + b_e
+    y = \overline{x} W_e^T + b_e
     $$
     """
 
