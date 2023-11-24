@@ -244,9 +244,8 @@ class AbstractPipeline(ABC):
         neuron_activity: NeuronActivity = torch.zeros(self.autoencoder.n_learned_features)
 
         # Get the store size
-        store_size: int = (
-            max_store_size
-            - max_store_size % self.source_data_batch_size * self.source_dataset.context_size
+        store_size: int = max_store_size - max_store_size % (
+            self.source_data_batch_size * self.source_dataset.context_size
         )
 
         with tqdm(

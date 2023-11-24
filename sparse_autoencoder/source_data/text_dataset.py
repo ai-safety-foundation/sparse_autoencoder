@@ -77,7 +77,7 @@ class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
     def __init__(
         self,
         tokenizer: PreTrainedTokenizerBase,
-        context_size: int = 250,
+        context_size: int = 256,
         buffer_size: int = 1000,
         preprocess_batch_size: int = 1000,
         dataset_path: str = "monology/pile-uncopyrighted",
