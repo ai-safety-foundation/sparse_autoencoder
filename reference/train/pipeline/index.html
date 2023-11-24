@@ -2442,7 +2442,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Activation store for the train section.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span>
+        <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">n_input_features</span>
         <span class="n">source_model_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">get_model_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="p">)</span>
 
         <span class="n">store</span> <span class="o">=</span> <span class="n">TensorActivationStore</span><span class="p">(</span><span class="n">store_size</span><span class="p">,</span> <span class="n">num_neurons</span><span class="p">)</span>
@@ -2670,7 +2670,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        Activation store for the train section.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span>
+    <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">n_input_features</span>
     <span class="n">source_model_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">get_model_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="p">)</span>
 
     <span class="n">store</span> <span class="o">=</span> <span class="n">TensorActivationStore</span><span class="p">(</span><span class="n">store_size</span><span class="p">,</span> <span class="n">num_neurons</span><span class="p">)</span>
