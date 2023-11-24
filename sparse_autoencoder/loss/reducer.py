@@ -22,14 +22,14 @@ class LossReducer(AbstractLoss):
     nn.Sequential.
 
     Example:
-        >>> from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
+        >>> from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
         >>> from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
         >>> LossReducer(
-        ...     MSEReconstructionLoss(),
+        ...     L2ReconstructionLoss(),
         ...     LearnedActivationsL1Loss(0.001),
         ... )
         LossReducer(
-          (0): MSEReconstructionLoss()
+          (0): L2ReconstructionLoss()
           (1): LearnedActivationsL1Loss(l1_coefficient=0.001)
         )
 
