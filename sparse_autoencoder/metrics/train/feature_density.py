@@ -101,6 +101,5 @@ class TrainBatchFeatureDensity(AbstractTrainMetric):
         )
 
         return {
-            "train_batch_feature_density": train_batch_feature_density,
             "train_batch_feature_density_histogram": train_batch_feature_density_histogram,
         }
