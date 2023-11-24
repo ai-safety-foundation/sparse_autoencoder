@@ -33,7 +33,7 @@ class Pipeline(AbstractPipeline):
         Returns:
             Activation store for the train section.
         """
-        num_neurons: int = 256
+        num_neurons: int = self.autoencoder.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
 
         store = TensorActivationStore(store_size, num_neurons)
