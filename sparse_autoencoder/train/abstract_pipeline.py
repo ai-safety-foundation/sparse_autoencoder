@@ -18,11 +18,10 @@ from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
 from sparse_autoencoder.metrics.resample.abstract_resample_metric import ResampleMetricData
+from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricContext
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
-from sparse_autoencoder.tensor_types import (
-    NeuronActivity,
-)
+from sparse_autoencoder.tensor_types import NeuronActivity
 
 
 class AbstractPipeline(ABC):
@@ -202,7 +201,7 @@ class AbstractPipeline(ABC):
             self.optimizer.reset_state_all_parameters()
 
     @abstractmethod
-    def validate_sae(self) -> None:
+    def validate_sae(self, context: ValidationMetricContext) -> None:
         """Get validation metrics."""
 
     @final
@@ -295,7 +294,13 @@ class AbstractPipeline(ABC):
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})
                 if validate_frequency is not None and last_validated > validate_frequency:
-                    self.validate_sae()
+                    validation_context = ValidationMetricContext(
+                        autoencoder=self.autoencoder,
+                        source_model=self.source_model,
+                        dataset=self.source_dataset,
+                        hook_point=self.cache_name,
+                    )
+                    self.validate_sae(validation_context)
                     self.last_validated = 0
 
                 # Checkpoint (if needed)
