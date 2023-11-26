@@ -29,8 +29,16 @@ class L2ReconstructionLoss(AbstractLoss):
         >>> unused_activations = torch.zeros_like(input_activations)
         >>> # Outputs both loss and metrics to log
         >>> loss(input_activations, unused_activations, output_activations)
-        (tensor(11.), {'L2ReconstructionLoss': 11.0})
+        (tensor(11.), {'l2_reconstruction_loss': 11.0})
     """
+
+    def log_name(self) -> str:
+        """Log name.
+
+        Returns:
+            Name of the loss module for logging.
+        """
+        return "l2_reconstruction_loss"
 
     def forward(
         self,
