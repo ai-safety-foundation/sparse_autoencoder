@@ -1,4 +1,4 @@
-# Home
+# Sparse Autoencoder
 
 [![PyPI](https://img.shields.io/pypi/v/sparse_autoencoder?color=blue)](https://pypi.org/project/transformer-lens/)
 ![PyPI - License](https://img.shields.io/pypi/l/sparse_autoencoder?color=blue)

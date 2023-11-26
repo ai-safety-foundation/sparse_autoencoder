@@ -9,19 +9,19 @@ edit_uri: "" # Disabled as we use mkdocstrings which auto-generates some pages
 
 theme:
   name: material
-  # palette:
-  #   - scheme: default
-  #     primary: white
-  #     accent: amber
-  #     toggle:
-  #       icon: material/weather-night
-  #       name: Switch to dark mode
-  #   - scheme: slate
-  #     primary: black
-  #     accent: amber
-  #     toggle:
-  #       icon: material/weather-sunny
-  #       name: Switch to light mode
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
   icon:
     repo: fontawesome/brands/github # GitHub logo in top right
   features:
