@@ -23,6 +23,10 @@ class DummyLoss(AbstractLoss):
         # Simple dummy implementation for testing
         return torch.tensor([1.0, 2.0, 3.0])
 
+    def log_name(self) -> str:
+        """Log name."""
+        return "dummy"
+
 
 @pytest.fixture()
 def dummy_loss() -> DummyLoss:
