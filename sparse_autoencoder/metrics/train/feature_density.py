@@ -79,7 +79,7 @@ class TrainBatchFeatureDensity(AbstractTrainMetric):
         """
         numpy_feature_density: NDArray[np.float_] = feature_density.detach().cpu().numpy()
 
-        bins, values = histogram(numpy_feature_density, bins="auto")
+        bins, values = histogram(numpy_feature_density, bins=50)
         return wandb.Histogram(np_histogram=(bins, values))
 
     def calculate(self, data: TrainMetricData) -> dict[str, Any]:
