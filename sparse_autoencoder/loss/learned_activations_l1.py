@@ -24,8 +24,8 @@ class LearnedActivationsL1Loss(AbstractLoss):
         >>> learned_activations = torch.tensor([[2.0, -3], [2.0, -3]])
         >>> unused_activations = torch.zeros_like(learned_activations)
         >>> # Returns loss and metrics to log
-        >>> l1_loss(unused_activations, learned_activations, unused_activations)
-        (tensor(0.5000), {'LearnedActivationsL1Loss': 0.5})
+        >>> l1_loss(unused_activations, learned_activations, unused_activations)[0]
+        tensor(0.5000)
     """
 
     l1_coefficient: float
@@ -69,8 +69,8 @@ class LearnedActivationsL1Loss(AbstractLoss):
             Tuple of itemwise absolute loss, and itemwise absolute loss multiplied by the l1
             coefficient.
         """
-        absolute_loss = torch.abs(learned_activations)
-        absolute_loss_penalty = absolute_loss.sum(dim=-1) * self.l1_coefficient
+        absolute_loss = torch.abs(learned_activations).sum(dim=-1)
+        absolute_loss_penalty = absolute_loss * self.l1_coefficient
         return absolute_loss, absolute_loss_penalty
 
     def forward(
