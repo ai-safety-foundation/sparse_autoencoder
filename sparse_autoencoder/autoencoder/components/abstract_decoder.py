@@ -23,7 +23,11 @@ class AbstractDecoder(Module, ABC):
     @property
     @abstractmethod
     def weight(self) -> DecoderWeights:
-        """Weight."""
+        """Weight.
+
+        Each column in the weights matrix acts as a dictionary vector, representing a single basis
+        element in the learned activation space.
+        """
 
     @abstractmethod
     def forward(
@@ -63,3 +67,7 @@ class AbstractDecoder(Module, ABC):
 
         with torch.no_grad():
             self.weight[:, dictionary_vector_indices] = updated_weights
+
+    @abstractmethod
+    def constrain_weights_unit_norm(self) -> None:
+        """Constrain the weights to have unit norm."""

@@ -26,7 +26,11 @@ class AbstractEncoder(Module, ABC):
     @property
     @abstractmethod
     def weight(self) -> EncoderWeights:
-        """Weight."""
+        """Weight.
+
+        Each row in the weights matrix acts as a dictionary vector, representing a single basis
+        element in the learned activation space.
+        """
 
     @property
     @abstractmethod
