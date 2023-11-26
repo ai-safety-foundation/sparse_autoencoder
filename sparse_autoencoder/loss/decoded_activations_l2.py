@@ -32,6 +32,14 @@ class L2ReconstructionLoss(AbstractLoss):
         (tensor(11.), {'L2ReconstructionLoss': 11.0})
     """
 
+    def log_name(self) -> str:
+        """Log name.
+
+        Returns:
+            Name of the loss module for logging.
+        """
+        return "l2_reconstruction_loss"
+
     def forward(
         self,
         source_activations: InputOutputActivationBatch,

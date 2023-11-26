@@ -21,6 +21,10 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
     Percentage of samples in which each feature was active (i.e. the neuron has "fired"), in a
     training batch.
 
+    Generally we want a small number of features to be active in each batch, so average feature
+    density should be low. By contrast if the average feature density is high, it means that the
+    features are not sparse enough.
+
     Warning:
         This is not the same as the feature density of the entire training set. It's main use is
         tracking the progress of training.

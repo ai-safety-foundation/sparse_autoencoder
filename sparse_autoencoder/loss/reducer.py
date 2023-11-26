@@ -38,6 +38,14 @@ class LossReducer(AbstractLoss):
     _modules: dict[str, "AbstractLoss"]
     """Children loss modules."""
 
+    def log_name(self) -> str:
+        """Log name.
+
+        Returns:
+            Name of the loss module for logging.
+        """
+        return "total_loss"
+
     def __init__(
         self,
         *loss_modules: AbstractLoss,

@@ -264,7 +264,7 @@ class AbstractPipeline(ABC):
                 last_checkpoint += num_activation_vectors_in_store
                 total_activations += num_activation_vectors_in_store
                 if wandb.run is not None:
-                    wandb.log({"total_activations": total_activations}, commit=False)
+                    wandb.log({"activations_generated": total_activations}, commit=False)
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
