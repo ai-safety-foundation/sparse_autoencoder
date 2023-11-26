@@ -130,21 +130,19 @@ class Pipeline(AbstractPipeline):
 
         return learned_activations_fired_count
 
-    def validate_sae(self, validation_store_size: int, train_batch_size: int) -> None:
-        """Get validation metrics."""
-        # Get some sample activations
-        activation_store = self.generate_activations(validation_store_size)
-        activations_dataloader = DataLoader(
-            activation_store,
-            batch_size=train_batch_size,
-        )
+    def validate_sae(self, validation_number_activations: int) -> None:
+        """Get validation metrics.
 
+        Args:
+            validation_number_activations: Number of activations to use for validation.
+        """
         losses: list[float] = []
         losses_with_reconstruction: list[float] = []
         losses_with_zero_ablation: list[float] = []
 
-        for store_batch in activations_dataloader:
+        for store_batch in self.source_data:
             # Run a forward pass with and without the replaced activations
+            self.source_model.remove_all_hook_fns()
             replacement_hook = partial(
                 replace_activations_hook, sparse_autoencoder=self.autoencoder
             )
@@ -169,6 +167,9 @@ class Pipeline(AbstractPipeline):
             losses.append(loss.sum().item())
             losses_with_reconstruction.append(loss_with_reconstruction.sum().item())
             losses_with_zero_ablation.append(loss_with_zero_ablation.sum().item())
+
+            if len(losses) >= validation_number_activations:
+                break
 
         # Log
         validation_data = ValidationMetricData(
