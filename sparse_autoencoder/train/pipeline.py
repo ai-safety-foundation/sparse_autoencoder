@@ -139,17 +139,20 @@ class Pipeline(AbstractPipeline):
         losses: list[float] = []
         losses_with_reconstruction: list[float] = []
         losses_with_zero_ablation: list[float] = []
+        source_model_device: torch.device = get_model_device(self.source_model)
 
-        for store_batch in self.source_data:
+        for batch in self.source_data:
+            input_ids: BatchTokenizedPrompts = batch["input_ids"].to(source_model_device)
+
             # Run a forward pass with and without the replaced activations
             self.source_model.remove_all_hook_fns()
             replacement_hook = partial(
                 replace_activations_hook, sparse_autoencoder=self.autoencoder
             )
 
-            loss = self.source_model.forward(store_batch, return_type="loss")
+            loss = self.source_model.forward(input_ids, return_type="loss")
             loss_with_reconstruction = self.source_model.run_with_hooks(
-                store_batch,
+                input_ids,
                 return_type="loss",
                 fwd_hooks=[
                     (
@@ -159,7 +162,7 @@ class Pipeline(AbstractPipeline):
                 ],
             )
             loss_with_zero_ablation = self.source_model.run_with_hooks(
-                store_batch,
+                input_ids,
                 return_type="loss",
                 fwd_hooks=[(self.cache_name, zero_ablate_hook)],
             )
