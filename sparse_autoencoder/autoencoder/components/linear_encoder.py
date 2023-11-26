@@ -18,8 +18,19 @@ from sparse_autoencoder.tensor_types import (
 class LinearEncoder(AbstractEncoder):
     r"""Linear encoder layer.
 
+    Linear encoder layer (essentially `nn.Linear`, with a ReLU activation function). Designed to be
+    used as the encoder in a sparse autoencoder (excluding any outer tied bias).
+
     $$
-    y = \overline{x} W_e^T + b_e
+    \begin{align*}
+        m &= \text{learned features dimension} \\
+        n &= \text{input \& output dimension} \\
+        b &= \text{batch items dimension} \\
+        \overline{\mathbf{x}} \in \mathbb{R}^{b \times n} &= \text{input after tied bias} \\
+        W_e \in \mathbb{R}^{m \times n} &= \text{weight matrix} \\
+        b_e \in \mathbb{R}^{m} &= \text{bias vector} \\
+        f &= \text{ReLU}(\overline{\mathbf{x}} W_e^T + b_e) = \text{LinearEncoder output}
+    \end{align*}
     $$
     """
 
@@ -30,20 +41,27 @@ class LinearEncoder(AbstractEncoder):
     """Number of decoded features (outputs from this layer)."""
 
     _weight: EncoderWeights
+    """Weight parameter internal state."""
 
     _bias: LearntActivationVector
+    """Bias parameter internal state."""
 
     @property
     def weight(self) -> EncoderWeights:
-        """Weight."""
+        """Weight parameter.
+
+        Each row in the weights matrix acts as a dictionary vector, representing a single basis
+        element in the learned activation space.
+        """
         return self._weight
 
     @property
     def bias(self) -> LearntActivationVector:
-        """Bias."""
+        """Bias parameter."""
         return self._bias
 
     activation_function: ReLU
+    """Activation function."""
 
     def __init__(
         self,
@@ -54,15 +72,14 @@ class LinearEncoder(AbstractEncoder):
         super().__init__()
         self._learnt_features = learnt_features
         self._input_features = input_features
-        self.activation_function = ReLU()
 
         self._weight = Parameter(
             torch.empty(
                 (learnt_features, input_features),
             )
         )
-
         self._bias = Parameter(torch.zeros(learnt_features))
+        self.activation_function = ReLU()
 
         self.reset_parameters()
 
@@ -87,7 +104,8 @@ class LinearEncoder(AbstractEncoder):
         Returns:
             Output of the forward pass.
         """
-        return functional.linear(x, self.weight, self.bias)
+        z = functional.linear(x, self.weight, self.bias)
+        return self.activation_function(z)
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""

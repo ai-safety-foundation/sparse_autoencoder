@@ -7,7 +7,7 @@ from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNorm
 def test_initialization() -> None:
     """Test that the weights are initialized with unit norm."""
     layer = UnitNormDecoder(learnt_features=3, decoded_features=4)
-    weight_norms = torch.norm(layer.weight, dim=1)
+    weight_norms = torch.norm(layer.weight, dim=0)
     assert torch.allclose(weight_norms, torch.ones_like(weight_norms))
 
 
@@ -29,35 +29,13 @@ def test_multiple_training_steps() -> None:
         optimizer.zero_grad()
         logits = layer(data)
 
-        weight_norms = torch.norm(layer.weight, dim=1)
-        assert torch.allclose(weight_norms, torch.ones_like(weight_norms), atol=2e-3)
-
         loss = torch.mean(logits**2)
         loss.backward()
         optimizer.step()
+        layer.constrain_weights_unit_norm()
 
-
-def test_unit_norm_applied_backward() -> None:
-    """Check that the unit norm is applied after each gradient step."""
-    torch.random.manual_seed(42)
-    layer = UnitNormDecoder(learnt_features=3, decoded_features=4)
-    optimizer = torch.optim.SGD(layer.parameters(), lr=0.1, momentum=0)
-    data = torch.randn((1, 3), requires_grad=True)
-    logits = layer(data)
-    loss = torch.mean(logits**2)
-    loss.backward()
-
-    # Check that the gradient is not zero (as that would be a trivial way the weights could be kept
-    # unit norm)
-    grad = layer.weight.grad
-    assert grad is not None
-    assert not torch.allclose(grad, torch.zeros_like(grad))
-
-    optimizer.step()
-
-    # Check that the weights still have unit norm
-    weight_norms = torch.sum(layer.weight**2, dim=1)
-    assert torch.allclose(weight_norms, torch.ones_like(weight_norms), atol=0.02, rtol=False)
+        columns_norms = torch.norm(layer.weight, dim=0)
+        assert torch.allclose(columns_norms, torch.ones_like(columns_norms))
 
 
 def test_unit_norm_decreases() -> None:
@@ -73,7 +51,7 @@ def test_unit_norm_decreases() -> None:
         loss = torch.mean(logits**2)
         loss.backward()
         optimizer.step()
-        weight_norms_with_hook = torch.sum(layer.weight**2, dim=1).clone()
+        weight_norms_with_hook = torch.sum(layer.weight**2, dim=0).clone()
 
         # Run without the hook
         layer_without_hook = UnitNormDecoder(
@@ -87,7 +65,7 @@ def test_unit_norm_decreases() -> None:
         loss_without_hook = torch.mean(logits_without_hook**2)
         loss_without_hook.backward()
         optimizer_without_hook.step()
-        weight_norms_without_hook = torch.sum(layer_without_hook.weight**2, dim=1).clone()
+        weight_norms_without_hook = torch.sum(layer_without_hook.weight**2, dim=0).clone()
 
         # Check that the norm with the hook is closer to 1 than without the hook
         target_norms = torch.ones_like(weight_norms_with_hook)

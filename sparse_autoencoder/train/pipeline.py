@@ -116,6 +116,7 @@ class Pipeline(AbstractPipeline):
             # Backwards pass
             total_loss.backward()
             self.optimizer.step()
+            self.autoencoder.encoder.constrain_weights_unit_norm()
 
             # Log
             if wandb.run is not None and self.total_training_steps % self.log_frequency == 0:
