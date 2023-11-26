@@ -4,10 +4,10 @@ import pytest
 import torch
 from torch import Tensor
 
-from sparse_autoencoder.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     ParameterUpdateResults,
 )
+from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder

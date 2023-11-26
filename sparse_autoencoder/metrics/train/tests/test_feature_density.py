@@ -3,7 +3,7 @@
 import torch
 
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
-from sparse_autoencoder.metrics.train.feature_density import TrainBatchFeatureDensity
+from sparse_autoencoder.metrics.train.feature_density import TrainBatchFeatureDensityMetric
 
 
 def test_calc_feature_density() -> None:
@@ -15,14 +15,14 @@ def test_calc_feature_density() -> None:
     above_threshold = activations > threshold
     expected = above_threshold.sum(dim=0, dtype=torch.float) / above_threshold.shape[0]
 
-    res = TrainBatchFeatureDensity(0.001).feature_density(activations)
+    res = TrainBatchFeatureDensityMetric(0.001).feature_density(activations)
     assert torch.allclose(res, expected), "Output does not match the expected result."
 
 
 def test_wandb_feature_density_histogram() -> None:
     """Check the Weights & Biases Histogram is created correctly."""
     feature_density = torch.tensor([0.001, 0.001, 0.001, 0.5, 0.5, 1.0])
-    res = TrainBatchFeatureDensity().wandb_feature_density_histogram(feature_density)
+    res = TrainBatchFeatureDensityMetric().wandb_feature_density_histogram(feature_density)
 
     # Check 0.001 is in the first bin 3 times
     expected_first_bin_value = 3
@@ -32,7 +32,7 @@ def test_wandb_feature_density_histogram() -> None:
 def test_calculate_aggregates() -> None:
     """Check that the metrics are aggregated in the calculate method."""
     activations = torch.tensor([[0.5, 0.5, 0.0], [0.5, 0.0, 0.0001], [0.0, 0.1, 0.0]])
-    res = TrainBatchFeatureDensity().calculate(
+    res = TrainBatchFeatureDensityMetric().calculate(
         TrainMetricData(
             input_activations=activations,
             learned_activations=activations,
