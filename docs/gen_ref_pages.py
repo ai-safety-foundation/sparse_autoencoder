@@ -96,8 +96,12 @@ def run() -> None:
         generate_documentation(path, module_path, full_doc_path)
 
         parts = list(module_path.parts)
-        slug = parts if parts else ["Home"]
-        nav[slug] = doc_path.as_posix()  # type: ignore
+
+        # Don't create a page for the main __init__.py file (as this includes most exports).
+        if not parts:
+            continue
+
+        nav[parts] = doc_path.as_posix()  # type: ignore
 
     generate_nav_file(nav, REFERENCE_DIR)
 
