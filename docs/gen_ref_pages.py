@@ -95,13 +95,13 @@ def run() -> None:
         module_path, doc_path, full_doc_path = process_path(path)
         generate_documentation(path, module_path, full_doc_path)
 
-        parts = list(module_path.parts)
+        url_slug_parts = list(module_path.parts)
 
         # Don't create a page for the main __init__.py file (as this includes most exports).
-        if not parts:
+        if not url_slug_parts:
             continue
 
-        nav[parts] = doc_path.as_posix()  # type: ignore
+        nav[url_slug_parts] = doc_path.as_posix()  # type: ignore
 
     generate_nav_file(nav, REFERENCE_DIR)
 

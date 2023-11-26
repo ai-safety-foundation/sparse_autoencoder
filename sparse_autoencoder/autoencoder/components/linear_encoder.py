@@ -24,7 +24,7 @@ class LinearEncoder(AbstractEncoder):
     $$
     \begin{align*}
         m &= \text{learned features dimension} \\
-        n &= \text{input \& output dimension} \\
+        n &= \text{input and output dimension} \\
         b &= \text{batch items dimension} \\
         \overline{\mathbf{x}} \in \mathbb{R}^{b \times n} &= \text{input after tied bias} \\
         W_e \in \mathbb{R}^{m \times n} &= \text{weight matrix} \\

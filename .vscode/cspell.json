@@ -2,6 +2,7 @@
     "language": "en,en-GB",
     "words": [
         "allclose",
+        "arithmatex",
         "astroid",
         "autocast",
         "autoencoder",
@@ -49,6 +50,7 @@
         "maxiter",
         "miniter",
         "mkdocs",
+        "mkdocstrings",
         "monosemantic",
         "monosemanticity",
         "multipled",

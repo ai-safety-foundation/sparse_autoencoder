@@ -29,15 +29,10 @@ class UnitNormDecoder(AbstractDecoder):
 
     $$ \begin{align*}
         m &= \text{learned features dimension} \\
-
-        n &= \text{input \& output dimension} \\
-
+        n &= \text{input and output dimension} \\
         b &= \text{batch items dimension} \\
-
         f \in \mathbb{R}^{b \times m} &= \text{encoder output} \\
-
         W_d \in \mathbb{R}^{n \times m} &= \text{weight matrix} \\
-
         z \in \mathbb{R}^{b \times m} &= f W_d^T = \text{UnitNormDecoder output (pre-tied bias)}
     \end{align*} $$
 
@@ -163,21 +158,15 @@ class UnitNormDecoder(AbstractDecoder):
         $$
         \begin{align*}
             W_d &\in \mathbb{R}^{n \times m} = \text{Decoder weight matrix} \\
-
             g &\in \mathbb{R}^{n \times m} = \text{Gradient w.r.t. } W_d
                 \text{ from the backward pass} \\
-
             W_{d, \text{norm}} &= \frac{W_d}{\|W_d\|} = \text{Normalized decoder weight matrix
                 (over columns)} \\
-
             g_{\parallel} &\in \mathbb{R}^{n \times m} = \text{Component of } g
                 \text{ parallel to } W_{d, \text{norm}} \\
-
             g_{\perp} &\in \mathbb{R}^{n \times m} = \text{Component of } g \text{ orthogonal to }
                 W_{d, \text{norm}} \\
-
             g_{\parallel} &= W_{d, \text{norm}} \cdot (W_{d, \text{norm}}^\top \cdot g) \\
-
             g_{\perp} &= g - g_{\parallel} =
                 \text{Adjusted gradient with parallel component removed} \\
         \end{align*}
