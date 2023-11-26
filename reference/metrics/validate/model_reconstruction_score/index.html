@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../linear_encoder/">
+        <link rel="prev" href="../abstract_validate_metric/">
       
       
-        <link rel="next" href="../unit_norm_decoder/">
+        <link rel="next" href="../../../optimizer/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>tied_bias - Sparse Autoencoder</title>
+        <title>model_reconstruction_score - Sparse Autoencoder</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sparse_autoencoder.autoencoder.components.tied_bias" class="md-skip">
+        <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score" class="md-skip">
           Skip to content
         </a>
       
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              tied_bias
+              model_reconstruction_score
             
           </span>
         </div>
@@ -634,25 +634,23 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -669,7 +667,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             autoencoder
@@ -682,7 +680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../abstract_autoencoder/" class="md-nav__link">
+      <a href="../../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -700,25 +698,23 @@
                 
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -735,7 +731,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3_2">
             <span class="md-nav__icon md-icon"></span>
             components
@@ -748,7 +744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../abstract_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -768,7 +764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../abstract_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -788,7 +784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../abstract_outer_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -808,7 +804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linear_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -826,27 +822,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    tied_bias
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -855,93 +833,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias" class="md-nav__link">
-    <span class="md-ellipsis">
-      tied_bias
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias" class="md-nav__link">
-    <span class="md-ellipsis">
-      TiedBias
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TiedBias">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.bias" class="md-nav__link">
-    <span class="md-ellipsis">
-      bias
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __init__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.extra_repr" class="md-nav__link">
-    <span class="md-ellipsis">
-      extra_repr()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.forward" class="md-nav__link">
-    <span class="md-ellipsis">
-      forward()
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" class="md-nav__link">
-    <span class="md-ellipsis">
-      TiedBiasPosition
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -953,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../unit_norm_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -981,7 +872,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../model/" class="md-nav__link">
+      <a href="../../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1139,23 +1030,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1172,7 +1065,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             metrics
@@ -1199,7 +1092,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/generate/" class="md-nav__link ">
+            <a href="../../generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1229,7 +1122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1257,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/metrics_container/" class="md-nav__link">
+      <a href="../../metrics_container/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1291,7 +1184,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/resample/" class="md-nav__link ">
+            <a href="../../resample/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1321,7 +1214,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/resample/abstract_resample_metric/" class="md-nav__link">
+      <a href="../../resample/abstract_resample_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1341,7 +1234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/resample/neuron_activity_metric/" class="md-nav__link">
+      <a href="../../resample/neuron_activity_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1383,7 +1276,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/train/" class="md-nav__link ">
+            <a href="../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1413,7 +1306,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1433,7 +1326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/capacity/" class="md-nav__link">
+      <a href="../../train/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1453,7 +1346,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/feature_density/" class="md-nav__link">
+      <a href="../../train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1479,23 +1372,25 @@
                 
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/validate/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1512,7 +1407,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5_5">
             <span class="md-nav__icon md-icon"></span>
             validate
@@ -1525,7 +1420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1543,9 +1438,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../metrics/validate/model_reconstruction_score/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    model_reconstruction_score
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1554,6 +1467,57 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score" class="md-nav__link">
+    <span class="md-ellipsis">
+      model_reconstruction_score
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModelReconstructionScore
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModelReconstructionScore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="md-nav__link">
+    <span class="md-ellipsis">
+      calculate()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2205,55 +2169,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score" class="md-nav__link">
     <span class="md-ellipsis">
-      tied_bias
+      model_reconstruction_score
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="md-nav__link">
     <span class="md-ellipsis">
-      TiedBias
+      ModelReconstructionScore
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="TiedBias">
+    <nav class="md-nav" aria-label="ModelReconstructionScore">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.bias" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      bias
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __init__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.extra_repr" class="md-nav__link">
-    <span class="md-ellipsis">
-      extra_repr()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.forward" class="md-nav__link">
-    <span class="md-ellipsis">
-      forward()
+      calculate()
     </span>
   </a>
   
@@ -2261,15 +2198,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" class="md-nav__link">
-    <span class="md-ellipsis">
-      TiedBiasPosition
-    </span>
-  </a>
   
 </li>
       
@@ -2288,16 +2216,16 @@
                   
 
 
-  <h1>tied_bias</h1>
+  <h1>model_reconstruction_score</h1>
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.autoencoder.components.tied_bias"></a>
+<a id="sparse_autoencoder.metrics.validate.model_reconstruction_score"></a>
   <div class="doc doc-contents first">
   
-      <p>Tied Biases (Pre-Encoder and Post-Decoder).</p>
+      <p>Model reconstruction score.</p>
 
   
 
@@ -2315,27 +2243,40 @@
 
 
 
-<h2 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias" class="doc doc-heading">
-          <code>TiedBias</code>
+<h2 id="sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="doc doc-heading">
+          <code>ModelReconstructionScore</code>
 
 
-<a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias" class="headerlink" title="Permanent link">¤</a></h2>
+<a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="headerlink" title="Permanent link">¤</a></h2>
 
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.components.abstract_outer_bias.AbstractOuterBias" href="../abstract_outer_bias/#sparse_autoencoder.autoencoder.components.abstract_outer_bias.AbstractOuterBias">AbstractOuterBias</a></code></p>
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.validate.abstract_validate_metric.AbstractValidationMetric" href="../abstract_validate_metric/#sparse_autoencoder.metrics.validate.abstract_validate_metric.AbstractValidationMetric">AbstractValidationMetric</a></code></p>
 
   
-      <p>Tied Bias Layer.</p>
-<p>The tied pre-encoder bias is a learned bias term that is subtracted from the input before
-encoding, and added back after decoding.</p>
-<p>The bias parameter must be initialised in the parent module, and then passed to this layer.</p>
-<p>https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</p>
+      <p>Model reconstruction score.</p>
+<p>Creates a score that measures how well the model can reconstruct the data.</p>
+<div class="arithmatex">\[
+\begin{align*}
+    v &amp;= \text{number of validation items} \\
+    l \in{\mathbb{R}^v} &amp;= \text{loss with no changes to the source model} \\
+    l_\text{recon} \in{\mathbb{R}^v} &amp;= \text{loss with reconstruction} \\
+    l_\text{zero} \in{\mathbb{R}^v} &amp;= \text{loss with zero ablation} \\
+    s &amp;= \text{reconstruction score} \\
+    s_\text{itemwise} &amp;= \frac{l_\text{zero} - l_\text{recon}}{l_\text{zero} - l} \\
+    s &amp;= \sum_{i=1}^v s_\text{itemwise} / v
+\end{align*}
+\]</div>
 
             <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+              <summary>Source code in <code>sparse_autoencoder/metrics/validate/model_reconstruction_score.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
@@ -2397,69 +2338,78 @@ encoding, and added back after decoding.</p>
 <span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span>
-<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">class</span> <span class="nc">TiedBias</span><span class="p">(</span><span class="n">AbstractOuterBias</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Layer.</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelReconstructionScore</span><span class="p">(</span><span class="n">AbstractValidationMetric</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Model reconstruction score.</span>
 
-<span class="sd">    The tied pre-encoder bias is a learned bias term that is subtracted from the input before</span>
-<span class="sd">    encoding, and added back after decoding.</span>
+<span class="sd">    Creates a score that measures how well the model can reconstruct the data.</span>
 
-<span class="sd">    The bias parameter must be initialised in the parent module, and then passed to this layer.</span>
-
-<span class="sd">    https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</span>
+<span class="sd">    $$</span>
+<span class="sd">    \begin{align*}</span>
+<span class="sd">        v &amp;= \text{number of validation items} \\</span>
+<span class="sd">        l \in{\mathbb{R}^v} &amp;= \text{loss with no changes to the source model} \\</span>
+<span class="sd">        l_\text{recon} \in{\mathbb{R}^v} &amp;= \text{loss with reconstruction} \\</span>
+<span class="sd">        l_\text{zero} \in{\mathbb{R}^v} &amp;= \text{loss with zero ablation} \\</span>
+<span class="sd">        s &amp;= \text{reconstruction score} \\</span>
+<span class="sd">        s_\text{itemwise} &amp;= \frac{l_\text{zero} - l_\text{recon}}{l_\text{zero} - l} \\</span>
+<span class="sd">        s &amp;= \sum_{i=1}^v s_\text{itemwise} / v</span>
+<span class="sd">    \end{align*}</span>
+<span class="sd">    $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_bias_position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the model reconstruction score.</span>
 
-    <span class="n">_bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationVector</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bias.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
-        <span class="n">position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the bias layer.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            bias_reference: Tied bias parameter (initialised in the parent module), used for both</span>
-<span class="sd">                the pre-encoder and post-encoder bias. The original paper initialised this using the</span>
-<span class="sd">                geometric median of the dataset.</span>
-<span class="sd">            position: Whether this is the pre-encoder or post-encoder bias.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span> <span class="o">=</span> <span class="n">bias_reference</span>
-
-        <span class="c1"># Support string literals as well as enums</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">=</span> <span class="n">position</span>
-
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from sparse_autoencoder.tensor_types import ValidationStatistics</span>
+<span class="sd">            &gt;&gt;&gt; data = ValidationMetricData(</span>
+<span class="sd">            ...     source_model_loss=ValidationStatistics([2.0, 2.0, 2.0]),</span>
+<span class="sd">            ...     source_model_loss_with_reconstruction=ValidationStatistics([3.0, 3.0, 3.0]),</span>
+<span class="sd">            ...     source_model_loss_with_zero_ablation=ValidationStatistics([5.0, 5.0, 5.0])</span>
+<span class="sd">            ... )</span>
+<span class="sd">            &gt;&gt;&gt; metric = ModelReconstructionScore()</span>
+<span class="sd">            &gt;&gt;&gt; result = metric.calculate(data)</span>
+<span class="sd">            &gt;&gt;&gt; round(result[&#39;model_reconstruction_score&#39;], 3)</span>
+<span class="sd">            0.667</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x: Input tensor.</span>
+<span class="sd">            data: Validation data.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Output of the forward pass.</span>
+<span class="sd">            Model reconstruction score.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># If this is the pre-encoder bias, we subtract the bias from the input.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">==</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+        <span class="c1"># Return no statistics if the data is empty (e.g. if we&#39;re at the very end of training)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
 
-        <span class="c1"># If it&#39;s the post-encoder bias, we add the bias to the input.</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+        <span class="c1"># Calculate the reconstruction score</span>
+        <span class="n">zero_ablate_loss_minus_default_loss</span><span class="p">:</span> <span class="n">ValidationStatistics</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span>
+        <span class="p">)</span>
+        <span class="n">zero_ablate_loss_minus_reconstruction_loss</span><span class="p">:</span> <span class="n">ValidationStatistics</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span>
+        <span class="p">)</span>
+        <span class="n">model_reconstruction_score_itemwise</span><span class="p">:</span> <span class="n">ValidationStatistics</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">zero_ablate_loss_minus_reconstruction_loss</span> <span class="o">/</span> <span class="n">zero_ablate_loss_minus_default_loss</span>
+        <span class="p">)</span>
+        <span class="n">model_reconstruction_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">model_reconstruction_score_itemwise</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="c1"># Get the other metrics</span>
+        <span class="n">validation_baseline_loss</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">validation_loss_with_reconstruction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">validation_loss_with_zero_ablation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;validation_baseline_loss&quot;</span><span class="p">:</span> <span class="n">validation_baseline_loss</span><span class="p">,</span>
+            <span class="s2">&quot;validation_loss_with_reconstruction&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
+            <span class="s2">&quot;validation_loss_with_zero_ablation&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
+            <span class="s2">&quot;model_reconstruction_score&quot;</span><span class="p">:</span> <span class="n">model_reconstruction_score</span><span class="p">,</span>
+        <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2473,28 +2423,6 @@ encoding, and added back after decoding.</p>
 
 
 
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">bias</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.bias" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Bias.</p>
-  </div>
-
-</div>
-
 
 
 
@@ -2503,16 +2431,35 @@ encoding, and added back after decoding.</p>
 
 
 
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">bias_reference</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.__init__" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Initialize the bias layer.</p>
+      <p>Calculate the model reconstruction score.</p>
 
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>from sparse_autoencoder.tensor_types import ValidationStatistics
+data = ValidationMetricData(
+...     source_model_loss=ValidationStatistics([2.0, 2.0, 2.0]),
+...     source_model_loss_with_reconstruction=ValidationStatistics([3.0, 3.0, 3.0]),
+...     source_model_loss_with_zero_ablation=ValidationStatistics([5.0, 5.0, 5.0])
+... )
+metric = ModelReconstructionScore()
+result = metric.calculate(data)
+round(result['model_reconstruction_score'], 3)
+0.667</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
 
 
   <p><strong>Parameters:</strong></p>
@@ -2527,149 +2474,13 @@ encoding, and added back after decoding.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>bias_reference</code></td>
+          <td><code>data</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationVector" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationVector">InputOutputActivationVector</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.validate.abstract_validate_metric.ValidationMetricData" href="../abstract_validate_metric/#sparse_autoencoder.metrics.validate.abstract_validate_metric.ValidationMetricData">ValidationMetricData</a></code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Tied bias parameter (initialised in the parent module), used for both
-the pre-encoder and post-encoder bias. The original paper initialised this using the
-geometric median of the dataset.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>position</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition">TiedBiasPosition</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether this is the pre-encoder or post-encoder bias.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">bias_reference</span><span class="p">:</span> <span class="n">InputOutputActivationVector</span><span class="p">,</span>
-    <span class="n">position</span><span class="p">:</span> <span class="n">TiedBiasPosition</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the bias layer.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        bias_reference: Tied bias parameter (initialised in the parent module), used for both</span>
-<span class="sd">            the pre-encoder and post-encoder bias. The original paper initialised this using the</span>
-<span class="sd">            geometric median of the dataset.</span>
-<span class="sd">        position: Whether this is the pre-encoder or post-encoder bias.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">_bias_reference</span> <span class="o">=</span> <span class="n">bias_reference</span>
-
-    <span class="c1"># Support string literals as well as enums</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">=</span> <span class="n">position</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.extra_repr" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">extra_repr</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.extra_repr" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>String extra representation of the module.</p>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;position=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.forward" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBias.forward" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Forward Pass.</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>x</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Input tensor.</p>
+              <p>Validation data.</p>
             </div>
           </td>
           <td>
@@ -2692,11 +2503,11 @@ geometric median of the dataset.</p>
     <tbody>
         <tr>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
+                <code>dict[str, <span title="typing.Any">Any</span>]</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Output of the forward pass.</p>
+              <p>Model reconstruction score.</p>
             </div>
           </td>
         </tr>
@@ -2704,8 +2515,36 @@ geometric median of the dataset.</p>
   </table>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
+            <summary>Source code in <code>sparse_autoencoder/metrics/validate/model_reconstruction_score.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
@@ -2722,82 +2561,69 @@ geometric median of the dataset.</p>
 <span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span>
-<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputOutputActivationBatch</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the model reconstruction score.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from sparse_autoencoder.tensor_types import ValidationStatistics</span>
+<span class="sd">        &gt;&gt;&gt; data = ValidationMetricData(</span>
+<span class="sd">        ...     source_model_loss=ValidationStatistics([2.0, 2.0, 2.0]),</span>
+<span class="sd">        ...     source_model_loss_with_reconstruction=ValidationStatistics([3.0, 3.0, 3.0]),</span>
+<span class="sd">        ...     source_model_loss_with_zero_ablation=ValidationStatistics([5.0, 5.0, 5.0])</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; metric = ModelReconstructionScore()</span>
+<span class="sd">        &gt;&gt;&gt; result = metric.calculate(data)</span>
+<span class="sd">        &gt;&gt;&gt; round(result[&#39;model_reconstruction_score&#39;], 3)</span>
+<span class="sd">        0.667</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        x: Input tensor.</span>
+<span class="sd">        data: Validation data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Output of the forward pass.</span>
+<span class="sd">        Model reconstruction score.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># If this is the pre-encoder bias, we subtract the bias from the input.</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_position</span> <span class="o">==</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+    <span class="c1"># Return no statistics if the data is empty (e.g. if we&#39;re at the very end of training)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
 
-    <span class="c1"># If it&#39;s the post-encoder bias, we add the bias to the input.</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+    <span class="c1"># Calculate the reconstruction score</span>
+    <span class="n">zero_ablate_loss_minus_default_loss</span><span class="p">:</span> <span class="n">ValidationStatistics</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span>
+    <span class="p">)</span>
+    <span class="n">zero_ablate_loss_minus_reconstruction_loss</span><span class="p">:</span> <span class="n">ValidationStatistics</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span>
+    <span class="p">)</span>
+    <span class="n">model_reconstruction_score_itemwise</span><span class="p">:</span> <span class="n">ValidationStatistics</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">zero_ablate_loss_minus_reconstruction_loss</span> <span class="o">/</span> <span class="n">zero_ablate_loss_minus_default_loss</span>
+    <span class="p">)</span>
+    <span class="n">model_reconstruction_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">model_reconstruction_score_itemwise</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="c1"># Get the other metrics</span>
+    <span class="n">validation_baseline_loss</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">validation_loss_with_reconstruction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">validation_loss_with_zero_ablation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;validation_baseline_loss&quot;</span><span class="p">:</span> <span class="n">validation_baseline_loss</span><span class="p">,</span>
+        <span class="s2">&quot;validation_loss_with_reconstruction&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
+        <span class="s2">&quot;validation_loss_with_zero_ablation&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
+        <span class="s2">&quot;model_reconstruction_score&quot;</span><span class="p">:</span> <span class="n">model_reconstruction_score</span><span class="p">,</span>
+    <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
 
 </div>
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" class="doc doc-heading">
-          <code>TiedBiasPosition</code>
-
-
-<a href="#sparse_autoencoder.autoencoder.components.tied_bias.TiedBiasPosition" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
-
-  
-      <p>Tied Bias Position.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TiedBiasPosition</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Position.&quot;&quot;&quot;</span>
-
-    <span class="n">PRE_ENCODER</span> <span class="o">=</span> <span class="s2">&quot;pre_encoder&quot;</span>
-    <span class="n">POST_DECODER</span> <span class="o">=</span> <span class="s2">&quot;post_decoder&quot;</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
 
 
 

@@ -397,15 +397,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#training-advice" class="md-nav__link">
-    <span class="md-ellipsis">
-      Training Advice
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1546,6 +1537,26 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/metrics/validate/model_reconstruction_score/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    model_reconstruction_score
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2262,15 +2273,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#training-advice" class="md-nav__link">
-    <span class="md-ellipsis">
-      Training Advice
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2419,9 +2421,9 @@ multiple hyperparameters with <code>wandb.sweep</code>.</p>
     <span class="c1"># and we have found that 4x is a good starting point.</span>
     <span class="s2">&quot;expansion_factor&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
     <span class="c1"># L1 coefficient is the coefficient of the L1 regularization term (used to encourage sparsity).</span>
-    <span class="s2">&quot;l1_coefficient&quot;</span><span class="p">:</span> <span class="mf">3e-4</span><span class="p">,</span>
+    <span class="s2">&quot;l1_coefficient&quot;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
     <span class="c1"># Adam parameters (set to the default ones here)</span>
-    <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">,</span>
+    <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">3e-4</span><span class="p">,</span>
     <span class="s2">&quot;adam_beta_1&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
     <span class="s2">&quot;adam_beta_2&quot;</span><span class="p">:</span> <span class="mf">0.999</span><span class="p">,</span>
     <span class="s2">&quot;adam_epsilon&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
@@ -2429,6 +2431,17 @@ multiple hyperparameters with <code>wandb.sweep</code>.</p>
     <span class="c1"># Batch sizes</span>
     <span class="s2">&quot;train_batch_size&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span>
     <span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="c1"># Source model hook point</span>
+    <span class="s2">&quot;source_model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;gelu-2l&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_model_dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_model_hook_point&quot;</span><span class="p">:</span> <span class="s2">&quot;blocks.0.hook_mlp_out&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_model_hook_point_layer&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="c1"># Train pipeline parameters</span>
+    <span class="s2">&quot;max_store_size&quot;</span><span class="p">:</span> <span class="mi">384</span> <span class="o">*</span> <span class="mi">4096</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;max_activations&quot;</span><span class="p">:</span> <span class="mi">2_000_000_000</span><span class="p">,</span>
+    <span class="s2">&quot;resample_frequency&quot;</span><span class="p">:</span> <span class="mi">122_880_000</span><span class="p">,</span>
+    <span class="s2">&quot;checkpoint_frequency&quot;</span><span class="p">:</span> <span class="mi">100_000_000</span><span class="p">,</span>
+    <span class="s2">&quot;validation_frequency&quot;</span><span class="p">:</span> <span class="mi">384</span> <span class="o">*</span> <span class="mi">4096</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>  <span class="c1"># Every 100 generations</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -2456,15 +2469,15 @@ we'll also get some details about that hook point.</p>
 <div class="input">
 
 <div class="highlight"><pre><span></span><code><span class="c1"># Source model setup with TransformerLens</span>
-<span class="n">src_model_name</span> <span class="o">=</span> <span class="s2">&quot;gelu-2l&quot;</span>
-<span class="n">src_model</span> <span class="o">=</span> <span class="n">HookedTransformer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">src_model_name</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="n">src_model</span> <span class="o">=</span> <span class="n">HookedTransformer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_name&quot;</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_dtype&quot;</span><span class="p">])</span>
+<span class="p">)</span>
 
 <span class="c1"># Details about the activations we&#39;ll train the sparse autoencoder on</span>
-<span class="n">src_model_activation_hook_point</span> <span class="o">=</span> <span class="s2">&quot;blocks.0.hook_mlp_out&quot;</span>
-<span class="n">src_model_activation_layer</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">autoencoder_input_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">src_model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">d_model</span>  <span class="c1"># type: ignore (TransformerLens typing is currently broken)</span>
 
-<span class="sa">f</span><span class="s2">&quot;Source: </span><span class="si">{</span><span class="n">src_model_name</span><span class="si">}</span><span class="s2">, Hook: </span><span class="si">{</span><span class="n">src_model_activation_hook_point</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="sa">f</span><span class="s2">&quot;Source: </span><span class="si">{</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s1">&#39;source_model_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">    Hook: </span><span class="si">{</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s1">&#39;source_model_hook_point&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
 <span class="s2">    Features: </span><span class="si">{</span><span class="n">autoencoder_input_dim</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
 
@@ -2559,7 +2572,7 @@ optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWit
 <div class="highlight"><pre><span></span><code><span class="c1"># We use a loss reducer, which simply adds up the losses from the underlying loss functions.</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="n">LossReducer</span><span class="p">(</span>
     <span class="n">LearnedActivationsL1Loss</span><span class="p">(</span>
-        <span class="n">l1_coefficient</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;l1_coefficient&quot;</span><span class="p">],</span>
+        <span class="n">l1_coefficient</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;l1_coefficient&quot;</span><span class="p">]),</span>
     <span class="p">),</span>
     <span class="n">L2ReconstructionLoss</span><span class="p">(),</span>
 <span class="p">)</span>
@@ -2573,7 +2586,7 @@ optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWit
 <div class="output_text output_subarea output_execute_result">
 <pre>
 <code>LossReducer(
-  (0): LearnedActivationsL1Loss(l1_coefficient=0.0003)
+  (0): LearnedActivationsL1Loss(l1_coefficient=0.001)
   (1): L2ReconstructionLoss()
 )</code>
 </pre>
@@ -2588,10 +2601,10 @@ optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWit
 <div class="highlight"><pre><span></span><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamWithReset</span><span class="p">(</span>
     <span class="n">params</span><span class="o">=</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
     <span class="n">named_parameters</span><span class="o">=</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(),</span>
-    <span class="n">lr</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">],</span>
-    <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_1&quot;</span><span class="p">],</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_2&quot;</span><span class="p">]),</span>
-    <span class="n">eps</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_epsilon&quot;</span><span class="p">],</span>
-    <span class="n">weight_decay</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_weight_decay&quot;</span><span class="p">],</span>
+    <span class="n">lr</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">]),</span>
+    <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_1&quot;</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_2&quot;</span><span class="p">])),</span>
+    <span class="n">eps</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_epsilon&quot;</span><span class="p">]),</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_weight_decay&quot;</span><span class="p">]),</span>
 <span class="p">)</span>
 <span class="n">optimizer</span>
 </code></pre></div>
@@ -2611,7 +2624,7 @@ Parameter Group 0
     eps: 1e-08
     foreach: None
     fused: None
-    lr: 0.0001
+    lr: 0.0003
     maximize: False
     weight_decay: 0.0
 )</code>
@@ -2729,12 +2742,12 @@ Tracking run with wandb version 0.16.0
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
-Run data is saved locally in <code>.cache/wandb/run-20231126_122954-xsruek7y</code>
+Run data is saved locally in <code>.cache/wandb/run-20231126_184500-2fnpg8zi</code>
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
-Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/xsruek7y" target="_blank">vivid-totem-95</a></strong> to <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">Weights &amp; Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/>
+Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi" target="_blank">prime-star-105</a></strong> to <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">Weights &amp; Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/>
 </div>
 </div>
 <div class="output_area">
@@ -2744,12 +2757,12 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea">
- View run at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/xsruek7y" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/xsruek7y</a>
+ View run at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi</a>
 </div>
 </div>
 <div class="output_area">
 <div class="output_html rendered_html output_subarea output_execute_result">
-<button onclick="this.nextSibling.style.display='block';this.style.display='none';">Display W&amp;B run</button><iframe src="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/xsruek7y?jupyter=true" style="border:none;width:100%;height:420px;display:none;"></iframe>
+<button onclick="this.nextSibling.style.display='block';this.style.display='none';">Display W&amp;B run</button><iframe src="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi?jupyter=true" style="border:none;width:100%;height:420px;display:none;"></iframe>
 </div>
 </div>
 </div>
@@ -2761,9 +2774,9 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
 <div class="highlight"><pre><span></span><code><span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
     <span class="n">activation_resampler</span><span class="o">=</span><span class="n">activation_resampler</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="o">=</span><span class="n">autoencoder</span><span class="p">,</span>
-    <span class="n">cache_name</span><span class="o">=</span><span class="n">src_model_activation_hook_point</span><span class="p">,</span>
+    <span class="n">cache_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point&quot;</span><span class="p">]),</span>
     <span class="n">checkpoint_directory</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
-    <span class="n">layer</span><span class="o">=</span><span class="n">src_model_activation_layer</span><span class="p">,</span>
+    <span class="n">layer</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point_layer&quot;</span><span class="p">]),</span>
     <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
     <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
@@ -2773,11 +2786,11 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
 
 <span class="n">pipeline</span><span class="o">.</span><span class="n">run_pipeline</span><span class="p">(</span>
     <span class="n">train_batch_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;train_batch_size&quot;</span><span class="p">]),</span>
-    <span class="n">max_store_size</span><span class="o">=</span><span class="mi">384</span> <span class="o">*</span> <span class="mi">4096</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="c1"># Sizes for demo purposes (you probably want to scale these by 10x)</span>
-    <span class="n">max_activations</span><span class="o">=</span><span class="mi">2_000_000_000</span><span class="p">,</span>
-    <span class="n">resample_frequency</span><span class="o">=</span><span class="mi">122_880_000</span><span class="p">,</span>
-    <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="mi">100_000_000</span><span class="p">,</span>
+    <span class="n">max_store_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;max_store_size&quot;</span><span class="p">]),</span>
+    <span class="n">max_activations</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;max_activations&quot;</span><span class="p">]),</span>
+    <span class="n">resample_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;resample_frequency&quot;</span><span class="p">]),</span>
+    <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;checkpoint_frequency&quot;</span><span class="p">]),</span>
+    <span class="n">validate_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;validation_frequency&quot;</span><span class="p">]),</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2809,18 +2822,6 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
 <div class="highlight"><pre><span></span><code><span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
 </code></pre></div>
 
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="training-advice">Training Advice<a class="headerlink" href="#training-advice" title="Permanent link">¤</a></h2>
-<p>-- Unfinished --</p>
-<ul>
-<li>Check recovery loss is low while sparsity is low as well (&lt;20 L1) usually.</li>
-<li>Can't be sure features are useful until you dig into them more. </li>
-</ul>
-</div>
 </div>
 </div>
 

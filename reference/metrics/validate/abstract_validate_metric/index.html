@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../../../optimizer/">
+        <link rel="next" href="../model_reconstruction_score/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -1512,6 +1512,26 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model_reconstruction_score/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    model_reconstruction_score
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2257,12 +2277,12 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/validate/abstract_validate_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractValidationMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractValidationMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract validation metric.&quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
@@ -2305,9 +2325,9 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/validate/abstract_validate_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate any metrics.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -2347,19 +2367,23 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/validate/abstract_validate_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ValidationMetricData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validation metric data.&quot;&quot;&quot;</span>
 
-    <span class="n">source_model_loss</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">source_model_loss</span><span class="p">:</span> <span class="n">ValidationStatistics</span>
 
-    <span class="n">autoencoder_loss</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">source_model_loss_with_reconstruction</span><span class="p">:</span> <span class="n">ValidationStatistics</span>
+
+    <span class="n">source_model_loss_with_zero_ablation</span><span class="p">:</span> <span class="n">ValidationStatistics</span>
 </code></pre></div></td></tr></table></div>
             </details>
 

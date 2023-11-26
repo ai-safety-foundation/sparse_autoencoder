@@ -1537,6 +1537,26 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validate/model_reconstruction_score/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    model_reconstruction_score
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2293,7 +2313,7 @@
 
 
 <h2 id="sparse_autoencoder.metrics.metrics_container.default_metrics" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">default_metrics</span> <span class="o">=</span> <span class="n">MetricsContainer</span><span class="p">(</span><span class="n">train_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">TrainBatchFeatureDensityMetric</span><span class="p">(),</span> <span class="n">CapacityMetric</span><span class="p">()],</span> <span class="n">resample_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">NeuronActivityMetric</span><span class="p">()])</span></code>
+          <code class="highlight language-python"><span class="n">default_metrics</span> <span class="o">=</span> <span class="n">MetricsContainer</span><span class="p">(</span><span class="n">train_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">TrainBatchFeatureDensityMetric</span><span class="p">(),</span> <span class="n">CapacityMetric</span><span class="p">()],</span> <span class="n">resample_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">NeuronActivityMetric</span><span class="p">()],</span> <span class="n">validation_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">ModelReconstructionScore</span><span class="p">()])</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -2334,8 +2354,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/metrics_container.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
@@ -2351,7 +2370,8 @@
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">30</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MetricsContainer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metrics container.</span>
 

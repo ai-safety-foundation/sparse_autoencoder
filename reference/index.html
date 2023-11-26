@@ -1424,6 +1424,26 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metrics/validate/model_reconstruction_score/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    model_reconstruction_score
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -12473,10 +12493,7 @@ source model).</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
 <span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
@@ -12589,7 +12606,59 @@ source model).</p>
 <span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">Pipeline</span><span class="p">(</span><span class="n">AbstractPipeline</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
@@ -12702,10 +12771,59 @@ source model).</p>
 
         <span class="k">return</span> <span class="n">learned_activations_fired_count</span>
 
-    <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get validation metrics.&quot;&quot;&quot;</span>
-        <span class="c1"># Not currently setup</span>
-        <span class="k">return</span>
+    <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_number_activations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            validation_number_activations: Number of activations to use for validation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">losses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">losses_with_reconstruction</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">losses_with_zero_ablation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">source_model_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">get_model_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">:</span>
+            <span class="n">input_ids</span><span class="p">:</span> <span class="n">BatchTokenizedPrompts</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">source_model_device</span><span class="p">)</span>
+
+            <span class="c1"># Run a forward pass with and without the replaced activations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">remove_all_hook_fns</span><span class="p">()</span>
+            <span class="n">replacement_hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+                <span class="n">replace_activations_hook</span><span class="p">,</span> <span class="n">sparse_autoencoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span>
+            <span class="p">)</span>
+
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+            <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                <span class="n">input_ids</span><span class="p">,</span>
+                <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span><span class="p">,</span>
+                        <span class="n">replacement_hook</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                <span class="n">input_ids</span><span class="p">,</span>
+                <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
+            <span class="p">)</span>
+
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="n">losses_with_reconstruction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="n">losses_with_zero_ablation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">validation_number_activations</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="c1"># Log</span>
+        <span class="n">validation_data</span> <span class="o">=</span> <span class="n">ValidationMetricData</span><span class="p">(</span>
+            <span class="n">source_model_loss</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses</span><span class="p">),</span>
+            <span class="n">source_model_loss_with_reconstruction</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses_with_reconstruction</span><span class="p">),</span>
+            <span class="n">source_model_loss_with_zero_ablation</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses_with_zero_ablation</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">validation_metrics</span><span class="p">:</span>
+            <span class="n">calculated</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">validation_data</span><span class="p">)</span>
+            <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">calculated</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_training_steps</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -12793,10 +12911,7 @@ source model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
@@ -12828,7 +12943,10 @@ source model).</p>
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations.</span>
 
 <span class="sd">    Args:</span>
@@ -12956,10 +13074,7 @@ source model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
 <span class="normal"> 68</span>
 <span class="normal"> 69</span>
 <span class="normal"> 70</span>
@@ -13020,7 +13135,10 @@ source model).</p>
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NeuronActivity</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the sparse autoencoder.</span>
@@ -13098,7 +13216,7 @@ source model).</p>
 
 
 <h3 id="sparse_autoencoder.Pipeline.validate_sae" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">validate_sae</span><span class="p">()</span></code>
+          <code class="highlight language-python"><span class="n">validate_sae</span><span class="p">(</span><span class="n">validation_number_activations</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.Pipeline.validate_sae" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -13107,15 +13225,143 @@ source model).</p>
   
       <p>Get validation metrics.</p>
 
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>validation_number_activations</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of activations to use for validation.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.&quot;&quot;&quot;</span>
-    <span class="c1"># Not currently setup</span>
-    <span class="k">return</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_number_activations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        validation_number_activations: Number of activations to use for validation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">losses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses_with_reconstruction</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">losses_with_zero_ablation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">source_model_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">get_model_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">:</span>
+        <span class="n">input_ids</span><span class="p">:</span> <span class="n">BatchTokenizedPrompts</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">source_model_device</span><span class="p">)</span>
+
+        <span class="c1"># Run a forward pass with and without the replaced activations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">remove_all_hook_fns</span><span class="p">()</span>
+        <span class="n">replacement_hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">replace_activations_hook</span><span class="p">,</span> <span class="n">sparse_autoencoder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span>
+        <span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+        <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span><span class="p">,</span>
+                    <span class="n">replacement_hook</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
+        <span class="p">)</span>
+
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">losses_with_reconstruction</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">losses_with_zero_ablation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">validation_number_activations</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="c1"># Log</span>
+    <span class="n">validation_data</span> <span class="o">=</span> <span class="n">ValidationMetricData</span><span class="p">(</span>
+        <span class="n">source_model_loss</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses</span><span class="p">),</span>
+        <span class="n">source_model_loss_with_reconstruction</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses_with_reconstruction</span><span class="p">),</span>
+        <span class="n">source_model_loss_with_zero_ablation</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses_with_zero_ablation</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">validation_metrics</span><span class="p">:</span>
+        <span class="n">calculated</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">validation_data</span><span class="p">)</span>
+        <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">calculated</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_training_steps</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
