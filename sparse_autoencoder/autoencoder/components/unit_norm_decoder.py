@@ -42,17 +42,8 @@ class UnitNormDecoder(AbstractDecoder):
     \end{align*} $$
 
     Motivation:
-        Unit norming the dictionary vectors, which are essentially the columns of the decoding
-            matrices, serves a few purposes:
-
-            1. It helps with numerical stability, by preventing the dictionary vectors from growing
-                too large.
-            2. It acts as a form of regularization, preventing overfitting by not allowing any one
-                feature to dominate the representation. It limits the capacity of the model by
-                forcing the dictionary vectors to live on the hypersphere of radius 1.
-            3. It encourages sparsity. Since the dictionary vectors have a fixed length, the model
-                must carefully select which features to activate in order to best reconstruct the
-                input.
+        Normalisation of the columns (dictionary features) prevents the model from reducing the
+        sparsity loss term by increasing the size of the feature vectors in $W_d$.
 
         Note that the *Towards Monosemanticity: Decomposing Language Models With Dictionary
         Learning* paper found that removing the gradient information parallel to the dictionary
