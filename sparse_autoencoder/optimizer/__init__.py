@@ -12,9 +12,3 @@ paper is available here as :class:`AdamWithReset`.
 To enable creating other optimizers with reset methods, we also provide the interface
 :class:`AbstractOptimizerWithReset`.
 """
-
-from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
-from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
-
-
-__all__ = ["AdamWithReset", "AbstractOptimizerWithReset"]

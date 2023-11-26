@@ -15,7 +15,7 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
 from sparse_autoencoder.tensor_types import LearnedActivationBatch, LearntActivationVector
 
 
-class TrainBatchFeatureDensity(AbstractTrainMetric):
+class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
     """Train batch feature density.
 
     Percentage of samples in which each feature was active (i.e. the neuron has "fired"), in a
@@ -46,7 +46,7 @@ class TrainBatchFeatureDensity(AbstractTrainMetric):
         Example:
             >>> import torch
             >>> activations = torch.tensor([[0.5, 0.5, 0.0], [0.5, 0.0, 0.0001]])
-            >>> TrainBatchFeatureDensity(0.001).feature_density(activations).tolist()
+            >>> TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
             [1.0, 0.5, 0.0]
 
         Args:

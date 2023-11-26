@@ -36,7 +36,7 @@ class GenericTextDataBatch(TypedDict):
 
 
 @final
-class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
+class TextDataset(SourceDataset[GenericTextDataBatch]):
     """Generic Text Dataset for any text-based dataset from Hugging Face."""
 
     tokenizer: PreTrainedTokenizerBase

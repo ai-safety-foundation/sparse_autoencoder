@@ -6,7 +6,7 @@ from sparse_autoencoder.metrics.resample.abstract_resample_metric import Abstrac
 from sparse_autoencoder.metrics.resample.neuron_activity_metric import NeuronActivityMetric
 from sparse_autoencoder.metrics.train.abstract_train_metric import AbstractTrainMetric
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
-from sparse_autoencoder.metrics.train.feature_density import TrainBatchFeatureDensity
+from sparse_autoencoder.metrics.train.feature_density import TrainBatchFeatureDensityMetric
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import AbstractValidationMetric
 
 
@@ -31,7 +31,7 @@ class MetricsContainer:
 
 
 default_metrics = MetricsContainer(
-    train_metrics=[TrainBatchFeatureDensity(), CapacityMetric()],
+    train_metrics=[TrainBatchFeatureDensityMetric(), CapacityMetric()],
     resample_metrics=[NeuronActivityMetric()],
 )
 """Default metrics container."""
