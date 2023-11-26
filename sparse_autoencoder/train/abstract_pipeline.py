@@ -202,7 +202,7 @@ class AbstractPipeline(ABC):
             self.optimizer.reset_state_all_parameters()
 
     @abstractmethod
-    def validate_sae(self) -> None:
+    def validate_sae(self, validation_number_activations: int) -> None:
         """Get validation metrics."""
 
     @final
@@ -221,6 +221,7 @@ class AbstractPipeline(ABC):
         max_store_size: int,
         max_activations: int,
         resample_frequency: int,
+        validation_number_activations: int = 1024,
         validate_frequency: int | None = None,
         checkpoint_frequency: int | None = None,
     ) -> None:
@@ -233,6 +234,7 @@ class AbstractPipeline(ABC):
                 used 8bn, although others have had success with 100m+).
             resample_frequency: Frequency at which to resample dead neurons (the original paper used
                 every 200m).
+            validation_number_activations: Number of activations to use for validation.
             validate_frequency: Frequency at which to get validation metrics.
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
@@ -294,13 +296,13 @@ class AbstractPipeline(ABC):
 
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})
-                if validate_frequency is not None and last_validated > validate_frequency:
-                    self.validate_sae()
+                if validate_frequency is not None and last_validated >= validate_frequency:
+                    self.validate_sae(validation_number_activations)
                     self.last_validated = 0
 
                 # Checkpoint (if needed)
                 progress_bar.set_postfix({"stage": "checkpoint"})
-                if checkpoint_frequency is not None and last_checkpoint > checkpoint_frequency:
+                if checkpoint_frequency is not None and last_checkpoint >= checkpoint_frequency:
                     self.last_checkpoint = 0
                     self.save_checkpoint()
 
