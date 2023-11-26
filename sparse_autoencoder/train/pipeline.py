@@ -8,7 +8,10 @@ import wandb
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
+from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
+from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
+from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
 from sparse_autoencoder.train.abstract_pipeline import AbstractPipeline
 from sparse_autoencoder.train.utils import get_model_device
@@ -127,7 +130,52 @@ class Pipeline(AbstractPipeline):
 
         return learned_activations_fired_count
 
-    def validate_sae(self) -> None:
+    def validate_sae(self, validation_store_size: int, train_batch_size: int) -> None:
         """Get validation metrics."""
-        # Not currently setup
-        return
+        # Get some sample activations
+        activation_store = self.generate_activations(validation_store_size)
+        activations_dataloader = DataLoader(
+            activation_store,
+            batch_size=train_batch_size,
+        )
+
+        losses: list[float] = []
+        losses_with_reconstruction: list[float] = []
+        losses_with_zero_ablation: list[float] = []
+
+        for store_batch in activations_dataloader:
+            # Run a forward pass with and without the replaced activations
+            replacement_hook = partial(
+                replace_activations_hook, sparse_autoencoder=self.autoencoder
+            )
+
+            loss = self.source_model.forward(store_batch, return_type="loss")
+            loss_with_reconstruction = self.source_model.run_with_hooks(
+                store_batch,
+                return_type="loss",
+                fwd_hooks=[
+                    (
+                        self.cache_name,
+                        replacement_hook,
+                    )
+                ],
+            )
+            loss_with_zero_ablation = self.source_model.run_with_hooks(
+                store_batch,
+                return_type="loss",
+                fwd_hooks=[(self.cache_name, zero_ablate_hook)],
+            )
+
+            losses.append(loss.sum().item())
+            losses_with_reconstruction.append(loss_with_reconstruction.sum().item())
+            losses_with_zero_ablation.append(loss_with_zero_ablation.sum().item())
+
+        # Log
+        validation_data = ValidationMetricData(
+            source_model_loss=torch.tensor(losses),
+            source_model_loss_with_reconstruction=torch.tensor(losses_with_reconstruction),
+            source_model_loss_with_zero_ablation=torch.tensor(losses_with_zero_ablation),
+        )
+        for metric in self.metrics.validation_metrics:
+            calculated = metric.calculate(validation_data)
+            wandb.log(data=calculated, step=self.total_training_steps, commit=False)
