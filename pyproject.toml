@@ -98,16 +98,16 @@
         help="Cleans out the automatically generated docs."
 
     [tool.poe.tasks.gen-docs]
-        help="Cleans out the automatically generated docs."
+        help="Generate the reference (API) docs."
         script="docs.gen_ref_pages:run"
 
     [tool.poe.tasks.make-docs]
         cmd="mkdocs build"
-        help="Generates our docs"
+        help="Build the static docs site"
 
     [tool.poe.tasks.docs-hot-reload]
         cmd="mkdocs serve"
-        help="Starts our watch server"
+        help="Hot reload the docs site (so changes appear instantly)"
 
 [build-system]
     build-backend="poetry.core.masonry.api"
