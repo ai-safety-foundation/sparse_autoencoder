@@ -4,14 +4,14 @@ import pytest
 import torch
 from torch import Tensor
 
-from sparse_autoencoder.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     ParameterUpdateResults,
 )
+from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
+from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.tensor_types import (
     AliveEncoderWeights,
     EncoderWeights,
@@ -94,7 +94,7 @@ class TestComputeLossAndGetActivations:
         loss, input_activations = ActivationResampler().compute_loss_and_get_activations(
             store=activation_store_fixture,
             autoencoder=autoencoder_model_fixture,
-            loss_fn=MSEReconstructionLoss(),
+            loss_fn=L2ReconstructionLoss(),
             train_batch_size=DEFAULT_N_ITEMS,
         )
 
@@ -121,7 +121,7 @@ class TestComputeLossAndGetActivations:
             ).compute_loss_and_get_activations(
                 store=activation_store_fixture,
                 autoencoder=autoencoder_model_fixture,
-                loss_fn=MSEReconstructionLoss(),
+                loss_fn=L2ReconstructionLoss(),
                 train_batch_size=DEFAULT_N_ITEMS + 1,
             )
 
@@ -271,7 +271,7 @@ class TestResampleDeadNeurons:
             neuron_activity=neuron_activity,
             activation_store=store,
             autoencoder=model,
-            loss_fn=MSEReconstructionLoss(),
+            loss_fn=L2ReconstructionLoss(),
             train_batch_size=DEFAULT_N_ITEMS,
             neuron_activity_sample_size=int(DEFAULT_N_ITEMS / 2),
         )
@@ -299,7 +299,7 @@ class TestResampleDeadNeurons:
         updated_parameters: ParameterUpdateResults = ActivationResampler().resample_dead_neurons(
             activation_store=store,
             autoencoder=model,
-            loss_fn=MSEReconstructionLoss(),
+            loss_fn=L2ReconstructionLoss(),
             neuron_activity=neuron_activity,
             train_batch_size=DEFAULT_N_ITEMS,
             neuron_activity_sample_size=int(DEFAULT_N_ITEMS / 2),

@@ -23,6 +23,10 @@ class DummyLoss(AbstractLoss):
         # Simple dummy implementation for testing
         return torch.tensor([1.0, 2.0, 3.0])
 
+    def log_name(self) -> str:
+        """Log name."""
+        return "dummy"
+
 
 @pytest.fixture()
 def dummy_loss() -> DummyLoss:
@@ -61,15 +65,13 @@ def test_batch_scalar_loss_with_log(dummy_loss: DummyLoss) -> None:
     _loss, log = dummy_loss.batch_scalar_loss_with_log(
         source_activations, learned_activations, decoded_activations
     )
-    assert "DummyLoss" in log
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["DummyLoss"] == expected
+    assert log["dummy"] == expected
 
 
 def test_call_method(dummy_loss: DummyLoss) -> None:
     """Test the call method."""
     source_activations = learned_activations = decoded_activations = torch.ones((1, 3))
     _loss, log = dummy_loss(source_activations, learned_activations, decoded_activations)
-    assert "DummyLoss" in log
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["DummyLoss"] == expected
+    assert log["dummy"] == expected

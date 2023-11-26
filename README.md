@@ -7,9 +7,43 @@ License](https://img.shields.io/pypi/l/sparse_autoencoder?color=blue) [![Checks]
 
 A sparse autoencoder for mechanistic interpretability research.
 
+[![Read the Docs
+Here](https://img.shields.io/badge/-Read%20the%20Docs%20Here-blue?style=for-the-badge&logo=Read-the-Docs&logoColor=white&link=https://ai-safety-foundation.github.io/sparse_autoencoder/)](https://ai-safety-foundation.github.io/sparse_autoencoder/)
+
 ```shell
 pip install sparse_autoencoder
 ```
+
+## Features
+
+This library contains:
+
+   1. **A sparse autoencoder model**, along with all the underlying PyTorch components you need to
+      customise and/or build your own:
+      - Encoder, constrained unit norm decoder and tied bias PyTorch modules in `autoencoder`.
+      - L1 and L2 loss modules in `loss`.
+      - Adam module with helper method to reset state in `optimizer`.
+   2. **Activations data generator** using TransformerLens, with the underlying steps in case you
+      want to customise the approach:
+      - Activation store options (in-memory or on disk) in `activation_store`.
+      - Hook to get the activations from TransformerLens in an efficient way in `source_model`.
+      - Source dataset (i.e. prompts to generate these activations) utils in `source_data`, that
+        stream data from HuggingFace and pre-process (tokenize & shuffle).
+   3. **Activation resampler** to help reduce the number of dead neurons.
+   4. **Metrics** that log at various stages of training (e.g. during training, resampling and
+      validation), and integrate with wandb.
+   5. **Training pipeline** that combines everything together, allowing you to run hyperparameter
+      sweeps and view progress on wandb.
+
+## Designed for Research
+
+The library is designed to be modular. By default it takes the approach from [Towards
+Monosemanticity: Decomposing Language Models With Dictionary Learning
+](https://transformer-circuits.pub/2023/monosemantic-features/index.html), so you can pip install
+the library and get started quickly. Then when you need to customise something, you can just extend
+the abstract class for that component (e.g. you can extend `AbstractEncoder` if you want to
+customise the encoder layer, and then easily drop it in the standard `SparseAutoencoder` model to
+keep everything else as is. Every component is fully documented, so it's nice and easy to do this.
 
 ## Demo
 

@@ -6,8 +6,9 @@ import pytest
 from syrupy.session import SnapshotSession
 import torch
 
+from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
+from sparse_autoencoder.metrics.train.capacity import CapacityMetric
 from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchStatistic
-from sparse_autoencoder.train.metrics.capacity import calc_capacities, wandb_capacities_histogram
 
 
 @pytest.mark.parametrize(
@@ -33,7 +34,7 @@ def test_calc_capacities(
     features: LearnedActivationBatch, expected_capacities: TrainBatchStatistic
 ) -> None:
     """Check that the capacity calculation is correct."""
-    capacities = calc_capacities(features)
+    capacities = CapacityMetric.capacities(features)
     assert torch.allclose(
         capacities, expected_capacities, rtol=1e-3
     ), "Capacity calculation is incorrect."
@@ -42,6 +43,20 @@ def test_calc_capacities(
 def test_wandb_capacity_histogram(snapshot: SnapshotSession) -> None:
     """Check the Weights & Biases Histogram is created correctly."""
     capacities = torch.tensor([0.5, 0.1, 1, 1, 1])
-    res = wandb_capacities_histogram(capacities)
+    res = CapacityMetric.wandb_capacities_histogram(capacities)
 
     assert res.histogram == snapshot
+
+
+def test_calculate_returns_histogram() -> None:
+    """Check the calculate function returns a histogram."""
+    metric = CapacityMetric()
+    activations = torch.tensor([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+    res = metric.calculate(
+        TrainMetricData(
+            input_activations=activations,
+            learned_activations=activations,
+            decoded_activations=activations,
+        )
+    )
+    assert "train_batch_capacities_histogram" in res

@@ -4,13 +4,14 @@ docs_dir: docs/content
 site_dir: docs/generated
 repo_url: https://github.com/ai-safety-foundation/sparse_autoencoder
 repo_name: ai-safety-foundation/sparse_autoencoder
+edit_uri: "" # Disabled as we use mkdocstrings which auto-generates some pages
 # strict: true
 
 theme:
   name: material
   palette:
     - scheme: default
-      primary: white
+      primary: teal
       accent: amber
       toggle:
         icon: material/weather-night
@@ -23,8 +24,11 @@ theme:
         name: Switch to light mode
   icon:
     repo: fontawesome/brands/github # GitHub logo in top right
+  features:
+    - content.action.edit
 
 extra_javascript:
+  - javascript/custom_formatting.js
   # The below three make MathJax work, see https://squidfunk.github.io/mkdocs-material/reference/mathjax/
   - javascript/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
@@ -32,6 +36,7 @@ extra_javascript:
 
 extra_css:
   - "css/material_extra.css"
+  - "css/custom_formatting.css"
 
 markdown_extensions:
   - pymdownx.arithmatex: # Render LaTeX via MathJax
@@ -58,7 +63,13 @@ plugins:
   - mkdocstrings: # https://mkdocstrings.github.io
       handlers:
         python:
+          setup_commands:
+            - import pytkdocs_tweaks
+            - pytkdocs_tweaks.main()
+            - import jaxtyping
+            - jaxtyping.set_array_name_format("array")
           options:
             docstring_style: google
             line_length: 100
             show_symbol_type_heading: true
+            edit_uri: ""
