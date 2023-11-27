@@ -22,4 +22,4 @@ class TrainBatchLearnedActivationsL0(AbstractTrainMetric):
         batch_size = data.learned_activations.size(0)
         n_non_zero_activations = torch.count_nonzero(data.learned_activations)
         batch_average = n_non_zero_activations / batch_size
-        return {"train_batch_l0_norm": batch_average.item()}
+        return {"learned_activations_l0_norm": batch_average.item()}
