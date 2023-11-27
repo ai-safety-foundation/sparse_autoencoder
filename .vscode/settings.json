@@ -45,6 +45,7 @@
   "python.analysis.diagnosticMode": "workspace",
   "cSpell.words": [
     "batchmean",
-    "logits"
+    "logits",
+    "roneneldan"
   ]
 }
