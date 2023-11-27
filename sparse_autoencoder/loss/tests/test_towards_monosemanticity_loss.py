@@ -1,8 +1,8 @@
 """Test the loss function from the Towards Monosemanticity paper."""
 import torch
 
+from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
-from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
 from sparse_autoencoder.loss.reducer import LossReducer
 
 
@@ -20,17 +20,16 @@ class TestTowardsMonosemanticityLoss:
         squared_errors: float = 0.0
         for i, o in zip(input_activations, output_activations, strict=True):
             squared_errors += (i - o) ** 2
-        mse = squared_errors / len(input_activations)
 
         l1_penalty: float = 0.0
         for neuron in learned_activations:
             l1_penalty += abs(neuron) * l1_coefficient
 
-        expected: float = mse + l1_penalty
+        expected: float = squared_errors + l1_penalty
 
         # Compare against the actual loss function
         loss = LossReducer(
-            MSEReconstructionLoss(),
+            L2ReconstructionLoss(),
             LearnedActivationsL1Loss(l1_coefficient),
         )
 

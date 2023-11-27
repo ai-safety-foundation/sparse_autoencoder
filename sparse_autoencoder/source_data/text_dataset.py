@@ -36,7 +36,7 @@ class GenericTextDataBatch(TypedDict):
 
 
 @final
-class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
+class TextDataset(SourceDataset[GenericTextDataBatch]):
     """Generic Text Dataset for any text-based dataset from Hugging Face."""
 
     tokenizer: PreTrainedTokenizerBase
@@ -54,6 +54,9 @@ class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
         Args:
             source_batch: A batch of source data, including 'text' with a list of strings.
             context_size: Context size for tokenized prompts.
+
+        Returns:
+            Tokenized prompts.
         """
         prompts: list[str] = source_batch["text"]
 
@@ -74,7 +77,7 @@ class GenericTextDataset(SourceDataset[GenericTextDataBatch]):
     def __init__(
         self,
         tokenizer: PreTrainedTokenizerBase,
-        context_size: int = 250,
+        context_size: int = 256,
         buffer_size: int = 1000,
         preprocess_batch_size: int = 1000,
         dataset_path: str = "monology/pile-uncopyrighted",

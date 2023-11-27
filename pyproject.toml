@@ -10,22 +10,23 @@
     [tool.poetry.dependencies]
         einops=">=0.6"
         python=">=3.10, <3.12"
-        strenum="^0.4.15"
+        strenum=">=0.4.15"
         torch=">=2.1"
         wandb=">=0.15.12"
-        zstandard="^0.22.0"    # Required for downloading datasets such as The Pile
+        zstandard=">=0.22.0"   # Required for downloading datasets such as The Pile
 
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
             jupyter=">=1"
             plotly=">=5"
             poethepoet=">=0.24.2"
-            pre-commit=">=3.5.0"
-            pyright=">=1.1.334"
+            pydoclint="^0.3.8"
+            pyright=">=1.1.337"
             pytest=">=7"
             pytest-cov=">=4"
+            pytest-timeout=">=2.2.0"
             ruff=">=0.1.4"
-            syrupy="^4.6.0"
+            syrupy=">=4.6.0"
 
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
@@ -35,25 +36,33 @@
             transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
 
         [tool.poetry.group.docs.dependencies]
-            mkdocs = "^1.5.3"
-            mkdocstrings = "^0.23.0"
-            mkdocstrings-python = "^1.7.3"
-            mkdocs-gen-files = "^0.5.0"
-            mkdocs-literate-nav = "^0.6.1"
+            mkdocs=">=1.5.3"
+            mkdocs-gen-files=">=0.5.0"
+            mkdocs-literate-nav=">=0.6.1"
+            mkdocs-material=">=9.4.10"
+            mkdocs-section-index=">=0.3.8"
+            mkdocstrings={extras=["python"], version=">=0.24.0"}
+            mkdocstrings-python=">=1.7.3"
+            mknotebooks="^0.8.0"
+            pytkdocs-tweaks=">=0.0.7"
 
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="All checks"
         ignore_fail=false
-        sequence=["check-lock", "format", "lint", "test", "typecheck"]
+        sequence=["check-lock", "docstring-lint", "format", "lint", "test", "typecheck"]
 
     [tool.poe.tasks.format]
-        cmd="ruff format sparse_autoencoder"
+        cmd="ruff format ."
         help="Format code (with autofix)"
 
     [tool.poe.tasks.lint]
-        cmd="ruff check sparse_autoencoder --fix"
+        cmd="ruff check . --fix"
         help="Lint (with autofix)"
+
+    [tool.poe.tasks.docstring-lint]
+        cmd="pydoclint ."
+        help="Lint docstrings"
 
     [tool.poe.tasks.ruff]
         help="  [alias for lint && format]"
@@ -63,14 +72,6 @@
     [tool.poe.tasks.check-lock]
         cmd="poetry check"
         help="Check the Poetry lockfile"
-
-    [tool.poe.tasks.precommit]
-        cmd="pre-commit run --all-files"
-        help="Run pre-commit hooks"
-
-    [tool.poe.tasks.precommit-setup]
-        cmd="pre-commit install"
-        help="Install pre-commit hooks"
 
     [tool.poe.tasks.snapshot-update]
         cmd="pytest --snapshot-update"
@@ -97,18 +98,16 @@
         help="Cleans out the automatically generated docs."
 
     [tool.poe.tasks.gen-docs]
+        help="Generate the reference (API) docs."
         script="docs.gen_ref_pages:run"
-        help="Cleans out the automatically generated docs."
 
     [tool.poe.tasks.make-docs]
-        deps=["clean-docs", "gen-docs"]
         cmd="mkdocs build"
-        help="Generates our docs"
+        help="Build the static docs site"
 
     [tool.poe.tasks.docs-hot-reload]
-        deps=["clean-docs"]
         cmd="mkdocs serve"
-        help="Starts our watch server"
+        help="Hot reload the docs site (so changes appear instantly)"
 
 [build-system]
     build-backend="poetry.core.masonry.api"
@@ -116,12 +115,19 @@
 
 [tool.pytest]
     cache_dir=".cache/pytest"
+    durations=3
+    timeout=60
 
     [tool.pytest.ini_options]
-        addopts="""--jaxtyping-packages=sparse_autoencoder,beartype.beartype --doctest-modules"""
+        addopts=[
+            "--doctest-modules",
+            "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
+            "-s",
+        ]
 
 [tool.ruff]
     cache-dir=".cache/ruff"
+    extend-include=["*.ipynb"]
     ignore=[
         "ANN101", # self type annotation (it's inferred)
         "F722",   # Forward annotations check (conflicts with jaxtyping)
@@ -146,6 +152,12 @@
             lines-after-imports=2
 
         [tool.ruff.lint.per-file-ignores]
+            "**/*.ipynb"=[
+                "B018", # Useless variables are used for printing
+                "D100", # No file docstring needed
+                "E402", # Imports don't need to be at the top
+                "T201", # Print is fine
+            ]
             "**/tests/*"=[
                 "ARG001", # Fixtures often have unused arguments
                 "PT004",  # Fixtures don't return anything
@@ -163,7 +175,7 @@
     # All rules apart from base are shown explicitly below
     deprecateTypingAliases=true
     disableBytesTypePromotions=true
-    include=["sparse_autoencoder"]
+    include=["."]
     reportAssertAlwaysTrue=true
     reportConstantRedefinition=true
     reportDeprecated=true
@@ -219,3 +231,11 @@
     strictListInference=true
     strictParameterNoneValue=true
     strictSetInference=true
+
+[tool.pydoclint]
+    allow-init-docstring=true
+    arg-type-hints-in-docstring=false
+    check-return-types=false
+    check-yield-types=false
+    exclude='\.venv'
+    style="google"

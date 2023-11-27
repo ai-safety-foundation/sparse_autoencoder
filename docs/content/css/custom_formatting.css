@@ -1,0 +1,10 @@
+/* Show the full equation without vertical scroll  */
+.md-typeset div.arithmatex {
+    overflow: visible !important;
+}
+
+/* Preserve new lines in code example blocks */
+.example blockquote blockquote blockquote p {
+    white-space: pre-wrap;
+    font-family: monospace;
+}

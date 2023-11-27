@@ -2,44 +2,27 @@
 
 ## Setup
 
-### DevContainer
+This project uses [Poetry](https://python-poetry.org) for dependency management, and
+[PoeThePoet](https://poethepoet.natn.io/installation.html) for scripts. After checking out the repo,
+we recommend setting poetry's config to create the `.venv` in the root directory (note this is a
+global setting) and then installing with the dev and demos dependencies.
 
-For a one-click setup of your development environment, this project includes a
-[DevContainer](https://containers.dev/). It can be used locally with [VS
-Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) or
-with [GitHub Codespaces](https://github.com/features/codespaces).
-
-### Manual Setup
-
-This project uses [Poetry](https://python-poetry.org/docs/#installation) for package management.
-Install as follows (this will also setup your virtual environment):
-
-```bash
+```shell
 poetry config virtualenvs.in-project true
-poetry install --with dev,docs,jupyter
+poetry install --with dev,demos
 ```
 
-## Testing
+If you are using VSCode we highly recommend installing the recommended extensions as well (it will
+prompt you to do this when you checkout the repo).
 
-If adding a feature, please add unit tests for it. If you need a model, please use one of the ones
-that are cached by GitHub Actions (so that it runs quickly on the CD). These are `gpt2`,
-`attn-only-1l`, `attn-only-2l`, `attn-only-3l`, `attn-only-4l`, `tiny-stories-1M`. Note `gpt2` is
-quite slow (as we only have CPU actions) so the smaller models like `attn-only-1l` and
-`tiny-stories-1M` are preferred if possible.
+## Checks
 
-### Running the tests
+For a full list of available commands (e.g. `test` or `typecheck`), run this in your terminal
+(assumes the venv is active already).
 
-- Unit tests only via `make unit-test`
-- Acceptance tests only via `make acceptance-test`
-- Docstring tests only via `make docstring-test`
-
-## Formatting
-
-This project uses `pycln`, `isort` and `black` for formatting, pull requests are checked in github
-actions.
-
-- Format all files via `make format`
-- Only check the formatting via `make check-format`
+```shell
+poe
+```
 
 ## Documentation
 
@@ -48,13 +31,13 @@ in the docstring, and this will then automatically generate the API docs when me
 They will also be automatically checked with [pytest](https://docs.pytest.org/) (via
 [doctest](https://docs.python.org/3/library/doctest.html)).
 
-If you want to view your documentation changes, run `pytest run docs-hot-reload`. This will give you
+If you want to view your documentation changes, run `poe docs-hot-reload`. This will give you
 hot-reloading docs (they change in real time as you edit docstrings).
 
 ### Docstring Style Guide
 
-We follow the Google Python Docstring Style for writing docstrings, with some added features from
-reStructuredText (reST).
+We follow the [Google Python Docstring Style](https://google.github.io/styleguide/pyguide.html) for
+writing docstrings. Some important details below:
 
 #### Sections and Order
 
@@ -90,43 +73,21 @@ Raises:
 """
 ```
 
-#### Supported Sphinx Properties
+#### LaTeX support
 
-##### References to Other Functions/Classes
+You can use LaTeX, inside `$$` for blocks or `$` for inline
 
-You can reference other parts of the codebase using
-[cross-referencing](https://www.sphinx-doc.org/en/master/usage/domains/python.html#cross-referencing-python-objects)
-(noting that you can omit the full path if it is in the same file).
-
-```reStructuredText
-:mod:transformer_lens # Function or module
-
-:const:`transformer_lens.loading_from_pretrained.OFFICIAL_MODEL_NAMES`
-
-:class:`transformer_lens.HookedTransformer`
-
-:meth:`transformer_lens.HookedTransformer.from_pretrained`
-
-:attr:`transformer_lens.HookedTransformer.cfg`
+```markdown
+Some text $(a + b)^2 = a^2 + 2ab + b^2$
 ```
 
-##### Maths
+```markdown
+Some text:
 
-You can use LaTeX, but note that as you're placing this in python strings the backwards slash (`\`)
-must be repeated (i.e. `\\`). You can write LaTeX inline, or in "display mode".
-
-```reStructuredText
-:math:`(a + b)^2 = a^2 + 2ab + b^2`
-```
-
-```reStructuredText
-.. math::
-   :nowrap:
-
-   \\begin{eqnarray}
-      y    & = & ax^2 + bx + c \\
-      f(x) & = & x^2 + 2xy + y^2
-   \\end{eqnarray}
+$$
+y    & = & ax^2 + bx + c \\
+f(x) & = & x^2 + 2xy + y^2
+$$
 ```
 
 #### Markup

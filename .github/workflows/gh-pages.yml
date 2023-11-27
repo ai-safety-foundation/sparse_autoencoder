@@ -27,10 +27,10 @@ jobs:
           cache: "poetry"
       - name: Install poe
         run: pip install poethepoet
-      - name: Install mkdocs
-        run: pip install mkdocs
       - name: Install dependencies
         run: poetry install --with docs
+      - name: Generate docs
+        run: poe gen-docs
       - name: Build Docs
         run: poe make-docs
       - name: Upload Docs Artifact

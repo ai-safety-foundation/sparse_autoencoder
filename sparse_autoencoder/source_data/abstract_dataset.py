@@ -94,8 +94,10 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             context_size: The context size to use when returning a list of tokenized prompts.
                 *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
                 a context size of 250.
+
+        Returns:
+            Tokenized prompts.
         """
-        raise NotImplementedError
 
     @abstractmethod
     def __init__(

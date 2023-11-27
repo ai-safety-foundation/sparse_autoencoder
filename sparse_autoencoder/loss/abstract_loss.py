@@ -38,6 +38,14 @@ class AbstractLoss(Module, ABC):
     """Children loss modules."""
 
     @abstractmethod
+    def log_name(self) -> str:
+        """Log name.
+
+        Returns:
+            Name of the loss module for logging.
+        """
+
+    @abstractmethod
     def forward(
         self,
         source_activations: InputOutputActivationBatch,
@@ -55,7 +63,6 @@ class AbstractLoss(Module, ABC):
         Returns:
             Loss per batch item.
         """
-        raise NotImplementedError
 
     @final
     def batch_scalar_loss(
@@ -86,7 +93,6 @@ class AbstractLoss(Module, ABC):
             case LossReductionType.SUM:
                 return itemwise_loss.sum().squeeze()
 
-    @final
     def batch_scalar_loss_with_log(
         self,
         source_activations: InputOutputActivationBatch,
@@ -132,8 +138,8 @@ class AbstractLoss(Module, ABC):
             )
 
         # Add in the current loss module's metric
-        class_name = self.__class__.__name__
-        metrics[class_name] = current_module_loss.detach().cpu().item()
+        log_name = self.log_name()
+        metrics[log_name] = current_module_loss.detach().cpu().item()
 
         return current_module_loss, metrics
 

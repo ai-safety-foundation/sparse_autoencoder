@@ -26,8 +26,8 @@ def test_can_get_encoder_weights() -> None:
     """Check we can access the encoder weights."""
     geometric_median = torch.tensor([1.0, 2.0, 3.0])
     model = SparseAutoencoder(3, 6, geometric_median)
-    linear = model.encoder.get_submodule("Linear")
-    assert linear.weight.shape == (6, 3)
+    encoder = model.encoder
+    assert encoder.weight.shape == (6, 3)
 
 
 def test_representation(snapshot: SnapshotSession) -> None:

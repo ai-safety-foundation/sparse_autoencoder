@@ -88,25 +88,29 @@ class TensorActivationStore(ActivationStore):
         Returns the number of activation vectors in the dataset.
 
         Example:
-        >>> import torch
-        >>> store = TensorActivationStore(max_items=10_000_000, num_neurons=100)
-        >>> store.append(torch.randn(100))
-        >>> store.append(torch.randn(100))
-        >>> len(store)
-        2
+            >>> import torch
+            >>> store = TensorActivationStore(max_items=10_000_000, num_neurons=100)
+            >>> store.append(torch.randn(100))
+            >>> store.append(torch.randn(100))
+            >>> len(store)
+            2
+
+        Returns:
+            The number of activation vectors in the dataset.
         """
         return self.items_stored
 
     def __sizeof__(self) -> int:
         """Sizeof Dunder Method.
 
-        Returns the size of the underlying tensor in bytes.
-
         Example:
-        >>> import torch
-        >>> store = TensorActivationStore(max_items=2, num_neurons=100)
-        >>> store.__sizeof__() # Pre-allocated tensor of 2x100
-        800
+            >>> import torch
+            >>> store = TensorActivationStore(max_items=2, num_neurons=100)
+            >>> store.__sizeof__() # Pre-allocated tensor of 2x100
+            800
+
+        Returns:
+            The size of the underlying tensor in bytes.
         """
         return self._data.element_size() * self._data.nelement()
 

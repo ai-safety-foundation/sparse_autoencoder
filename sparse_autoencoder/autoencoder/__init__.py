@@ -1,1 +1,1 @@
-"""Autoencoder."""
+"""Sparse autoencoder model & components."""

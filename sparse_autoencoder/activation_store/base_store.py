@@ -51,27 +51,22 @@ class ActivationStore(Dataset[InputOutputActivationVector], ABC):
     @abstractmethod
     def append(self, item: InputOutputActivationVector) -> Future | None:
         """Add a Single Item to the Store."""
-        raise NotImplementedError
 
     @abstractmethod
     def extend(self, batch: InputOutputActivationBatch) -> Future | None:
         """Add a Batch to the Store."""
-        raise NotImplementedError
 
     @abstractmethod
     def empty(self) -> None:
         """Empty the Store."""
-        raise NotImplementedError
 
     @abstractmethod
     def __len__(self) -> int:
         """Get the Length of the Store."""
-        raise NotImplementedError
 
     @abstractmethod
     def __getitem__(self, index: int) -> InputOutputActivationVector:
         """Get an Item from the Store."""
-        raise NotImplementedError
 
     def shuffle(self) -> None:
         """Optional shuffle method."""

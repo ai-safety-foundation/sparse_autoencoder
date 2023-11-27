@@ -10,7 +10,6 @@ PreTokenizedDataset should work with any of the following tokenized datasets:
 - NeelNanda/pile-old-tokenized-2b
 
 """
-
 from typing import TypedDict, final
 
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
@@ -47,6 +46,9 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         Args:
             source_batch: A batch of source data.
             context_size: The context size to use for tokenized prompts.
+
+        Returns:
+            Tokenized prompts.
         """
         tokenized_prompts: list[list[int]] = source_batch["tokens"]
 
@@ -66,18 +68,12 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
     def __init__(
         self,
         dataset_path: str,
-        context_size: int = 250,
+        context_size: int = 256,
         buffer_size: int = 1000,
         preprocess_batch_size: int = 1000,
         dataset_split: str = "train",
     ):
         """Initialize a pre-tokenized dataset from Hugging Face.
-
-        Example:
-            >>> data = PreTokenizedDataset(dataset_path="NeelNanda/c4-tokenized-2b")
-            >>> first_item = next(iter(data))
-            >>> len(first_item["input_ids"])
-            250
 
         Args:
             dataset_path: The path to the dataset on Hugging Face.
