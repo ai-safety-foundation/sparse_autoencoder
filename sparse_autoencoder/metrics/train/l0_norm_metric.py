@@ -1,4 +1,4 @@
-"""L0 (sparsity) norm metric."""
+"""L0 norm sparsity metric."""
 from typing import final
 
 import torch
@@ -10,13 +10,16 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
 
 
 @final
-class L0NormMetric(AbstractTrainMetric):
-    """L0 (sparsity) norm metric."""
+class TrainBatchLearnedActivationsL0(AbstractTrainMetric):
+    """Learned activations L0 norm sparsity metric.
+
+    The L0 norm is the number of non-zero elements in a learned activation vector. We then average
+    this over the batch.
+    """
 
     def calculate(self, data: TrainMetricData) -> dict[str, float]:
         """Create a log item for Weights and Biases."""
-        # The L0 norm is the number of non-zero elements
-        # (We're averaging over the batch)
-        acts = data.learned_activations
-        value = (torch.sum(acts != 0) / acts.size(0)).item()
-        return {"l0_norm": value}
+        batch_size = data.learned_activations.size(0)
+        n_non_zero_activations = torch.count_nonzero(data.learned_activations)
+        batch_average = n_non_zero_activations / batch_size
+        return {"train_batch_l0_norm": batch_average.item()}
