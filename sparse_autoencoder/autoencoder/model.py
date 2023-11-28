@@ -109,9 +109,9 @@ class SparseAutoencoder(AbstractAutoencoder):
 
         # Set the reset parameter names and axes which match the learned features
         self.reset_param_names: list[tuple[str, int]] = [
-            ("_encoder.weight", 0),
-            ("_encoder.bias", 0),
-            ("_decoder.weight", 1),
+            ("_encoder._weight", 0),
+            ("_encoder._bias", 0),
+            ("_decoder._weight", 1),
         ]
 
     def forward(
