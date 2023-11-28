@@ -213,12 +213,12 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         # Reset running averages for the specified neurons
         if "exp_avg" in state:
             exp_avg: Tensor = state["exp_avg"]
-            exp_avg.index_fill_(axis, neuron_indices, 0)
+            exp_avg.index_fill_(axis, neuron_indices.to(exp_avg.device), 0)
         if "exp_avg_sq" in state:
             exp_avg_sq: Tensor = state["exp_avg_sq"]
-            exp_avg_sq.index_fill_(axis, neuron_indices, 0)
+            exp_avg_sq.index_fill_(axis, neuron_indices.to(exp_avg_sq.device), 0)
 
         # If AdamW is used (weight decay fix), also reset the max exp_avg_sq
         if "max_exp_avg_sq" in state:
             max_exp_avg_sq: Tensor = state["max_exp_avg_sq"]
-            max_exp_avg_sq.index_fill_(axis, neuron_indices, 0)
+            max_exp_avg_sq.index_fill_(axis, neuron_indices.to(max_exp_avg_sq.device), 0)
