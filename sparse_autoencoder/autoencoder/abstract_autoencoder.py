@@ -6,10 +6,7 @@ from torch.nn import Module
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-)
+from sparse_autoencoder.tensor_types import InputOutputActivationBatch, LearnedActivationBatch
 
 
 class AbstractAutoencoder(Module, ABC):

@@ -145,8 +145,16 @@ class AbstractPipeline(ABC):
             parameter_updates.dead_decoder_weight_updates,
         )
 
-        # Reset the optimizer (TODO: Consider resetting just the relevant parameters)
-        self.optimizer.reset_state_all_parameters()
+        # Reset the optimizer
+        optimizer_reset_params = (
+            self.autoencoder.reset_param_names + self.autoencoder.decoder.reset_param_names
+        )
+        for param_name, axis in optimizer_reset_params:
+            self.optimizer.reset_neurons_state(
+                parameter_name=param_name,
+                neuron_indices=parameter_updates.dead_neuron_indices,
+                axis=axis,
+            )
 
     @abstractmethod
     def validate_sae(self) -> None:

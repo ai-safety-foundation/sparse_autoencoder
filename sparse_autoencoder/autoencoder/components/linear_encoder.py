@@ -59,6 +59,7 @@ class LinearEncoder(AbstractEncoder):
         )
 
         self._bias = Parameter(torch.zeros(learnt_features))
+        self.reset_param_names = ["weight", "bias"]
 
         self.reset_parameters()
 
