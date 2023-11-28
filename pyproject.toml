@@ -31,9 +31,9 @@
         [tool.poetry.group.demos.dependencies]
             jupyterlab=">=3"
             pandas=">=2.1.2"
-            tokenizers=">=0.13.0, <0.14.0"   # See https://github.com/neelnanda-io/TransformerLens/issues/404
+            tokenizers=">=0.15.0"
             transformer-lens=">=1.9.0"
-            transformers=">=4.33.1, <4.34.0" # See https://github.com/neelnanda-io/TransformerLens/issues/404
+            transformers=">=4.35.0"
 
         [tool.poetry.group.docs.dependencies]
             mkdocs=">=1.5.3"
