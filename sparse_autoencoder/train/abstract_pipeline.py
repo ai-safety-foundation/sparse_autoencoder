@@ -146,10 +146,7 @@ class AbstractPipeline(ABC):
         )
 
         # Reset the optimizer
-        optimizer_reset_params = (
-            self.autoencoder.reset_param_names + self.autoencoder.decoder.reset_param_names
-        )
-        for param_name, axis in optimizer_reset_params:
+        for param_name, axis in self.autoencoder.reset_param_names:
             self.optimizer.reset_neurons_state(
                 parameter_name=param_name,
                 neuron_indices=parameter_updates.dead_neuron_indices,
