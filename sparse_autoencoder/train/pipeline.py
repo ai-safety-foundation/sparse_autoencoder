@@ -431,12 +431,12 @@ class Pipeline:
                 progress_bar.set_postfix({"stage": "validate"})
                 if validate_frequency is not None and last_validated >= validate_frequency:
                     self.validate_sae(validation_number_activations)
-                    self.last_validated = 0
+                    last_validated = 0
 
                 # Checkpoint (if needed)
                 progress_bar.set_postfix({"stage": "checkpoint"})
                 if checkpoint_frequency is not None and last_checkpoint >= checkpoint_frequency:
-                    self.last_checkpoint = 0
+                    last_checkpoint = 0
                     self.save_checkpoint()
 
                 # Update the progress bar
