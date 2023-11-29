@@ -85,10 +85,9 @@ class LinearEncoder(AbstractEncoder):
 
     def reset_parameters(self) -> None:
         """Initialize or reset the parameters."""
-        # Setting a=sqrt(5) in kaiming_uniform is the same as initializing with
-        # uniform(-1/sqrt(in_features), 1/sqrt(in_features)). For details, see
-        # https://github.com/pytorch/pytorch/issues/57109
-        init.kaiming_uniform_(self._weight, a=math.sqrt(5))
+        # Assumes we are using ReLU activation function (for e.g. leaky ReLU, the `a` parameter and
+        # `nonlinerity` must be changed.
+        init.kaiming_uniform_(self._weight, nonlinearity="relu")
 
         # Bias (approach from nn.Linear)
         fan_in = self._weight.size(1)
