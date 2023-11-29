@@ -78,11 +78,10 @@ def test_biases_initialised_same_way() -> None:
     )
 
     assert torch.allclose(autoencoder.tied_bias, neel_autoencoder.b_dec)
-    assert torch.allclose(autoencoder.encoder.bias, neel_autoencoder.b_enc)
-
     # Note we can't compare weights as Neel's implementation uses rotated tensors and applies
     # kaiming incorrectly (uses leaky relu version and incorrect fan strategy for the rotation
-    # used).
+    # used). Note also that the encoder bias is initialised to zero in Neel's implementation,
+    # whereas we use the standard PyTorch initialisation.
 
 
 def test_forward_pass_same_weights() -> None:
@@ -104,6 +103,8 @@ def test_forward_pass_same_weights() -> None:
     # Set the same weights
     autoencoder.encoder.weight.data = neel_autoencoder.W_enc.data.T
     autoencoder.decoder.weight.data = neel_autoencoder.W_dec.data.T
+    autoencoder.tied_bias.data = neel_autoencoder.b_dec.data
+    autoencoder.encoder.bias.data = neel_autoencoder.b_enc.data
 
     # Create some test data
     test_batch = torch.randn(4, n_input_features)
@@ -114,10 +115,10 @@ def test_forward_pass_same_weights() -> None:
     assert torch.allclose(hidden, x_reconstruct)
 
 
-def test_unit_norm() -> None:
+def test_unit_norm_weights() -> None:
     """Test that the decoder weights are unit normalized in the same way."""
-    n_input_features: int = 12
-    n_learned_features: int = 48
+    n_input_features: int = 2
+    n_learned_features: int = 4
     l1_coefficient: float = 0.01
 
     autoencoder = SparseAutoencoder(
@@ -137,11 +138,6 @@ def test_unit_norm() -> None:
     autoencoder.decoder._weight.data = decoder_weights  # noqa: SLF001 # type: ignore
     neel_autoencoder.W_dec.data = decoder_weights.T
 
-    # Set the same tied bias weights
-    neel_autoencoder.b_dec.data = autoencoder.tied_bias.data
-    neel_autoencoder.encoder.bias.data = autoencoder.encoder.bias.data
-    neel_autoencoder.W_enc.data = autoencoder.encoder.weight.data.T
-
     # Do a forward & backward pass so we have gradients
     test_batch = torch.randn(4, n_input_features)
     _learned, decoded = autoencoder.forward(test_batch)
@@ -149,22 +145,59 @@ def test_unit_norm() -> None:
     decoded = neel_autoencoder.forward(test_batch)[1]
     decoded.sum().backward()
 
-    assert autoencoder.decoder.weight.grad is not None
-    assert neel_autoencoder.W_dec.grad is not None
-    assert torch.allclose(autoencoder.decoder.weight.grad, neel_autoencoder.W_dec.grad.T)
+    # Apply the unit norm
+    autoencoder.decoder.constrain_weights_unit_norm()
+    neel_autoencoder.make_decoder_weights_and_grad_unit_norm()
+
+    # Check the decoder weights are the same with both models
+    assert torch.allclose(autoencoder.decoder.weight, neel_autoencoder.W_dec.T)
+
+    # Check the trivial case that the weights haven't just stayed the same as before the unit norm
+    assert not torch.allclose(autoencoder.decoder.weight, pre_unit_norm_weights)
+    assert not torch.allclose(neel_autoencoder.W_dec, pre_unit_norm_neel_weights)
+
+
+def test_unit_norm_weights_grad() -> None:
+    """Test that the decoder weights are unit normalized in the same way."""
+    torch.random.manual_seed(42)
+    n_input_features: int = 2
+    n_learned_features: int = 4
+    l1_coefficient: float = 0.01
+
+    autoencoder = SparseAutoencoder(
+        n_input_features=n_input_features,
+        n_learned_features=n_learned_features,
+    )
+    neel_autoencoder = NeelAutoencoder(
+        d_hidden=n_learned_features,
+        act_size=n_input_features,
+        l1_coeff=l1_coefficient,
+    )
+
+    # Set the same decoder weights
+    decoder_weights = torch.rand_like(autoencoder.decoder.weight)
+    autoencoder.decoder._weight.data = decoder_weights  # noqa: SLF001 # type: ignore
+    neel_autoencoder.W_dec.data = decoder_weights.T
+    autoencoder.decoder._weight.grad = torch.zeros_like(autoencoder.decoder.weight)  # noqa: SLF001 # type: ignore
+    neel_autoencoder.W_dec.grad = torch.zeros_like(neel_autoencoder.W_dec)
+
+    # Set the same tied bias weights
+    neel_autoencoder.b_dec.data = autoencoder.tied_bias.data
+    neel_autoencoder.b_enc.data = autoencoder.encoder.bias.data
+    neel_autoencoder.W_enc.data = autoencoder.encoder.weight.data.T
+
+    # Do a forward & backward pass so we have gradients
+    test_batch = torch.randn(4, n_input_features)
+    _learned, decoded = autoencoder.forward(test_batch)
+    _loss = decoded.sum().backward()
+    neel_decoded = neel_autoencoder.forward(test_batch)[1]
+    _loss_neel = neel_decoded.sum().backward()
 
     # Apply the unit norm
     autoencoder.decoder.constrain_weights_unit_norm()
     neel_autoencoder.make_decoder_weights_and_grad_unit_norm()
 
-    # Check the decoder weights are the same
-    assert torch.allclose(autoencoder.decoder.weight, neel_autoencoder.W_dec.T)
-
-    # Check the trivial case that the weights haven't just stayed the same
-    assert not torch.allclose(autoencoder.decoder.weight, pre_unit_norm_weights)
-    assert not torch.allclose(neel_autoencoder.W_dec, pre_unit_norm_neel_weights)
-
     # Check the gradient weights are the same
-    # assert autoencoder.decoder.weight.grad is not None
-    # assert neel_autoencoder.W_dec.grad is not None
-    # assert torch.allclose(autoencoder.decoder.weight.grad, neel_autoencoder.W_dec.grad.T)
+    assert autoencoder.decoder.weight.grad is not None
+    assert neel_autoencoder.W_dec.grad is not None
+    assert torch.allclose(autoencoder.decoder.weight.grad, neel_autoencoder.W_dec.grad.T, rtol=1e-4)

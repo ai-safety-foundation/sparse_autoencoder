@@ -122,6 +122,7 @@
         addopts=[
             "--doctest-modules",
             "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
+            "-W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
             "-s",
         ]
 
