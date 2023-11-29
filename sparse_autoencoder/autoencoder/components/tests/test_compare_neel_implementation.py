@@ -46,16 +46,16 @@ class NeelAutoencoder(nn.Module):
         loss = l2_loss + l1_loss
         return loss, x_reconstruct, acts, l2_loss, l1_loss
 
-    @torch.no_grad()
     def make_decoder_weights_and_grad_unit_norm(self) -> None:
         """Make decoder weights and gradient unit norm."""
-        weight_dec_normed = self.W_dec / self.W_dec.norm(dim=-1, keepdim=True)
-        weight_dec_grad_proj = (self.W_dec.grad * weight_dec_normed).sum(
-            -1, keepdim=True
-        ) * weight_dec_normed
-        self.W_dec.grad -= weight_dec_grad_proj
-        # Bugfix(?)
-        self.W_dec.data = weight_dec_normed
+        with torch.no_grad():
+            weight_dec_normed = self.W_dec / self.W_dec.norm(dim=-1, keepdim=True)
+            weight_dec_grad_proj = (self.W_dec.grad * weight_dec_normed).sum(
+                -1, keepdim=True
+            ) * weight_dec_normed
+            self.W_dec.grad -= weight_dec_grad_proj
+            # Bugfix(?)
+            self.W_dec.data = weight_dec_normed
 
 
 def test_biases_initialised_same_way() -> None:
