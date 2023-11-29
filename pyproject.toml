@@ -21,7 +21,7 @@
             plotly=">=5"
             poethepoet=">=0.24.2"
             pydoclint="^0.3.8"
-            pyright=">=1.1.337"
+            pyright=">=1.1.338"
             pytest=">=7"
             pytest-cov=">=4"
             pytest-timeout=">=2.2.0"

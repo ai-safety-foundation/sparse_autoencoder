@@ -29,7 +29,6 @@ from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivit
 from sparse_autoencoder.train.utils import get_model_device
 
 
-@final
 class Pipeline:
     """Pipeline for training a Sparse Autoencoder on TransformerLens activations.
 
@@ -91,7 +90,7 @@ class Pipeline:
         log_frequency: int = 100,
         metrics: MetricsContainer = default_metrics,
         source_data_batch_size: int = 12,
-    ):
+    ) -> None:
         """Initialize the pipeline.
 
         Args:
@@ -132,14 +131,25 @@ class Pipeline:
 
         Returns:
             Activation store for the train section.
+
+        Raises:
+            ValueError: If the store size is not positive or is not divisible by the batch size.
         """
+        # Check the store size is positive and divisible by the batch size
+        if store_size <= 0:
+            error_message = f"Store size must be positive, got {store_size}"
+            raise ValueError(error_message)
+        if store_size % self.source_data_batch_size != 0:
+            error_message = (
+                f"Store size must be divisible by the batch size ({self.source_data_batch_size}), "
+                f"got {store_size}"
+            )
+            raise ValueError(error_message)
+
+        # Setup the store
         num_neurons: int = self.autoencoder.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
-
         store = TensorActivationStore(store_size, num_neurons)
-
-        # Set model to evaluation (inference) mode
-        self.source_model.eval()
 
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
@@ -151,7 +161,9 @@ class Pipeline:
         with torch.no_grad():
             for batch in self.source_data:
                 input_ids: BatchTokenizedPrompts = batch["input_ids"].to(source_model_device)
-                self.source_model.forward(input_ids, stop_at_layer=self.layer + 1)  # type: ignore (TLens is typed incorrectly)
+                self.source_model.forward(
+                    input_ids, stop_at_layer=self.layer + 1, prepend_bos=False
+                )  # type: ignore (TLens is typed incorrectly)
 
                 if len(store) >= store_size:
                     break
@@ -227,7 +239,6 @@ class Pipeline:
 
         return learned_activations_fired_count
 
-    @final
     def resample_neurons(
         self,
         activation_store: TensorActivationStore,
@@ -347,7 +358,6 @@ class Pipeline:
             )
             torch.save(self.autoencoder.state_dict(), file_path)
 
-    @final
     def run_pipeline(
         self,
         train_batch_size: int,
@@ -377,6 +387,8 @@ class Pipeline:
         last_checkpoint: int = 0
         total_activations: int = 0
         neuron_activity: NeuronActivity = torch.zeros(self.autoencoder.n_learned_features)
+
+        self.source_model.eval()  # Set the source model to evaluation (inference) mode
 
         # Get the store size
         store_size: int = max_store_size - max_store_size % (
