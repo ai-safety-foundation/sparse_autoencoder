@@ -82,25 +82,33 @@ class ActivationResampler(AbstractActivationResampler):
 
     @staticmethod
     def get_dead_neuron_indices(
-        neuron_activity: NeuronActivity, threshold: int = 0
+        neuron_activity_sample_size: int,
+        neuron_activity: NeuronActivity,
+        threshold: float = 0,
     ) -> LearntNeuronIndices:
         """Identify the indices of neurons that have zero activity.
 
         Example:
-            >>> neuron_activity = torch.tensor([0, 0, 3, 10, 0])
-            >>> dead_neuron_indices = ActivationResampler.get_dead_neuron_indices(neuron_activity)
+            >>> neuron_activity = torch.tensor([0, 0, 3, 10, 1])
+            >>> dead_neuron_indices = ActivationResampler.get_dead_neuron_indices(
+            ...     neuron_activity_sample_size=10,
+            ...     neuron_activity=neuron_activity,
+            ...     threshold=0.2
+            ... )
             >>> dead_neuron_indices.tolist()
             [0, 1, 4]
 
         Args:
+            neuron_activity_sample_size: Sample size for resampling.
             neuron_activity: Tensor representing the number of times each neuron fired.
             threshold: Threshold for determining if a neuron is dead (has fired less than this
-                number of times.
+                portion of the sample size).
 
         Returns:
             A tensor containing the indices of neurons that are 'dead' (zero activity).
         """
-        return torch.where(neuron_activity <= threshold)[0]
+        threshold_activity: int = int(neuron_activity_sample_size * threshold)
+        return torch.where(neuron_activity <= threshold_activity)[0]
 
     def compute_loss_and_get_activations(
         self,
@@ -322,6 +330,8 @@ class ActivationResampler(AbstractActivationResampler):
         activation_store: ActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
+        neuron_activity_sample_size: int,
+        neuron_activity: NeuronActivity,
         train_batch_size: int,
     ) -> ParameterUpdateResults:
         """Resample dead neurons.
@@ -330,6 +340,8 @@ class ActivationResampler(AbstractActivationResampler):
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
+            neuron_activity_sample_size: Sample size for resampling.
+            neuron_activity: Number of times each neuron fired.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
@@ -343,7 +355,10 @@ class ActivationResampler(AbstractActivationResampler):
             raise ValueError(error_str)
 
         with torch.no_grad():
-            dead_neuron_indices = self.get_dead_neuron_indices(self.neuron_activity)
+            dead_neuron_indices = self.get_dead_neuron_indices(
+                neuron_activity=neuron_activity,
+                neuron_activity_sample_size=neuron_activity_sample_size,
+            )
 
             # Compute the loss for the current model on a random subset of inputs and get the
             # activations.

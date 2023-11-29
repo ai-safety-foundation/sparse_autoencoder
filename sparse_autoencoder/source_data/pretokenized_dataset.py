@@ -68,7 +68,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
     def __init__(
         self,
         dataset_path: str,
-        context_size: int = 250,
+        context_size: int = 256,
         buffer_size: int = 1000,
         preprocess_batch_size: int = 1000,
         dataset_split: str = "train",

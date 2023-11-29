@@ -145,6 +145,12 @@ TrainBatchStatistic: TypeAlias = Float[Tensor, Axis.BATCH]
 Contains one scalar value per item in the batch.
 """
 
+ValidationStatistics: TypeAlias = Float[Tensor, Axis.ITEMS]
+"""Validation statistics.
+
+Contains one scalar value per item in the validation set.
+"""
+
 # Weights and biases
 EncoderWeights: TypeAlias = Float[Tensor, Axis.dims(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
 """Encoder weights.

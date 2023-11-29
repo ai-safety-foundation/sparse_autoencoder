@@ -18,24 +18,27 @@ from sparse_autoencoder.tensor_types import (
 
 @final
 class UnitNormDecoder(AbstractDecoder):
-    """Constrained unit norm linear decoder layer.
+    r"""Constrained unit norm linear decoder layer.
 
-    Linear layer decoder, where the dictionary vectors (rows of the weight matrix) are constrained
-    to have unit norm. This is done by removing the gradient information parallel to the dictionary
-    vectors before applying the gradient step, using a backward hook.
+    Linear layer decoder, where the dictionary vectors (columns of the weight matrix) are
+    constrained to have unit norm. This is done by removing the gradient information parallel to the
+    dictionary vectors before applying the gradient step, using a backward hook. It also requires
+    `constrain_weights_unit_norm` to be called after each gradient step, to prevent drift of the
+    dictionary vectors away from unit norm (as optimisers such as Adam don't strictly follow the
+    gradient, but instead follow a modified gradient that includes momentum).
+
+    $$ \begin{align*}
+        m &= \text{learned features dimension} \\
+        n &= \text{input and output dimension} \\
+        b &= \text{batch items dimension} \\
+        f \in \mathbb{R}^{b \times m} &= \text{encoder output} \\
+        W_d \in \mathbb{R}^{n \times m} &= \text{weight matrix} \\
+        z \in \mathbb{R}^{b \times m} &= f W_d^T = \text{UnitNormDecoder output (pre-tied bias)}
+    \end{align*} $$
 
     Motivation:
-        Unit norming the dictionary vectors, which are essentially the rows of the decoding
-            matrices, serves a few purposes:
-
-            1. It helps with numerical stability, by preventing the dictionary vectors from growing
-                too large.
-            2. It acts as a form of regularization, preventing overfitting by not allowing any one
-                feature to dominate the representation. It limits the capacity of the model by
-                forcing the dictionary vectors to live on the hypersphere of radius 1.
-            3. It encourages sparsity. Since the dictionary vectors have a fixed length, the model
-                must carefully select which features to activate in order to best reconstruct the
-                input.
+        Normalisation of the columns (dictionary features) prevents the model from reducing the
+        sparsity loss term by increasing the size of the feature vectors in $W_d$.
 
         Note that the *Towards Monosemanticity: Decomposing Language Models With Dictionary
         Learning* paper found that removing the gradient information parallel to the dictionary
@@ -51,11 +54,15 @@ class UnitNormDecoder(AbstractDecoder):
     """Number of decoded features (outputs from this layer)."""
 
     _weight: DecoderWeights
-    """Weight parameter."""
+    """Weight parameter internal state."""
 
     @property
     def weight(self) -> DecoderWeights:
-        """Weight."""
+        """Weight parameter.
+
+        Each column in the weights matrix acts as a dictionary vector, representing a single basis
+        element in the learned activation space.
+        """
         return self._weight
 
     def __init__(
@@ -85,9 +92,35 @@ class UnitNormDecoder(AbstractDecoder):
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary
-        # vectors (rows of the weight matrix) before applying the gradient step.
+        # vectors (columns of the weight matrix) before applying the gradient step.
         if enable_gradient_hook:
             self._weight.register_hook(self._weight_backward_hook)
+
+    def constrain_weights_unit_norm(self) -> None:
+        """Constrain the weights to have unit norm.
+
+        Warning:
+            Note this must be called after each gradient step. This is because optimisers such as
+            Adam don't strictly follow the gradient, but instead follow a modified gradient that
+            includes momentum. This means that the gradient step can change the norm of the
+            dictionary vectors, even when the hook `_weight_backward_hook` is applied.
+
+            Note this can't be applied directly in the backward hook, as it would interfere with a
+            variety of use cases (e.g. gradient accumulation across mini-batches, concurrency issues
+            with asynchronous operations, etc).
+
+        Example:
+            >>> import torch
+            >>> layer = UnitNormDecoder(3, 3)
+            >>> layer.weight.data = torch.ones((3, 3)) * 10
+            >>> layer.constrain_weights_unit_norm()
+            >>> column_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=0))
+            >>> column_norms.round(decimals=3).tolist()
+            [1.0, 1.0, 1.0]
+
+        """
+        with torch.no_grad():
+            torch.nn.functional.normalize(self._weight, dim=0, out=self._weight)
 
     def reset_parameters(self) -> None:
         """Initialize or reset the parameters.
@@ -98,9 +131,9 @@ class UnitNormDecoder(AbstractDecoder):
             >>> layer = UnitNormDecoder(learnt_features=4, decoded_features=3)
             >>> layer.reset_parameters()
             >>> # Get the norm across the rows (by summing across the columns)
-            >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
-            >>> row_norms.round(decimals=3).tolist()
-            [1.0, 1.0, 1.0]
+            >>> column_norms = torch.sum(layer.weight ** 2, dim=0)
+            >>> column_norms.round(decimals=3).tolist()
+            [1.0, 1.0, 1.0, 1.0]
 
         """
         # Initialize the weights with a normal distribution. Note we don't use e.g. kaiming
@@ -109,19 +142,35 @@ class UnitNormDecoder(AbstractDecoder):
         self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
 
         # Scale so that each row has unit norm
-        with torch.no_grad():
-            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
+        self.constrain_weights_unit_norm()
 
     def _weight_backward_hook(
         self,
         grad: EncoderWeights,
     ) -> EncoderWeights:
-        """Unit norm backward hook.
+        r"""Unit norm backward hook.
 
         By subtracting the projection of the gradient onto the dictionary vectors, we remove the
         component of the gradient that is parallel to the dictionary vectors and just keep the
         component that is orthogonal to the dictionary vectors (i.e. moving around the hypersphere).
         The result is that the backward pass does not change the norm of the dictionary vectors.
+
+        $$
+        \begin{align*}
+            W_d &\in \mathbb{R}^{n \times m} = \text{Decoder weight matrix} \\
+            g &\in \mathbb{R}^{n \times m} = \text{Gradient w.r.t. } W_d
+                \text{ from the backward pass} \\
+            W_{d, \text{norm}} &= \frac{W_d}{\|W_d\|} = \text{Normalized decoder weight matrix
+                (over columns)} \\
+            g_{\parallel} &\in \mathbb{R}^{n \times m} = \text{Component of } g
+                \text{ parallel to } W_{d, \text{norm}} \\
+            g_{\perp} &\in \mathbb{R}^{n \times m} = \text{Component of } g \text{ orthogonal to }
+                W_{d, \text{norm}} \\
+            g_{\parallel} &= W_{d, \text{norm}} \cdot (W_{d, \text{norm}}^\top \cdot g) \\
+            g_{\perp} &= g - g_{\parallel} =
+                \text{Adjusted gradient with parallel component removed} \\
+        \end{align*}
+        $$
 
         Args:
             grad: Gradient with respect to the weights.
@@ -136,26 +185,21 @@ class UnitNormDecoder(AbstractDecoder):
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
         normalized_weight: EncoderWeights = self._weight / torch.norm(
-            self._weight, dim=-1, keepdim=True
+            self._weight, dim=0, keepdim=True
         )
 
-        # Calculate the dot product of the gradients with the dictionary vectors.
-        # This represents the component of the gradient parallel to each dictionary vector.
-        # The result will be a tensor of shape [decoded_features].
-        dot_product = einops.einsum(
+        scalar_projections = einops.einsum(
             grad,
             normalized_weight,
             f"{Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}, \
                 {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
-                -> {Axis.LEARNT_FEATURE}",
+                -> {Axis.INPUT_OUTPUT_FEATURE}",
         )
 
-        # Scale the normalized weights by the dot product to get the projection.
-        # The result will be of the same shape as 'grad' and 'self.weight'.
         projection = einops.einsum(
-            dot_product,
+            scalar_projections,
             normalized_weight,
-            f"{Axis.LEARNT_FEATURE}, \
+            f"{Axis.INPUT_OUTPUT_FEATURE}, \
                 {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
                 -> {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}",
         )
@@ -164,31 +208,6 @@ class UnitNormDecoder(AbstractDecoder):
         # orthogonal to the dictionary vectors, i.e. the component that moves around the surface of
         # the hypersphere.
         return grad - projection
-
-    def constrain_weights_unit_norm(self) -> None:
-        """Constrain the weights to have unit norm.
-
-        Note this must be called after each gradient step. This is because optimisers such as Adam
-        don't strictly follow the gradient, but instead follow a modified gradient that includes
-        momentum. This means that the gradient step can change the norm of the dictionary vectors,
-        even when the hook :meth:`_weight_backward_hook` is applied.
-
-        Note this can't be applied directly in the backward hook, as it would interfere with a
-        variety of use cases (e.g. gradient accumulation across mini-batches, concurrency issues
-        with asynchronous operations, etc).
-
-        Example:
-            >>> import torch
-            >>> layer = UnitNormDecoder(3, 3)
-            >>> layer.weight.data = torch.ones((3, 3)) * 10
-            >>> layer.constrain_weights_unit_norm()
-            >>> row_norms = torch.sum(layer.weight ** 2, dim=1)
-            >>> row_norms.round(decimals=3).tolist()
-            [1.0, 1.0, 1.0]
-
-        """
-        with torch.no_grad():
-            torch.nn.functional.normalize(self._weight, dim=-1, out=self._weight)
 
     def forward(self, x: LearnedActivationBatch) -> InputOutputActivationBatch:
         """Forward pass.
@@ -199,12 +218,6 @@ class UnitNormDecoder(AbstractDecoder):
         Returns:
             Output of the forward pass.
         """
-        # Prevent the drift of the dictionary vectors away from unit norm. This can happen even
-        # though we remove the gradient information parallel to the dictionary vectors before
-        # applying the gradient step, since optimisers such as Adam don't strictly follow the
-        # gradient, but instead follow a modified gradient that includes momentum.
-        self.constrain_weights_unit_norm()
-
         return torch.nn.functional.linear(x, self._weight)
 
     def extra_repr(self) -> str:

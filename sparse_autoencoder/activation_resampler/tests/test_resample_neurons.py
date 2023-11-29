@@ -4,14 +4,14 @@ import pytest
 import torch
 from torch import Tensor
 
-from sparse_autoencoder.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     ParameterUpdateResults,
 )
+from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.mse_reconstruction_loss import MSEReconstructionLoss
+from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.tensor_types import (
     AliveEncoderWeights,
     EncoderWeights,
@@ -65,17 +65,19 @@ class TestGetDeadNeuronIndices:
     @pytest.mark.parametrize(
         ("neuron_activity", "threshold", "expected_indices"),
         [
-            (torch.tensor([1, 0, 3, 9, 0]), 0, torch.tensor([1, 4])),
-            (torch.tensor([1, 2, 3, 4, 5]), 0, torch.tensor([])),
-            (torch.tensor([1, 0, 3, 9, 0]), 1, torch.tensor([0, 1, 4])),
-            (torch.tensor([1, 2, 3, 4, 5]), 1, torch.tensor([0])),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4])),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.0, torch.tensor([])),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4])),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0])),
         ],
     )
     def test_get_dead_neuron_indices(
-        self, neuron_activity: Tensor, threshold: int, expected_indices: Tensor
+        self, neuron_activity: Tensor, threshold: float, expected_indices: Tensor
     ) -> None:
         """Test the dead neuron indices match manually created examples."""
-        res = ActivationResampler.get_dead_neuron_indices(neuron_activity, threshold)
+        res = ActivationResampler.get_dead_neuron_indices(
+            neuron_activity=neuron_activity, threshold=threshold, neuron_activity_sample_size=10
+        )
         assert torch.equal(res, expected_indices), f"Expected {expected_indices}, got {res}"
 
 
@@ -93,7 +95,7 @@ class TestComputeLossAndGetActivations:
         loss, input_activations = resampler.compute_loss_and_get_activations(
             store=activation_store_fixture,
             autoencoder=autoencoder_model_fixture,
-            loss_fn=MSEReconstructionLoss(),
+            loss_fn=L2ReconstructionLoss(),
             train_batch_size=DEFAULT_N_ITEMS,
         )
 
@@ -120,7 +122,7 @@ class TestComputeLossAndGetActivations:
             ).compute_loss_and_get_activations(
                 store=activation_store_fixture,
                 autoencoder=autoencoder_model_fixture,
-                loss_fn=MSEReconstructionLoss(),
+                loss_fn=L2ReconstructionLoss(),
                 train_batch_size=DEFAULT_N_ITEMS + 1,
             )
 
@@ -269,7 +271,12 @@ class TestResampleDeadNeurons:
         resampler = ActivationResampler()
         resampler.neuron_activity = neuron_activity
         updates = resampler.resample_dead_neurons(
-            store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
+            neuron_activity=neuron_activity,
+            activation_store=store,
+            autoencoder=model,
+            loss_fn=L2ReconstructionLoss(),
+            train_batch_size=DEFAULT_N_ITEMS,
+            neuron_activity_sample_size=int(DEFAULT_N_ITEMS / 2),
         )
 
         assert updates is not None, "Should have updated after 2 steps"
@@ -296,7 +303,12 @@ class TestResampleDeadNeurons:
         resampler = ActivationResampler()
         resampler.neuron_activity = neuron_activity
         updated_parameters: ParameterUpdateResults = resampler.resample_dead_neurons(
-            store, model, MSEReconstructionLoss(), DEFAULT_N_ITEMS
+            activation_store=store,
+            autoencoder=model,
+            loss_fn=L2ReconstructionLoss(),
+            neuron_activity=neuron_activity,
+            train_batch_size=DEFAULT_N_ITEMS,
+            neuron_activity_sample_size=int(DEFAULT_N_ITEMS / 2),
         )
 
         # Check the updated ones have changed

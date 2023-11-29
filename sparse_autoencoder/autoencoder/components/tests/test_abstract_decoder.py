@@ -42,6 +42,9 @@ class MockDecoder(AbstractDecoder):
             self._weight,
         )
 
+    def constrain_weights_unit_norm(self) -> None:
+        """Constrain weights."""
+
 
 @pytest.fixture()
 def mock_decoder() -> MockDecoder:

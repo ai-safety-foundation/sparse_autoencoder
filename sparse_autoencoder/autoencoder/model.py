@@ -70,7 +70,7 @@ class SparseAutoencoder(AbstractAutoencoder):
         self,
         n_input_features: int,
         n_learned_features: int,
-        geometric_median_dataset: InputOutputActivationVector,
+        geometric_median_dataset: InputOutputActivationVector | None = None,
     ) -> None:
         """Initialize the Sparse Autoencoder Model.
 
@@ -88,8 +88,12 @@ class SparseAutoencoder(AbstractAutoencoder):
 
         # Store the geometric median of the dataset (so that we can reset parameters). This is not a
         # parameter itself (the tied bias parameter is used for that), so gradients are disabled.
-        self.geometric_median_dataset = geometric_median_dataset.clone()
-        self.geometric_median_dataset.requires_grad = False
+        if geometric_median_dataset is not None:
+            self.geometric_median_dataset = geometric_median_dataset.clone()
+            self.geometric_median_dataset.requires_grad = False
+        else:
+            self.geometric_median_dataset = torch.zeros(n_input_features)
+            self.geometric_median_dataset.requires_grad = False
 
         # Initialize the tied bias
         self.tied_bias = Parameter(torch.empty(n_input_features))

@@ -2,7 +2,7 @@
 import pytest
 from transformers import PreTrainedTokenizerFast
 
-from sparse_autoencoder.source_data.text_dataset import GenericTextDataset
+from sparse_autoencoder.source_data.text_dataset import TextDataset
 
 
 @pytest.mark.parametrize("context_size", [50, 250])
@@ -10,7 +10,7 @@ def test_tokenized_prompts_correct_size(context_size: int) -> None:
     """Test that the tokenized prompts have the correct context size."""
     tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
 
-    data = GenericTextDataset(tokenizer=tokenizer, context_size=context_size)
+    data = TextDataset(tokenizer=tokenizer, context_size=context_size)
 
     # Check the first 100 items
     iterable = iter(data.dataset)
@@ -28,7 +28,7 @@ def test_dataloader_correct_size_items() -> None:
     batch_size = 10
     context_size = 250
     tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
-    data = GenericTextDataset(tokenizer=tokenizer, context_size=context_size)
+    data = TextDataset(tokenizer=tokenizer, context_size=context_size)
     dataloader = data.get_dataloader(batch_size=batch_size)
 
     checks = 100

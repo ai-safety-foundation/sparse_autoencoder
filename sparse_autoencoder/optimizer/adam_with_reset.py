@@ -120,7 +120,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     def reset_state_all_parameters(self) -> None:
         """Reset the state for all parameters.
 
-        Iterates over all parameters and resents both the running averages of the gradients and the
+        Iterates over all parameters and resets both the running averages of the gradients and the
         squares of gradients.
         """
         # Iterate over every parameter
