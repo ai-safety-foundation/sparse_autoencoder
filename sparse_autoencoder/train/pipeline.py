@@ -231,24 +231,35 @@ class Pipeline:
             self.optimizer.step()
             self.autoencoder.decoder.constrain_weights_unit_norm()
 
-            # Log
+            # Log training metrics
             if wandb.run is not None and self.total_training_steps % self.log_frequency == 0:
                 wandb.log(
                     data={**metrics, **loss_metrics}, step=self.total_training_steps, commit=True
                 )
             self.total_training_steps += 1
 
+        # Log any neuron activity metrics
+        if self.activation_resampler is not None:
+            with torch.no_grad():
+                metrics = {}
+                neuron_activity = self.activation_resampler.collated_neuron_activity
+                if neuron_activity is not None and wandb.run is not None:
+                    for metric in self.metrics.resample_metrics:
+                        calculated = metric.calculate(
+                            ResampleMetricData(
+                                neuron_activity=neuron_activity,
+                            )
+                        )
+                        metrics.update(calculated)
+                    wandb.log(metrics, commit=False)
+
         return learned_activations_fired_count
 
     def update_parameters(self, parameter_updates: ParameterUpdateResults) -> None:
-        #         """Resample dead neurons.
-
-        # Args:
-        #     neuron_activity: Number of times each neuron fired.
-        #     activation_store: Activation store.
-        #     train_batch_size: Train batch size (also used for resampling).
-        # """
         """Update the parameters of the model from the results of the resampler."""
+        if self.activation_resampler is None:
+            error_str = "No activation resampler has been set"
+            raise ValueError(error_str)
 
         # Update the weights and biases
         self.autoencoder.encoder.update_dictionary_vectors(
@@ -271,19 +282,6 @@ class Pipeline:
                 neuron_indices=parameter_updates.dead_neuron_indices,
                 axis=axis,
             )
-
-            # Log any metrics
-            with torch.no_grad():
-                metrics = {}
-                if wandb.run is not None:
-                    for metric in self.metrics.resample_metrics:
-                        calculated = metric.calculate(
-                            ResampleMetricData(
-                                neuron_activity=neuron_activity,
-                            )
-                        )
-                        metrics.update(calculated)
-                    wandb.log(metrics, commit=False)
 
     def validate_sae(self, validation_number_activations: int) -> None:
         """Get validation metrics.
@@ -364,8 +362,6 @@ class Pipeline:
             max_store_size: Maximum size of the activation store.
             max_activations: Maximum total number of activations to train on (the original paper
                 used 8bn, although others have had success with 100m+).
-            resample_frequency: Frequency at which to resample dead neurons (the original paper used
-                every 200m).
             validation_number_activations: Number of activations to use for validation.
             validate_frequency: Frequency at which to get validation metrics.
             checkpoint_frequency: Frequency at which to save a checkpoint.

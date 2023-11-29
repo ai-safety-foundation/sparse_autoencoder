@@ -41,6 +41,12 @@ class AbstractActivationResampler(ABC):
     If none, will use the train dataset size.
     """
 
+    collated_neuron_activity: NeuronActivity | None
+    """Collated neuron activity.
+
+    How many times each neuron has fired, over the current collation window.
+    """
+
     @abstractmethod
     def step_resampler(
         self,
@@ -79,8 +85,6 @@ class AbstractActivationResampler(ABC):
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
-            neuron_activity_sample_size: Sample size for resampling.
-            neuron_activity: Number of times each neuron fired.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:

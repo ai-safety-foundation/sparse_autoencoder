@@ -4,9 +4,6 @@ import pytest
 import torch
 from torch import Tensor
 
-from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
-    ParameterUpdateResults,
-)
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
@@ -59,26 +56,27 @@ def autoencoder_model_fixture(n_input_neurons: int = DEFAULT_N_INPUT_NEURONS) ->
     )
 
 
-# class TestGetDeadNeuronIndices:
-#     """Tests for get_dead_neuron_indices."""
+class TestGetDeadNeuronIndices:
+    """Tests for get_dead_neuron_indices."""
 
-#     @pytest.mark.parametrize(
-#         ("neuron_activity", "threshold", "expected_indices"),
-#         [
-#             (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4])),
-#             (torch.tensor([1, 2, 3, 4, 5]), 0.0, torch.tensor([])),
-#             (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4])),
-#             (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0])),
-#         ],
-#     )
-#     def test_get_dead_neuron_indices(
-#         self, neuron_activity: Tensor, threshold: float, expected_indices: Tensor
-#     ) -> None:
-#         """Test the dead neuron indices match manually created examples."""
-#         res = ActivationResampler.get_dead_neuron_indices(
-#             neuron_activity=neuron_activity, threshold=threshold, neuron_activity_sample_size=10
-#         )
-#         assert torch.equal(res, expected_indices), f"Expected {expected_indices}, got {res}"
+    @pytest.mark.parametrize(
+        ("neuron_activity", "threshold", "expected_indices"),
+        [
+            (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4])),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.0, torch.tensor([])),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4])),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0])),
+        ],
+    )
+    def test_get_dead_neuron_indices(
+        self, neuron_activity: Tensor, threshold: float, expected_indices: Tensor
+    ) -> None:
+        """Test the dead neuron indices match manually created examples."""
+        resampler = ActivationResampler(dead_neuron_threshold=threshold)
+        resampler.collated_neuron_activity = neuron_activity
+        resampler.collated_neuron_activity_vectors_count = 15
+        indices = resampler.get_dead_neuron_indices()
+        assert torch.equal(indices, expected_indices), f"Expected {expected_indices}, got {indices}"
 
 
 class TestComputeLossAndGetActivations:
@@ -267,17 +265,17 @@ class TestResampleDeadNeurons:
         store = TensorActivationStore(100, 5)
         store.extend(store_data)
         model = SparseAutoencoder(5, 10, torch.rand(5))
-
-        resampler = ActivationResampler()
-        resampler._collated_neuron_activity = neuron_activity  # noqa: SLF001 # type: ignore
-        updates = resampler.resample_dead_neurons(
+        resampler = ActivationResampler(resample_interval=10, n_steps_collate=10)
+        updates = resampler.step_resampler(
+            last_resampled=0,
+            batch_neuron_activity=neuron_activity,
             activation_store=store,
             autoencoder=model,
             loss_fn=L2ReconstructionLoss(),
-            train_batch_size=DEFAULT_N_ITEMS,
+            train_batch_size=10,
         )
 
-        assert updates is not None, "Should have updated after 2 steps"
+        assert updates is not None, "Should have updated"
         assert updates.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
         assert updates.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
         assert updates.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
@@ -298,30 +296,32 @@ class TestResampleDeadNeurons:
 
         # Get the current & updated parameters
         current_parameters = model.state_dict()
-        resampler = ActivationResampler()
-        resampler._collated_neuron_activity = neuron_activity  # noqa: SLF001 # type: ignore
-        updated_parameters: ParameterUpdateResults = resampler.resample_dead_neurons(
+        resampler = ActivationResampler(resample_interval=10, n_steps_collate=10)
+        parameter_updates = resampler.step_resampler(
+            last_resampled=0,
+            batch_neuron_activity=neuron_activity,
             activation_store=store,
             autoencoder=model,
             loss_fn=L2ReconstructionLoss(),
-            train_batch_size=DEFAULT_N_ITEMS,
+            train_batch_size=10,
         )
+        assert parameter_updates is not None, "Should have updated"
 
         # Check the updated ones have changed
         current_dead_decoder_weights = current_parameters["_decoder._weight"][:, dead_neuron_idx]
-        updated_dead_decoder_weights = updated_parameters.dead_encoder_weight_updates.squeeze()
+        updated_dead_decoder_weights = parameter_updates.dead_encoder_weight_updates.squeeze()
         assert not torch.equal(
             current_dead_decoder_weights, updated_dead_decoder_weights
         ), "Dead decoder weights should have changed."
 
         current_dead_encoder_weights = current_parameters["_encoder._weight"][dead_neuron_idx]
-        updated_dead_encoder_weights = updated_parameters.dead_encoder_weight_updates.squeeze()
+        updated_dead_encoder_weights = parameter_updates.dead_encoder_weight_updates.squeeze()
         assert not torch.equal(
             current_dead_encoder_weights, updated_dead_encoder_weights
         ), "Dead encoder weights should have changed."
 
         current_dead_encoder_bias = current_parameters["_encoder._bias"][dead_neuron_idx]
-        updated_dead_encoder_bias = updated_parameters.dead_encoder_bias_updates
+        updated_dead_encoder_bias = parameter_updates.dead_encoder_bias_updates
         assert not torch.equal(
             current_dead_encoder_bias, updated_dead_encoder_bias
         ), "Dead encoder bias should have changed."
@@ -362,8 +362,8 @@ class TestResampleDeadNeurons:
 
                 if resample_interval - last_resampled > n_steps_collate:
                     assert (
-                        resampler._collated_neuron_activity is None  # noqa: SLF001 # type: ignore
-                    ), "Should have cleared neuron activity"
+                        resampler.collated_neuron_activity is None
+                    ), "Should have cleared neuron activity"  # type: ignore
 
             last_resampled = 0
 

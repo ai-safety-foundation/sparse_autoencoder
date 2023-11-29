@@ -61,16 +61,10 @@ class ActivationResampler(AbstractActivationResampler):
         causes training to diverge.
     """
 
-    _collated_neuron_activity_vectors_count: int
+    collated_neuron_activity_vectors_count: int
     """Count of how many vectors have been collated.
-    
-    Number of vectors used to collate neuron activity, over the current collation window.
-    """
 
-    _collated_neuron_activity: NeuronActivity | None
-    """Collated neuron activity.
-    
-    How many times each neuron has fired, over the current collation window.
+    Number of vectors used to collate neuron activity, over the current collation window.
     """
 
     _resampled_dead_neurons_count: int
@@ -78,14 +72,14 @@ class ActivationResampler(AbstractActivationResampler):
 
     _max_resamples: int
     """Maximum number of resamples to perform.
-    
+
     Maximum number of times that dead neurons should be resampled, throughout the entire training
     pipeline.
     """
 
     _dead_neuron_threshold: float
     """Dead neuron threshold.
-    
+
     Threshold for determining if a neuron is dead (has "fired" in less than this portion of the
     collated sample).
     """
@@ -111,15 +105,17 @@ class ActivationResampler(AbstractActivationResampler):
                 $\text{resample_interval} - \text{n_steps_collate}$).
             resample_dataset_size: Number of autoencoder input activations to use for calculating
                 the loss, as part of the resampling process to create the reset neuron weights.
+            dead_neuron_threshold: Threshold for determining if a neuron is dead (has "fired" in
+                less than this portion of the collated sample).
         """
         super().__init__()
         self.resample_interval = resample_interval
         self._max_resamples = max_resamples
         self.n_steps_collate = n_steps_collate
-        self._collated_neuron_activity: NeuronActivity | None = None
+        self.collated_neuron_activity: NeuronActivity | None = None
         self._resampled_dead_neurons_count = 0
         self._resample_dataset_size = resample_dataset_size
-        self._collated_neuron_activity_vectors_count = 0
+        self.collated_neuron_activity_vectors_count = 0
         self._dead_neuron_threshold = dead_neuron_threshold
 
     def get_dead_neuron_indices(
@@ -137,13 +133,13 @@ class ActivationResampler(AbstractActivationResampler):
             ValueError: If neuron activity is not set.
         """
         threshold_activity: int = int(
-            self._collated_neuron_activity_vectors_count * self._dead_neuron_threshold
+            self.collated_neuron_activity_vectors_count * self._dead_neuron_threshold
         )
 
-        if self._collated_neuron_activity is None:
+        if self.collated_neuron_activity is None:
             error_message = "Cannot get dead neuron indices without neuron activity."
             raise ValueError(error_message)
-        return torch.where(self._collated_neuron_activity <= threshold_activity)[0]
+        return torch.where(self.collated_neuron_activity <= threshold_activity)[0]
 
     def compute_loss_and_get_activations(
         self,
@@ -347,6 +343,9 @@ class ActivationResampler(AbstractActivationResampler):
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
+
+        Returns:
+            Parameter update results if resampled, else None.
         """
         if self._resampled_dead_neurons_count >= self._max_resamples:
             return None
@@ -356,12 +355,12 @@ class ActivationResampler(AbstractActivationResampler):
             return None
 
         # Collate the neuron activity
-        if self._collated_neuron_activity is None:
-            self._collated_neuron_activity = batch_neuron_activity.detach().cpu().clone()
+        if self.collated_neuron_activity is None:
+            self.collated_neuron_activity = batch_neuron_activity.detach().cpu().clone()
         else:
             detached_neuron_activity = batch_neuron_activity.detach().cpu()
-            self._collated_neuron_activity.add_(detached_neuron_activity)
-        self._collated_neuron_activity_vectors_count += train_batch_size
+            self.collated_neuron_activity.add_(detached_neuron_activity)
+        self.collated_neuron_activity_vectors_count += train_batch_size
 
         # Check if we should resample.
         if last_resampled % self.resample_interval != 0:
@@ -396,7 +395,7 @@ class ActivationResampler(AbstractActivationResampler):
         Raises:
             ValueError: If neuron activity is not set.
         """
-        if self._collated_neuron_activity is None:
+        if self.collated_neuron_activity is None:
             error_str = "Cannot resample without neuron activity."
             raise ValueError(error_str)
 
@@ -438,7 +437,7 @@ class ActivationResampler(AbstractActivationResampler):
             # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
             # encoder bias element to zero.
             rescaled_sampled_input = self.renormalize_and_scale(
-                sampled_input, self._collated_neuron_activity, encoder_weight
+                sampled_input, self.collated_neuron_activity, encoder_weight
             )
             dead_encoder_bias_updates = torch.zeros_like(
                 dead_neuron_indices,
@@ -447,8 +446,8 @@ class ActivationResampler(AbstractActivationResampler):
             )
 
             self._resampled_dead_neurons_count += 1
-            self._collated_neuron_activity = None
-            self._collated_neuron_activity_vectors_count = 0
+            self.collated_neuron_activity = None
+            self.collated_neuron_activity_vectors_count = 0
 
             return ParameterUpdateResults(
                 dead_neuron_indices=dead_neuron_indices,
