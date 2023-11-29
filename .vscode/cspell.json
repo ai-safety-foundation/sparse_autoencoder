@@ -2,6 +2,7 @@
     "language": "en,en-GB",
     "words": [
         "allclose",
+        "arange",
         "arithmatex",
         "astroid",
         "autocast",
