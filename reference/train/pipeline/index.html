@@ -3470,12 +3470,12 @@
                 <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;validate&quot;</span><span class="p">})</span>
                 <span class="k">if</span> <span class="n">validate_frequency</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">last_validated</span> <span class="o">&gt;=</span> <span class="n">validate_frequency</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">validate_sae</span><span class="p">(</span><span class="n">validation_number_activations</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">last_validated</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">last_validated</span> <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="c1"># Checkpoint (if needed)</span>
                 <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;checkpoint&quot;</span><span class="p">})</span>
                 <span class="k">if</span> <span class="n">checkpoint_frequency</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">last_checkpoint</span> <span class="o">&gt;=</span> <span class="n">checkpoint_frequency</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">last_checkpoint</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">last_checkpoint</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">()</span>
 
                 <span class="c1"># Update the progress bar</span>
@@ -4790,12 +4790,12 @@ every 200m).</p>
             <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;validate&quot;</span><span class="p">})</span>
             <span class="k">if</span> <span class="n">validate_frequency</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">last_validated</span> <span class="o">&gt;=</span> <span class="n">validate_frequency</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">validate_sae</span><span class="p">(</span><span class="n">validation_number_activations</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">last_validated</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">last_validated</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="c1"># Checkpoint (if needed)</span>
             <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;checkpoint&quot;</span><span class="p">})</span>
             <span class="k">if</span> <span class="n">checkpoint_frequency</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">last_checkpoint</span> <span class="o">&gt;=</span> <span class="n">checkpoint_frequency</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">last_checkpoint</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">last_checkpoint</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">()</span>
 
             <span class="c1"># Update the progress bar</span>
