@@ -12,6 +12,7 @@
         "capturable",
         "categoricalwprobabilities",
         "circuitsvis",
+        "coeff",
         "colab",
         "cuda",
         "cudnn",
