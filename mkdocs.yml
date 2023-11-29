@@ -5,7 +5,7 @@ site_dir: docs/generated
 repo_url: https://github.com/ai-safety-foundation/sparse_autoencoder
 repo_name: ai-safety-foundation/sparse_autoencoder
 edit_uri: "" # Disabled as we use mkdocstrings which auto-generates some pages
-# strict: true
+strict: true
 
 theme:
   name: material
@@ -42,6 +42,8 @@ markdown_extensions:
   - pymdownx.arithmatex: # Render LaTeX via MathJax
       generic: true
   - pymdownx.superfences # Seems to enable syntax highlighting when used with the Material theme.
+  - pymdownx.magiclink
+  - pymdownx.saneheaders
   - pymdownx.details # Allowing hidden expandable regions denoted by ???
   - pymdownx.snippets: # Include one Markdown file into another
       base_path: docs/content
@@ -53,9 +55,6 @@ markdown_extensions:
 plugins:
   - search
   - autorefs
-  # - gen-files:
-  #     scripts:
-  #       - docs/gen_ref_pages.py
   - section-index
   - literate-nav:
       nav_file: SUMMARY.md
@@ -73,3 +72,5 @@ plugins:
             line_length: 100
             show_symbol_type_heading: true
             edit_uri: ""
+  - htmlproofer:
+      raise_error: True
