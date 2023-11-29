@@ -49,8 +49,6 @@ class AbstractActivationResampler(ABC):
         activation_store: TensorActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
-        neuron_activity_sample_size: int,
-        neuron_activity: NeuronActivity,
         train_batch_size: int,
     ) -> ParameterUpdateResults | None:
         """Resample dead neurons.
