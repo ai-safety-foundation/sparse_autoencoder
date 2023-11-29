@@ -2,6 +2,7 @@
     "language": "en,en-GB",
     "words": [
         "allclose",
+        "arange",
         "arithmatex",
         "astroid",
         "autocast",
@@ -11,6 +12,7 @@
         "capturable",
         "categoricalwprobabilities",
         "circuitsvis",
+        "coeff",
         "colab",
         "cuda",
         "cudnn",

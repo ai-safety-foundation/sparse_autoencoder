@@ -19,6 +19,7 @@
         "streetsidesoftware.code-spell-checker",
         "yzhang.markdown-all-in-one",
         "kevinrose.vsc-python-indent",
-        "donjayamanne.python-environment-manager"
+        "donjayamanne.python-environment-manager",
+        "tamasfe.even-better-toml"
     ]
 }
