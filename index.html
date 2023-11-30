@@ -309,6 +309,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
       Features
@@ -321,15 +330,6 @@
   <a href="#designed-for-research" class="md-nav__link">
     <span class="md-ellipsis">
       Designed for Research
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo
     </span>
   </a>
   
@@ -2225,6 +2225,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
       Features
@@ -2237,15 +2246,6 @@
   <a href="#designed-for-research" class="md-nav__link">
     <span class="md-ellipsis">
       Designed for Research
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      Demo
     </span>
   </a>
   
@@ -2274,22 +2274,28 @@
 <p>A sparse autoencoder for mechanistic interpretability research.</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>sparse_autoencoder
 </code></pre></div>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¤</a></h2>
+<p>Check out the <a href="demo">demo notebook</a> for a guide to using this library.</p>
+<p>We also highly recommend skimming the reference docs to see all the features that are available.</p>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">¤</a></h2>
 <p>This library contains:</p>
 <ol>
 <li><strong>A sparse autoencoder model</strong>, along with all the underlying PyTorch components you need to
       customise and/or build your own:<ul>
-<li>Encoder, constrained unit norm decoder and tied bias PyTorch modules in <code>autoencoder</code>.</li>
-<li>L1 and L2 loss modules in <code>loss</code>.</li>
-<li>Adam module with helper method to reset state in <code>optimizer</code>.</li>
+<li>Encoder, constrained unit norm decoder and tied bias PyTorch modules in
+    <a class="autorefs autorefs-internal" href="reference/autoencoder/#sparse_autoencoder.autoencoder">sparse_autoencoder.autoencoder</a>.</li>
+<li>L1 and L2 loss modules in <a class="autorefs autorefs-internal" href="reference/loss/#sparse_autoencoder.loss">sparse_autoencoder.loss</a>.</li>
+<li>Adam module with helper method to reset state in <a class="autorefs autorefs-internal" href="reference/optimizer/#sparse_autoencoder.optimizer">sparse_autoencoder.optimizer</a>.</li>
 </ul>
 </li>
 <li><strong>Activations data generator</strong> using TransformerLens, with the underlying steps in case you
       want to customise the approach:<ul>
-<li>Activation store options (in-memory or on disk) in <code>activation_store</code>.</li>
-<li>Hook to get the activations from TransformerLens in an efficient way in <code>source_model</code>.</li>
-<li>Source dataset (i.e. prompts to generate these activations) utils in <code>source_data</code>, that
-    stream data from HuggingFace and pre-process (tokenize &amp; shuffle).</li>
+<li>Activation store options (in-memory or on disk) in <a class="autorefs autorefs-internal" href="reference/activation_store/#sparse_autoencoder.activation_store">sparse_autoencoder.activation_store</a>.</li>
+<li>Hook to get the activations from TransformerLens in an efficient way in
+    <a class="autorefs autorefs-internal" href="reference/source_model/#sparse_autoencoder.source_model">sparse_autoencoder.source_model</a>.</li>
+<li>Source dataset (i.e. prompts to generate these activations) utils in
+    <a class="autorefs autorefs-internal" href="reference/source_data/#sparse_autoencoder.source_data">sparse_autoencoder.source_data</a>, that stream data from HuggingFace and pre-process
+    (tokenize &amp; shuffle).</li>
 </ul>
 </li>
 <li><strong>Activation resampler</strong> to help reduce the number of dead neurons.</li>
@@ -2303,11 +2309,11 @@
 Monosemanticity: Decomposing Language Models With Dictionary Learning
 </a>, so you can pip install
 the library and get started quickly. Then when you need to customise something, you can just extend
-the abstract class for that component (e.g. you can extend <code>AbstractEncoder</code> if you want to
-customise the encoder layer, and then easily drop it in the standard <code>SparseAutoencoder</code> model to
-keep everything else as is. Every component is fully documented, so it's nice and easy to do this.</p>
-<h2 id="demo">Demo<a class="headerlink" href="#demo" title="Permanent link">¤</a></h2>
-<p>Check out the <a href="demo">demo notebook</a> for a guide to using this library.</p>
+the abstract class for that component (e.g. you can extend
+<a class="autorefs autorefs-internal" href="reference/autoencoder/components/abstract_encoder/#sparse_autoencoder.autoencoder.components.abstract_encoder"><code>AbstractEncoder</code></a> if you want to
+customise the encoder layer, and then easily drop it in the standard
+<a class="autorefs autorefs-internal" href="reference/autoencoder/model/#sparse_autoencoder.autoencoder.model"><code>SparseAutoencoder</code></a> model to keep everything else as is.
+Every component is fully documented, so it's nice and easy to do this.</p>
 
 
 

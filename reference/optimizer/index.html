@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sparse_autoencoder.optimizer" class="md-skip">
+        <a href="#optimizers-for-sparse-autoencoders" class="md-skip">
           Skip to content
         </a>
       
@@ -2154,6 +2154,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2185,7 +2187,8 @@
                   
 
 
-  <h1>optimizer</h1>
+<h1 id="optimizers-for-sparse-autoencoders">Optimizers for Sparse Autoencoders<a class="headerlink" href="#optimizers-for-sparse-autoencoders" title="Permanent link">¤</a></h1>
+
 
 <div class="doc doc-object doc-module">
 
@@ -2195,12 +2198,13 @@
   <div class="doc doc-contents first">
   
       <p>Optimizers for Sparse Autoencoders.</p>
-<p>When training a Sparse Autoencoder, it can be necessary to manually edit the model parameters
-(e.g. with neuron resampling to prevent dead neurons). When doing this, it's also necessary to
-reset the optimizer state for these parameters, as otherwise things like running averages will be
-incorrect (e.g. the running averages of the gradients and the squares of gradients with Adam).</p>
-<p>The optimizer used in the original <a href="Towards Monosemanticity: Decomposing Language Models With Dictionary Learning">Towards Monosemanticity: Decomposing Language Models With
-Dictionary Learning</a>
+<p>When training a Sparse Autoencoder, it can be necessary to manually edit the model parameters (e.g.
+with neuron resampling to prevent dead neurons). When doing this, it's also necessary to reset the
+optimizer state for these parameters, as otherwise things like running averages will be incorrect
+(e.g. the running averages of the gradients and the squares of gradients with Adam).</p>
+<p>The optimizer used in the original [Towards Monosemanticity: Decomposing Language Models With
+Dictionary
+Learning]<a href="https://www.anthropic.com/index/towards-monosemanticity-decomposing-language-models-with-dictionary-learning">https://www.anthropic.com/index/towards-monosemanticity-decomposing-language-models-with-dictionary-learning</a>)
 paper is available here as :class:<code>AdamWithReset</code>.</p>
 <p>To enable creating other optimizers with reset methods, we also provide the interface
 :class:<code>AbstractOptimizerWithReset</code>.</p>

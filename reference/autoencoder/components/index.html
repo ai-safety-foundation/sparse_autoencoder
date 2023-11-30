@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sparse_autoencoder.autoencoder.components" class="md-skip">
+        <a href="#sparse-autoencoder-components" class="md-skip">
           Skip to content
         </a>
       
@@ -2156,6 +2156,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2571,7 +2573,8 @@
                   
 
 
-  <h1>components</h1>
+<h1 id="sparse-autoencoder-components">Sparse autoencoder components<a class="headerlink" href="#sparse-autoencoder-components" title="Permanent link">¤</a></h1>
+
 
 <div class="doc doc-object doc-module">
 
@@ -4386,7 +4389,7 @@ element in the learned activation space.</p>
 <p>The tied pre-encoder bias is a learned bias term that is subtracted from the input before
 encoding, and added back after decoding.</p>
 <p>The bias parameter must be initialised in the parent module, and then passed to this layer.</p>
-<p>https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</p>
+<p><a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias">https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-bias</a></p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/components/tied_bias.py</code></summary>
@@ -4903,7 +4906,7 @@ sparsity loss term by increasing the size of the feature vectors in <span class=
 Learning</em> paper found that removing the gradient information parallel to the dictionary
 vectors before applying the gradient step, rather than resetting the dictionary vectors to
 unit norm after each gradient step, results in a small but real reduction in total
-loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).</p>
+loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization">https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization</a>).</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
