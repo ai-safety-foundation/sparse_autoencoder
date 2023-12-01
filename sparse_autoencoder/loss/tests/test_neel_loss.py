@@ -116,8 +116,10 @@ def test_l2_loss_the_same(mock_activations: MockActivations) -> None:
     )[1].sum()
 
     # Fix for the fact that Neel's L2 loss is summed across the features dimension and then averaged
-    # across the batch. By contrast for l1 it is summed across both features and batch dimensions.
-    neel_l2_loss_fixed = neel_l2_loss * len(mock_activations["source_activations"])
+    # across the batch. It should be the other way round
+    batch_size = mock_activations["source_activations"].shape[0]
+    feature_size = mock_activations["source_activations"].shape[1]
+    neel_l2_loss_fixed = neel_l2_loss * batch_size / feature_size
 
     assert torch.allclose(neel_l2_loss_fixed, lib_l2_loss)
 

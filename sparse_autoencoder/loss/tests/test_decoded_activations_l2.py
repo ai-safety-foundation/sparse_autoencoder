@@ -17,7 +17,7 @@ def test_l2_loss_forward(l2_loss: L2ReconstructionLoss) -> None:
     output_activations = torch.tensor([[1.0, 5.0], [1.0, 5.0]])
     learned_activations = torch.zeros_like(input_activations)
 
-    expected_loss = torch.tensor([8.5, 2.5]) * 2
+    expected_loss = torch.tensor([8.5, 2.5])
     calculated_loss = l2_loss.forward(input_activations, learned_activations, output_activations)
 
     assert torch.allclose(calculated_loss, expected_loss), "L2 loss calculation is incorrect."

@@ -3,7 +3,7 @@ from typing import final
 
 from torch.nn.functional import mse_loss
 
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss
+from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
 from sparse_autoencoder.tensor_types import (
     InputOutputActivationBatch,
     LearnedActivationBatch,
@@ -29,8 +29,20 @@ class L2ReconstructionLoss(AbstractLoss):
         >>> unused_activations = torch.zeros_like(input_activations)
         >>> # Outputs both loss and metrics to log
         >>> loss(input_activations, unused_activations, output_activations)
-        (tensor(11.), {'l2_reconstruction_loss': 11.0})
+        (tensor(5.5000), {'l2_reconstruction_loss': 5.5})
     """
+
+    _reduction: LossReductionType
+    """MSE reduction type."""
+
+    def __init__(self, reduction: LossReductionType = LossReductionType.MEAN) -> None:
+        """Initialise the L2 reconstruction loss.
+
+        Args:
+            reduction: MSE reduction type.
+        """
+        super().__init__()
+        self._reduction = reduction
 
     def log_name(self) -> str:
         """Log name.
@@ -59,7 +71,8 @@ class L2ReconstructionLoss(AbstractLoss):
         """
         square_error_loss = mse_loss(source_activations, decoded_activations, reduction="none")
 
-        # Sum over just the features dimension (i.e. batch itemwise loss). Note this is sum rather
-        # than mean to be consistent with L1 loss (and thus make the l1 coefficient stable to number
-        # of features).
-        return square_error_loss.sum(dim=-1)
+        match self._reduction:
+            case LossReductionType.MEAN:
+                return square_error_loss.mean(dim=-1)
+            case LossReductionType.SUM:
+                return square_error_loss.sum(dim=-1)
