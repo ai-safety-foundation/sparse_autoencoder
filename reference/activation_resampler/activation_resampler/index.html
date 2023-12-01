@@ -2429,7 +2429,17 @@ causes training to diverge.</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 29</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
 <span class="normal"> 30</span>
 <span class="normal"> 31</span>
 <span class="normal"> 32</span>
@@ -2857,7 +2867,9 @@ causes training to diverge.</p>
 <span class="normal">454</span>
 <span class="normal">455</span>
 <span class="normal">456</span>
-<span class="normal">457</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ActivationResampler</span><span class="p">(</span><span class="n">AbstractActivationResampler</span><span class="p">):</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ActivationResampler</span><span class="p">(</span><span class="n">AbstractActivationResampler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Activation resampler.</span>
 
 <span class="sd">    Collates the number of times each neuron fires over a set number of learned activation vectors,</span>
@@ -2943,7 +2955,7 @@ causes training to diverge.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">resample_interval</span> <span class="o">=</span> <span class="n">resample_interval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_resamples</span> <span class="o">=</span> <span class="n">max_resamples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_steps_collate</span> <span class="o">=</span> <span class="n">n_steps_collate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">collated_neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collated_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resampled_dead_neurons_count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="o">=</span> <span class="n">resample_dataset_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collated_neuron_activity_vectors_count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -2951,7 +2963,7 @@ causes training to diverge.</p>
 
     <span class="k">def</span> <span class="nf">get_dead_neuron_indices</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LearntNeuronIndices</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the indices of neurons that are dead.</span>
 
 <span class="sd">        Identifies any neurons that have fired less than the threshold portion of the collated</span>
@@ -2978,7 +2990,9 @@ causes training to diverge.</p>
         <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
         <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TrainBatchStatistic</span><span class="p">,</span> <span class="n">InputOutputActivationBatch</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">],</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
+    <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the loss on a random subset of inputs.</span>
 
 <span class="sd">        Computes the loss and also stores the input activations (for use in resampling neurons).</span>
@@ -2996,8 +3010,10 @@ causes training to diverge.</p>
 <span class="sd">            ValueError: If the number of items in the store is less than the number of inputs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">loss_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TrainBatchStatistic</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">input_activations_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationBatch</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">loss_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">input_activations_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
+                <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">)</span>
             <span class="n">num_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
             <span class="n">batches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">num_inputs</span> <span class="o">//</span> <span class="n">train_batch_size</span>
@@ -3029,7 +3045,7 @@ causes training to diverge.</p>
             <span class="k">return</span> <span class="n">loss_result</span><span class="p">,</span> <span class="n">input_activations</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign the sampling probabilities for each input activations vector.</span>
 
 <span class="sd">        Assign each input vector a probability of being picked that is proportional to the square of</span>
@@ -3051,10 +3067,10 @@ causes training to diverge.</p>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">sample_input</span><span class="p">(</span>
-        <span class="n">probabilities</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span><span class="p">,</span>
-        <span class="n">input_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+        <span class="n">probabilities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">],</span>
+        <span class="n">input_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
         <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SampledDeadNeuronInputs</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample an input vector based on the provided probabilities.</span>
 
 <span class="sd">        Example:</span>
@@ -3092,17 +3108,17 @@ causes training to diverge.</p>
                 <span class="n">device</span><span class="o">=</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
             <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="n">sample_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
+        <span class="n">sample_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
             <span class="n">probabilities</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">input_activations</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">,</span> <span class="p">:]</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">renormalize_and_scale</span><span class="p">(</span>
-        <span class="n">sampled_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span><span class="p">,</span>
-        <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
-        <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeadEncoderNeuronWeightUpdates</span><span class="p">:</span>
+        <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+        <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+        <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Renormalize and scale the resampled dictionary vectors.</span>
 
 <span class="sd">        Renormalize the input vector to equal the average norm of the encoder weights for alive</span>
@@ -3146,20 +3162,24 @@ causes training to diverge.</p>
             <span class="p">)</span>
 
         <span class="c1"># Calculate the average norm of the encoder weights for alive neurons.</span>
-        <span class="n">alive_encoder_weights</span><span class="p">:</span> <span class="n">AliveEncoderWeights</span> <span class="o">=</span> <span class="n">encoder_weight</span><span class="p">[</span><span class="n">alive_neuron_mask</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">average_alive_norm</span><span class="p">:</span> <span class="n">ItemTensor</span> <span class="o">=</span> <span class="n">alive_encoder_weights</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">alive_encoder_weights</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">encoder_weight</span><span class="p">[</span><span class="n">alive_neuron_mask</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">average_alive_norm</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span> <span class="o">=</span> <span class="n">alive_encoder_weights</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+            <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
         <span class="c1"># Renormalize the input vector to equal the average norm of the encoder weights for alive</span>
         <span class="c1"># neurons times 0.2.</span>
-        <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
-            <span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
-        <span class="p">)</span>
+        <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">renormalized_input</span> <span class="o">*</span> <span class="p">(</span><span class="n">average_alive_norm</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">last_resampled</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
+        <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
         <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
         <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
@@ -3244,21 +3264,25 @@ causes training to diverge.</p>
 
             <span class="c1"># Assign each input vector a probability of being picked that is proportional to the</span>
             <span class="c1"># square of the autoencoder&#39;s loss on that input.</span>
-            <span class="n">sample_probabilities</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+            <span class="n">sample_probabilities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_sampling_probabilities</span><span class="p">(</span>
+                <span class="n">loss</span>
+            <span class="p">)</span>
 
             <span class="c1"># Get references to the encoder and decoder parameters</span>
-            <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">weight</span>
+            <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+                <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">weight</span>
 
             <span class="c1"># For each dead neuron sample an input according to these probabilities.</span>
-            <span class="n">sampled_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_input</span><span class="p">(</span>
-                <span class="n">sample_probabilities</span><span class="p">,</span> <span class="n">input_activations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dead_neuron_indices</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+                <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_input</span><span class="p">(</span><span class="n">sample_probabilities</span><span class="p">,</span> <span class="n">input_activations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dead_neuron_indices</span><span class="p">))</span>
 
             <span class="c1"># Renormalize the input vector to have unit L2 norm and set this to be the dictionary</span>
             <span class="c1"># vector for the dead autoencoder neuron.</span>
-            <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
-                <span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
-            <span class="p">)</span>
+            <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+                <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="n">dead_decoder_weight_updates</span> <span class="o">=</span> <span class="n">rearrange</span><span class="p">(</span>
                 <span class="n">renormalized_input</span><span class="p">,</span> <span class="s2">&quot;dead_neuron input_feature -&gt; input_feature dead_neuron&quot;</span>
@@ -3434,7 +3458,17 @@ less than this portion of the collated sample).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
 <span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
@@ -3456,17 +3490,7 @@ less than this portion of the collated sample).</p>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">resample_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200_000_000</span><span class="p">,</span>
     <span class="n">max_resamples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
@@ -3494,7 +3518,7 @@ less than this portion of the collated sample).</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">resample_interval</span> <span class="o">=</span> <span class="n">resample_interval</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_max_resamples</span> <span class="o">=</span> <span class="n">max_resamples</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">n_steps_collate</span> <span class="o">=</span> <span class="n">n_steps_collate</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">collated_neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">collated_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_resampled_dead_neurons_count</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="o">=</span> <span class="n">resample_dataset_size</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">collated_neuron_activity_vectors_count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -3555,7 +3579,7 @@ tensor([0.1000, 0.3000, 0.6000])</p>
         <tr>
           <td><code>loss</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.TrainBatchStatistic" href="../../tensor_types/#sparse_autoencoder.tensor_types.TrainBatchStatistic">TrainBatchStatistic</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3595,7 +3619,13 @@ tensor([0.1000, 0.3000, 0.6000])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
@@ -3608,14 +3638,8 @@ tensor([0.1000, 0.3000, 0.6000])</p>
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Assign the sampling probabilities for each input activations vector.</span>
 
 <span class="sd">    Assign each input vector a probability of being picked that is proportional to the square of</span>
@@ -3742,7 +3766,7 @@ tensor([0.1000, 0.3000, 0.6000])</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.TrainBatchStatistic" href="../../tensor_types/#sparse_autoencoder.tensor_types.TrainBatchStatistic">TrainBatchStatistic</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a>]</code>
+                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>], <span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3779,7 +3803,17 @@ tensor([0.1000, 0.3000, 0.6000])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
@@ -3827,19 +3861,15 @@ tensor([0.1000, 0.3000, 0.6000])</p>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute_loss_and_get_activations</span><span class="p">(</span>
+<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute_loss_and_get_activations</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TrainBatchStatistic</span><span class="p">,</span> <span class="n">InputOutputActivationBatch</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">],</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
+<span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the loss on a random subset of inputs.</span>
 
 <span class="sd">    Computes the loss and also stores the input activations (for use in resampling neurons).</span>
@@ -3857,8 +3887,10 @@ tensor([0.1000, 0.3000, 0.6000])</p>
 <span class="sd">        ValueError: If the number of items in the store is less than the number of inputs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">loss_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TrainBatchStatistic</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">input_activations_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputOutputActivationBatch</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">loss_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">input_activations_batches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
+            <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">)</span>
         <span class="n">num_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
         <span class="n">batches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">num_inputs</span> <span class="o">//</span> <span class="n">train_batch_size</span>
@@ -3925,7 +3957,7 @@ sample size.</p>
     <tbody>
         <tr>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.LearntNeuronIndices" href="../../tensor_types/#sparse_autoencoder.tensor_types.LearntNeuronIndices">LearntNeuronIndices</a></code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <span title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</span>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3962,7 +3994,17 @@ sample size.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
@@ -3973,19 +4015,9 @@ sample size.</p>
 <span class="normal">129</span>
 <span class="normal">130</span>
 <span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_dead_neuron_indices</span><span class="p">(</span>
+<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_dead_neuron_indices</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LearntNeuronIndices</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Identify the indices of neurons that are dead.</span>
 
 <span class="sd">    Identifies any neurons that have fired less than the threshold portion of the collated</span>
@@ -4069,7 +4101,7 @@ tensor([[0.2000, 0.2000]])</p>
         <tr>
           <td><code>sampled_input</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SampledDeadNeuronInputs" href="../../tensor_types/#sparse_autoencoder.tensor_types.SampledDeadNeuronInputs">SampledDeadNeuronInputs</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE">DEAD_FEATURE</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4083,7 +4115,7 @@ tensor([[0.2000, 0.2000]])</p>
         <tr>
           <td><code>neuron_activity</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.NeuronActivity" href="../../tensor_types/#sparse_autoencoder.tensor_types.NeuronActivity">NeuronActivity</a></code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4097,7 +4129,7 @@ tensor([[0.2000, 0.2000]])</p>
         <tr>
           <td><code>encoder_weight</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.EncoderWeights" href="../../tensor_types/#sparse_autoencoder.tensor_types.EncoderWeights">EncoderWeights</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4124,7 +4156,7 @@ tensor([[0.2000, 0.2000]])</p>
     <tbody>
         <tr>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.DeadEncoderNeuronWeightUpdates" href="../../tensor_types/#sparse_autoencoder.tensor_types.DeadEncoderNeuronWeightUpdates">DeadEncoderNeuronWeightUpdates</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE">DEAD_FEATURE</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4161,7 +4193,13 @@ tensor([[0.2000, 0.2000]])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
@@ -4216,14 +4254,12 @@ tensor([[0.2000, 0.2000]])</p>
 <span class="normal">321</span>
 <span class="normal">322</span>
 <span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">324</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">renormalize_and_scale</span><span class="p">(</span>
-    <span class="n">sampled_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span><span class="p">,</span>
-    <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
-    <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeadEncoderNeuronWeightUpdates</span><span class="p">:</span>
+    <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+    <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+    <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Renormalize and scale the resampled dictionary vectors.</span>
 
 <span class="sd">    Renormalize the input vector to equal the average norm of the encoder weights for alive</span>
@@ -4267,14 +4303,18 @@ tensor([[0.2000, 0.2000]])</p>
         <span class="p">)</span>
 
     <span class="c1"># Calculate the average norm of the encoder weights for alive neurons.</span>
-    <span class="n">alive_encoder_weights</span><span class="p">:</span> <span class="n">AliveEncoderWeights</span> <span class="o">=</span> <span class="n">encoder_weight</span><span class="p">[</span><span class="n">alive_neuron_mask</span><span class="p">,</span> <span class="p">:]</span>
-    <span class="n">average_alive_norm</span><span class="p">:</span> <span class="n">ItemTensor</span> <span class="o">=</span> <span class="n">alive_encoder_weights</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">alive_encoder_weights</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">encoder_weight</span><span class="p">[</span><span class="n">alive_neuron_mask</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">average_alive_norm</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span> <span class="o">=</span> <span class="n">alive_encoder_weights</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+        <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
     <span class="c1"># Renormalize the input vector to equal the average norm of the encoder weights for alive</span>
     <span class="c1"># neurons times 0.2.</span>
-    <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
-        <span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
-    <span class="p">)</span>
+    <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">renormalized_input</span> <span class="o">*</span> <span class="p">(</span><span class="n">average_alive_norm</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -4420,7 +4460,9 @@ tensor([[0.2000, 0.2000]])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">377</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
 <span class="normal">378</span>
 <span class="normal">379</span>
 <span class="normal">380</span>
@@ -4500,7 +4542,9 @@ tensor([[0.2000, 0.2000]])</p>
 <span class="normal">454</span>
 <span class="normal">455</span>
 <span class="normal">456</span>
-<span class="normal">457</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
@@ -4539,21 +4583,25 @@ tensor([[0.2000, 0.2000]])</p>
 
         <span class="c1"># Assign each input vector a probability of being picked that is proportional to the</span>
         <span class="c1"># square of the autoencoder&#39;s loss on that input.</span>
-        <span class="n">sample_probabilities</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_sampling_probabilities</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+        <span class="n">sample_probabilities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_sampling_probabilities</span><span class="p">(</span>
+            <span class="n">loss</span>
+        <span class="p">)</span>
 
         <span class="c1"># Get references to the encoder and decoder parameters</span>
-        <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">EncoderWeights</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">weight</span>
+        <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">autoencoder</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">weight</span>
 
         <span class="c1"># For each dead neuron sample an input according to these probabilities.</span>
-        <span class="n">sampled_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_input</span><span class="p">(</span>
-            <span class="n">sample_probabilities</span><span class="p">,</span> <span class="n">input_activations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dead_neuron_indices</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_input</span><span class="p">(</span><span class="n">sample_probabilities</span><span class="p">,</span> <span class="n">input_activations</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dead_neuron_indices</span><span class="p">))</span>
 
         <span class="c1"># Renormalize the input vector to have unit L2 norm and set this to be the dictionary</span>
         <span class="c1"># vector for the dead autoencoder neuron.</span>
-        <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">SampledDeadNeuronInputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span>
-            <span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
-        <span class="p">)</span>
+        <span class="n">renormalized_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">sampled_input</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">dead_decoder_weight_updates</span> <span class="o">=</span> <span class="n">rearrange</span><span class="p">(</span>
             <span class="n">renormalized_input</span><span class="p">,</span> <span class="s2">&quot;dead_neuron input_feature -&gt; input_feature dead_neuron&quot;</span>
@@ -4640,7 +4688,7 @@ sampled_input.tolist()
         <tr>
           <td><code>probabilities</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.TrainBatchStatistic" href="../../tensor_types/#sparse_autoencoder.tensor_types.TrainBatchStatistic">TrainBatchStatistic</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4654,7 +4702,7 @@ sampled_input.tolist()
         <tr>
           <td><code>input_activations</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.InputOutputActivationBatch" href="../../tensor_types/#sparse_autoencoder.tensor_types.InputOutputActivationBatch">InputOutputActivationBatch</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4695,7 +4743,7 @@ sampled_input.tolist()
     <tbody>
         <tr>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.SampledDeadNeuronInputs" href="../../tensor_types/#sparse_autoencoder.tensor_types.SampledDeadNeuronInputs">SampledDeadNeuronInputs</a></code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.DEAD_FEATURE">DEAD_FEATURE</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4732,7 +4780,13 @@ sampled_input.tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
@@ -4772,18 +4826,12 @@ sampled_input.tolist()
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">sample_input</span><span class="p">(</span>
-    <span class="n">probabilities</span><span class="p">:</span> <span class="n">TrainBatchStatistic</span><span class="p">,</span>
-    <span class="n">input_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span><span class="p">,</span>
+    <span class="n">probabilities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">],</span>
+    <span class="n">input_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
     <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SampledDeadNeuronInputs</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sample an input vector based on the provided probabilities.</span>
 
 <span class="sd">    Example:</span>
@@ -4821,7 +4869,7 @@ sampled_input.tolist()
             <span class="n">device</span><span class="o">=</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-    <span class="n">sample_indices</span><span class="p">:</span> <span class="n">LearntNeuronIndices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
+    <span class="n">sample_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
         <span class="n">probabilities</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">input_activations</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">,</span> <span class="p">:]</span>
@@ -4877,7 +4925,7 @@ sampled_input.tolist()
         <tr>
           <td><code>batch_neuron_activity</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.NeuronActivity" href="../../tensor_types/#sparse_autoencoder.tensor_types.NeuronActivity">NeuronActivity</a></code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4973,7 +5021,9 @@ sampled_input.tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
@@ -5018,12 +5068,10 @@ sampled_input.tolist()
 <span class="normal">370</span>
 <span class="normal">371</span>
 <span class="normal">372</span>
-<span class="normal">373</span>
-<span class="normal">374</span>
-<span class="normal">375</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
+<span class="normal">373</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">last_resampled</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">NeuronActivity</span><span class="p">,</span>
+    <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
     <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>

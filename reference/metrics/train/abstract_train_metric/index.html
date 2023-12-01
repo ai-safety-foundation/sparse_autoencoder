@@ -2458,11 +2458,11 @@
 <span class="k">class</span> <span class="nc">TrainMetricData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train metric data.&quot;&quot;&quot;</span>
 
-    <span class="n">input_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span>
+    <span class="n">input_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
 
-    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">LearnedActivationBatch</span>
+    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
 
-    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">InputOutputActivationBatch</span>
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
