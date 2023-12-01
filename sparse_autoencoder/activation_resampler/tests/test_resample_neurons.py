@@ -1,5 +1,6 @@
 """Tests for the resample_neurons module."""
 
+from jaxtyping import Float, Int
 import pytest
 import torch
 from torch import Tensor
@@ -9,12 +10,7 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
-from sparse_autoencoder.tensor_types import (
-    AliveEncoderWeights,
-    EncoderWeights,
-    NeuronActivity,
-    SampledDeadNeuronInputs,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 DEFAULT_N_ITEMS: int = 100
@@ -200,10 +196,10 @@ class TestRenormalizeAndScale:
 
     @staticmethod
     def calculate_expected_output(
-        sampled_input: SampledDeadNeuronInputs,
-        neuron_activity: NeuronActivity,
-        encoder_weight: AliveEncoderWeights,
-    ) -> SampledDeadNeuronInputs:
+        sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
+        neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
+        encoder_weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
+    ) -> Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Non-vectorized approach to compare against."""
         # Initialize variables
         total_norm = 0
@@ -228,9 +224,13 @@ class TestRenormalizeAndScale:
 
     def test_basic_renormalization(self) -> None:
         """Test basic renormalization with simple inputs."""
-        sampled_input: SampledDeadNeuronInputs = torch.tensor([[3.0, 4.0]])
-        neuron_activity: NeuronActivity = torch.tensor([1, 0, 1, 0, 1, 1])
-        encoder_weight: EncoderWeights = torch.ones((6, 2))
+        sampled_input: Float[
+            Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = torch.tensor([[3.0, 4.0]])
+        neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE] = torch.tensor([1, 0, 1, 0, 1, 1])
+        encoder_weight: Float[
+            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = torch.ones((6, 2))
 
         rescaled_input = ActivationResampler.renormalize_and_scale(
             sampled_input, neuron_activity, encoder_weight

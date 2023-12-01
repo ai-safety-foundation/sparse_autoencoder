@@ -2,20 +2,16 @@
 
 from typing import final
 
+from jaxtyping import Float, Int
 import pytest
 import torch
+from torch import Tensor
 from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import (
     AbstractEncoder,
 )
-from sparse_autoencoder.tensor_types import (
-    EncoderWeights,
-    InputOutputActivationBatch,
-    InputOutputNeuronIndices,
-    LearnedActivationBatch,
-    LearntActivationVector,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 @final
@@ -30,22 +26,26 @@ class MockEncoder(AbstractEncoder):
         self._bias = Parameter(torch.empty(encoded_features))
 
     @property
-    def weight(self) -> EncoderWeights:
+    def weight(self) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Get the weight of the encoder."""
         return self._weight
 
     @property
-    def bias(self) -> LearntActivationVector:
+    def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
         """Get the bias of the encoder."""
         return self._bias
 
-    def forward(self, x: LearnedActivationBatch) -> InputOutputActivationBatch:
+    def forward(
+        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
         """Mock forward pass."""
         return torch.nn.functional.linear(x, self.weight)
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: EncoderWeights = init.kaiming_normal_(self._weight)
+        self._weight: Float[
+            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = init.kaiming_normal_(self._weight)
 
 
 @pytest.fixture()
@@ -69,11 +69,11 @@ def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) ->
     torch.random.manual_seed(0)
     original_weight = mock_encoder.weight.clone()  # Save original weight for comparison
 
-    dictionary_vector_indices: InputOutputNeuronIndices = torch.empty(
+    dictionary_vector_indices: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE] = torch.empty(
         0,
         dtype=torch.int,  # Empty tensor with 1 dimension
     )
-    updates: InputOutputNeuronIndices = torch.empty(
+    updates: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE] = torch.empty(
         (0, 0),
         dtype=torch.float,  # Empty tensor with 2 dimensions
     )
@@ -98,8 +98,8 @@ def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) ->
 )
 def test_update_dictionary_vectors_with_neurons(
     mock_encoder: MockEncoder,
-    dictionary_vector_indices: InputOutputNeuronIndices,
-    updates: InputOutputNeuronIndices,
+    dictionary_vector_indices: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+    updates: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE],
 ) -> None:
     """Test update_dictionary_vectors with 1 or 2 neurons to update."""
     mock_encoder.update_dictionary_vectors(dictionary_vector_indices, updates)

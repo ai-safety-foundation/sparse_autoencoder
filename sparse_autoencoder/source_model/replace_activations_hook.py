@@ -8,7 +8,8 @@ from sparse_autoencoder.autoencoder.abstract_autoencoder import AbstractAutoenco
 
 
 if TYPE_CHECKING:
-    from sparse_autoencoder.tensor_types import InputOutputActivationBatch
+    from sparse_autoencoder.tensor_types import Axis
+from jaxtyping import Float
 
 
 def replace_activations_hook(
@@ -29,7 +30,9 @@ def replace_activations_hook(
     """
     # Squash to just have a "*items" and a "batch" dimension
     original_shape = value.shape
-    squashed_value: InputOutputActivationBatch = value.view(-1, value.size(-1))
+    squashed_value: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)] = value.view(
+        -1, value.size(-1)
+    )
 
     # Get the output activations from a forward pass of the SAE
     _learned_activations, output_activations = sparse_autoencoder.forward(squashed_value)

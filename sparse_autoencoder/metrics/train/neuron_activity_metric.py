@@ -12,7 +12,9 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
 
 
 if TYPE_CHECKING:
-    from sparse_autoencoder.tensor_types import NeuronActivity
+    from sparse_autoencoder.tensor_types import Axis
+from jaxtyping import Int
+from torch import Tensor
 
 
 class NeuronActivityMetric(AbstractTrainMetric):
@@ -26,7 +28,7 @@ class NeuronActivityMetric(AbstractTrainMetric):
         """
         super().__init__()
         self.horizon = horizon
-        self.neuron_activity: None | NeuronActivity = None
+        self.neuron_activity: None | Int[Tensor, Axis.LEARNT_FEATURE] = None
         self.batch_count = 0
         self.activation_eps = 0.1
 

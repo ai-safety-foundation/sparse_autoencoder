@@ -1,13 +1,11 @@
 """Tests for the AbstractLoss class."""
+from jaxtyping import Float
 import pytest
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-    TrainBatchStatistic,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 class DummyLoss(AbstractLoss):
@@ -15,10 +13,10 @@ class DummyLoss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: InputOutputActivationBatch,  # noqa: ARG002
-        learned_activations: LearnedActivationBatch,  # noqa: ARG002
-        decoded_activations: InputOutputActivationBatch,  # noqa: ARG002
-    ) -> TrainBatchStatistic:
+        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
+        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],  # noqa: ARG002
+        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
+    ) -> Float[Tensor, Axis.BATCH]:
         """Batch itemwise loss."""
         # Simple dummy implementation for testing
         return torch.tensor([1.0, 2.0, 3.0])
