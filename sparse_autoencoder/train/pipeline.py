@@ -18,7 +18,6 @@ from sparse_autoencoder.activation_store.tensor_store import TensorActivationSto
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
-from sparse_autoencoder.metrics.resample.abstract_resample_metric import ResampleMetricData
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
@@ -238,21 +237,6 @@ class Pipeline:
                 )
             self.total_training_steps += 1
 
-        # Log any neuron activity metrics
-        if self.activation_resampler is not None:
-            with torch.no_grad():
-                metrics = {}
-                neuron_activity = self.activation_resampler.collated_neuron_activity
-                if neuron_activity is not None and wandb.run is not None:
-                    for metric in self.metrics.resample_metrics:
-                        calculated = metric.calculate(
-                            ResampleMetricData(
-                                neuron_activity=neuron_activity,
-                            )
-                        )
-                        metrics.update(calculated)
-                    wandb.log(metrics, commit=False)
-
         return learned_activations_fired_count
 
     def update_parameters(self, parameter_updates: ParameterUpdateResults) -> None:
@@ -276,9 +260,9 @@ class Pipeline:
         )
 
         # Reset the optimizer
-        for param_name, axis in self.autoencoder.reset_param_names:
+        for parameter, axis in self.autoencoder.reset_param_names:
             self.optimizer.reset_neurons_state(
-                parameter_name=param_name,
+                parameter=parameter,
                 neuron_indices=parameter_updates.dead_neuron_indices,
                 axis=axis,
             )

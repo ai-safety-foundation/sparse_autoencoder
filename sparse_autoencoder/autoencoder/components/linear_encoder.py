@@ -6,6 +6,7 @@ import torch
 from torch.nn import Parameter, ReLU, functional, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
+from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 from sparse_autoencoder.tensor_types import (
     EncoderWeights,
     InputOutputActivationBatch,
@@ -79,8 +80,9 @@ class LinearEncoder(AbstractEncoder):
             )
         )
         self._bias = Parameter(torch.zeros(learnt_features))
-        self.reset_param_names = ["weight", "bias"]
         self.activation_function = ReLU()
+
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 1)]
 
         self.reset_parameters()
 

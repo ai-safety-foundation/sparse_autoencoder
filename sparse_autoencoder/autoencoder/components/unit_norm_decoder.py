@@ -7,6 +7,7 @@ from torch.nn import init
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
+from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 from sparse_autoencoder.tensor_types import (
     Axis,
     DecoderWeights,
@@ -89,6 +90,7 @@ class UnitNormDecoder(AbstractDecoder):
                 (decoded_features, learnt_features),
             )
         )
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 1)]
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary
