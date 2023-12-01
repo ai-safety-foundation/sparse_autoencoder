@@ -2,13 +2,15 @@
 
 import math
 
+from jaxtyping import Float
 import pytest
 from syrupy.session import SnapshotSession
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
-from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchStatistic
+from sparse_autoencoder.tensor_types import Axis
 
 
 @pytest.mark.parametrize(
@@ -31,7 +33,8 @@ from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchSt
     ],
 )
 def test_calc_capacities(
-    features: LearnedActivationBatch, expected_capacities: TrainBatchStatistic
+    features: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+    expected_capacities: Float[Tensor, Axis.BATCH],
 ) -> None:
     """Check that the capacity calculation is correct."""
     capacities = CapacityMetric.capacities(features)

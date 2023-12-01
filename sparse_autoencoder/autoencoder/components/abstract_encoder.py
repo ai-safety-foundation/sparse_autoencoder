@@ -2,18 +2,12 @@
 from abc import ABC, abstractmethod
 from typing import final
 
+from jaxtyping import Float, Int
 import torch
+from torch import Tensor
 from torch.nn import Module
 
-from sparse_autoencoder.tensor_types import (
-    DeadEncoderNeuronWeightUpdates,
-    EncoderWeights,
-    InputOutputActivationBatch,
-    InputOutputNeuronIndices,
-    LearnedActivationBatch,
-    LearntActivationVector,
-    LearntNeuronIndices,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 class AbstractEncoder(Module, ABC):
@@ -25,7 +19,7 @@ class AbstractEncoder(Module, ABC):
 
     @property
     @abstractmethod
-    def weight(self) -> EncoderWeights:
+    def weight(self) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Weight.
 
         Each row in the weights matrix acts as a dictionary vector, representing a single basis
@@ -34,11 +28,13 @@ class AbstractEncoder(Module, ABC):
 
     @property
     @abstractmethod
-    def bias(self) -> LearntActivationVector:
+    def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
         """Bias."""
 
     @abstractmethod
-    def forward(self, x: InputOutputActivationBatch) -> LearnedActivationBatch:
+    def forward(
+        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]:
         """Forward pass.
 
         Args:
@@ -51,8 +47,10 @@ class AbstractEncoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: LearntNeuronIndices,
-        updated_dictionary_weights: DeadEncoderNeuronWeightUpdates,
+        dictionary_vector_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
+        updated_dictionary_weights: Float[
+            Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ],
     ) -> None:
         """Update encoder dictionary vectors.
 
@@ -71,8 +69,8 @@ class AbstractEncoder(Module, ABC):
     @final
     def update_bias(
         self,
-        update_parameter_indices: InputOutputNeuronIndices,
-        updated_bias_features: LearntActivationVector | float,
+        update_parameter_indices: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+        updated_bias_features: Float[Tensor, Axis.LEARNT_FEATURE] | float,
     ) -> None:
         """Update encoder bias.
 

@@ -2,10 +2,12 @@
 from abc import ABC, abstractmethod
 from typing import TypeAlias
 
+from jaxtyping import Int
+from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Optimizer
 
-from sparse_autoencoder.tensor_types import LearntNeuronIndices
+from sparse_autoencoder.tensor_types import Axis
 
 
 ParameterAxis: TypeAlias = tuple[Parameter, int]
@@ -31,7 +33,7 @@ class AbstractOptimizerWithReset(Optimizer, ABC):
     def reset_neurons_state(
         self,
         parameter: Parameter,
-        neuron_indices: LearntNeuronIndices,
+        neuron_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
         axis: int,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.

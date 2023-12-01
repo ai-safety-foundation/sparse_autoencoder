@@ -1,12 +1,14 @@
 """Store Activations Hook Tests."""
 from functools import partial
 
+from jaxtyping import Int
 import torch
+from torch import Tensor
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.activation_store.list_store import ListActivationStore
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
-from sparse_autoencoder.tensor_types import BatchTokenizedPrompts
+from sparse_autoencoder.tensor_types import Axis
 
 
 def test_hook_stores_activations() -> None:
@@ -19,7 +21,9 @@ def test_hook_stores_activations() -> None:
         partial(store_activations_hook, store=store),
     )
 
-    tokens: BatchTokenizedPrompts = model.to_tokens("Hello world")
+    tokens: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = model.to_tokens(
+        "Hello world"
+    )
     logits = model.forward(tokens, stop_at_layer=2)  # type: ignore
 
     number_of_tokens = tokens.numel()

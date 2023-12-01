@@ -2,31 +2,29 @@
 
 from typing import final
 
+from jaxtyping import Float
 import torch
+from torch import Tensor
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.abstract_autoencoder import AbstractAutoencoder
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    InputOutputActivationVector,
-    LearnedActivationBatch,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 @final
 class SparseAutoencoder(AbstractAutoencoder):
     """Sparse Autoencoder Model."""
 
-    geometric_median_dataset: InputOutputActivationVector
+    geometric_median_dataset: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]
     """Estimated Geometric Median of the Dataset.
 
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: InputOutputActivationBatch
+    tied_bias: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
     """Tied Bias Parameter.
 
     The same bias is used pre-encoder and post-decoder.
@@ -70,7 +68,7 @@ class SparseAutoencoder(AbstractAutoencoder):
         self,
         n_input_features: int,
         n_learned_features: int,
-        geometric_median_dataset: InputOutputActivationVector | None = None,
+        geometric_median_dataset: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE] | None = None,
     ) -> None:
         """Initialize the Sparse Autoencoder Model.
 
@@ -118,10 +116,10 @@ class SparseAutoencoder(AbstractAutoencoder):
 
     def forward(
         self,
-        x: InputOutputActivationBatch,
+        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
     ) -> tuple[
-        LearnedActivationBatch,
-        InputOutputActivationBatch,
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
     ]:
         """Forward Pass.
 

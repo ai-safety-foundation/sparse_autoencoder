@@ -4,7 +4,9 @@ from functools import partial
 from pathlib import Path
 from typing import final
 
+from jaxtyping import Int
 import torch
+from torch import Tensor
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
@@ -25,7 +27,7 @@ from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, Torch
 from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
-from sparse_autoencoder.tensor_types import BatchTokenizedPrompts, NeuronActivity
+from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils import get_model_device
 
 
@@ -160,7 +162,9 @@ class Pipeline:
         # Loop through the dataloader until the store reaches the desired size
         with torch.no_grad():
             for batch in self.source_data:
-                input_ids: BatchTokenizedPrompts = batch["input_ids"].to(source_model_device)
+                input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
+                    "input_ids"
+                ].to(source_model_device)
                 self.source_model.forward(
                     input_ids, stop_at_layer=self.layer + 1, prepend_bos=False
                 )  # type: ignore (TLens is typed incorrectly)
@@ -175,7 +179,7 @@ class Pipeline:
 
     def train_autoencoder(
         self, activation_store: TensorActivationStore, train_batch_size: int
-    ) -> NeuronActivity:
+    ) -> Int[Tensor, Axis.LEARNT_FEATURE]:
         """Train the sparse autoencoder.
 
         Args:
@@ -192,7 +196,7 @@ class Pipeline:
             batch_size=train_batch_size,
         )
 
-        learned_activations_fired_count: NeuronActivity = torch.zeros(
+        learned_activations_fired_count: Int[Tensor, Axis.LEARNT_FEATURE] = torch.zeros(
             self.autoencoder.n_learned_features, dtype=torch.int32, device=autoencoder_device
         )
 
@@ -279,7 +283,9 @@ class Pipeline:
         source_model_device: torch.device = get_model_device(self.source_model)
 
         for batch in self.source_data:
-            input_ids: BatchTokenizedPrompts = batch["input_ids"].to(source_model_device)
+            input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
+                "input_ids"
+            ].to(source_model_device)
 
             # Run a forward pass with and without the replaced activations
             self.source_model.remove_all_hook_fns()
@@ -382,7 +388,7 @@ class Pipeline:
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
-                batch_neuron_activity: NeuronActivity = self.train_autoencoder(
+                batch_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE] = self.train_autoencoder(
                     activation_store, train_batch_size=train_batch_size
                 )
 

@@ -5,25 +5,27 @@ https://github.com/neelnanda-io/1L-Sparse-Autoencoder/blob/main/utils.py .
 """
 from typing import TypedDict
 
+from jaxtyping import Float
 import pytest
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
 from sparse_autoencoder.loss.reducer import LossReducer
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    ItemTensor,
-    LearnedActivationBatch,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 def neel_loss(
-    source_activations: InputOutputActivationBatch,
-    learned_activations: LearnedActivationBatch,
-    decoded_activations: InputOutputActivationBatch,
+    source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+    learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+    decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
     l1_coefficient: float,
-) -> tuple[ItemTensor, ItemTensor, ItemTensor]:
+) -> tuple[
+    Float[Tensor, Axis.SINGLE_ITEM],
+    Float[Tensor, Axis.SINGLE_ITEM],
+    Float[Tensor, Axis.SINGLE_ITEM],
+]:
     """Neel's loss function."""
     l2_loss = (decoded_activations.float() - source_activations.float()).pow(2).sum(-1).mean(0)
     l1_loss = l1_coefficient * (learned_activations.float().abs().sum())
@@ -32,11 +34,15 @@ def neel_loss(
 
 
 def lib_loss(
-    source_activations: InputOutputActivationBatch,
-    learned_activations: LearnedActivationBatch,
-    decoded_activations: InputOutputActivationBatch,
+    source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+    learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+    decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
     l1_coefficient: float,
-) -> tuple[ItemTensor, ItemTensor, ItemTensor]:
+) -> tuple[
+    Float[Tensor, Axis.SINGLE_ITEM],
+    Float[Tensor, Axis.SINGLE_ITEM],
+    Float[Tensor, Axis.SINGLE_ITEM],
+]:
     """This library's loss function."""
     l1_loss_fn = LearnedActivationsL1Loss(
         l1_coefficient=float(l1_coefficient),
@@ -54,9 +60,9 @@ def lib_loss(
 class MockActivations(TypedDict):
     """Mock activations."""
 
-    source_activations: InputOutputActivationBatch
-    learned_activations: LearnedActivationBatch
-    decoded_activations: InputOutputActivationBatch
+    source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+    learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
+    decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
 
 
 @pytest.fixture()

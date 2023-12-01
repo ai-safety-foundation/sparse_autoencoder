@@ -5,13 +5,14 @@ This reset method is useful when resampling dead neurons during training.
 from collections.abc import Iterator
 from typing import final
 
+from jaxtyping import Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Adam
 from torch.optim.optimizer import params_t
 
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
-from sparse_autoencoder.tensor_types import LearntNeuronIndices
+from sparse_autoencoder.tensor_types import Axis
 
 
 @final
@@ -147,7 +148,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     def reset_neurons_state(
         self,
         parameter: Parameter,
-        neuron_indices: LearntNeuronIndices,
+        neuron_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
         axis: int,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.

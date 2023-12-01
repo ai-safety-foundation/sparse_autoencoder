@@ -2,17 +2,19 @@
 from typing import Any
 
 import einops
+from jaxtyping import Float
 import numpy as np
 from numpy import histogram
 from numpy.typing import NDArray
 import torch
+from torch import Tensor
 import wandb
 
 from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
 )
-from sparse_autoencoder.tensor_types import LearnedActivationBatch, LearntActivationVector
+from sparse_autoencoder.tensor_types import Axis
 
 
 class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
@@ -42,7 +44,9 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
         super().__init__()
         self.threshold = threshold
 
-    def feature_density(self, activations: LearnedActivationBatch) -> LearntActivationVector:
+    def feature_density(
+        self, activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
+    ) -> Float[Tensor, Axis.LEARNT_FEATURE]:
         """Count how many times each feature was active.
 
         Percentage of samples in which each feature was active (i.e. the neuron has "fired").
@@ -59,7 +63,9 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
         Returns:
             Number of times each feature was active in a sample.
         """
-        has_fired: LearnedActivationBatch = torch.gt(activations, self.threshold).to(
+        has_fired: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)] = torch.gt(
+            activations, self.threshold
+        ).to(
             dtype=torch.float  # Move to float so it can be averaged
         )
 
@@ -67,7 +73,7 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
 
     @staticmethod
     def wandb_feature_density_histogram(
-        feature_density: LearntActivationVector,
+        feature_density: Float[Tensor, Axis.LEARNT_FEATURE],
     ) -> wandb.Histogram:
         """Create a W&B histogram of the feature density.
 
@@ -96,7 +102,7 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
             Dictionary with the train batch feature density metric, and a histogram of the feature
             density.
         """
-        train_batch_feature_density: LearntActivationVector = self.feature_density(
+        train_batch_feature_density: Float[Tensor, Axis.LEARNT_FEATURE] = self.feature_density(
             data.learned_activations
         )
 

@@ -1,14 +1,12 @@
 """L2 Reconstruction loss."""
 from typing import final
 
+from jaxtyping import Float
+from torch import Tensor
 from torch.nn.functional import mse_loss
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-    TrainBatchStatistic,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 @final
@@ -54,10 +52,10 @@ class L2ReconstructionLoss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: InputOutputActivationBatch,
-        learned_activations: LearnedActivationBatch,  # noqa: ARG002
-        decoded_activations: InputOutputActivationBatch,
-    ) -> TrainBatchStatistic:
+        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],  # noqa: ARG002
+        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+    ) -> Float[Tensor, Axis.BATCH]:
         """Calculate the L2 reconstruction loss.
 
         Args:

@@ -2,11 +2,11 @@
 from enum import Enum
 from typing import final
 
+from jaxtyping import Float
+from torch import Tensor
+
 from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    InputOutputActivationVector,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 class TiedBiasPosition(str, Enum):
@@ -30,16 +30,16 @@ class TiedBias(AbstractOuterBias):
 
     _bias_position: TiedBiasPosition
 
-    _bias_reference: InputOutputActivationVector
+    _bias_reference: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]
 
     @property
-    def bias(self) -> InputOutputActivationVector:
+    def bias(self) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
         """Bias."""
         return self._bias_reference
 
     def __init__(
         self,
-        bias_reference: InputOutputActivationVector,
+        bias_reference: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE],
         position: TiedBiasPosition,
     ) -> None:
         """Initialize the bias layer.
@@ -59,8 +59,8 @@ class TiedBias(AbstractOuterBias):
 
     def forward(
         self,
-        x: InputOutputActivationBatch,
-    ) -> InputOutputActivationBatch:
+        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward Pass.
 
         Args:
