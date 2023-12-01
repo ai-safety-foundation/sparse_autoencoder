@@ -25,7 +25,7 @@ class TestTowardsMonosemanticityLoss:
         for neuron in learned_activations:
             l1_penalty += abs(neuron) * l1_coefficient
 
-        expected: float = squared_errors + l1_penalty
+        expected: float = squared_errors / 2 + l1_penalty
 
         # Compare against the actual loss function
         loss = LossReducer(
