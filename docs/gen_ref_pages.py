@@ -62,12 +62,20 @@ def generate_documentation(path: Path, module_path: Path, full_doc_path: Path) -
     if module_path.name == "__main__":
         return
 
+    # Get the mkdocstrings identifier for the module
     parts = list(module_path.parts)
     parts.insert(0, "sparse_autoencoder")
     identifier = ".".join(parts)
 
+    # Read the first line of the file docstring, and set as the header
+    with path.open() as fd:
+        first_line = fd.readline()
+        first_line_without_docstring = first_line.replace('"""', "").strip()
+        first_line_without_last_dot = first_line_without_docstring.rstrip(".")
+        title = first_line_without_last_dot or module_path.name
+
     with mkdocs_gen_files.open(full_doc_path, "w") as fd:
-        fd.write(f"::: {identifier}")
+        fd.write(f"# {title}" + "\n\n" + f"::: {identifier}")
 
     mkdocs_gen_files.set_edit_path(full_doc_path, path)
 

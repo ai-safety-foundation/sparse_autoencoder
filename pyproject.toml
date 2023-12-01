@@ -38,12 +38,15 @@
         [tool.poetry.group.docs.dependencies]
             mkdocs=">=1.5.3"
             mkdocs-gen-files=">=0.5.0"
+            mkdocs-htmlproofer-plugin="^1.0.0"
             mkdocs-literate-nav=">=0.6.1"
             mkdocs-material=">=9.4.10"
             mkdocs-section-index=">=0.3.8"
             mkdocstrings={extras=["python"], version=">=0.24.0"}
             mkdocstrings-python=">=1.7.3"
             mknotebooks="^0.8.0"
+            pygments="^2.17.2"
+            pymdown-extensions="^10.5"
             pytkdocs-tweaks=">=0.0.7"
 
 [tool.poe.tasks]
