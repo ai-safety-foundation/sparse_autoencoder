@@ -48,6 +48,7 @@
         "loguniform",
         "loguniformvalues",
         "mathbb",
+        "mathbf",
         "maxiter",
         "miniter",
         "mkdocs",

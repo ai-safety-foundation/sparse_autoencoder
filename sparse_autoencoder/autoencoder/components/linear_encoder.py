@@ -1,18 +1,21 @@
 """Linear encoder layer."""
 import math
-from typing import final
+from typing import TYPE_CHECKING, final
 
 import torch
 from torch.nn import Parameter, ReLU, functional, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
-from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 from sparse_autoencoder.tensor_types import (
     EncoderWeights,
     InputOutputActivationBatch,
     LearnedActivationBatch,
     LearntActivationVector,
 )
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final

@@ -1,5 +1,5 @@
 """Neuron activity metric."""
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -9,7 +9,10 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
 )
-from sparse_autoencoder.tensor_types import NeuronActivity
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.tensor_types import NeuronActivity
 
 
 class NeuronActivityMetric(AbstractTrainMetric):

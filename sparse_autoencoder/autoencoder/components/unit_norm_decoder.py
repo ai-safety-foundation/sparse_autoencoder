@@ -1,5 +1,5 @@
 """Linear layer with unit norm weights."""
-from typing import final
+from typing import TYPE_CHECKING, final
 
 import einops
 import torch
@@ -7,7 +7,6 @@ from torch.nn import init
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
-from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 from sparse_autoencoder.tensor_types import (
     Axis,
     DecoderWeights,
@@ -15,6 +14,10 @@ from sparse_autoencoder.tensor_types import (
     InputOutputActivationBatch,
     LearnedActivationBatch,
 )
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
