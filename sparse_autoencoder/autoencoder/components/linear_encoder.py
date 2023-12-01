@@ -1,6 +1,6 @@
 """Linear encoder layer."""
 import math
-from typing import final
+from typing import TYPE_CHECKING, final
 
 import torch
 from torch.nn import Parameter, ReLU, functional, init
@@ -12,6 +12,10 @@ from sparse_autoencoder.tensor_types import (
     LearnedActivationBatch,
     LearntActivationVector,
 )
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -80,6 +84,8 @@ class LinearEncoder(AbstractEncoder):
         )
         self._bias = Parameter(torch.zeros(learnt_features))
         self.activation_function = ReLU()
+
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 1)]
 
         self.reset_parameters()
 

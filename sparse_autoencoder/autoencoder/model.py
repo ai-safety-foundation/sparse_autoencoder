@@ -111,6 +111,11 @@ class SparseAutoencoder(AbstractAutoencoder):
 
         self._post_decoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER)
 
+        # Set the reset parameter names and axes which match the learned features
+        self.reset_param_names: list[tuple[Parameter, int]] = (
+            self._encoder.reset_param_names + self._decoder.reset_param_names
+        )
+
     def forward(
         self,
         x: InputOutputActivationBatch,

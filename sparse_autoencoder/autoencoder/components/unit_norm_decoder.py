@@ -1,5 +1,5 @@
 """Linear layer with unit norm weights."""
-from typing import final
+from typing import TYPE_CHECKING, final
 
 import einops
 import torch
@@ -14,6 +14,10 @@ from sparse_autoencoder.tensor_types import (
     InputOutputActivationBatch,
     LearnedActivationBatch,
 )
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -89,6 +93,7 @@ class UnitNormDecoder(AbstractDecoder):
                 (decoded_features, learnt_features),
             )
         )
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 1)]
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary

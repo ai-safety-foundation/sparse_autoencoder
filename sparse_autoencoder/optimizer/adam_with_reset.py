@@ -144,30 +144,11 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
                     max_exp_avg_sq: Tensor = state["max_exp_avg_sq"]
                     max_exp_avg_sq.zero_()
 
-    def _get_parameter_name_idx(self, parameter_name: str) -> int:
-        """Get the index of a parameter name.
-
-        Args:
-            parameter_name: The name of the parameter.
-
-        Returns:
-            int: The index of the parameter name.
-
-        Raises:
-            ValueError: If the parameter name is not found.
-        """
-        if parameter_name not in self.parameter_names:
-            error_message = f"Parameter name {parameter_name} not found."
-            raise ValueError(error_message)
-
-        return self.parameter_names.index(parameter_name)
-
     def reset_neurons_state(
         self,
-        parameter_name: str,
+        parameter: Parameter,
         neuron_indices: LearntNeuronIndices,
         axis: int,
-        parameter_group: int = 0,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.
 
@@ -182,28 +163,21 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             >>> # ... train the model and then resample some dead neurons, then do this ...
             >>> dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices
             >>> # Reset the optimizer state for parameters that have been updated
-            >>> optimizer.reset_neurons_state("_encoder._weight", dead_neurons_indices, axis=0)
-            >>> optimizer.reset_neurons_state("_encoder._bias", dead_neurons_indices, axis=0)
+            >>> optimizer.reset_neurons_state(model.encoder.weight, dead_neurons_indices, axis=0)
+            >>> optimizer.reset_neurons_state(model.encoder.bias, dead_neurons_indices, axis=0)
             >>> optimizer.reset_neurons_state(
-            ...     "_decoder._weight",
+            ...     model.decoder.weight,
             ...     dead_neurons_indices,
             ...     axis=1
             ... )
 
         Args:
-            parameter_name: The name of the parameter. Examples from the standard sparse autoencoder
+            parameter: The parameter to be reset. Examples from the standard sparse autoencoder
                 implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,
-                `_decoder._weight`.
             neuron_indices: The indices of the neurons to reset.
             axis: The axis of the parameter to reset.
-            parameter_group: The index of the parameter group to reset (typically this is just zero,
-                unless you have setup multiple parameter groups for e.g. different learning rates
-                for different parameters).
         """
         # Get the state of the parameter
-        group = self.param_groups[parameter_group]
-        parameter_name_idx = self._get_parameter_name_idx(parameter_name)
-        parameter = group["params"][parameter_name_idx]
         state = self.state[parameter]
 
         # Check if state is initialized
@@ -213,12 +187,12 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         # Reset running averages for the specified neurons
         if "exp_avg" in state:
             exp_avg: Tensor = state["exp_avg"]
-            exp_avg.index_fill_(axis, neuron_indices, 0)
+            exp_avg.index_fill_(axis, neuron_indices.to(exp_avg.device), 0)
         if "exp_avg_sq" in state:
             exp_avg_sq: Tensor = state["exp_avg_sq"]
-            exp_avg_sq.index_fill_(axis, neuron_indices, 0)
+            exp_avg_sq.index_fill_(axis, neuron_indices.to(exp_avg_sq.device), 0)
 
         # If AdamW is used (weight decay fix), also reset the max exp_avg_sq
         if "max_exp_avg_sq" in state:
             max_exp_avg_sq: Tensor = state["max_exp_avg_sq"]
-            max_exp_avg_sq.index_fill_(axis, neuron_indices, 0)
+            max_exp_avg_sq.index_fill_(axis, neuron_indices.to(max_exp_avg_sq.device), 0)
