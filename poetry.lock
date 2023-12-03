@@ -4895,10 +4895,7 @@ cffi = {version = ">=1.11", markers = "platform_python_implementation == \"PyPy\
 [package.extras]
 cffi = ["cffi (>=1.11)"]
 
-[extras]
-demos = []
-
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.12"
-content-hash = "3b90d4010e8d81dacf36e0cf8973d8d4a486ea7cd2aaca81bf09b50a497ec8f1"
+content-hash = "daa555e538786be0789b8b1008146980581171dd5899990986db39ba8ea7f725"
