@@ -11,8 +11,10 @@
       
       
       
-        <link rel="prev" href="../contributing/">
+        <link rel="prev" href="../demo/">
       
+      
+        <link rel="next" href="../reference/activation_resampler/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +22,7 @@
     
     
       
-        <title>Citation - Sparse Autoencoder</title>
+        <title>Flexible Demo - Sparse Autoencoder</title>
       
     
     
@@ -87,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#citation" class="md-skip">
+        <a href="#flexible-training-demo" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Citation
+              Flexible Demo
             
           </span>
         </div>
@@ -300,10 +302,30 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../flexible_demo/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Flexible Demo
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -312,6 +334,119 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approach
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperparameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse-autoencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sparse Autoencoder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source dataset
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2082,19 +2217,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2103,7 +2229,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -2128,6 +2253,107 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approach
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      Imports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperparameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse-autoencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sparse Autoencoder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source dataset
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2141,15 +2367,507 @@
                   
 
 
-<h1 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">¤</a></h1>
-<p>Please cite this library as:</p>
-<div class="highlight"><pre><span></span><code><span class="nc">@misc</span><span class="p">{</span><span class="nl">cooney2023SparseAutoencoder</span><span class="p">,</span>
-<span class="w">    </span><span class="na">title</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Sparse Autoencoder Library}</span><span class="p">,</span>
-<span class="w">    </span><span class="na">author</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Alan Cooney}</span><span class="p">,</span>
-<span class="w">    </span><span class="na">year</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{2023}</span><span class="p">,</span>
-<span class="w">    </span><span class="na">howpublished</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{\url{https://github.com/ai-safety-foundation/sparse_autoencoder}}</span><span class="p">,</span>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var requireJsScript = document.createElement('script');
+    requireJsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js';
+
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var jupyterWidgetsScript = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    jupyterWidgetsScript.src = widgetRendererSrc;
+
+    document.body.appendChild(requireJsScript);
+    document.body.appendChild(jupyterWidgetsScript);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://colab.research.google.com/github/ai-safety-foundation/sparse_autoencoder/blob/main/docs/content/flexible_demo.ipynb" target="_blank">
+<img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/>
+</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="flexible-training-demo">Flexible Training Demo<a class="headerlink" href="#flexible-training-demo" title="Permanent link">¤</a></h1>
+<p>This demo shows you how to train a sparse autoencoder (SAE) on a
+<a href="https://github.com/neelnanda-io/TransformerLens">TransformerLens</a> model. It replicates Neel Nanda's
+<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html#comment-nanda">comment on the Anthropic dictionary learning
+paper</a>.</p>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">¤</a></h2>
+<p>The way this library works is that we provide all the components necessary to train a sparse
+autoencoder. For the most part, these are just standard PyTorch modules. For example <code>AdamWithReset</code> is
+just an extension of <code>torch.optim.Adam</code>, with a few extra bells and whistles that are needed for training a SAE
+(e.g. a method to reset the optimizer state when you are also resampling dead neurons).</p>
+<p>This is very flexible - it's easy for you to extend and change just one component if you want, just
+like you'd do with a standard PyTorch mode. It also means it's very easy to see what is going on
+under the hood. However to get you started, the following demo sets up a
+default SAE that uses the implementation that Neel Nanda used in his comment above.</p>
+<h3 id="approach">Approach<a class="headerlink" href="#approach" title="Permanent link">¤</a></h3>
+<p>The approach is pretty simple - we run a training pipeline that alternates between generating
+activations from a <em>source model</em>, and training the <em>sparse autoencoder</em> model on these generated
+activations.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">¤</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">¤</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Check if we&#39;re in Colab</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>  <span class="c1"># noqa: F401 # type: ignore</span>
+
+    <span class="n">in_colab</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">in_colab</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1">#  Install if in Colab</span>
+<span class="k">if</span> <span class="n">in_colab</span><span class="p">:</span>
+    <span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">sparse_autoencoder</span> <span class="n">transformer_lens</span> <span class="n">transformers</span> <span class="n">wandb</span>
+
+<span class="c1"># Otherwise enable hot reloading in dev mode</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">in_colab</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">get_ipython</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ip</span><span class="o">.</span><span class="n">extension_manager</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ip</span><span class="o">.</span><span class="n">extension_manager</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
+        <span class="n">ip</span><span class="o">.</span><span class="n">extension_manager</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;autoreload&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformer_lens</span> <span class="kn">import</span> <span class="n">HookedTransformer</span>
+<span class="kn">from</span> <span class="nn">transformer_lens.utils</span> <span class="kn">import</span> <span class="n">get_device</span>
+
+<span class="kn">from</span> <span class="nn">sparse_autoencoder</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ActivationResampler</span><span class="p">,</span>
+    <span class="n">AdamWithReset</span><span class="p">,</span>
+    <span class="n">L2ReconstructionLoss</span><span class="p">,</span>
+    <span class="n">LearnedActivationsL1Loss</span><span class="p">,</span>
+    <span class="n">LossReducer</span><span class="p">,</span>
+    <span class="n">Pipeline</span><span class="p">,</span>
+    <span class="n">PreTokenizedDataset</span><span class="p">,</span>
+    <span class="n">SparseAutoencoder</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">wandb</span>
+
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TOKENIZERS_PARALLELISM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">get_device</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># You will need a GPU</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Using device: mps
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="hyperparameters">Hyperparameters<a class="headerlink" href="#hyperparameters" title="Permanent link">¤</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The way this library works is that you can define your own hyper-parameters and then setup the
+underlying components with them. This is extremely flexible, but to help you get started we've
+included some common ones below along with some sensible defaults. You can also easily sweep through
+multiple hyperparameters with <code>wandb.sweep</code>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">49</span><span class="p">)</span>
+
+<span class="n">hyperparameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Expansion factor is the number of features in the sparse representation, relative to the</span>
+    <span class="c1"># number of features in the original MLP layer. The original paper experimented with 1x to 256x,</span>
+    <span class="c1"># and we have found that 4x is a good starting point.</span>
+    <span class="s2">&quot;expansion_factor&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="c1"># L1 coefficient is the coefficient of the L1 regularization term (used to encourage sparsity).</span>
+    <span class="s2">&quot;l1_coefficient&quot;</span><span class="p">:</span> <span class="mf">3e-4</span><span class="p">,</span>
+    <span class="c1"># Adam parameters (set to the default ones here)</span>
+    <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">,</span>
+    <span class="s2">&quot;adam_beta_1&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="s2">&quot;adam_beta_2&quot;</span><span class="p">:</span> <span class="mf">0.999</span><span class="p">,</span>
+    <span class="s2">&quot;adam_epsilon&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="s2">&quot;adam_weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="c1"># Batch sizes</span>
+    <span class="s2">&quot;train_batch_size&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span>
+    <span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="c1"># Source model hook point</span>
+    <span class="s2">&quot;source_model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;gelu-2l&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_model_dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_model_hook_point&quot;</span><span class="p">:</span> <span class="s2">&quot;blocks.0.hook_mlp_out&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source_model_hook_point_layer&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="c1"># Train pipeline parameters</span>
+    <span class="s2">&quot;max_store_size&quot;</span><span class="p">:</span> <span class="mi">384</span> <span class="o">*</span> <span class="mi">4096</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;max_activations&quot;</span><span class="p">:</span> <span class="mi">2_000_000_000</span><span class="p">,</span>
+    <span class="s2">&quot;resample_frequency&quot;</span><span class="p">:</span> <span class="mi">122_880_000</span><span class="p">,</span>
+    <span class="s2">&quot;checkpoint_frequency&quot;</span><span class="p">:</span> <span class="mi">100_000_000</span><span class="p">,</span>
+    <span class="s2">&quot;validation_frequency&quot;</span><span class="p">:</span> <span class="mi">384</span> <span class="o">*</span> <span class="mi">4096</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>  <span class="c1"># Every 100 generations</span>
 <span class="p">}</span>
 </code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="source-model">Source Model<a class="headerlink" href="#source-model" title="Permanent link">¤</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The source model is just a <a href="https://github.com/neelnanda-io/TransformerLens">TransformerLens</a> model
+(see <a href="https://neelnanda-io.github.io/TransformerLens/generated/model_properties_table.html">here</a>
+for a full list of supported models).</p>
+<p>In this example we're training a sparse autoencoder on the activations from the first MLP layer, so
+we'll also get some details about that hook point.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Source model setup with TransformerLens</span>
+<span class="n">src_model</span> <span class="o">=</span> <span class="n">HookedTransformer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_name&quot;</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_dtype&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+
+<span class="c1"># Details about the activations we&#39;ll train the sparse autoencoder on</span>
+<span class="n">autoencoder_input_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">src_model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">d_model</span>  <span class="c1"># type: ignore (TransformerLens typing is currently broken)</span>
+
+<span class="sa">f</span><span class="s2">&quot;Source: </span><span class="si">{</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s1">&#39;source_model_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">    Hook: </span><span class="si">{</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s1">&#39;source_model_hook_point&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">    Features: </span><span class="si">{</span><span class="n">autoencoder_input_dim</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Loaded pretrained model gelu-2l into HookedTransformer
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>'Source: gelu-2l,     Hook: blocks.0.hook_mlp_out,     Features: 512'</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="sparse-autoencoder">Sparse Autoencoder<a class="headerlink" href="#sparse-autoencoder" title="Permanent link">¤</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can then setup the sparse autoencoder. The default model (<code>SparseAutoencoder</code>) is setup as per
+the original Anthropic paper <a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html">Towards Monosemanticity: Decomposing Language Models With Dictionary
+Learning </a>.</p>
+<p>However it's just a standard PyTorch model, so you can create your own model instead if you want to
+use a different architecture. To do this you just need to extend the <code>AbstractAutoencoder</code>, and
+optionally the underlying <code>AbstractEncoder</code>, <code>AbstractDecoder</code> and <code>AbstractOuterBias</code>. See these
+classes (which are fully documented) for more details.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">expansion_factor</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;expansion_factor&quot;</span><span class="p">]</span>
+<span class="n">autoencoder</span> <span class="o">=</span> <span class="n">SparseAutoencoder</span><span class="p">(</span>
+    <span class="n">n_input_features</span><span class="o">=</span><span class="n">autoencoder_input_dim</span><span class="p">,</span>  <span class="c1"># size of the activations we are autoencoding</span>
+    <span class="n">n_learned_features</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">autoencoder_input_dim</span> <span class="o">*</span> <span class="n">expansion_factor</span><span class="p">),</span>  <span class="c1"># size of SAE</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">autoencoder</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>SparseAutoencoder(
+  (_pre_encoder_bias): TiedBias(position=pre_encoder)
+  (_encoder): LinearEncoder(
+    in_features=512, out_features=2048
+    (activation_function): ReLU()
+  )
+  (_decoder): UnitNormDecoder(in_features=2048, out_features=512)
+  (_post_decoder_bias): TiedBias(position=post_decoder)
+)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We'll also want to setup an Optimizer and Loss function. In this case we'll also use the standard
+approach from the original Anthropic paper. However you can create your own loss functions and
+optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWithReset</code> respectively.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="c1"># We use a loss reducer, which simply adds up the losses from the underlying loss functions.</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">LossReducer</span><span class="p">(</span>
+    <span class="n">LearnedActivationsL1Loss</span><span class="p">(</span>
+        <span class="n">l1_coefficient</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;l1_coefficient&quot;</span><span class="p">]),</span>
+    <span class="p">),</span>
+    <span class="n">L2ReconstructionLoss</span><span class="p">(),</span>
+<span class="p">)</span>
+<span class="n">loss</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>LossReducer(
+  (0): LearnedActivationsL1Loss(l1_coefficient=0.0003)
+  (1): L2ReconstructionLoss()
+)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamWithReset</span><span class="p">(</span>
+    <span class="n">params</span><span class="o">=</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
+    <span class="n">named_parameters</span><span class="o">=</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(),</span>
+    <span class="n">lr</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">]),</span>
+    <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_1&quot;</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_2&quot;</span><span class="p">])),</span>
+    <span class="n">eps</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_epsilon&quot;</span><span class="p">]),</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_weight_decay&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="n">optimizer</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_text output_subarea output_execute_result">
+<pre>
+<code>AdamWithReset (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0.0
+)</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally we'll initialise an activation resampler.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">activation_resampler</span> <span class="o">=</span> <span class="n">ActivationResampler</span><span class="p">(</span>
+    <span class="n">resample_interval</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">n_steps_collate</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">max_resamples</span><span class="o">=</span><span class="mi">5</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="source-dataset">Source dataset<a class="headerlink" href="#source-dataset" title="Permanent link">¤</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is just a dataset of tokenized prompts, to be used in generating activations (which are in turn
+used to train the SAE).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">source_data</span> <span class="o">=</span> <span class="n">PreTokenizedDataset</span><span class="p">(</span>
+    <span class="n">dataset_path</span><span class="o">=</span><span class="s2">&quot;NeelNanda/c4-code-tokenized-2b&quot;</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;context_size&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="training">Training<a class="headerlink" href="#training" title="Permanent link">¤</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you initialise <a href="https://wandb.ai/site">wandb</a>, the pipeline will automatically log all metrics to
+wandb. However, we should pass in a dictionary with all of our hyperaparameters so they're on 
+wandb. </p>
+<p>We strongly encourage users to make use of wandb in order to understand the training process.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../.checkpoints&quot;</span><span class="p">)</span>
+<span class="n">checkpoint_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.cache/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">wandb</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+    <span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">,</span>
+    <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;.cache&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="n">activation_resampler</span><span class="o">=</span><span class="n">activation_resampler</span><span class="p">,</span>
+    <span class="n">autoencoder</span><span class="o">=</span><span class="n">autoencoder</span><span class="p">,</span>
+    <span class="n">cache_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point&quot;</span><span class="p">]),</span>
+    <span class="n">checkpoint_directory</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
+    <span class="n">layer</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point_layer&quot;</span><span class="p">]),</span>
+    <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">source_dataset</span><span class="o">=</span><span class="n">source_data</span><span class="p">,</span>
+    <span class="n">source_model</span><span class="o">=</span><span class="n">src_model</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pipeline</span><span class="o">.</span><span class="n">run_pipeline</span><span class="p">(</span>
+    <span class="n">train_batch_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;train_batch_size&quot;</span><span class="p">]),</span>
+    <span class="n">max_store_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;max_store_size&quot;</span><span class="p">]),</span>
+    <span class="n">max_activations</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;max_activations&quot;</span><span class="p">]),</span>
+    <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;checkpoint_frequency&quot;</span><span class="p">]),</span>
+    <span class="n">validate_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;validation_frequency&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+</div>
 
 
 
