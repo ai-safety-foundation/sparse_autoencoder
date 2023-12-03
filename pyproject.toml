@@ -159,6 +159,7 @@
                 "B018", # Useless variables are used for printing
                 "D100", # No file docstring needed
                 "E402", # Imports don't need to be at the top
+                "I001", # Unsorted imports
                 "T201", # Print is fine
             ]
             "**/tests/*"=[
