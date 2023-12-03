@@ -1,34 +1,17 @@
 """Tests for sweep functionality."""
-from pathlib import Path
 
 import pytest
 from syrupy.session import SnapshotSession
 import torch
-from transformer_lens import HookedTransformer
 
-from sparse_autoencoder import (
-    ActivationResampler,
-    AdamWithReset,
-    LossReducer,
-    PreTokenizedDataset,
-    SparseAutoencoder,
-)
 from sparse_autoencoder.train.sweep import (
     setup_activation_resampler,
     setup_autoencoder,
     setup_loss_function,
-    setup_optimizer,
-    setup_source_model,
 )
 from sparse_autoencoder.train.sweep_config import (
-    Hyperparameters,
     RuntimeHyperparameters,
-    SourceDataHyperparameters,
-    SourceModelHyperparameters,
-    SourceModelRuntimeHyperparameters,
-    SweepConfig,
 )
-from sparse_autoencoder.train.utils.wandb_sweep_types import Parameter
 
 
 @pytest.fixture()

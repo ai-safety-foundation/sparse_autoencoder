@@ -3,7 +3,7 @@
 Default hyperparameter setup for quick tuning of a sparse autoencoder.
 """
 from dataclasses import dataclass, field
-from typing import TypedDict
+from typing import TypedDict, final
 
 from sparse_autoencoder.train.utils.wandb_sweep_types import (
     Method,
@@ -279,6 +279,24 @@ class Hyperparameters(Parameters):
                 "Resample dataset size must be less than or equal to the pipeline max store size"
             )
             raise ValueError(error_message)
+
+    @final
+    def __str__(self) -> str:
+        """String representation of this object."""
+        items_representation = []
+        for key, value in self.__dict__.items():
+            if value is not None:
+                items_representation.append(f"{key}={value}")
+        joined_items = "\n    ".join(items_representation)
+
+        class_name = self.__class__.__name__
+
+        return f"{class_name}(\n    {joined_items}\n)"
+
+    @final
+    def __repr__(self) -> str:
+        """Representation of this object."""
+        return self.__str__()
 
 
 @dataclass

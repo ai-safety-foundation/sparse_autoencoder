@@ -5,7 +5,7 @@ Weights & Biases just provide a JSON Schema, so we've converted here to dataclas
 from abc import ABC
 from dataclasses import asdict, dataclass, is_dataclass
 from enum import Enum, auto
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, final
 
 from strenum import LowercaseStrEnum
 
@@ -174,6 +174,10 @@ class HyperbandStopping:
 
     Speed up hyperparameter search by killing off runs that appear to have lower performance
     than successful training runs.
+
+    Example:
+        >>> HyperbandStopping(type=HyperbandStoppingType.HYPERBAND)
+        HyperbandStopping(type=hyperband)
     """
 
     type: HyperbandStoppingType  # noqa: A003
@@ -205,6 +209,24 @@ class HyperbandStopping:
     strict: bool | None = None
     """Use a more aggressive condition for termination, stops more runs."""
 
+    @final
+    def __str__(self) -> str:
+        """String representation of this object."""
+        items_representation = []
+        for key, value in self.__dict__.items():
+            if value is not None:
+                items_representation.append(f"{key}={value}")
+        joined_items = ", ".join(items_representation)
+
+        class_name = self.__class__.__name__
+
+        return f"{class_name}({joined_items})"
+
+    @final
+    def __repr__(self) -> str:
+        """Representation of this object."""
+        return self.__str__()
+
 
 @dataclass
 class Metric:
@@ -223,6 +245,24 @@ class Metric:
 
     target: float | None = None
     """The sweep will finish once any run achieves this value."""
+
+    @final
+    def __str__(self) -> str:
+        """String representation of this object."""
+        items_representation = []
+        for key, value in self.__dict__.items():
+            if value is not None:
+                items_representation.append(f"{key}={value}")
+        joined_items = ", ".join(items_representation)
+
+        class_name = self.__class__.__name__
+
+        return f"{class_name}({joined_items})"
+
+    @final
+    def __repr__(self) -> str:
+        """Representation of this object."""
+        return self.__str__()
 
 
 ParamType = TypeVar("ParamType", float, int, str)
@@ -275,6 +315,24 @@ class Parameter(Generic[ParamType]):
 
     sigma: float | None = None
     """Std Dev for normal or lognormal distributions"""
+
+    @final
+    def __str__(self) -> str:
+        """String representation of this object."""
+        items_representation = []
+        for key, value in self.__dict__.items():
+            if value is not None:
+                items_representation.append(f"{key}={value}")
+        joined_items = ", ".join(items_representation)
+
+        class_name = self.__class__.__name__
+
+        return f"{class_name}({joined_items})"
+
+    @final
+    def __repr__(self) -> str:
+        """Representation of this object."""
+        return self.__str__()
 
 
 @dataclass

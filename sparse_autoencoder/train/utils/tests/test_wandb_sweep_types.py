@@ -23,8 +23,8 @@ class TestNestedParameter:
 
         dummy = DummyNestedParameter()
 
-        # It should be in the nested "properties" key.
-        assert dummy.to_dict() == {"properties": {"nested_property": {"value": 1.0}}}
+        # It should be in the nested "parameters" key.
+        assert dummy.to_dict() == {"parameters": {"nested_property": {"value": 1.0}}}
 
 
 class TestWandbSweepConfig:

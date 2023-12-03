@@ -17,17 +17,16 @@ from sparse_autoencoder import (
     SparseAutoencoder,
 )
 from sparse_autoencoder.train.sweep_config import (
-    Hyperparameters,
     RuntimeHyperparameters,
-    SourceDataHyperparameters,
-    SourceModelHyperparameters,
     SweepConfig,
 )
-from sparse_autoencoder.train.utils.wandb_sweep_types import Parameter
 
 
 def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> ActivationResampler:
     """Setup the activation resampler for the autoencoder.
+
+    Args:
+        hyperparameters: The hyperparameters dictionary.
 
     Returns:
         ActivationResampler: The initialized activation resampler.
