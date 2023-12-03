@@ -15,6 +15,10 @@
         wandb=">=0.15.12"
         zstandard=">=0.22.0"   # Required for downloading datasets such as The Pile
 
+    [tool.poetry.extras]
+        # Extras for use with pip, e.g. `pip install sparse_autoencoder[demos]`
+        demos=["ipywidgets", "pandas", "tokenizers", "transformer-lens", "transformers"]
+
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
             jupyter=">=1"
