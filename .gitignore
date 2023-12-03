@@ -138,3 +138,6 @@ docs/content/reference
 
 # Checkpoints directory
 .checkpoints
+
+# Wandb
+wandb/
