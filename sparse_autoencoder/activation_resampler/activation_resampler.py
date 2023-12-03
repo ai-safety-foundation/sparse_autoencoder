@@ -457,3 +457,14 @@ class ActivationResampler(AbstractActivationResampler):
                 dead_encoder_bias_updates=dead_encoder_bias_updates,
                 dead_decoder_weight_updates=dead_decoder_weight_updates,
             )
+
+    def __str__(self) -> str:
+        """Return a string representation of the activation resampler."""
+        return (
+            f"ActivationResampler("
+            f"resample_interval={self.resample_interval}, "
+            f"max_resamples={self._max_resamples}, "
+            f"n_steps_collate={self.n_steps_collate}, "
+            f"resample_dataset_size={self._resample_dataset_size}, "
+            f"dead_neuron_threshold={self._dead_neuron_threshold})"
+        )
