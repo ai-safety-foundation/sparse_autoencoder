@@ -331,6 +331,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approach
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       Setup
@@ -2195,6 +2219,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approach
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       Setup
@@ -2311,14 +2359,33 @@
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://colab.research.google.com/github/ai-safety-foundation/sparse_autoencoder/blob/main/docs/content/demo.ipynb" target="_blank">
+<img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/>
+</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="sparse-autoencoder-training-demo">Sparse Autoencoder Training Demo<a class="headerlink" href="#sparse-autoencoder-training-demo" title="Permanent link">¤</a></h1>
-<p>This demo trains a sparse autoencoder on activations from a Tiny Stories 1M model.</p>
-<p>To do this we setup a <em>source model</em> (the TinyStories model) that we want to generate activations
-from, along with a <em>source dataset</em> of prompts to help generate these activations.</p>
-<p>We also setup a <em>sparse autoencoder model</em> which we'll train on these generated activations, to
-learn a sparse representation of them in higher dimensional space.</p>
-<p>Finally we'll wrap this all together in a <em>pipeline</em>, which alternates between generating
-activations (storing them in ram), and training the SAE on said activations.</p>
+<p>This demo shows you how to train a sparse autoencoder (SAE) on a
+<a href="https://github.com/neelnanda-io/TransformerLens">TransformerLens</a> model. It replicates Neel Nanda's
+<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html#comment-nanda">comment on the Anthropic dictionary learning
+paper</a>.</p>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">¤</a></h2>
+<p>The way this library works is that we provide all the components necessary to train a sparse
+autoencoder. For the most part, these are just standard PyTorch modules. For example <code>AdamWithReset</code> is
+just an extension of <code>torch.optim.Adam</code>, with a few extra bells and whistles that are needed for training a SAE
+(e.g. a method to reset the optimizer state when you are also resampling dead neurons).</p>
+<p>This is very flexible - it's easy for you to extend and change just one component if you want, just
+like you'd do with a standard PyTorch mode. It also means it's very easy to see what is going on
+under the hood. However to get you started, the following demo sets up a
+default SAE that uses the implementation that Neel Nanda used in his comment above.</p>
+<h3 id="approach">Approach<a class="headerlink" href="#approach" title="Permanent link">¤</a></h3>
+<p>The approach is pretty simple - we run a training pipeline that alternates between generating
+activations from a <em>source model</em>, and training the <em>sparse autoencoder</em> model on these generated
+activations.</p>
 </div>
 </div>
 </div>
@@ -2339,17 +2406,39 @@ activations (storing them in ram), and training the SAE on said activations.</p>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
-<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
-<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check if we&#39;re in Colab</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>  <span class="c1"># noqa: F401 # type: ignore</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">in_colab</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">in_colab</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1">#  Install if in Colab</span>
+<span class="k">if</span> <span class="n">in_colab</span><span class="p">:</span>
+    <span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">sparse_autoencoder</span><span class="p">,</span> <span class="n">transformer_lens</span><span class="p">,</span> <span class="n">transformers</span><span class="p">,</span> <span class="n">wandb</span>
+
+<span class="c1"># Otherwise enable hot reloading in dev mode</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">in_colab</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">get_ipython</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ip</span><span class="o">.</span><span class="n">extension_manager</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ip</span><span class="o">.</span><span class="n">extension_manager</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
+        <span class="n">ip</span><span class="o">.</span><span class="n">extension_manager</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;autoreload&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">transformer_lens</span> <span class="kn">import</span> <span class="n">HookedTransformer</span>
 <span class="kn">from</span> <span class="nn">transformer_lens.utils</span> <span class="kn">import</span> <span class="n">get_device</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">PreTrainedTokenizerBase</span>
-<span class="kn">import</span> <span class="nn">wandb</span>
 
 <span class="kn">from</span> <span class="nn">sparse_autoencoder</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ActivationResampler</span><span class="p">,</span>
@@ -2361,6 +2450,7 @@ activations (storing them in ram), and training the SAE on said activations.</p>
     <span class="n">PreTokenizedDataset</span><span class="p">,</span>
     <span class="n">SparseAutoencoder</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">import</span> <span class="nn">wandb</span>
 
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TOKENIZERS_PARALLELISM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
@@ -2411,9 +2501,9 @@ multiple hyperparameters with <code>wandb.sweep</code>.</p>
     <span class="c1"># and we have found that 4x is a good starting point.</span>
     <span class="s2">&quot;expansion_factor&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
     <span class="c1"># L1 coefficient is the coefficient of the L1 regularization term (used to encourage sparsity).</span>
-    <span class="s2">&quot;l1_coefficient&quot;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
+    <span class="s2">&quot;l1_coefficient&quot;</span><span class="p">:</span> <span class="mf">3e-4</span><span class="p">,</span>
     <span class="c1"># Adam parameters (set to the default ones here)</span>
-    <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">3e-4</span><span class="p">,</span>
+    <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">,</span>
     <span class="s2">&quot;adam_beta_1&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
     <span class="s2">&quot;adam_beta_2&quot;</span><span class="p">:</span> <span class="mf">0.999</span><span class="p">,</span>
     <span class="s2">&quot;adam_epsilon&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
@@ -2485,7 +2575,7 @@ we'll also get some details about that hook point.</p>
 <div class="output_area">
 <div class="output_text output_subarea output_execute_result">
 <pre>
-<code>'Source: gelu-2l, Hook: blocks.0.hook_mlp_out,     Features: 512'</code>
+<code>'Source: gelu-2l,     Hook: blocks.0.hook_mlp_out,     Features: 512'</code>
 </pre>
 </div>
 </div>
@@ -2519,11 +2609,8 @@ classes (which are fully documented) for more details.</p>
 <span class="n">autoencoder</span> <span class="o">=</span> <span class="n">SparseAutoencoder</span><span class="p">(</span>
     <span class="n">n_input_features</span><span class="o">=</span><span class="n">autoencoder_input_dim</span><span class="p">,</span>  <span class="c1"># size of the activations we are autoencoding</span>
     <span class="n">n_learned_features</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">autoencoder_input_dim</span> <span class="o">*</span> <span class="n">expansion_factor</span><span class="p">),</span>  <span class="c1"># size of SAE</span>
-    <span class="n">geometric_median_dataset</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-        <span class="n">autoencoder_input_dim</span>
-    <span class="p">),</span>  <span class="c1"># this is used to initialize the tied bias</span>
 <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-<span class="n">autoencoder</span>  <span class="c1"># Print the model (it&#39;s pretty straightforward)</span>
+<span class="n">autoencoder</span>
 </code></pre></div>
 
 </div>
@@ -2576,7 +2663,7 @@ optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWit
 <div class="output_text output_subarea output_execute_result">
 <pre>
 <code>LossReducer(
-  (0): LearnedActivationsL1Loss(l1_coefficient=0.001)
+  (0): LearnedActivationsL1Loss(l1_coefficient=0.0003)
   (1): L2ReconstructionLoss()
 )</code>
 </pre>
@@ -2614,7 +2701,7 @@ Parameter Group 0
     eps: 1e-08
     foreach: None
     fused: None
-    lr: 0.0003
+    lr: 0.0001
     maximize: False
     weight_decay: 0.0
 )</code>
@@ -2659,23 +2746,11 @@ used to train the SAE).</p>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
-<div class="highlight"><pre><span></span><code><span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span> <span class="o">=</span> <span class="n">src_model</span><span class="o">.</span><span class="n">tokenizer</span>  <span class="c1"># type: ignore</span>
-<span class="n">source_data</span> <span class="o">=</span> <span class="n">PreTokenizedDataset</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">source_data</span> <span class="o">=</span> <span class="n">PreTokenizedDataset</span><span class="p">(</span>
     <span class="n">dataset_path</span><span class="o">=</span><span class="s2">&quot;NeelNanda/c4-code-tokenized-2b&quot;</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;context_size&quot;</span><span class="p">])</span>
 <span class="p">)</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Resolving data files:   0%|          | 0/28 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -2716,48 +2791,6 @@ wandb. </p>
 </code></pre></div>
 
 </div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>
-<code><span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Currently logged in as: <span class="ansi-yellow-fg">hoagy</span> (<span class="ansi-yellow-fg">distillrepr</span>). Use <span class="ansi-bold">`wandb login --relogin`</span> to force relogin
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Tracking run with wandb version 0.16.0
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Run data is saved locally in <code>.cache/wandb/run-20231126_184500-2fnpg8zi</code>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi" target="_blank">prime-star-105</a></strong> to <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">Weights &amp; Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
- View project at <a href="https://wandb.ai/distillrepr/sparse-autoencoder" target="_blank">https://wandb.ai/distillrepr/sparse-autoencoder</a>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
- View run at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi</a>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea output_execute_result">
-<button onclick="this.nextSibling.style.display='block';this.style.display='none';">Display W&amp;B run</button><iframe src="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/2fnpg8zi?jupyter=true" style="border:none;width:100%;height:420px;display:none;"></iframe>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -2779,32 +2812,11 @@ Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/run
     <span class="n">train_batch_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;train_batch_size&quot;</span><span class="p">]),</span>
     <span class="n">max_store_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;max_store_size&quot;</span><span class="p">]),</span>
     <span class="n">max_activations</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;max_activations&quot;</span><span class="p">]),</span>
-    <span class="n">resample_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;resample_frequency&quot;</span><span class="p">]),</span>
     <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;checkpoint_frequency&quot;</span><span class="p">]),</span>
     <span class="n">validate_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;validation_frequency&quot;</span><span class="p">]),</span>
 <span class="p">)</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Activations trained on:   0%|          | 0/2000000000 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>
-<code>/Users/hoagycunningham/sparse_autoencoder/.venv/lib/python3.10/site-packages/torch/autograd/__init__.py:251: UserWarning: The operator 'aten::sgn.out' is not currently supported on the MPS backend and will fall back to run on the CPU. This may have performance implications. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/mps/MPSFallback.mm:13.)
-  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-</code>
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
