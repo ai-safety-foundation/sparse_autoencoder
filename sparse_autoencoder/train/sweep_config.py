@@ -1,4 +1,7 @@
-"""Default hyperparameter setup for quick tuning of a sparse autoencoder."""
+"""Sweep config.
+
+Default hyperparameter setup for quick tuning of a sparse autoencoder.
+"""
 from dataclasses import dataclass, field
 from typing import TypedDict
 
@@ -14,6 +17,47 @@ from sparse_autoencoder.train.utils.wandb_sweep_types import (
 
 # Warning: The runtime hyperparameter classes must be manually kept in sync with the hyperparameter
 # classes, so that static type checking works.
+
+
+@dataclass
+class ActivationResamplerHyperparameters(NestedParameter):
+    """Activation resampler hyperparameters."""
+
+    resample_interval: Parameter[int] = field(default_factory=lambda: Parameter(200_000_000))
+    """Resample interval."""
+
+    max_resamples: Parameter[int] = field(default_factory=lambda: Parameter(4))
+    """Maximum number of resamples."""
+
+    n_steps_collate: Parameter[int] = field(default_factory=lambda: Parameter(100_000_000))
+    """Number of steps to collate before resampling.
+
+    Number of autoencoder learned activation vectors to collate before resampling.
+    """
+
+    resample_dataset_size: Parameter[int] = field(default_factory=lambda: Parameter(819_200))
+    """Resample dataset size.
+
+    Number of autoencoder input activations to use for calculating the loss, as part of the
+    resampling process to create the reset neuron weights.
+    """
+
+    dead_neuron_threshold: Parameter[float] = field(default_factory=lambda: Parameter(0.0))
+    """Dead neuron threshold.
+
+    Threshold for determining if a neuron is dead (has "fired" in less than this portion of the
+    collated sample).
+    """
+
+
+class ActivationResamplerRuntimeHyperparameters(TypedDict):
+    """Activation resampler runtime hyperparameters."""
+
+    resample_interval: int
+    max_resamples: int
+    n_steps_collate: int
+    resample_dataset_size: int
+    dead_neuron_threshold: float
 
 
 @dataclass
@@ -77,6 +121,19 @@ class OptimizerHyperparameters(NestedParameter):
     Weight decay (L2 penalty).
     """
 
+    amsgrad: Parameter[bool] = field(default_factory=lambda: Parameter(value=False))
+    """AMSGrad.
+
+    Whether to use the AMSGrad variant of this algorithm from the paper [On the Convergence of Adam
+    and Beyond](https://arxiv.org/abs/1904.09237).
+    """
+
+    fused: Parameter[bool] = field(default_factory=lambda: Parameter(value=False))
+    """Fused.
+
+    Whether to use a fused implementation of the optimizer (may be faster on CUDA).
+    """
+
 
 class OptimizerRuntimeHyperparameters(TypedDict):
     """Optimizer runtime hyperparameters."""
@@ -85,11 +142,16 @@ class OptimizerRuntimeHyperparameters(TypedDict):
     adam_beta_1: float
     adam_beta_2: float
     adam_weight_decay: float
+    amsgrad: bool
+    fused: bool
 
 
 @dataclass
 class SourceDataHyperparameters(NestedParameter):
     """Source data hyperparameters."""
+
+    dataset_path: Parameter[str]
+    """Dataset path."""
 
     context_size: Parameter[int] = field(default_factory=lambda: Parameter(128))
     """Context size."""
@@ -98,6 +160,7 @@ class SourceDataHyperparameters(NestedParameter):
 class SourceDataRuntimeHyperparameters(TypedDict):
     """Source data runtime hyperparameters."""
 
+    dataset_path: str
     context_size: int
 
 
@@ -135,6 +198,12 @@ class SourceModelRuntimeHyperparameters(TypedDict):
 class PipelineHyperparameters(NestedParameter):
     """Pipeline hyperparameters."""
 
+    log_frequency: Parameter[int] = field(default_factory=lambda: Parameter(100))
+    """Training log frequency."""
+
+    source_data_batch_size: Parameter[int] = field(default_factory=lambda: Parameter(12))
+    """Source data batch size."""
+
     train_batch_size: Parameter[int] = field(default_factory=lambda: Parameter(4096))
     """Train batch size."""
 
@@ -152,22 +221,36 @@ class PipelineHyperparameters(NestedParameter):
     )
     """Validation frequency."""
 
+    validation_number_activations: Parameter[int] = field(default_factory=lambda: Parameter(1024))
+    """Number of activations to use for validation."""
+
 
 class PipelineRuntimeHyperparameters(TypedDict):
     """Pipeline runtime hyperparameters."""
 
+    log_frequency: int
+    source_data_batch_size: int
     train_batch_size: int
     max_store_size: int
     max_activations: int
     checkpoint_frequency: int
     validation_frequency: int
+    validation_number_activations: int
 
 
 @dataclass
 class Hyperparameters(Parameters):
     """Sweep Hyperparameters."""
 
+    # Required parameters
+    source_data: SourceDataHyperparameters
+
     source_model: SourceModelHyperparameters
+
+    # Optional parameters
+    activation_resampler: ActivationResamplerHyperparameters = field(
+        default_factory=lambda: ActivationResamplerHyperparameters()
+    )
 
     autoencoder: AutoencoderHyperparameters = field(
         default_factory=lambda: AutoencoderHyperparameters()
@@ -177,14 +260,25 @@ class Hyperparameters(Parameters):
 
     optimizer: OptimizerHyperparameters = field(default_factory=lambda: OptimizerHyperparameters())
 
-    source_data: SourceDataHyperparameters = field(
-        default_factory=lambda: SourceDataHyperparameters()
-    )
-
     pipeline: PipelineHyperparameters = field(default_factory=lambda: PipelineHyperparameters())
 
     random_seed: Parameter[int] = field(default_factory=lambda: Parameter(49))
     """Random seed."""
+
+    def __post_init__(self) -> None:
+        """Post initialisation checks."""
+        # Check the resample dataset size <= the store size (currently only works if value is used
+        # for both).
+        if (
+            self.activation_resampler.resample_dataset_size.value is not None
+            and self.pipeline.max_store_size.value is not None
+            and self.activation_resampler.resample_dataset_size.value
+            >= int(self.pipeline.max_store_size.value)
+        ):
+            error_message = (
+                "Resample dataset size must be less than or equal to the pipeline max store size"
+            )
+            raise ValueError(error_message)
 
 
 @dataclass
@@ -201,10 +295,11 @@ class SweepConfig(WandbSweepConfig):
 class RuntimeHyperparameters(TypedDict):
     """Runtime hyperparameters."""
 
+    source_data: SourceDataRuntimeHyperparameters
     source_model: SourceModelRuntimeHyperparameters
+    activation_resampler: ActivationResamplerRuntimeHyperparameters
     autoencoder: AutoencoderRuntimeHyperparameters
     loss: LossRuntimeHyperparameters
     optimizer: OptimizerRuntimeHyperparameters
-    source_data: SourceDataRuntimeHyperparameters
     pipeline: PipelineRuntimeHyperparameters
     random_seed: int
