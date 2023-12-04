@@ -146,6 +146,9 @@ class NeuronActivityHorizonData:
 
         Args:
             neuron_activity: Neuron activity.
+
+        Returns:
+            Dictionary of metrics (or empty dictionary if no metrics are ready to be logged).
         """
         self._steps_since_last_calculated += 1
         self._neuron_activity += neuron_activity
