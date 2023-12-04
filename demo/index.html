@@ -2434,26 +2434,7 @@ learning rate):</p>
     optimizer=OptimizerHyperparameters(lr=Parameter(values=[0.001, 0.0001, 1e-05]), adam_beta_1=Parameter(value=0.9), adam_beta_2=Parameter(value=0.99), adam_weight_decay=Parameter(value=0.0), amsgrad=Parameter(value=False), fused=Parameter(value=False))
     pipeline=PipelineHyperparameters(log_frequency=Parameter(value=100), source_data_batch_size=Parameter(value=12), train_batch_size=Parameter(value=4096), max_store_size=Parameter(value=3145728), max_activations=Parameter(value=2000000000), checkpoint_frequency=Parameter(value=100000000), validation_frequency=Parameter(value=314572800), validation_number_activations=Parameter(value=1024))
     random_seed=Parameter(value=49)
-), method=&lt;Method.RANDOM: 'random'&gt;, metric=Metric(name='total_loss', goal=&lt;Goal.MINIMIZE: 'minimize'&gt;, impute=None, imputewhilerunning=None, target=None), command=None, controller=None, description=None, earlyterminate=None, entity=None, imageuri=None, job=None, kind=None, name=None, program=None, project=None, runcap=None)</code>
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="highlight"><pre><span></span><code><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;gelu-2l&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea output_execute_result">
-<pre>
-<code>Parameter(value=gelu-2l)</code>
+), method=&lt;Method.RANDOM: 'random'&gt;, metric=Metric(name=total_loss, goal=minimize), command=None, controller=None, description=None, earlyterminate=None, entity=None, imageuri=None, job=None, kind=None, name=None, program=None, project=None, runcap=None)</code>
 </pre>
 </div>
 </div>
@@ -2475,114 +2456,6 @@ learning rate):</p>
 <span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-<code>Create sweep with ID: f5e0gllf
-Sweep URL: https://wandb.ai/alan-cooney/sparse-autoencoder/sweeps/f5e0gllf
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>
-<code><span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Agent Starting Run: sjlk7s82 with config:
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  activation_resampler: {'dead_neuron_threshold': 0, 'max_resamples': 4, 'n_steps_collate': 100000000, 'resample_dataset_size': 819200, 'resample_interval': 200000000}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  autoencoder: {'expansion_factor': 4}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  loss: {'l1_coefficient': 0.0001}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  optimizer: {'adam_beta_1': 0.9, 'adam_beta_2': 0.99, 'adam_weight_decay': 0, 'amsgrad': False, 'fused': False, 'lr': 0.0001}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  pipeline: {'checkpoint_frequency': 100000000, 'log_frequency': 100, 'max_activations': 2000000000, 'max_store_size': 3145728, 'source_data_batch_size': 12, 'train_batch_size': 4096, 'validation_frequency': 314572800, 'validation_number_activations': 1024}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  random_seed: 49
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  source_data: {'context_size': 128, 'dataset_path': 'NeelNanda/c4-code-tokenized-2b'}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>:  source_model: {'dtype': 'float32', 'hook_dimension': 512, 'hook_layer': 0, 'hook_site': 'mlp_out', 'name': 'gelu-2l'}
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Currently logged in as: <span class="ansi-yellow-fg">alan-cooney</span>. Use <span class="ansi-bold">`wandb login --relogin`</span> to force relogin
-<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: <span class="ansi-yellow-fg">WARNING</span> Ignored wandb.init() arg project when running a sweep.
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Tracking run with wandb version 0.16.0
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Run data is saved locally in <code>/Users/alan/Documents/Repos/sparse_autoencoder/docs/content/wandb/run-20231203_173216-sjlk7s82</code>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Syncing run <strong><a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/sjlk7s82" target="_blank">cerulean-sweep-1</a></strong> to <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">Weights &amp; Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/>Sweep page: <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/sweeps/f5e0gllf" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/sweeps/f5e0gllf</a>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
- View project at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder</a>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
- View sweep at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/sweeps/f5e0gllf" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/sweeps/f5e0gllf</a>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
- View run at <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/sjlk7s82" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/sjlk7s82</a>
-</div>
-</div>
-<div class="output_area">
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-<code>Loaded pretrained model gelu-2l into HookedTransformer
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Resolving data files:   0%|          | 0/28 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Activations trained on:   0%|          | 0/2000000000 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>
-<code><span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Ctrl + C detected. Stopping sweep.
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>VBox(children=(Label(value='0.001 MB of 0.001 MB uploaded\r'), FloatProgress(value=1.0, max=1.0)))</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
- View run <strong style="color:#cdcd00">cerulean-sweep-1</strong> at: <a href="https://wandb.ai/alan-cooney/sparse-autoencoder/runs/sjlk7s82" target="_blank">https://wandb.ai/alan-cooney/sparse-autoencoder/runs/sjlk7s82</a><br/>Synced 5 W&amp;B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
-</div>
-</div>
-<div class="output_area">
-<div class="output_html rendered_html output_subarea">
-Find logs at: <code>./wandb/run-20231203_173216-sjlk7s82/logs</code>
-</div>
-</div>
-</div>
 </div>
 </div>
 
