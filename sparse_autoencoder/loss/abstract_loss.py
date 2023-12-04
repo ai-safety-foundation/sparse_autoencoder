@@ -135,7 +135,7 @@ class AbstractLoss(Module, ABC):
             )
 
         # Add in the current loss module's metric
-        log_name = self.log_name()
+        log_name = "train/loss/" + self.log_name()
         metrics[log_name] = current_module_loss.detach().cpu().item()
 
         return current_module_loss, metrics

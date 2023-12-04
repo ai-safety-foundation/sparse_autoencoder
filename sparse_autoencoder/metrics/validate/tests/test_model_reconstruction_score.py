@@ -56,4 +56,4 @@ def test_model_reconstruction_score_various_data(
     """
     metric = ModelReconstructionScore()
     result = metric.calculate(data)
-    assert round(result["model_reconstruction_score"], 2) == expected_score
+    assert round(result["validate/model_reconstruction_score"], 2) == expected_score

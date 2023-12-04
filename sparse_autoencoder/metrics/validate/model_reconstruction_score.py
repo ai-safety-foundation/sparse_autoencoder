@@ -43,7 +43,7 @@ class ModelReconstructionScore(AbstractValidationMetric):
             ... )
             >>> metric = ModelReconstructionScore()
             >>> result = metric.calculate(data)
-            >>> round(result['model_reconstruction_score'], 3)
+            >>> round(result['validate/model_reconstruction_score'], 3)
             0.667
 
         Args:
@@ -78,8 +78,8 @@ class ModelReconstructionScore(AbstractValidationMetric):
         )
 
         return {
-            "validation_baseline_loss": validation_baseline_loss,
-            "validation_loss_with_reconstruction": validation_loss_with_reconstruction,
-            "validation_loss_with_zero_ablation": validation_loss_with_zero_ablation,
-            "model_reconstruction_score": model_reconstruction_score,
+            "validate/baseline_loss": validation_baseline_loss,
+            "validate/loss_with_reconstruction": validation_loss_with_reconstruction,
+            "validate/loss_with_zero_ablation": validation_loss_with_zero_ablation,
+            "validate/model_reconstruction_score": model_reconstruction_score,
         }
