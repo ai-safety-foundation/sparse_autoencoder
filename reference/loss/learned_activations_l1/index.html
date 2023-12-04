@@ -2658,8 +2658,8 @@ tensor(0.5000)</p>
                 <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">batch_scalar_loss_penalty</span><span class="p">,</span> <span class="n">metrics</span>
@@ -2971,8 +2971,8 @@ make the loss independent of the batch size.</p>
             <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">batch_scalar_loss_penalty</span><span class="p">,</span> <span class="n">metrics</span>

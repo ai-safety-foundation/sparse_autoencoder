@@ -2325,7 +2325,7 @@ this over the batch.</p>
         <span class="n">batch_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">n_non_zero_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
         <span class="n">batch_average</span> <span class="o">=</span> <span class="n">n_non_zero_activations</span> <span class="o">/</span> <span class="n">batch_size</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;learned_activations_l0_norm&quot;</span><span class="p">:</span> <span class="n">batch_average</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train/learned_activations_l0_norm&quot;</span><span class="p">:</span> <span class="n">batch_average</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2369,7 +2369,7 @@ this over the batch.</p>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">n_non_zero_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
     <span class="n">batch_average</span> <span class="o">=</span> <span class="n">n_non_zero_activations</span> <span class="o">/</span> <span class="n">batch_size</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;learned_activations_l0_norm&quot;</span><span class="p">:</span> <span class="n">batch_average</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train/learned_activations_l0_norm&quot;</span><span class="p">:</span> <span class="n">batch_average</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

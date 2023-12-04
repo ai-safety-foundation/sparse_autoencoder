@@ -2722,7 +2722,7 @@
             <span class="p">)</span>
 
         <span class="c1"># Add in the current loss module&#39;s metric</span>
-        <span class="n">log_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span>
+        <span class="n">log_name</span> <span class="o">=</span> <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span>
         <span class="n">metrics</span><span class="p">[</span><span class="n">log_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_module_loss</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">current_module_loss</span><span class="p">,</span> <span class="n">metrics</span>
@@ -3321,7 +3321,7 @@ make the loss independent of the batch size.</p>
         <span class="p">)</span>
 
     <span class="c1"># Add in the current loss module&#39;s metric</span>
-    <span class="n">log_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span>
+    <span class="n">log_name</span> <span class="o">=</span> <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span>
     <span class="n">metrics</span><span class="p">[</span><span class="n">log_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_module_loss</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">current_module_loss</span><span class="p">,</span> <span class="n">metrics</span>

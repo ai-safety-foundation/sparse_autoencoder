@@ -8837,7 +8837,7 @@ squared dot products of all features.</p>
         <span class="n">train_batch_capacities_histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_capacities_histogram</span><span class="p">(</span><span class="n">train_batch_capacities</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;train_batch_capacities_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_capacities_histogram</span><span class="p">,</span>
+            <span class="s2">&quot;train/batch_capacities_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_capacities_histogram</span><span class="p">,</span>
         <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -8885,7 +8885,7 @@ squared dot products of all features.</p>
     <span class="n">train_batch_capacities_histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_capacities_histogram</span><span class="p">(</span><span class="n">train_batch_capacities</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;train_batch_capacities_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_capacities_histogram</span><span class="p">,</span>
+        <span class="s2">&quot;train/batch_capacities_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_capacities_histogram</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -12199,7 +12199,7 @@ output_activations = torch.tensor([[1.0, 5], [1.0, 5]])
 unused_activations = torch.zeros_like(input_activations)</p>
 <h3 id="sparse_autoencoder.L2ReconstructionLoss--outputs-both-loss-and-metrics-to-log">Outputs both loss and metrics to log<a class="headerlink" href="#sparse_autoencoder.L2ReconstructionLoss--outputs-both-loss-and-metrics-to-log" title="Permanent link">¤</a></h3>
 <p>loss(input_activations, unused_activations, output_activations)
-(tensor(5.5000), {'l2_reconstruction_loss': 5.5})</p>
+(tensor(5.5000), {'train/loss/l2_reconstruction_loss': 5.5})</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -12288,7 +12288,7 @@ unused_activations = torch.zeros_like(input_activations)</p>
 <span class="sd">        &gt;&gt;&gt; unused_activations = torch.zeros_like(input_activations)</span>
 <span class="sd">        &gt;&gt;&gt; # Outputs both loss and metrics to log</span>
 <span class="sd">        &gt;&gt;&gt; loss(input_activations, unused_activations, output_activations)</span>
-<span class="sd">        (tensor(5.5000), {&#39;l2_reconstruction_loss&#39;: 5.5})</span>
+<span class="sd">        (tensor(5.5000), {&#39;train/loss/l2_reconstruction_loss&#39;: 5.5})</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span>
@@ -12918,8 +12918,8 @@ tensor(0.5000)</p>
                 <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">batch_scalar_loss_penalty</span><span class="p">,</span> <span class="n">metrics</span>
@@ -13231,8 +13231,8 @@ make the loss independent of the batch size.</p>
             <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="s2">&quot;learned_activations_l1_loss&quot;</span><span class="p">:</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s2">&quot;train/loss/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">():</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">batch_scalar_loss_penalty</span><span class="p">,</span> <span class="n">metrics</span>
@@ -17658,8 +17658,7 @@ set.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 34</span>
-<span class="normal"> 35</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 35</span>
 <span class="normal"> 36</span>
 <span class="normal"> 37</span>
 <span class="normal"> 38</span>
@@ -18090,7 +18089,11 @@ set.</p>
 <span class="normal">463</span>
 <span class="normal">464</span>
 <span class="normal">465</span>
-<span class="normal">466</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -18147,6 +18150,7 @@ set.</p>
         <span class="n">optimizer</span><span class="p">:</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">,</span>
         <span class="n">source_dataset</span><span class="p">:</span> <span class="n">SourceDataset</span><span class="p">,</span>
         <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
+        <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sparse_autoencoder&quot;</span><span class="p">,</span>
         <span class="n">checkpoint_directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">log_frequency</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">metrics</span><span class="p">:</span> <span class="n">MetricsContainer</span> <span class="o">=</span> <span class="n">default_metrics</span><span class="p">,</span>
@@ -18163,6 +18167,7 @@ set.</p>
 <span class="sd">            optimizer: Optimizer to use.</span>
 <span class="sd">            source_dataset: Source dataset to get data from.</span>
 <span class="sd">            source_model: Source model to get activations from.</span>
+<span class="sd">            run_name: Name of the run for saving checkpoints.</span>
 <span class="sd">            checkpoint_directory: Directory to save checkpoints to.</span>
 <span class="sd">            log_frequency: Frequency at which to log metrics (in steps)</span>
 <span class="sd">            metrics: Metrics to use.</span>
@@ -18177,6 +18182,7 @@ set.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_data_batch_size</span> <span class="o">=</span> <span class="n">source_data_batch_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_dataset</span> <span class="o">=</span> <span class="n">source_dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span> <span class="o">=</span> <span class="n">source_model</span>
@@ -18390,8 +18396,10 @@ set.</p>
     <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_directory</span><span class="p">:</span>
+            <span class="n">run_name_file_system_safe</span> <span class="o">=</span> <span class="n">quote_plus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
             <span class="n">file_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_directory</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;sae_state_dict-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_training_steps</span><span class="si">}</span><span class="s2">.pt&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_directory</span>
+                <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_name_file_system_safe</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_training_steps</span><span class="si">}</span><span class="s2">.pt&quot;</span>
             <span class="p">)</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">file_path</span><span class="p">)</span>
 
@@ -18442,8 +18450,6 @@ set.</p>
                 <span class="n">last_validated</span> <span class="o">+=</span> <span class="n">num_activation_vectors_in_store</span>
                 <span class="n">last_checkpoint</span> <span class="o">+=</span> <span class="n">num_activation_vectors_in_store</span>
                 <span class="n">total_activations</span> <span class="o">+=</span> <span class="n">num_activation_vectors_in_store</span>
-                <span class="k">if</span> <span class="n">wandb</span><span class="o">.</span><span class="n">run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;activations_generated&quot;</span><span class="p">:</span> <span class="n">total_activations</span><span class="p">},</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
                 <span class="c1"># Train</span>
                 <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;train&quot;</span><span class="p">})</span>
@@ -18832,7 +18838,7 @@ set.</p>
 
 
 <h3 id="sparse_autoencoder.Pipeline.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">activation_resampler</span><span class="p">,</span> <span class="n">autoencoder</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">source_dataset</span><span class="p">,</span> <span class="n">source_model</span><span class="p">,</span> <span class="n">checkpoint_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_frequency</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">default_metrics</span><span class="p">,</span> <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">activation_resampler</span><span class="p">,</span> <span class="n">autoencoder</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">source_dataset</span><span class="p">,</span> <span class="n">source_model</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="s1">&#39;sparse_autoencoder&#39;</span><span class="p">,</span> <span class="n">checkpoint_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_frequency</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">default_metrics</span><span class="p">,</span> <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.Pipeline.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -18967,6 +18973,20 @@ set.</p>
           </td>
         </tr>
         <tr>
+          <td><code>run_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Name of the run for saving checkpoints.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;sparse_autoencoder&#39;</code>
+          </td>
+        </tr>
+        <tr>
           <td><code>checkpoint_directory</code></td>
           <td>
                 <code><span title="pathlib.Path">Path</span> | None</code>
@@ -19027,8 +19047,7 @@ set.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 80</span>
-<span class="normal"> 81</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
 <span class="normal"> 84</span>
@@ -19073,7 +19092,11 @@ set.</p>
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>  <span class="c1"># noqa: PLR0913</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
@@ -19084,6 +19107,7 @@ set.</p>
     <span class="n">optimizer</span><span class="p">:</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">,</span>
     <span class="n">source_dataset</span><span class="p">:</span> <span class="n">SourceDataset</span><span class="p">,</span>
     <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
+    <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sparse_autoencoder&quot;</span><span class="p">,</span>
     <span class="n">checkpoint_directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">log_frequency</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
     <span class="n">metrics</span><span class="p">:</span> <span class="n">MetricsContainer</span> <span class="o">=</span> <span class="n">default_metrics</span><span class="p">,</span>
@@ -19100,6 +19124,7 @@ set.</p>
 <span class="sd">        optimizer: Optimizer to use.</span>
 <span class="sd">        source_dataset: Source dataset to get data from.</span>
 <span class="sd">        source_model: Source model to get activations from.</span>
+<span class="sd">        run_name: Name of the run for saving checkpoints.</span>
 <span class="sd">        checkpoint_directory: Directory to save checkpoints to.</span>
 <span class="sd">        log_frequency: Frequency at which to log metrics (in steps)</span>
 <span class="sd">        metrics: Metrics to use.</span>
@@ -19114,6 +19139,7 @@ set.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_data_batch_size</span> <span class="o">=</span> <span class="n">source_data_batch_size</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_dataset</span> <span class="o">=</span> <span class="n">source_dataset</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span> <span class="o">=</span> <span class="n">source_model</span>
@@ -19222,11 +19248,7 @@ set.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
@@ -19272,7 +19294,11 @@ set.</p>
 <span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations.</span>
 
 <span class="sd">    Args:</span>
@@ -19448,13 +19474,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
 <span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
@@ -19535,7 +19555,11 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">423</span>
 <span class="normal">424</span>
 <span class="normal">425</span>
-<span class="normal">426</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">max_store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -19582,8 +19606,6 @@ used 8bn, although others have had success with 100m+).</p>
             <span class="n">last_validated</span> <span class="o">+=</span> <span class="n">num_activation_vectors_in_store</span>
             <span class="n">last_checkpoint</span> <span class="o">+=</span> <span class="n">num_activation_vectors_in_store</span>
             <span class="n">total_activations</span> <span class="o">+=</span> <span class="n">num_activation_vectors_in_store</span>
-            <span class="k">if</span> <span class="n">wandb</span><span class="o">.</span><span class="n">run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;activations_generated&quot;</span><span class="p">:</span> <span class="n">total_activations</span><span class="p">},</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="c1"># Train</span>
             <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;train&quot;</span><span class="p">})</span>
@@ -19647,19 +19669,23 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">334</span>
 <span class="normal">335</span>
 <span class="normal">336</span>
-<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_directory</span><span class="p">:</span>
+        <span class="n">run_name_file_system_safe</span> <span class="o">=</span> <span class="n">quote_plus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
         <span class="n">file_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_directory</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;sae_state_dict-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_training_steps</span><span class="si">}</span><span class="s2">.pt&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_directory</span>
+            <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_name_file_system_safe</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_training_steps</span><span class="si">}</span><span class="s2">.pt&quot;</span>
         <span class="p">)</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">file_path</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -19791,11 +19817,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">432</span>
 <span class="normal">433</span>
 <span class="normal">434</span>
 <span class="normal">435</span>
@@ -19829,7 +19851,11 @@ different data.</p>
 <span class="normal">463</span>
 <span class="normal">464</span>
 <span class="normal">465</span>
-<span class="normal">466</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">stateful_dataloader_iterable</span><span class="p">(</span>
     <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
@@ -19960,11 +19986,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">184</span>
 <span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
@@ -20024,7 +20046,11 @@ different data.</p>
 <span class="normal">241</span>
 <span class="normal">242</span>
 <span class="normal">243</span>
-<span class="normal">244</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the sparse autoencoder.</span>
@@ -20113,11 +20139,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span>
@@ -20139,7 +20161,11 @@ different data.</p>
 <span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
-<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="n">ParameterUpdateResults</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="n">ParameterUpdateResults</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the parameters of the model from the results of the resampler.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_resampler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error_str</span> <span class="o">=</span> <span class="s2">&quot;No activation resampler has been set&quot;</span>
@@ -20220,11 +20246,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
 <span class="normal">281</span>
@@ -20274,7 +20296,11 @@ different data.</p>
 <span class="normal">325</span>
 <span class="normal">326</span>
 <span class="normal">327</span>
-<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_number_activations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_number_activations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 
 <span class="sd">    Args:</span>
@@ -24625,7 +24651,7 @@ tracking the progress of training.</p>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;train_batch_feature_density_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_feature_density_histogram</span><span class="p">,</span>
+            <span class="s2">&quot;train/batch_feature_density_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_feature_density_histogram</span><span class="p">,</span>
         <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -24835,7 +24861,7 @@ This should be close to zero.</p>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;train_batch_feature_density_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_feature_density_histogram</span><span class="p">,</span>
+        <span class="s2">&quot;train/batch_feature_density_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_feature_density_histogram</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
           </details>

@@ -2364,7 +2364,7 @@ output_activations = torch.tensor([[1.0, 5], [1.0, 5]])
 unused_activations = torch.zeros_like(input_activations)</p>
 <h3 id="sparse_autoencoder.loss.decoded_activations_l2.L2ReconstructionLoss--outputs-both-loss-and-metrics-to-log">Outputs both loss and metrics to log<a class="headerlink" href="#sparse_autoencoder.loss.decoded_activations_l2.L2ReconstructionLoss--outputs-both-loss-and-metrics-to-log" title="Permanent link">¤</a></h3>
 <p>loss(input_activations, unused_activations, output_activations)
-(tensor(5.5000), {'l2_reconstruction_loss': 5.5})</p>
+(tensor(5.5000), {'train/loss/l2_reconstruction_loss': 5.5})</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -2453,7 +2453,7 @@ unused_activations = torch.zeros_like(input_activations)</p>
 <span class="sd">        &gt;&gt;&gt; unused_activations = torch.zeros_like(input_activations)</span>
 <span class="sd">        &gt;&gt;&gt; # Outputs both loss and metrics to log</span>
 <span class="sd">        &gt;&gt;&gt; loss(input_activations, unused_activations, output_activations)</span>
-<span class="sd">        (tensor(5.5000), {&#39;l2_reconstruction_loss&#39;: 5.5})</span>
+<span class="sd">        (tensor(5.5000), {&#39;train/loss/l2_reconstruction_loss&#39;: 5.5})</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span>

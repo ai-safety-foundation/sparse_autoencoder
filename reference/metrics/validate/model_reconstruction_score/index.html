@@ -2408,7 +2408,7 @@
 <span class="sd">            ... )</span>
 <span class="sd">            &gt;&gt;&gt; metric = ModelReconstructionScore()</span>
 <span class="sd">            &gt;&gt;&gt; result = metric.calculate(data)</span>
-<span class="sd">            &gt;&gt;&gt; round(result[&#39;model_reconstruction_score&#39;], 3)</span>
+<span class="sd">            &gt;&gt;&gt; round(result[&#39;validate/model_reconstruction_score&#39;], 3)</span>
 <span class="sd">            0.667</span>
 
 <span class="sd">        Args:</span>
@@ -2443,10 +2443,10 @@
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;validation_baseline_loss&quot;</span><span class="p">:</span> <span class="n">validation_baseline_loss</span><span class="p">,</span>
-            <span class="s2">&quot;validation_loss_with_reconstruction&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
-            <span class="s2">&quot;validation_loss_with_zero_ablation&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
-            <span class="s2">&quot;model_reconstruction_score&quot;</span><span class="p">:</span> <span class="n">model_reconstruction_score</span><span class="p">,</span>
+            <span class="s2">&quot;validate/baseline_loss&quot;</span><span class="p">:</span> <span class="n">validation_baseline_loss</span><span class="p">,</span>
+            <span class="s2">&quot;validate/loss_with_reconstruction&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
+            <span class="s2">&quot;validate/loss_with_zero_ablation&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
+            <span class="s2">&quot;validate/model_reconstruction_score&quot;</span><span class="p">:</span> <span class="n">model_reconstruction_score</span><span class="p">,</span>
         <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2492,7 +2492,7 @@ data = ValidationMetricData(
 ... )
 metric = ModelReconstructionScore()
 result = metric.calculate(data)
-round(result['model_reconstruction_score'], 3)
+round(result['validate/model_reconstruction_score'], 3)
 0.667</p>
 </blockquote>
 </blockquote>
@@ -2617,7 +2617,7 @@ round(result['model_reconstruction_score'], 3)
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; metric = ModelReconstructionScore()</span>
 <span class="sd">        &gt;&gt;&gt; result = metric.calculate(data)</span>
-<span class="sd">        &gt;&gt;&gt; round(result[&#39;model_reconstruction_score&#39;], 3)</span>
+<span class="sd">        &gt;&gt;&gt; round(result[&#39;validate/model_reconstruction_score&#39;], 3)</span>
 <span class="sd">        0.667</span>
 
 <span class="sd">    Args:</span>
@@ -2652,10 +2652,10 @@ round(result['model_reconstruction_score'], 3)
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;validation_baseline_loss&quot;</span><span class="p">:</span> <span class="n">validation_baseline_loss</span><span class="p">,</span>
-        <span class="s2">&quot;validation_loss_with_reconstruction&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
-        <span class="s2">&quot;validation_loss_with_zero_ablation&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
-        <span class="s2">&quot;model_reconstruction_score&quot;</span><span class="p">:</span> <span class="n">model_reconstruction_score</span><span class="p">,</span>
+        <span class="s2">&quot;validate/baseline_loss&quot;</span><span class="p">:</span> <span class="n">validation_baseline_loss</span><span class="p">,</span>
+        <span class="s2">&quot;validate/loss_with_reconstruction&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
+        <span class="s2">&quot;validate/loss_with_zero_ablation&quot;</span><span class="p">:</span> <span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
+        <span class="s2">&quot;validate/model_reconstruction_score&quot;</span><span class="p">:</span> <span class="n">model_reconstruction_score</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
           </details>
