@@ -64,7 +64,7 @@ def test_batch_scalar_loss_with_log(dummy_loss: DummyLoss) -> None:
         source_activations, learned_activations, decoded_activations
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["dummy"] == expected
+    assert log["train/loss/dummy"] == expected
 
 
 def test_call_method(dummy_loss: DummyLoss) -> None:
@@ -72,4 +72,4 @@ def test_call_method(dummy_loss: DummyLoss) -> None:
     source_activations = learned_activations = decoded_activations = torch.ones((1, 3))
     _loss, log = dummy_loss(source_activations, learned_activations, decoded_activations)
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["dummy"] == expected
+    assert log["train/loss/dummy"] == expected
