@@ -62,4 +62,4 @@ def test_calculate_returns_histogram() -> None:
             decoded_activations=activations,
         )
     )
-    assert "train_batch_capacities_histogram" in res
+    assert "train/batch_capacities_histogram" in res

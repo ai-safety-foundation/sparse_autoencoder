@@ -124,8 +124,8 @@ class LearnedActivationsL1Loss(AbstractLoss):
                 batch_scalar_loss_penalty = absolute_loss_penalty.sum().squeeze()
 
         metrics = {
-            "learned_activations_l1_loss": batch_scalar_loss.item(),
-            self.log_name(): batch_scalar_loss_penalty.item(),
+            "train/loss/" + "learned_activations_l1_loss": batch_scalar_loss.item(),
+            "train/loss/" + self.log_name(): batch_scalar_loss_penalty.item(),
         }
 
         return batch_scalar_loss_penalty, metrics

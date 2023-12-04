@@ -41,4 +41,4 @@ def test_calculate_aggregates() -> None:
     )
 
     # Check both metrics are in the result
-    assert "train_batch_feature_density_histogram" in res
+    assert "train/batch_feature_density_histogram" in res

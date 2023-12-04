@@ -3,6 +3,7 @@ from collections.abc import Iterable
 from functools import partial
 from pathlib import Path
 from typing import final
+from urllib.parse import quote_plus
 
 from jaxtyping import Int
 import torch
@@ -88,6 +89,7 @@ class Pipeline:
         optimizer: AbstractOptimizerWithReset,
         source_dataset: SourceDataset,
         source_model: HookedTransformer,
+        run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path | None = None,
         log_frequency: int = 100,
         metrics: MetricsContainer = default_metrics,
@@ -104,6 +106,7 @@ class Pipeline:
             optimizer: Optimizer to use.
             source_dataset: Source dataset to get data from.
             source_model: Source model to get activations from.
+            run_name: Name of the run for saving checkpoints.
             checkpoint_directory: Directory to save checkpoints to.
             log_frequency: Frequency at which to log metrics (in steps)
             metrics: Metrics to use.
@@ -118,6 +121,7 @@ class Pipeline:
         self.loss = loss
         self.metrics = metrics
         self.optimizer = optimizer
+        self.run_name = run_name
         self.source_data_batch_size = source_data_batch_size
         self.source_dataset = source_dataset
         self.source_model = source_model
@@ -331,8 +335,10 @@ class Pipeline:
     def save_checkpoint(self) -> None:
         """Save the model as a checkpoint."""
         if self.checkpoint_directory:
+            run_name_file_system_safe = quote_plus(self.run_name)
             file_path: Path = (
-                self.checkpoint_directory / f"sae_state_dict-{self.total_training_steps}.pt"
+                self.checkpoint_directory
+                / f"{run_name_file_system_safe}-{self.total_training_steps}.pt"
             )
             torch.save(self.autoencoder.state_dict(), file_path)
 
@@ -383,8 +389,6 @@ class Pipeline:
                 last_validated += num_activation_vectors_in_store
                 last_checkpoint += num_activation_vectors_in_store
                 total_activations += num_activation_vectors_in_store
-                if wandb.run is not None:
-                    wandb.log({"activations_generated": total_activations}, commit=False)
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})

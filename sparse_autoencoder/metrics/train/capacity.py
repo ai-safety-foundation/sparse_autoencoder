@@ -85,5 +85,5 @@ class CapacityMetric(AbstractTrainMetric):
         train_batch_capacities_histogram = self.wandb_capacities_histogram(train_batch_capacities)
 
         return {
-            "train_batch_capacities_histogram": train_batch_capacities_histogram,
+            "train/batch_capacities_histogram": train_batch_capacities_histogram,
         }
