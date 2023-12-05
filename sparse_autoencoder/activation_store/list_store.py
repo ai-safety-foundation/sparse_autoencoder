@@ -5,7 +5,9 @@ from multiprocessing.managers import ListProxy
 import random
 import time
 
+from jaxtyping import Float
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
@@ -13,10 +15,7 @@ from sparse_autoencoder.activation_store.base_store import (
 from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
 )
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationVector,
-    SourceModelActivations,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 class ListActivationStore(ActivationStore):
@@ -71,7 +70,7 @@ class ListActivationStore(ActivationStore):
         torch.Size([2, 100])
     """
 
-    _data: list[InputOutputActivationVector] | ListProxy
+    _data: list[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]] | ListProxy
     """Underlying List Data Store."""
 
     _device: torch.device | None
@@ -94,7 +93,7 @@ class ListActivationStore(ActivationStore):
 
     def __init__(
         self,
-        data: list[InputOutputActivationVector] | None = None,
+        data: list[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]] | None = None,
         device: torch.device | None = None,
         max_workers: int | None = None,
         *,
@@ -172,7 +171,7 @@ class ListActivationStore(ActivationStore):
 
         return total_tensors_size + list_of_pointers_size
 
-    def __getitem__(self, index: int) -> InputOutputActivationVector:
+    def __getitem__(self, index: int) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
         """Get Item Dunder Method.
 
         Example:
@@ -211,7 +210,7 @@ class ListActivationStore(ActivationStore):
         self.wait_for_writes_to_complete()
         random.shuffle(self._data)
 
-    def append(self, item: InputOutputActivationVector) -> Future | None:
+    def append(self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]) -> Future | None:
         """Append a single item to the dataset.
 
         Note **append is blocking**. For better performance use extend instead with batches.
@@ -233,7 +232,9 @@ class ListActivationStore(ActivationStore):
         """
         self._data.append(item.to(self._device))
 
-    def _extend(self, batch: SourceModelActivations) -> None:
+    def _extend(
+        self, batch: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]
+    ) -> None:
         """Extend threadpool method.
 
         To be called by :meth:`extend`.
@@ -243,13 +244,15 @@ class ListActivationStore(ActivationStore):
         """
         try:
             # Unstack to a list of tensors
-            items: list[InputOutputActivationVector] = resize_to_list_vectors(batch)
+            items: list[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]] = resize_to_list_vectors(batch)
 
             self._data.extend(items)
         except Exception as e:  # noqa: BLE001
             self._pool_exceptions.append(e)
 
-    def extend(self, batch: SourceModelActivations) -> Future | None:
+    def extend(
+        self, batch: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]
+    ) -> Future | None:
         """Extend the dataset with multiple items (non-blocking).
 
         Example:

@@ -1,16 +1,14 @@
 """Resize Tensors for Extend Methods."""
 from einops import rearrange
+from jaxtyping import Float
+from torch import Tensor
 
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    InputOutputActivationVector,
-    SourceModelActivations,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 def resize_to_list_vectors(
-    batched_tensor: SourceModelActivations,
-) -> list[InputOutputActivationVector]:
+    batched_tensor: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)],
+) -> list[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]]:
     """Resize Extend List Vectors.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is
@@ -45,7 +43,7 @@ def resize_to_list_vectors(
     Returns:
         List of Activation Store Item Vectors
     """
-    rearranged: InputOutputActivationBatch = rearrange(
+    rearranged: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)] = rearrange(
         batched_tensor,
         "... neurons -> (...) neurons",
     )
@@ -54,8 +52,8 @@ def resize_to_list_vectors(
 
 
 def resize_to_single_item_dimension(
-    batch_activations: SourceModelActivations,
-) -> InputOutputActivationBatch:
+    batch_activations: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)],
+) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
     """Resize Extend Single Item Dimension.
 
     Takes a tensor of activation vectors, with arbitrary numbers of dimensions (the last of which is

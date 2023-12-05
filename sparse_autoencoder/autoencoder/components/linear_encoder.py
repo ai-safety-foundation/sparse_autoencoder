@@ -1,17 +1,18 @@
 """Linear encoder layer."""
 import math
-from typing import final
+from typing import TYPE_CHECKING, final
 
+from jaxtyping import Float
 import torch
+from torch import Tensor
 from torch.nn import Parameter, ReLU, functional, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
-from sparse_autoencoder.tensor_types import (
-    EncoderWeights,
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-    LearntActivationVector,
-)
+from sparse_autoencoder.tensor_types import Axis
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -40,14 +41,14 @@ class LinearEncoder(AbstractEncoder):
     _input_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    _weight: EncoderWeights
+    _weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
     """Weight parameter internal state."""
 
-    _bias: LearntActivationVector
+    _bias: Float[Tensor, Axis.LEARNT_FEATURE]
     """Bias parameter internal state."""
 
     @property
-    def weight(self) -> EncoderWeights:
+    def weight(self) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Weight parameter.
 
         Each row in the weights matrix acts as a dictionary vector, representing a single basis
@@ -56,7 +57,7 @@ class LinearEncoder(AbstractEncoder):
         return self._weight
 
     @property
-    def bias(self) -> LearntActivationVector:
+    def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
         """Bias parameter."""
         return self._bias
 
@@ -81,6 +82,8 @@ class LinearEncoder(AbstractEncoder):
         self._bias = Parameter(torch.zeros(learnt_features))
         self.activation_function = ReLU()
 
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 1)]
+
         self.reset_parameters()
 
     def reset_parameters(self) -> None:
@@ -94,7 +97,9 @@ class LinearEncoder(AbstractEncoder):
         bound = 1 / math.sqrt(fan_in) if fan_in > 0 else 0
         init.uniform_(self._bias, -bound, bound)
 
-    def forward(self, x: InputOutputActivationBatch) -> LearnedActivationBatch:
+    def forward(
+        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]:
         """Forward pass.
 
         Args:

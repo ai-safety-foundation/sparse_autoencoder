@@ -6,7 +6,9 @@ from pathlib import Path
 import tempfile
 from threading import Lock
 
+from jaxtyping import Float
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
@@ -14,10 +16,7 @@ from sparse_autoencoder.activation_store.base_store import (
 from sparse_autoencoder.activation_store.utils.extend_resize import (
     resize_to_list_vectors,
 )
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationVector,
-    SourceModelActivations,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 DEFAULT_DISK_ACTIVATION_STORE_PATH = Path(tempfile.gettempdir()) / "activation_store"
@@ -134,7 +133,7 @@ class DiskActivationStore(ActivationStore):
         filename = f"{self.__len__}.pt"
         torch.save(stacked_activations, self._storage_path / filename)
 
-    def append(self, item: InputOutputActivationVector) -> Future | None:
+    def append(self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]) -> Future | None:
         """Add a Single Item to the Store.
 
         Example:
@@ -160,7 +159,9 @@ class DiskActivationStore(ActivationStore):
 
         return None  # Keep mypy happy
 
-    def extend(self, batch: SourceModelActivations) -> Future | None:
+    def extend(
+        self, batch: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]
+    ) -> Future | None:
         """Add a Batch to the Store.
 
         Example:
@@ -177,7 +178,7 @@ class DiskActivationStore(ActivationStore):
             Future that completes when the activation vectors have queued to be written to disk, and
             if needed, written to disk.
         """
-        items: list[InputOutputActivationVector] = resize_to_list_vectors(batch)
+        items: list[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]] = resize_to_list_vectors(batch)
 
         with self._cache_lock:
             self._cache.extend(items)
@@ -230,7 +231,7 @@ class DiskActivationStore(ActivationStore):
             file.unlink()
         self._disk_n_activation_vectors.value = 0
 
-    def __getitem__(self, index: int) -> InputOutputActivationVector:
+    def __getitem__(self, index: int) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
         """Get Item Dunder Method.
 
         Args:

@@ -16,4 +16,4 @@ def test_l0_norm_metric() -> None:
     )
     log = l0_norm_metric.calculate(data)
     expected = 3 / 2
-    assert log["learned_activations_l0_norm"] == expected
+    assert log["train/learned_activations_l0_norm"] == expected

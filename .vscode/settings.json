@@ -34,7 +34,6 @@
   "notebook.formatOnCellExecution": false,
   "notebook.formatOnSave.enabled": false,
   "python.analysis.autoFormatStrings": true,
-  "python.analysis.autoImportCompletions": true,
   "python.analysis.inlayHints.functionReturnTypes": false,
   "python.analysis.typeCheckingMode": "basic",
   "python.languageServer": "Pylance",
