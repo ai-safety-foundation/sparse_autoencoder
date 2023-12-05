@@ -30,6 +30,13 @@ class Axis(LowercaseStrEnum):
         batch input_output_feature
     """
 
+    # Component idx
+    COMPONENT = auto()
+    """Component index."""
+
+    COMPONENT_OPTIONAL = "*component"
+    """Optional component index."""
+
     # Batches
     SOURCE_DATA_BATCH = auto()
     """Batch of prompts used to generate source model activations."""
