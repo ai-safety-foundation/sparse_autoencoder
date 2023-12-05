@@ -1,10 +1,15 @@
 """Sweep config.
 
 Default hyperparameter setup for quick tuning of a sparse autoencoder.
+
+Warning:
+    The runtime hyperparameter classes must be manually kept in sync with the hyperparameter
+    classes, so that static type checking works.
 """
 from dataclasses import dataclass, field
 from typing import TypedDict, final
 
+from sparse_autoencoder.train.utils.round_down import round_to_multiple
 from sparse_autoencoder.train.utils.wandb_sweep_types import (
     Method,
     Metric,
@@ -15,34 +20,41 @@ from sparse_autoencoder.train.utils.wandb_sweep_types import (
 )
 
 
-# Warning: The runtime hyperparameter classes must be manually kept in sync with the hyperparameter
-# classes, so that static type checking works.
+# Key default values (used to calculate other default values)
+DEFAULT_SOURCE_BATCH_SIZE: int = 16
+DEFAULT_SOURCE_CONTEXT_SIZE: int = 128
+DEFAULT_BATCH_SIZE: int = 8192  # Should be a multiple of source batch size and context size
+DEFAULT_STORE_SIZE: int = round_to_multiple(3_000_000, DEFAULT_BATCH_SIZE)
 
 
-@dataclass
+@dataclass(frozen=True)
 class ActivationResamplerHyperparameters(NestedParameter):
     """Activation resampler hyperparameters."""
 
-    resample_interval: Parameter[int] = field(default_factory=lambda: Parameter(200_000_000))
+    resample_interval: Parameter[int] = field(
+        default=Parameter(round_to_multiple(200_000_000, DEFAULT_STORE_SIZE))
+    )
     """Resample interval."""
 
-    max_resamples: Parameter[int] = field(default_factory=lambda: Parameter(4))
+    max_resamples: Parameter[int] = field(default=Parameter(4))
     """Maximum number of resamples."""
 
-    n_steps_collate: Parameter[int] = field(default_factory=lambda: Parameter(100_000_000))
+    n_steps_collate: Parameter[int] = field(
+        default=Parameter(round_to_multiple(100_000_000, DEFAULT_STORE_SIZE))
+    )
     """Number of steps to collate before resampling.
 
     Number of autoencoder learned activation vectors to collate before resampling.
     """
 
-    resample_dataset_size: Parameter[int] = field(default_factory=lambda: Parameter(819_200))
+    resample_dataset_size: Parameter[int] = field(default=Parameter(DEFAULT_BATCH_SIZE * 100))
     """Resample dataset size.
 
     Number of autoencoder input activations to use for calculating the loss, as part of the
     resampling process to create the reset neuron weights.
     """
 
-    dead_neuron_threshold: Parameter[float] = field(default_factory=lambda: Parameter(0.0))
+    dead_neuron_threshold: Parameter[float] = field(default=Parameter(0.0))
     """Dead neuron threshold.
 
     Threshold for determining if a neuron is dead (has "fired" in less than this portion of the
@@ -60,14 +72,15 @@ class ActivationResamplerRuntimeHyperparameters(TypedDict):
     dead_neuron_threshold: float
 
 
-@dataclass
+@dataclass(frozen=True)
 class AutoencoderHyperparameters(NestedParameter):
     """Sparse autoencoder hyperparameters."""
 
-    expansion_factor: Parameter[int] = field(default_factory=lambda: Parameter(4))
+    expansion_factor: Parameter[int] = field(default=Parameter(2))
     """Expansion Factor.
 
-    Size of the learned features relative to the input features.
+    Size of the learned features relative to the input features. A good expansion factor to start
+    with is typically 2-4.
     """
 
 
@@ -77,16 +90,17 @@ class AutoencoderRuntimeHyperparameters(TypedDict):
     expansion_factor: int
 
 
-@dataclass
+@dataclass(frozen=True)
 class LossHyperparameters(NestedParameter):
     """Loss hyperparameters."""
 
-    l1_coefficient: Parameter[float] = field(default_factory=lambda: Parameter(1e-4))
+    l1_coefficient: Parameter[float] = field(default=Parameter(1e-3))
     """L1 Penalty Coefficient.
 
     The L1 penalty is the absolute sum of learned (hidden) activations, multiplied by this constant.
     The penalty encourages sparsity in the learned activations. This loss penalty can be reduced by
-    using more features, or using a lower L1 coefficient.
+    using more features, or using a lower L1 coefficient. If your expansion factor is 2, then a good
+    starting point for the L1 coefficient is 1e-3.
     """
 
 
@@ -96,39 +110,43 @@ class LossRuntimeHyperparameters(TypedDict):
     l1_coefficient: float
 
 
-@dataclass
+@dataclass(frozen=True)
 class OptimizerHyperparameters(NestedParameter):
     """Optimizer hyperparameters."""
 
-    lr: Parameter[float] = field(default_factory=lambda: Parameter(values=[1e-3, 1e-4, 1e-5]))
-    """Learning rate."""
+    lr: Parameter[float] = field(default=Parameter(1e-3))
+    """Learning rate.
 
-    adam_beta_1: Parameter[float] = field(default_factory=lambda: Parameter(0.9))
+    A good starting point for the learning rate is 1e-3, but this is one of the key parameters so
+    you should probably tune it.
+    """
+
+    adam_beta_1: Parameter[float] = field(default=Parameter(0.9))
     """Adam Beta 1.
 
     The exponential decay rate for the first moment estimates (mean) of the gradient.
     """
 
-    adam_beta_2: Parameter[float] = field(default_factory=lambda: Parameter(0.99))
+    adam_beta_2: Parameter[float] = field(default=Parameter(0.99))
     """Adam Beta 2.
 
     The exponential decay rate for the second moment estimates (variance) of the gradient.
     """
 
-    adam_weight_decay: Parameter[float] = field(default_factory=lambda: Parameter(0.0))
+    adam_weight_decay: Parameter[float] = field(default=Parameter(0.0))
     """Adam Weight Decay.
 
     Weight decay (L2 penalty).
     """
 
-    amsgrad: Parameter[bool] = field(default_factory=lambda: Parameter(value=False))
+    amsgrad: Parameter[bool] = field(default=Parameter(value=False))
     """AMSGrad.
 
     Whether to use the AMSGrad variant of this algorithm from the paper [On the Convergence of Adam
     and Beyond](https://arxiv.org/abs/1904.09237).
     """
 
-    fused: Parameter[bool] = field(default_factory=lambda: Parameter(value=False))
+    fused: Parameter[bool] = field(default=Parameter(value=False))
     """Fused.
 
     Whether to use a fused implementation of the optimizer (may be faster on CUDA).
@@ -146,14 +164,14 @@ class OptimizerRuntimeHyperparameters(TypedDict):
     fused: bool
 
 
-@dataclass
+@dataclass(frozen=True)
 class SourceDataHyperparameters(NestedParameter):
     """Source data hyperparameters."""
 
     dataset_path: Parameter[str]
     """Dataset path."""
 
-    context_size: Parameter[int] = field(default_factory=lambda: Parameter(128))
+    context_size: Parameter[int] = field(default=Parameter(DEFAULT_SOURCE_CONTEXT_SIZE))
     """Context size."""
 
 
@@ -164,7 +182,7 @@ class SourceDataRuntimeHyperparameters(TypedDict):
     context_size: int
 
 
-@dataclass
+@dataclass(frozen=True)
 class SourceModelHyperparameters(NestedParameter):
     """Source model hyperparameters."""
 
@@ -180,7 +198,7 @@ class SourceModelHyperparameters(NestedParameter):
     hook_dimension: Parameter[int]
     """Source model hook point dimension."""
 
-    dtype: Parameter[str] = field(default_factory=lambda: Parameter("float32"))
+    dtype: Parameter[str] = field(default=Parameter("float32"))
     """Source model dtype."""
 
 
@@ -194,34 +212,38 @@ class SourceModelRuntimeHyperparameters(TypedDict):
     dtype: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class PipelineHyperparameters(NestedParameter):
     """Pipeline hyperparameters."""
 
-    log_frequency: Parameter[int] = field(default_factory=lambda: Parameter(100))
+    log_frequency: Parameter[int] = field(default=Parameter(100))
     """Training log frequency."""
 
-    source_data_batch_size: Parameter[int] = field(default_factory=lambda: Parameter(12))
+    source_data_batch_size: Parameter[int] = field(default=Parameter(DEFAULT_SOURCE_BATCH_SIZE))
     """Source data batch size."""
 
-    train_batch_size: Parameter[int] = field(default_factory=lambda: Parameter(4096))
+    train_batch_size: Parameter[int] = field(default=Parameter(DEFAULT_BATCH_SIZE))
     """Train batch size."""
 
-    max_store_size: Parameter[int] = field(default_factory=lambda: Parameter(384 * 4096 * 2))
+    max_store_size: Parameter[int] = field(default=Parameter(DEFAULT_STORE_SIZE))
     """Max store size."""
 
-    max_activations: Parameter[int] = field(default_factory=lambda: Parameter(2_000_000_000))
+    max_activations: Parameter[int] = field(
+        default=Parameter(round_to_multiple(2e9, DEFAULT_STORE_SIZE))
+    )
     """Max activations."""
 
-    checkpoint_frequency: Parameter[int] = field(default_factory=lambda: Parameter(100_000_000))
+    checkpoint_frequency: Parameter[int] = field(
+        default=Parameter(round_to_multiple(5e7, DEFAULT_STORE_SIZE))
+    )
     """Checkpoint frequency."""
 
     validation_frequency: Parameter[int] = field(
-        default_factory=lambda: Parameter(384 * 4096 * 2 * 100)
+        default=Parameter(round_to_multiple(1e8, DEFAULT_BATCH_SIZE))
     )
     """Validation frequency."""
 
-    validation_number_activations: Parameter[int] = field(default_factory=lambda: Parameter(1024))
+    validation_number_activations: Parameter[int] = field(default=Parameter(DEFAULT_BATCH_SIZE))
     """Number of activations to use for validation."""
 
 
@@ -249,20 +271,18 @@ class Hyperparameters(Parameters):
 
     # Optional parameters
     activation_resampler: ActivationResamplerHyperparameters = field(
-        default_factory=lambda: ActivationResamplerHyperparameters()
+        default=ActivationResamplerHyperparameters()
     )
 
-    autoencoder: AutoencoderHyperparameters = field(
-        default_factory=lambda: AutoencoderHyperparameters()
-    )
+    autoencoder: AutoencoderHyperparameters = field(default=AutoencoderHyperparameters())
 
-    loss: LossHyperparameters = field(default_factory=lambda: LossHyperparameters())
+    loss: LossHyperparameters = field(default=LossHyperparameters())
 
-    optimizer: OptimizerHyperparameters = field(default_factory=lambda: OptimizerHyperparameters())
+    optimizer: OptimizerHyperparameters = field(default=OptimizerHyperparameters())
 
-    pipeline: PipelineHyperparameters = field(default_factory=lambda: PipelineHyperparameters())
+    pipeline: PipelineHyperparameters = field(default=PipelineHyperparameters())
 
-    random_seed: Parameter[int] = field(default_factory=lambda: Parameter(49))
+    random_seed: Parameter[int] = field(default=Parameter(49))
     """Random seed."""
 
     def __post_init__(self) -> None:
@@ -305,9 +325,9 @@ class SweepConfig(WandbSweepConfig):
 
     parameters: Hyperparameters
 
-    method: Method = Method.RANDOM
+    method: Method = Method.GRID
 
-    metric: Metric = field(default_factory=lambda: Metric(name="total_loss"))
+    metric: Metric = field(default=Metric(name="train/loss/total_loss"))
 
 
 class RuntimeHyperparameters(TypedDict):

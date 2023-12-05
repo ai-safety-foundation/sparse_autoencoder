@@ -1,5 +1,6 @@
 """Sweep."""
 from pathlib import Path
+import sys
 
 import torch
 from transformer_lens import HookedTransformer
@@ -147,6 +148,7 @@ def run_training_pipeline(
     optimizer: AdamWithReset,
     activation_resampler: ActivationResampler,
     source_data: PreTokenizedDataset,
+    run_name: str,
 ) -> None:
     """Run the training pipeline for the sparse autoencoder.
 
@@ -158,6 +160,7 @@ def run_training_pipeline(
         optimizer: The optimizer.
         activation_resampler: The activation resampler.
         source_data: The source data.
+        run_name: The name of the run.
     """
     checkpoint_path = Path("../../.checkpoints")
     checkpoint_path.mkdir(exist_ok=True)
@@ -180,6 +183,7 @@ def run_training_pipeline(
         source_dataset=source_data,
         source_model=source_model,
         log_frequency=hyperparameters["pipeline"]["log_frequency"],
+        run_name=run_name,
     )
 
     pipeline.run_pipeline(
@@ -198,39 +202,49 @@ def sweep(sweep_config: SweepConfig) -> None:
 
     def train() -> None:
         """Train the sparse autoencoder using the hyperparameters from the WandB sweep."""
-        # Set up WandB
-        hyperparameters = setup_wandb()
+        try:
+            # Set up WandB
+            hyperparameters = setup_wandb()
+            run_name: str = wandb.run.name  # type: ignore
 
-        # Setup the device for training
-        device = get_device()
+            # Setup the device for training
+            device = get_device()
 
-        # Set up the source model
-        source_model = setup_source_model(hyperparameters)
+            # Set up the source model
+            source_model = setup_source_model(hyperparameters)
 
-        # Set up the autoencoder
-        autoencoder = setup_autoencoder(hyperparameters, device)
+            # Set up the autoencoder
+            autoencoder = setup_autoencoder(hyperparameters, device)
 
-        # Set up the loss function
-        loss_function = setup_loss_function(hyperparameters)
+            # Set up the loss function
+            loss_function = setup_loss_function(hyperparameters)
 
-        # Set up the optimizer
-        optimizer = setup_optimizer(autoencoder, hyperparameters)
+            # Set up the optimizer
+            optimizer = setup_optimizer(autoencoder, hyperparameters)
 
-        # Set up the activation resampler
-        activation_resampler = setup_activation_resampler(hyperparameters)
+            # Set up the activation resampler
+            activation_resampler = setup_activation_resampler(hyperparameters)
 
-        # Set up the source data
-        source_data = setup_source_data(hyperparameters)
+            # Set up the source data
+            source_data = setup_source_data(hyperparameters)
 
-        # Run the training pipeline
-        run_training_pipeline(
-            hyperparameters=hyperparameters,
-            source_model=source_model,
-            autoencoder=autoencoder,
-            loss=loss_function,
-            optimizer=optimizer,
-            activation_resampler=activation_resampler,
-            source_data=source_data,
-        )
+            # Run the training pipeline
+            run_training_pipeline(
+                hyperparameters=hyperparameters,
+                source_model=source_model,
+                autoencoder=autoencoder,
+                loss=loss_function,
+                optimizer=optimizer,
+                activation_resampler=activation_resampler,
+                source_data=source_data,
+                run_name=run_name,
+            )
+
+        # Exit if we get any python errors
+        except Exception as e:  # noqa: BLE001
+            wandb.log({"error": str(e)})
+            wandb.finish()
+            sys.exit(1)
 
     wandb.agent(sweep_id, train)
+    wandb.finish()
