@@ -335,7 +335,7 @@ class ActivationResampler(AbstractActivationResampler):
         """Step the resampler, collating neuron activity and resampling if necessary.
 
         Args:
-            last_resampled: Last time the resampler was run.
+            last_resampled: Last step at which the resampler was run.
             batch_neuron_activity: Number of times each neuron fired in the current batch.
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
@@ -361,7 +361,7 @@ class ActivationResampler(AbstractActivationResampler):
         self.collated_neuron_activity_vectors_count += train_batch_size
 
         # Check if we should resample.
-        if last_resampled % self.resample_interval != 0:
+        if last_resampled < self.resample_interval:
             return None
 
         # Resample

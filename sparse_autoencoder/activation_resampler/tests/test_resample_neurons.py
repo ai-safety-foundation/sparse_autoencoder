@@ -260,14 +260,15 @@ class TestResampleDeadNeurons:
 
     def test_no_changes_if_no_dead_neurons(self) -> None:
         """Check it doesn't change anything if there are no dead neurons."""
-        neuron_activity = torch.ones(10, dtype=torch.int32)
-        store_data = torch.rand((100, 5))
-        store = TensorActivationStore(100, 5)
+        n_input_neurons, n_learned_features = 5, 10
+        neuron_activity = torch.ones(n_learned_features, dtype=torch.int32)
+        store_data = torch.rand((100, n_input_neurons))
+        store = TensorActivationStore(100, n_input_neurons)
         store.extend(store_data)
-        model = SparseAutoencoder(5, 10, torch.rand(5))
+        model = SparseAutoencoder(n_input_neurons, n_learned_features, torch.rand(5))
         resampler = ActivationResampler(resample_interval=10, n_steps_collate=10)
         updates = resampler.step_resampler(
-            last_resampled=0,
+            last_resampled=10,
             batch_neuron_activity=neuron_activity,
             activation_store=store,
             autoencoder=model,
@@ -280,6 +281,43 @@ class TestResampleDeadNeurons:
         assert updates.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
         assert updates.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
         assert updates.dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
+
+    def test_batch_not_multiple_of_interval(self) -> None:
+        """Check that resampler updates when the batch size is not a multiple of interval."""
+        n_input_neurons, n_learned_features = 5, 10
+        batch_size, resample_interval = 3, 10
+        assert (
+            batch_size % resample_interval != 0
+        ), "Batch size should not be a multiple of interval"
+        neuron_activity = torch.ones(n_learned_features, dtype=torch.int32)
+        store_data = torch.rand((100, n_input_neurons))
+        store = TensorActivationStore(100, n_input_neurons)
+        store.extend(store_data)
+        model = SparseAutoencoder(n_input_neurons, n_learned_features, torch.rand(5))
+        resampler = ActivationResampler(resample_interval=resample_interval, n_steps_collate=10)
+        last_resampled = 0
+        for _ in range(resample_interval // batch_size):
+            last_resampled += batch_size
+            updates = resampler.step_resampler(
+                last_resampled=last_resampled,
+                batch_neuron_activity=neuron_activity,
+                activation_store=store,
+                autoencoder=model,
+                loss_fn=L2ReconstructionLoss(),
+                train_batch_size=batch_size,
+            )
+
+            assert updates is None, "Should have updated"
+        last_resampled += batch_size
+        updates = resampler.step_resampler(
+            last_resampled=last_resampled,
+            batch_neuron_activity=neuron_activity,
+            activation_store=store,
+            autoencoder=model,
+            loss_fn=L2ReconstructionLoss(),
+            train_batch_size=batch_size,
+        )
+        assert updates is not None, "Should have updated"
 
     def test_updates_a_dead_neuron_parameters(self) -> None:
         """Check it updates a dead neuron's parameters."""
@@ -298,7 +336,7 @@ class TestResampleDeadNeurons:
         current_parameters = model.state_dict()
         resampler = ActivationResampler(resample_interval=10, n_steps_collate=10)
         parameter_updates = resampler.step_resampler(
-            last_resampled=0,
+            last_resampled=10,
             batch_neuron_activity=neuron_activity,
             activation_store=store,
             autoencoder=model,
@@ -328,11 +366,14 @@ class TestResampleDeadNeurons:
 
     def test_max_updates(self) -> None:
         """Check if max_updates, resample_interval and n_steps_collate are respected."""
-        neuron_activity = torch.ones(10, dtype=torch.int32)
-        store_data = torch.rand((100, 5))
-        store = TensorActivationStore(100, 5)
+        n_input_neurons, n_learned_features = 5, 10
+        neuron_activity = torch.ones(n_learned_features, dtype=torch.int32)
+        store_data = torch.rand((100, n_input_neurons))
+        store = TensorActivationStore(100, n_input_neurons)
         store.extend(store_data)
-        model = SparseAutoencoder(5, 10, torch.rand(5))
+        model = SparseAutoencoder(
+            n_input_neurons, n_learned_features, geometric_median_dataset=torch.rand(5)
+        )
 
         max_updates = 5
         n_steps_collate = 2
