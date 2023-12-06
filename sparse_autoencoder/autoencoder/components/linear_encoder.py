@@ -82,7 +82,7 @@ class LinearEncoder(AbstractEncoder):
         self._bias = Parameter(torch.zeros(learnt_features))
         self.activation_function = ReLU()
 
-        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 1)]
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 0)]
 
         self.reset_parameters()
 
