@@ -1,15 +1,12 @@
 """Learned activations L1 (absolute error) loss."""
 from typing import final
 
+from jaxtyping import Float
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossLogType, LossReductionType
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    ItemTensor,
-    LearnedActivationBatch,
-    TrainBatchStatistic,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 @final
@@ -53,10 +50,10 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
     def _l1_loss(
         self,
-        source_activations: InputOutputActivationBatch,  # noqa: ARG002
-        learned_activations: LearnedActivationBatch,
-        decoded_activations: InputOutputActivationBatch,  # noqa: ARG002
-    ) -> tuple[TrainBatchStatistic, TrainBatchStatistic]:
+        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
+        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
+    ) -> tuple[Float[Tensor, Axis.BATCH], Float[Tensor, Axis.BATCH]]:
         """Learned activations L1 (absolute error) loss.
 
         Args:
@@ -75,10 +72,10 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: InputOutputActivationBatch,
-        learned_activations: LearnedActivationBatch,
-        decoded_activations: InputOutputActivationBatch,
-    ) -> TrainBatchStatistic:
+        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+    ) -> Float[Tensor, Axis.BATCH]:
         """Learned activations L1 (absolute error) loss.
 
         Args:
@@ -95,11 +92,11 @@ class LearnedActivationsL1Loss(AbstractLoss):
     # Override to add both the loss and the penalty to the log
     def batch_scalar_loss_with_log(
         self,
-        source_activations: InputOutputActivationBatch,
-        learned_activations: LearnedActivationBatch,
-        decoded_activations: InputOutputActivationBatch,
+        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
         reduction: LossReductionType = LossReductionType.MEAN,
-    ) -> tuple[ItemTensor, LossLogType]:
+    ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], LossLogType]:
         """Learned activations L1 (absolute error) loss, with log.
 
         Args:
@@ -127,8 +124,8 @@ class LearnedActivationsL1Loss(AbstractLoss):
                 batch_scalar_loss_penalty = absolute_loss_penalty.sum().squeeze()
 
         metrics = {
-            "learned_activations_l1_loss": batch_scalar_loss.item(),
-            self.log_name(): batch_scalar_loss_penalty.item(),
+            "train/loss/" + "learned_activations_l1_loss": batch_scalar_loss.item(),
+            "train/loss/" + self.log_name(): batch_scalar_loss_penalty.item(),
         }
 
         return batch_scalar_loss_penalty, metrics

@@ -1,19 +1,19 @@
 """Linear layer with unit norm weights."""
-from typing import final
+from typing import TYPE_CHECKING, final
 
 import einops
+from jaxtyping import Float
 import torch
+from torch import Tensor
 from torch.nn import init
 from torch.nn.parameter import Parameter
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
-from sparse_autoencoder.tensor_types import (
-    Axis,
-    DecoderWeights,
-    EncoderWeights,
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-)
+from sparse_autoencoder.tensor_types import Axis
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -53,11 +53,11 @@ class UnitNormDecoder(AbstractDecoder):
     _decoded_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    _weight: DecoderWeights
+    _weight: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
     """Weight parameter internal state."""
 
     @property
-    def weight(self) -> DecoderWeights:
+    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Weight parameter.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
@@ -89,6 +89,7 @@ class UnitNormDecoder(AbstractDecoder):
                 (decoded_features, learnt_features),
             )
         )
+        self.reset_param_names: list[ParameterAxis] = [(self._weight, 1)]
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary
@@ -139,15 +140,17 @@ class UnitNormDecoder(AbstractDecoder):
         # Initialize the weights with a normal distribution. Note we don't use e.g. kaiming
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
-        self._weight: EncoderWeights = init.normal_(self._weight, mean=0, std=1)
+        self._weight: Float[
+            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = init.normal_(self._weight, mean=0, std=1)
 
         # Scale so that each row has unit norm
         self.constrain_weights_unit_norm()
 
     def _weight_backward_hook(
         self,
-        grad: EncoderWeights,
-    ) -> EncoderWeights:
+        grad: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
+    ) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         r"""Unit norm backward hook.
 
         By subtracting the projection of the gradient onto the dictionary vectors, we remove the
@@ -184,9 +187,9 @@ class UnitNormDecoder(AbstractDecoder):
         # the gradient onto the dictionary vectors is the component of the gradient that is parallel
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
-        normalized_weight: EncoderWeights = self._weight / torch.norm(
-            self._weight, dim=0, keepdim=True
-        )
+        normalized_weight: Float[
+            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = self._weight / torch.norm(self._weight, dim=0, keepdim=True)
 
         scalar_projections = einops.einsum(
             grad,
@@ -209,7 +212,9 @@ class UnitNormDecoder(AbstractDecoder):
         # the hypersphere.
         return grad - projection
 
-    def forward(self, x: LearnedActivationBatch) -> InputOutputActivationBatch:
+    def forward(
+        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward pass.
 
         Args:

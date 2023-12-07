@@ -2,16 +2,12 @@
 from abc import ABC, abstractmethod
 from typing import final
 
+from jaxtyping import Float, Int
 import torch
+from torch import Tensor
 from torch.nn import Module
 
-from sparse_autoencoder.tensor_types import (
-    DeadDecoderNeuronWeightUpdates,
-    DecoderWeights,
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-    LearntNeuronIndices,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 class AbstractDecoder(Module, ABC):
@@ -22,7 +18,7 @@ class AbstractDecoder(Module, ABC):
 
     @property
     @abstractmethod
-    def weight(self) -> DecoderWeights:
+    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Weight.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
@@ -32,8 +28,8 @@ class AbstractDecoder(Module, ABC):
     @abstractmethod
     def forward(
         self,
-        x: LearnedActivationBatch,
-    ) -> InputOutputActivationBatch:
+        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward Pass.
 
         Args:
@@ -50,8 +46,8 @@ class AbstractDecoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: LearntNeuronIndices,
-        updated_weights: DeadDecoderNeuronWeightUpdates,
+        dictionary_vector_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
+        updated_weights: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)],
     ) -> None:
         """Update decoder dictionary vectors.
 

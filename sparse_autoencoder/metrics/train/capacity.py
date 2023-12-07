@@ -2,17 +2,19 @@
 from typing import Any
 
 import einops
+from jaxtyping import Float
 import numpy as np
 from numpy import histogram
 from numpy.typing import NDArray
 import torch
+from torch import Tensor
 import wandb
 
 from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
 )
-from sparse_autoencoder.tensor_types import LearnedActivationBatch, TrainBatchStatistic
+from sparse_autoencoder.tensor_types import Axis
 
 
 class CapacityMetric(AbstractTrainMetric):
@@ -29,7 +31,9 @@ class CapacityMetric(AbstractTrainMetric):
     """
 
     @staticmethod
-    def capacities(features: LearnedActivationBatch) -> TrainBatchStatistic:
+    def capacities(
+        features: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
+    ) -> Float[Tensor, Axis.BATCH]:
         """Calculate capacities.
 
         Example:
@@ -57,7 +61,7 @@ class CapacityMetric(AbstractTrainMetric):
 
     @staticmethod
     def wandb_capacities_histogram(
-        capacities: TrainBatchStatistic,
+        capacities: Float[Tensor, Axis.BATCH],
     ) -> wandb.Histogram:
         """Create a W&B histogram of the capacities.
 
@@ -81,5 +85,5 @@ class CapacityMetric(AbstractTrainMetric):
         train_batch_capacities_histogram = self.wandb_capacities_histogram(train_batch_capacities)
 
         return {
-            "train_batch_capacities_histogram": train_batch_capacities_histogram,
+            "train/batch_capacities_histogram": train_batch_capacities_histogram,
         }

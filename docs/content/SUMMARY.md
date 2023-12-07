@@ -1,6 +1,7 @@
 
 * [Home](index.md)
 * [Demo](demo.ipynb)
+* [Flexible Demo](flexible_demo.ipynb)
 * [Reference](reference/)
 * [FAQ](faq/)
 * [Contributing](contributing.md)

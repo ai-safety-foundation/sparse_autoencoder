@@ -1,12 +1,14 @@
 """Replace activations hook tests."""
 from functools import partial
 
+from jaxtyping import Int
 import torch
+from torch import Tensor
 from transformer_lens import HookedTransformer
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
-from sparse_autoencoder.tensor_types import BatchTokenizedPrompts
+from sparse_autoencoder.tensor_types import Axis
 
 
 def test_hook_stores_activations() -> None:
@@ -15,7 +17,9 @@ def test_hook_stores_activations() -> None:
     source_model = HookedTransformer.from_pretrained("tiny-stories-1M", device="cpu")
     autoencoder = SparseAutoencoder(source_model.cfg.d_model, source_model.cfg.d_model * 2)
 
-    tokens: BatchTokenizedPrompts = source_model.to_tokens("Hello world")
+    tokens: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = source_model.to_tokens(
+        "Hello world"
+    )
     loss_without_hook = source_model.forward(tokens, return_type="loss")
     loss_with_hook = source_model.run_with_hooks(
         tokens,

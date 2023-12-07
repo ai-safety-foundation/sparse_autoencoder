@@ -63,7 +63,7 @@ def test_reset_neurons_state(model_and_optimizer: tuple[torch.nn.Module, AdamWit
     res = optimizer.state[model.encoder.weight]
 
     # Example usage
-    optimizer.reset_neurons_state("_encoder._weight", torch.tensor([1]), axis=0)
+    optimizer.reset_neurons_state(model.encoder.weight, torch.tensor([1]), axis=0)
 
     res = optimizer.state[model.encoder.weight]
 

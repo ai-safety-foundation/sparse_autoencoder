@@ -1,9 +1,16 @@
 """Abstract optimizer with reset."""
 from abc import ABC, abstractmethod
+from typing import TypeAlias
 
+from jaxtyping import Int
+from torch import Tensor
+from torch.nn.parameter import Parameter
 from torch.optim import Optimizer
 
-from sparse_autoencoder.tensor_types import LearntNeuronIndices
+from sparse_autoencoder.tensor_types import Axis
+
+
+ParameterAxis: TypeAlias = tuple[Parameter, int]
 
 
 class AbstractOptimizerWithReset(Optimizer, ABC):
@@ -25,22 +32,16 @@ class AbstractOptimizerWithReset(Optimizer, ABC):
     @abstractmethod
     def reset_neurons_state(
         self,
-        parameter_name: str,
-        neuron_indices: LearntNeuronIndices,
+        parameter: Parameter,
+        neuron_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
         axis: int,
-        parameter_group: int = 0,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.
 
         Args:
-            parameter_name: The name of the parameter. Examples from the standard sparse autoencoder
-                implementation  include `tied_bias`, `encoder.Linear.weight`, `encoder.Linear.bias`,
-                `decoder.Linear.weight`, and `decoder.ConstrainedUnitNormLinear.weight`.
+            parameter: The parameter to reset, e.g. `encoder.Linear.weight`, `encoder.Linear.bias`,
             neuron_indices: The indices of the neurons to reset.
             axis: The axis of the parameter to reset.
-            parameter_group: The index of the parameter group to reset (typically this is just zero,
-                unless you have setup multiple parameter groups for e.g. different learning rates
-                for different parameters).
 
         Raises:
             ValueError: If the parameter name is not found.

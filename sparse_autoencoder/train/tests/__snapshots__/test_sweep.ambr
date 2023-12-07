@@ -1,0 +1,25 @@
+# serializer version: 1
+# name: test_setup_activation_resampler
+  'ActivationResampler(resample_interval=200000000, max_resamples=4, n_steps_collate=100000000, resample_dataset_size=819200, dead_neuron_threshold=0.0)'
+# ---
+# name: test_setup_autoencoder
+  '''
+  SparseAutoencoder(
+    (_pre_encoder_bias): TiedBias(position=pre_encoder)
+    (_encoder): LinearEncoder(
+      in_features=512, out_features=2048
+      (activation_function): ReLU()
+    )
+    (_decoder): UnitNormDecoder(in_features=2048, out_features=512)
+    (_post_decoder_bias): TiedBias(position=post_decoder)
+  )
+  '''
+# ---
+# name: test_setup_loss_function
+  '''
+  LossReducer(
+    (0): LearnedActivationsL1Loss(l1_coefficient=0.0001)
+    (1): L2ReconstructionLoss()
+  )
+  '''
+# ---

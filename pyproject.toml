@@ -8,12 +8,15 @@
     version="0.0.0"
 
     [tool.poetry.dependencies]
+        datasets=">=2.15.0"
         einops=">=0.6"
         python=">=3.10, <3.12"
         strenum=">=0.4.15"
-        torch=">=2.1"
+        tokenizers=">=0.15.0"
+        torch=">=2.1.1"
+        transformers=">=4.35.2"
         wandb=">=0.15.12"
-        zstandard=">=0.22.0"   # Required for downloading datasets such as The Pile
+        zstandard=">=0.22.0"    # Required for downloading datasets such as The Pile
 
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
@@ -29,11 +32,9 @@
             syrupy=">=4.6.0"
 
         [tool.poetry.group.demos.dependencies]
+            ipywidgets="^8.1.1"
             jupyterlab=">=3"
-            pandas=">=2.1.2"
-            tokenizers=">=0.15.0"
             transformer-lens=">=1.9.0"
-            transformers=">=4.35.0"
 
         [tool.poetry.group.docs.dependencies]
             mkdocs=">=1.5.3"
@@ -148,11 +149,15 @@
     select=["ALL"]
 
     [tool.ruff.lint]
+        [tool.ruff.lint.flake8-tidy-imports]
+            ban-relative-imports="all"
+
         [tool.ruff.lint.flake8-annotations]
             mypy-init-return=true
 
         [tool.ruff.lint.isort]
             force-sort-within-sections=true
+            known-third-party=["wandb"]
             lines-after-imports=2
 
         [tool.ruff.lint.per-file-ignores]
@@ -160,6 +165,7 @@
                 "B018", # Useless variables are used for printing
                 "D100", # No file docstring needed
                 "E402", # Imports don't need to be at the top
+                "I001", # Unsorted imports
                 "T201", # Print is fine
             ]
             "**/tests/*"=[

@@ -1,13 +1,11 @@
 """Tests for the AbstractLoss class."""
+from jaxtyping import Float
 import pytest
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
-from sparse_autoencoder.tensor_types import (
-    InputOutputActivationBatch,
-    LearnedActivationBatch,
-    TrainBatchStatistic,
-)
+from sparse_autoencoder.tensor_types import Axis
 
 
 class DummyLoss(AbstractLoss):
@@ -15,10 +13,10 @@ class DummyLoss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: InputOutputActivationBatch,  # noqa: ARG002
-        learned_activations: LearnedActivationBatch,  # noqa: ARG002
-        decoded_activations: InputOutputActivationBatch,  # noqa: ARG002
-    ) -> TrainBatchStatistic:
+        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
+        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],  # noqa: ARG002
+        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
+    ) -> Float[Tensor, Axis.BATCH]:
         """Batch itemwise loss."""
         # Simple dummy implementation for testing
         return torch.tensor([1.0, 2.0, 3.0])
@@ -66,7 +64,7 @@ def test_batch_scalar_loss_with_log(dummy_loss: DummyLoss) -> None:
         source_activations, learned_activations, decoded_activations
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["dummy"] == expected
+    assert log["train/loss/dummy"] == expected
 
 
 def test_call_method(dummy_loss: DummyLoss) -> None:
@@ -74,4 +72,4 @@ def test_call_method(dummy_loss: DummyLoss) -> None:
     source_activations = learned_activations = decoded_activations = torch.ones((1, 3))
     _loss, log = dummy_loss(source_activations, learned_activations, decoded_activations)
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["dummy"] == expected
+    assert log["train/loss/dummy"] == expected
