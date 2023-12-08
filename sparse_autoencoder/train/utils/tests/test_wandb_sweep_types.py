@@ -17,9 +17,9 @@ class TestNestedParameter:
     def test_to_dict(self) -> None:
         """Test to_dict method."""
 
-        @dataclass
+        @dataclass(frozen=True)
         class DummyNestedParameter(NestedParameter):
-            nested_property: Parameter[float] = field(default_factory=lambda: Parameter(1.0))
+            nested_property: Parameter[float] = field(default=Parameter(1.0))
 
         dummy = DummyNestedParameter()
 
@@ -33,14 +33,14 @@ class TestWandbSweepConfig:
     def test_to_dict(self) -> None:
         """Test to_dict method."""
 
-        @dataclass
+        @dataclass(frozen=True)
         class DummyNestedParameter(NestedParameter):
-            nested_property: Parameter[float] = field(default_factory=lambda: Parameter(1.0))
+            nested_property: Parameter[float] = field(default=Parameter(1.0))
 
         @dataclass
         class DummyParameters(Parameters):
-            nested: DummyNestedParameter = field(default_factory=lambda: DummyNestedParameter())
-            top_level: Parameter[float] = field(default_factory=lambda: Parameter(1.0))
+            nested: DummyNestedParameter = field(default=DummyNestedParameter())
+            top_level: Parameter[float] = field(default=Parameter(1.0))
 
         dummy = WandbSweepConfig(
             parameters=DummyParameters(), method=Method.GRID, metric=Metric(name="total_loss")

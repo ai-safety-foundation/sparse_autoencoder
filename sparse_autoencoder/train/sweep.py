@@ -1,5 +1,6 @@
 """Sweep."""
 from pathlib import Path
+import sys
 
 import torch
 from transformer_lens import HookedTransformer
@@ -32,11 +33,15 @@ def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> Activ
         ActivationResampler: The initialized activation resampler.
     """
     return ActivationResampler(
+        n_learned_features=hyperparameters["autoencoder"]["expansion_factor"]
+        * hyperparameters["source_model"]["hook_dimension"],
         resample_interval=hyperparameters["activation_resampler"]["resample_interval"],
-        max_resamples=hyperparameters["activation_resampler"]["max_resamples"],
-        n_steps_collate=hyperparameters["activation_resampler"]["n_steps_collate"],
+        max_n_resamples=hyperparameters["activation_resampler"]["max_resamples"],
+        n_activations_activity_collate=hyperparameters["activation_resampler"]["n_steps_collate"],
         resample_dataset_size=hyperparameters["activation_resampler"]["resample_dataset_size"],
-        dead_neuron_threshold=hyperparameters["activation_resampler"]["dead_neuron_threshold"],
+        threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
+            "dead_neuron_threshold"
+        ],
     )
 
 
@@ -147,6 +152,7 @@ def run_training_pipeline(
     optimizer: AdamWithReset,
     activation_resampler: ActivationResampler,
     source_data: PreTokenizedDataset,
+    run_name: str,
 ) -> None:
     """Run the training pipeline for the sparse autoencoder.
 
@@ -158,6 +164,7 @@ def run_training_pipeline(
         optimizer: The optimizer.
         activation_resampler: The activation resampler.
         source_data: The source data.
+        run_name: The name of the run.
     """
     checkpoint_path = Path("../../.checkpoints")
     checkpoint_path.mkdir(exist_ok=True)
@@ -180,6 +187,7 @@ def run_training_pipeline(
         source_dataset=source_data,
         source_model=source_model,
         log_frequency=hyperparameters["pipeline"]["log_frequency"],
+        run_name=run_name,
     )
 
     pipeline.run_pipeline(
@@ -200,6 +208,7 @@ def sweep(sweep_config: SweepConfig) -> None:
         """Train the sparse autoencoder using the hyperparameters from the WandB sweep."""
         # Set up WandB
         hyperparameters = setup_wandb()
+        run_name: str = wandb.run.name  # type: ignore
 
         # Setup the device for training
         device = get_device()
@@ -231,6 +240,8 @@ def sweep(sweep_config: SweepConfig) -> None:
             optimizer=optimizer,
             activation_resampler=activation_resampler,
             source_data=source_data,
+            run_name=run_name,
         )
 
     wandb.agent(sweep_id, train)
+    wandb.finish()

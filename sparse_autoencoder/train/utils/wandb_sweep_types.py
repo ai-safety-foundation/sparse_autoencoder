@@ -180,20 +180,19 @@ class HyperbandStopping:
         HyperbandStopping(type=hyperband)
     """
 
-    type: HyperbandStoppingType  # noqa: A003
+    type: HyperbandStoppingType | None = HyperbandStoppingType.HYPERBAND  # noqa: A003
 
     eta: float | None = None
     """ETA.
 
-    At every $\text{eta}^n$ steps, hyperband continues running the top $1/\text{eta}$ runs and stops
-    all other runs.
+    Specify the bracket multiplier schedule (default: 3).
     """
 
     maxiter: int | None = None
     """Max Iterations.
 
-    Set the last epoch to finish trimming runs, and hyperband will automatically calculate
-    the prior epochs to trim runs.
+    Specify the maximum number of iterations. Note this is number of times the metric is logged, not
+    the number of activations.
     """
 
     miniter: int | None = None
@@ -228,7 +227,7 @@ class HyperbandStopping:
         return self.__str__()
 
 
-@dataclass
+@dataclass(frozen=True)
 class Metric:
     """Metric to optimize."""
 
@@ -268,7 +267,7 @@ class Metric:
 ParamType = TypeVar("ParamType", float, int, str)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Parameter(Generic[ParamType]):
     """Sweep Parameter.
 
@@ -335,16 +334,16 @@ class Parameter(Generic[ParamType]):
         return self.__str__()
 
 
-@dataclass
+@dataclass(frozen=True)
 class NestedParameter(ABC):  # noqa: B024 (abstract so that we can check against it's type)
     """Nested Parameter.
 
     Example:
         >>> from dataclasses import field
-        >>> @dataclass
+        >>> @dataclass(frozen=True)
         ... class MyNestedParameter(NestedParameter):
-        ...     a: int = field(default_factory=lambda: Parameter(1))
-        ...     b: int = field(default_factory=lambda: Parameter(2))
+        ...     a: int = field(default=Parameter(1))
+        ...     b: int = field(default=Parameter(2))
         >>> MyNestedParameter().to_dict()
         {'parameters': {'a': {'value': 1}, 'b': {'value': 2}}}
     """
