@@ -462,7 +462,7 @@ class ActivationResampler(AbstractActivationResampler):
             Parameter update results if resampled, else None.
         """
         # Update the counter
-        self._activations_seen_since_last_resample += train_batch_size
+        self._activations_seen_since_last_resample += len(activation_store)
 
         if self._number_times_resampled < self._max_n_resamples:
             # Collate neuron activity, if in the data collection window. For example in the

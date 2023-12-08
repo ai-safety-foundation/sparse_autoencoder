@@ -1,6 +1,5 @@
 """Sweep."""
 from pathlib import Path
-import sys
 
 import torch
 from transformer_lens import HookedTransformer
@@ -36,11 +35,13 @@ def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> Activ
         n_learned_features=hyperparameters["autoencoder"]["expansion_factor"]
         * hyperparameters["source_model"]["hook_dimension"],
         resample_interval=hyperparameters["activation_resampler"]["resample_interval"],
-        max_n_resamples=hyperparameters["activation_resampler"]["max_resamples"],
-        n_activations_activity_collate=hyperparameters["activation_resampler"]["n_steps_collate"],
+        max_n_resamples=hyperparameters["activation_resampler"]["max_n_resamples"],
+        n_activations_activity_collate=hyperparameters["activation_resampler"][
+            "n_activations_activity_collate"
+        ],
         resample_dataset_size=hyperparameters["activation_resampler"]["resample_dataset_size"],
         threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
-            "dead_neuron_threshold"
+            "threshold_is_dead_portion_fires"
         ],
     )
 

@@ -36,10 +36,10 @@ class ActivationResamplerHyperparameters(NestedParameter):
     )
     """Resample interval."""
 
-    max_resamples: Parameter[int] = field(default=Parameter(4))
+    max_n_resamples: Parameter[int] = field(default=Parameter(4))
     """Maximum number of resamples."""
 
-    n_steps_collate: Parameter[int] = field(
+    n_activations_activity_collate: Parameter[int] = field(
         default=Parameter(round_to_multiple(100_000_000, DEFAULT_STORE_SIZE))
     )
     """Number of steps to collate before resampling.
@@ -54,7 +54,7 @@ class ActivationResamplerHyperparameters(NestedParameter):
     resampling process to create the reset neuron weights.
     """
 
-    dead_neuron_threshold: Parameter[float] = field(default=Parameter(0.0))
+    threshold_is_dead_portion_fires: Parameter[float] = field(default=Parameter(0.0))
     """Dead neuron threshold.
 
     Threshold for determining if a neuron is dead (has "fired" in less than this portion of the
@@ -66,10 +66,10 @@ class ActivationResamplerRuntimeHyperparameters(TypedDict):
     """Activation resampler runtime hyperparameters."""
 
     resample_interval: int
-    max_resamples: int
-    n_steps_collate: int
+    max_n_resamples: int
+    n_activations_activity_collate: int
     resample_dataset_size: int
-    dead_neuron_threshold: float
+    threshold_is_dead_portion_fires: float
 
 
 @dataclass(frozen=True)

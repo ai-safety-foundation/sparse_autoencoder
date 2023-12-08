@@ -10,24 +10,27 @@ from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 def model_and_optimizer() -> tuple[torch.nn.Module, AdamWithReset]:
     """Model and optimizer fixture."""
     torch.random.manual_seed(0)
-    model = SparseAutoencoder(5, 10, torch.rand(5))
+    model = SparseAutoencoder(5, 10)
     optimizer = AdamWithReset(
-        model.parameters(),
-        named_parameters=model.named_parameters(),
+        model.parameters(), named_parameters=model.named_parameters(), lr=0.0001
     )
 
     # Initialise adam state by doing some steps
     for _ in range(3):
+        source_activations = torch.rand((10, 5))
         optimizer.zero_grad()
-        _, decoded_activations = model(torch.rand((100, 5)) * 100)
-        dummy_loss = (
-            torch.nn.functional.mse_loss(
-                decoded_activations, torch.rand((100, 5)), reduce=True, reduction="mean"
-            )
-            * 0.1
-        )
+        _, decoded_activations = model.forward(source_activations)
+        dummy_loss = torch.nn.functional.mse_loss(decoded_activations, source_activations)
         dummy_loss.backward()
         optimizer.step()
+
+    # Force all state values to be non-zero
+    optimizer.state[model.encoder.weight]["exp_avg"] = (
+        optimizer.state[model.encoder.weight]["exp_avg"] + 1.0
+    )
+    optimizer.state[model.encoder.weight]["exp_avg_sq"] = (
+        optimizer.state[model.encoder.weight]["exp_avg_sq"] + 1.0
+    )
 
     return model, optimizer
 
@@ -68,5 +71,22 @@ def test_reset_neurons_state(model_and_optimizer: tuple[torch.nn.Module, AdamWit
     res = optimizer.state[model.encoder.weight]
 
     assert torch.all(res["exp_avg"][1, :] == 0)
-    assert not torch.all(res["exp_avg"][2, :] == 0)
-    assert not torch.all(res["exp_avg"][:, 1] == 0)
+    assert not torch.any(res["exp_avg"][2, :] == 0)
+    assert not torch.any(res["exp_avg"][2:, 1] == 0)
+
+
+def test_reset_neurons_state_no_dead_neurons(
+    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset]
+) -> None:
+    """Test reset_neurons_state method with 0 dead neurons."""
+    model, optimizer = model_and_optimizer
+
+    res = optimizer.state[model.encoder.weight]
+
+    # Example usage
+    optimizer.reset_neurons_state(model.encoder.weight, torch.tensor([], dtype=torch.int64), axis=0)
+
+    res = optimizer.state[model.encoder.weight]
+
+    assert not torch.any(res["exp_avg"] == 0)
+    assert not torch.any(res["exp_avg_sq"] == 0)
