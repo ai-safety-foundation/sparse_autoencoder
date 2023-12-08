@@ -97,13 +97,16 @@ class ActivationResampler(AbstractActivationResampler):
                 on, before resampling.
             max_n_resamples: Maximum number of resamples to perform throughout the entire pipeline.
                 Set to inf if you want to have no limit.
-            n_activations_activity_collate: Number of autoencoder learned activation vectors to collate before
-                resampling (the activation resampler will start collecting on vector
+            n_activations_activity_collate: Number of autoencoder learned activation vectors to
+                collate before resampling (the activation resampler will start collecting on vector
                 $\text{resample_interval} - \text{n_steps_collate}$).
             resample_dataset_size: Number of autoencoder input activations to use for calculating
                 the loss, as part of the resampling process to create the reset neuron weights.
             threshold_is_dead_portion_fires: Threshold for determining if a neuron is dead (has
                 "fired" in less than this portion of the collated sample).
+
+        Raises:
+            ValueError: If any of the arguments are invalid (e.g. negative integers).
         """
         if n_activations_activity_collate <= 0:
             error_message = "Number of steps to collate must be greater than 0."
