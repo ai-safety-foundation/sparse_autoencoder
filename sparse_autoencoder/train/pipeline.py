@@ -324,7 +324,7 @@ class Pipeline:
             losses_with_reconstruction.append(loss_with_reconstruction.sum().item())
             losses_with_zero_ablation.append(loss_with_zero_ablation.sum().item())
 
-            if len(losses) >= validation_number_activations:
+            if len(losses) >= validation_number_activations // input_ids.numel():
                 break
 
         # Log
