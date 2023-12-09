@@ -134,7 +134,7 @@ class NeuronActivityHorizonData:
             thresholds: Thresholds for almost dead neurons.
         """
         self._steps_since_last_calculated = 0
-        self._neuron_activity = torch.zeros(number_learned_features, dtype=torch.int64)
+        self._neuron_activity = torch.zeros(number_learned_features, dtype=torch.int)
         self._thresholds = thresholds
 
         # Get a precise activation_horizon

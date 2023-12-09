@@ -22,16 +22,18 @@ class MockEncoder(AbstractEncoder):
         """Initialise."""
         super().__init__()
         torch.random.manual_seed(0)
-        self._weight = Parameter(torch.empty(learnt_features, encoded_features))
-        self._bias = Parameter(torch.empty(encoded_features))
+        self._weight: Parameter = Parameter(torch.empty(learnt_features, encoded_features))
+        self._bias: Parameter = Parameter(torch.empty(encoded_features))
 
     @property
-    def weight(self) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+    def weight(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Get the weight of the encoder."""
         return self._weight
 
     @property
-    def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.LEARNT_FEATURE]:
         """Get the bias of the encoder."""
         return self._bias
 
@@ -43,9 +45,12 @@ class MockEncoder(AbstractEncoder):
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = init.kaiming_normal_(self._weight)
+        self._weight: Parameter = init.kaiming_normal_(self._weight)  # type: ignore
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details."""
+        return [(self.weight, 0), (self.bias, 0)]
 
 
 @pytest.fixture()

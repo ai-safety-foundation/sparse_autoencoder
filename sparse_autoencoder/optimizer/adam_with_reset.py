@@ -185,6 +185,10 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         if len(state) == 0:
             return
 
+        # Check there are any neurons to reset
+        if neuron_indices.numel() == 0:
+            return
+
         # Reset running averages for the specified neurons
         if "exp_avg" in state:
             exp_avg: Tensor = state["exp_avg"]

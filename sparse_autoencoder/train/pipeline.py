@@ -75,8 +75,8 @@ class Pipeline:
     source_model: HookedTransformer
     """Source model to get activations from."""
 
-    total_training_steps: int = 1
-    """Total number of training steps state."""
+    total_activations_trained_on: int = 0
+    """Total number of activations trained on state."""
 
     @final
     def __init__(  # noqa: PLR0913
@@ -239,11 +239,17 @@ class Pipeline:
             self.autoencoder.decoder.constrain_weights_unit_norm()
 
             # Log training metrics
-            if wandb.run is not None and self.total_training_steps % self.log_frequency == 0:
+            self.total_activations_trained_on += train_batch_size
+            if (
+                wandb.run is not None
+                and int(self.total_activations_trained_on / train_batch_size) % self.log_frequency
+                == 0
+            ):
                 wandb.log(
-                    data={**metrics, **loss_metrics}, step=self.total_training_steps, commit=True
+                    data={**metrics, **loss_metrics},
+                    step=self.total_activations_trained_on,
+                    commit=True,
                 )
-            self.total_training_steps += 1
 
         return learned_activations_fired_count
 
@@ -268,7 +274,7 @@ class Pipeline:
         )
 
         # Reset the optimizer
-        for parameter, axis in self.autoencoder.reset_param_names:
+        for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
             self.optimizer.reset_neurons_state(
                 parameter=parameter,
                 neuron_indices=parameter_updates.dead_neuron_indices,
@@ -329,7 +335,7 @@ class Pipeline:
         )
         for metric in self.metrics.validation_metrics:
             calculated = metric.calculate(validation_data)
-            wandb.log(data=calculated, step=self.total_training_steps, commit=False)
+            wandb.log(data=calculated, step=self.total_activations_trained_on, commit=False)
 
     @final
     def save_checkpoint(self) -> None:
@@ -338,7 +344,7 @@ class Pipeline:
             run_name_file_system_safe = quote_plus(self.run_name)
             file_path: Path = (
                 self.checkpoint_directory
-                / f"{run_name_file_system_safe}-{self.total_training_steps}.pt"
+                / f"{run_name_file_system_safe}-{self.total_activations_trained_on}.pt"
             )
             torch.save(self.autoencoder.state_dict(), file_path)
 
@@ -362,10 +368,8 @@ class Pipeline:
             validate_frequency: Frequency at which to get validation metrics.
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
-        last_resampled: int = 0
         last_validated: int = 0
         last_checkpoint: int = 0
-        total_activations: int = 0
 
         self.source_model.eval()  # Set the source model to evaluation (inference) mode
 
@@ -385,10 +389,8 @@ class Pipeline:
 
                 # Update the counters
                 num_activation_vectors_in_store = len(activation_store)
-                last_resampled += num_activation_vectors_in_store
                 last_validated += num_activation_vectors_in_store
                 last_checkpoint += num_activation_vectors_in_store
-                total_activations += num_activation_vectors_in_store
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
@@ -401,7 +403,6 @@ class Pipeline:
                 if self.activation_resampler is not None:
                     # Get the updates
                     parameter_updates = self.activation_resampler.step_resampler(
-                        last_resampled=last_resampled,
                         batch_neuron_activity=batch_neuron_activity,
                         activation_store=activation_store,
                         autoencoder=self.autoencoder,
@@ -410,9 +411,13 @@ class Pipeline:
                     )
 
                     if parameter_updates is not None:
+                        wandb.log(
+                            {"resample/dead_neurons": len(parameter_updates.dead_neuron_indices)},
+                            commit=False,
+                        )
+
                         # Update the parameters
                         self.update_parameters(parameter_updates)
-                        last_resampled = 0
 
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})
@@ -431,7 +436,7 @@ class Pipeline:
 
     @staticmethod
     def stateful_dataloader_iterable(
-        dataloader: DataLoader[TorchTokenizedPrompts]
+        dataloader: DataLoader[TorchTokenizedPrompts],
     ) -> Iterable[TorchTokenizedPrompts]:
         """Create a stateful dataloader iterable.
 

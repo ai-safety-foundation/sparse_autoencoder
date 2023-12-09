@@ -16,6 +16,8 @@ from sparse_autoencoder.tensor_types import Axis
 class MockDecoder(AbstractDecoder):
     """Mock implementation of AbstractDecoder for testing purposes."""
 
+    _weight: Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+
     def __init__(self, learnt_features: int = 3, decoded_features: int = 4) -> None:
         """Initialise the mock decoder."""
         super().__init__()
@@ -23,9 +25,16 @@ class MockDecoder(AbstractDecoder):
         self._weight = Parameter(torch.empty(decoded_features, learnt_features))
 
     @property
-    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    def weight(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Get the weight of the decoder."""
         return self._weight
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details."""
+        return [(self.weight, 1)]
 
     def forward(
         self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
@@ -35,9 +44,7 @@ class MockDecoder(AbstractDecoder):
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = init.kaiming_normal_(
+        init.kaiming_normal_(
             self._weight,
         )
 

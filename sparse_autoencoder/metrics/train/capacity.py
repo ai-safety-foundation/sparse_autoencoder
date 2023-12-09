@@ -32,7 +32,7 @@ class CapacityMetric(AbstractTrainMetric):
 
     @staticmethod
     def capacities(
-        features: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
+        features: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
     ) -> Float[Tensor, Axis.BATCH]:
         """Calculate capacities.
 
