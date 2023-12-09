@@ -11,6 +11,10 @@
       
       
       
+        <link rel="prev" href="../flexible_demo/">
+      
+      
+        <link rel="next" href="../reference/activation_resampler/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Pre process datasets - Sparse Autoencoder</title>
+        <title>Source dataset pre-processing - Sparse Autoencoder</title>
       
     
     
@@ -118,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pre process datasets
+              Source dataset pre-processing
             
           </span>
         </div>
@@ -305,11 +309,107 @@
         
   
   <span class="md-ellipsis">
-    Flexible Demo
+    Flexible demo
   </span>
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Source dataset pre-processing
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Source dataset pre-processing
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upload-helper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload helper
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upload-to-hugging-face" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload to Hugging Face
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-a-dataset-is-as-expected" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check a dataset is as expected
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -330,10 +430,10 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -344,8 +444,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Reference
           </label>
@@ -367,7 +467,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
         
           
           
@@ -383,14 +483,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
             <span class="md-nav__icon md-icon"></span>
             activation_resampler
           </label>
@@ -462,7 +562,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
         
           
           
@@ -478,14 +578,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
             <span class="md-nav__icon md-icon"></span>
             activation_store
           </label>
@@ -591,7 +691,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2_5" >
         
           
           
@@ -607,14 +707,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_2_5" id="__nav_4_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_2_5" id="__nav_5_2_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_5">
             <span class="md-nav__icon md-icon"></span>
             utils
           </label>
@@ -673,7 +773,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
         
           
           
@@ -689,14 +789,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
             <span class="md-nav__icon md-icon"></span>
             autoencoder
           </label>
@@ -739,7 +839,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2" >
         
           
           
@@ -755,14 +855,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_3_2" id="__nav_4_3_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3_2" id="__nav_5_3_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_2">
             <span class="md-nav__icon md-icon"></span>
             components
           </label>
@@ -947,7 +1047,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
         
           
           
@@ -963,14 +1063,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
             <span class="md-nav__icon md-icon"></span>
             loss
           </label>
@@ -1084,7 +1184,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
         
           
           
@@ -1100,14 +1200,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             metrics
           </label>
@@ -1129,7 +1229,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_1" >
         
           
           
@@ -1145,14 +1245,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5_1" id="__nav_4_5_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_5_1" id="__nav_5_5_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_1">
             <span class="md-nav__icon md-icon"></span>
             generate
           </label>
@@ -1224,7 +1324,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_3" >
         
           
           
@@ -1240,14 +1340,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5_3" id="__nav_4_5_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_5_3" id="__nav_5_5_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_5_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_3">
             <span class="md-nav__icon md-icon"></span>
             train
           </label>
@@ -1382,7 +1482,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_4" >
         
           
           
@@ -1398,14 +1498,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5_4" id="__nav_4_5_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_5_4" id="__nav_5_5_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_5_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_4">
             <span class="md-nav__icon md-icon"></span>
             validate
           </label>
@@ -1485,7 +1585,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
         
           
           
@@ -1501,14 +1601,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
             <span class="md-nav__icon md-icon"></span>
             optimizer
           </label>
@@ -1580,7 +1680,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" >
         
           
           
@@ -1596,14 +1696,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
             <span class="md-nav__icon md-icon"></span>
             source_data
           </label>
@@ -1717,7 +1817,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
         
           
           
@@ -1733,14 +1833,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
             <span class="md-nav__icon md-icon"></span>
             source_model
           </label>
@@ -1854,7 +1954,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10" >
         
           
           
@@ -1870,14 +1970,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_10">
             <span class="md-nav__icon md-icon"></span>
             train
           </label>
@@ -1962,7 +2062,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10_4" >
         
           
           
@@ -1978,14 +2078,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_10_4" id="__nav_4_10_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_10_4" id="__nav_5_10_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_10_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_10_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_10_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_10_4">
             <span class="md-nav__icon md-icon"></span>
             utils
           </label>
@@ -2227,6 +2327,15 @@
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://colab.research.google.com/github/ai-safety-foundation/sparse_autoencoder/blob/main/docs/content/pre-process-datasets.ipynb" target="_blank">
+<img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/>
+</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="pre-process-datasets">Pre-process datasets<a class="headerlink" href="#pre-process-datasets" title="Permanent link">¤</a></h1>
 <p>When training a sparse autoencoder (SAE) often you want to use a text dataset such as <a href="https://huggingface.co/datasets/monology/pile-uncopyrighted">The
 Pile</a>. </p>
@@ -2255,6 +2364,29 @@ datasets for SAE training to <a href="https://huggingface.co/alancooney">Alan Co
 <div class="highlight"><pre><span></span><code>huggingface-cli<span class="w"> </span>login
 </code></pre></div>
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Check if we&#39;re in Colab</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>  <span class="c1"># noqa: F401 # type: ignore</span>
+
+    <span class="n">in_colab</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">in_colab</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1">#  Install if in Colab</span>
+<span class="k">if</span> <span class="n">in_colab</span><span class="p">:</span>
+    <span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">sparse_autoencoder</span> <span class="n">transformer_lens</span> <span class="n">transformers</span> <span class="n">wandb</span> <span class="n">datasets</span>
+
+<span class="c1"># Otherwise enable hot reloading in dev mode</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">in_colab</span><span class="p">:</span>
+    <span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+    <span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</code></pre></div>
+
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
@@ -2392,13 +2524,25 @@ datasets for SAE training to <a href="https://huggingface.co/alancooney">Alan Co
         <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;monology/pile-uncopyrighted&quot;</span><span class="p">,</span>
         <span class="n">tokenizer_name</span><span class="o">=</span><span class="s2">&quot;gpt2&quot;</span><span class="p">,</span>
         <span class="c1"># Get just the first few (each file is 11GB so this should be enough for a large dataset)</span>
-        <span class="n">data_files</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;00.jsonl.zst&quot;</span><span class="p">],</span>
+        <span class="n">data_files</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;00.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;01.jsonl.zst&quot;</span> <span class="s2">&quot;02.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;03.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;04.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;05.jsonl.zst&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
         <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">DatasetToPreprocess</span><span class="p">(</span>
         <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;monology/pile-uncopyrighted&quot;</span><span class="p">,</span>
         <span class="n">tokenizer_name</span><span class="o">=</span><span class="s2">&quot;EleutherAI/gpt-neox-20b&quot;</span><span class="p">,</span>
-        <span class="n">data_files</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;00.jsonl.zst&quot;</span><span class="p">,</span> <span class="s2">&quot;01.jsonl.zst&quot;</span><span class="p">],</span>
+        <span class="n">data_files</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;00.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;01.jsonl.zst&quot;</span> <span class="s2">&quot;02.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;03.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;04.jsonl.zst&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;05.jsonl.zst&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
         <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">]</span>
@@ -2406,54 +2550,6 @@ datasets for SAE training to <a href="https://huggingface.co/alancooney">Alan Co
 <span class="n">upload_datasets</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-<code>alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2
-Processing dataset:  monology/pile-uncopyrighted
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Downloading data files:   0%|          | 0/1 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Downloading data:   0%|          | 0.00/11.2G [00:00&lt;?, ?B/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Extracting data files:   0%|          | 0/1 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Generating train split: 0 examples [00:00, ? examples/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Map:   0%|          | 0/5899215 [00:00&lt;?, ? examples/s]</code>
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -2485,34 +2581,6 @@ Processing dataset:  monology/pile-uncopyrighted
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> tokens: </span><span class="si">{</span><span class="n">decoded</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Resolving data files:   0%|          | 0/64 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Resolving data files:   0%|          | 0/64 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-<code>256 tokens: They went back to the leopard cage. They saw the same leopard on the same rock. It was still sleeping and did not move. Ben and Lily were very sad. They thought the leopard was boring and did not like them. They were about to leave, when they heard a loud roar. They turned around and saw another leopard coming out of a cave. It was bigger and had more spots than the first leopard. It looked at Ben and Lily and roared again. Ben and Lily were scared and excited at the same time. They had never heard a leopard roar before. They saw the first leopard wake up and look at the second leopard. They saw the second leopard jump on the rock and nuzzle the first leopard. They realized they were a mommy leopard and a daddy leopard. They saw them play and lick and cuddle. Ben and Lily smiled and clapped. They were happy to see the leopards. They thought the leopards were amazing and did like them. They watched them for a long time, until mom said it was time to go home. They waved goodbye to the leopards and thanked them for the show. They got in the car and told mom all about the le
-256 tokens: Lily sighed and said, "OK, OK. I'll make a deal with you. If you take the pill, I'll let you keep the teddy bear. And I'll make you another surprise tomorrow. How about that?" Max thought for a moment and said, "OK, OK. I'll take the pill. But only if you give me the teddy bear. And the surprise." Lily said, "Deal. Here, take the pill. And here's the teddy bear. And I'll think of a new surprise for you tomorrow. I promise." Max took the pill and swallowed it. He said, "Thank you, Lily. You are the best sister ever. I love you." Lily said, "I love you too, Max. Now, let's cuddle with the teddy bear and take a nap. Maybe you'll feel better when you wake up." They hugged each other and the teddy bear and fell asleep. Mommy came in and saw them. She smiled and said, "What a creative and sweet girl you are, Lily. And what a brave and good boy you are, Max. I'm so proud of you both." She kissed them and covered them with a blanket. She said, "Sweet dreams
-256 tokens: They walked to the door and entered the aeroplane. They found their seats and put their backpacks under them. They buckled their belts and listened to a voice that told them what to do. Tom looked out the window and saw the wing and the sky. He felt the aeroplane move and heard a loud noise. He closed his eyes and squeezed his mum's hand. His mum said, "We are taking off, Tom. We are going to fly. Open your eyes and see." Tom opened his eyes and saw the ground get smaller and smaller. He saw the clouds and the sun. He saw other aeroplanes and birds. He felt the aeroplane go up and down and left and right. He felt a tickle in his tummy and a smile on his face. He said, "Mum, this is amazing. I love flying. Thank you for taking me." His mum said, "You're welcome, Tom. I'm proud of you. You didn't resist, Tom. You tried something new. And now you're having fun." They hugged and looked out the window. They saw a rainbow and a fair. Tom said, "Look, mum, a fair. Can we go there when we land?" His
-</code>
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 
