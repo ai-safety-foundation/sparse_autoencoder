@@ -24,7 +24,7 @@ class SparseAutoencoder(AbstractAutoencoder):
     Used for initialising :attr:`tied_bias`.
     """
 
-    tied_bias: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+    tied_bias: Float[Parameter, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
     """Tied Bias Parameter.
 
     The same bias is used pre-encoder and post-decoder.

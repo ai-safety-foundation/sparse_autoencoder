@@ -2,6 +2,7 @@
 from jaxtyping import Float
 import torch
 from torch import Tensor
+from torch.nn import Parameter
 
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.tensor_types import Axis
@@ -12,7 +13,7 @@ def test_pre_encoder_subtracts_bias() -> None:
     encoder_input: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)] = torch.tensor(
         [[5.0, 3.0, 1.0]]
     )
-    bias = torch.tensor([2.0, 4.0, 6.0])
+    bias = Parameter(torch.tensor([2.0, 4.0, 6.0]))
     expected = encoder_input - bias
 
     pre_encoder = TiedBias(bias, TiedBiasPosition.PRE_ENCODER)
@@ -26,7 +27,7 @@ def test_post_encoder_adds_bias() -> None:
     decoder_output: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)] = torch.tensor(
         [[5.0, 3.0, 1.0]]
     )
-    bias = torch.tensor([2.0, 4.0, 6.0])
+    bias = Parameter(torch.tensor([2.0, 4.0, 6.0]))
     expected = decoder_output + bias
 
     post_decoder = TiedBias(bias, TiedBiasPosition.POST_DECODER)

@@ -4,6 +4,7 @@ from typing import final
 
 from jaxtyping import Float
 from torch import Tensor
+from torch.nn import Parameter
 
 from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
 from sparse_autoencoder.tensor_types import Axis
@@ -30,16 +31,16 @@ class TiedBias(AbstractOuterBias):
 
     _bias_position: TiedBiasPosition
 
-    _bias_reference: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]
+    _bias_reference: Float[Parameter, Axis.INPUT_OUTPUT_FEATURE]
 
     @property
-    def bias(self) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.INPUT_OUTPUT_FEATURE]:
         """Bias."""
         return self._bias_reference
 
     def __init__(
         self,
-        bias_reference: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+        bias_reference: Float[Parameter, Axis.INPUT_OUTPUT_FEATURE],
         position: TiedBiasPosition,
     ) -> None:
         """Initialize the bias layer.

@@ -3,6 +3,7 @@ from einops import rearrange
 from jaxtyping import Bool, Float, Int
 import torch
 from torch import Tensor
+from torch.nn import Parameter
 from torch.utils.data import DataLoader
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
@@ -307,7 +308,9 @@ class ActivationResampler(AbstractActivationResampler):
     def renormalize_and_scale(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
         neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
-        encoder_weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
+        encoder_weight: Float[
+            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ],
     ) -> Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Renormalize and scale the resampled dictionary vectors.
 

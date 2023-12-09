@@ -48,11 +48,13 @@ class UnitNormDecoder(AbstractDecoder):
     _decoded_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    _weight: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
+    _weight: Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
     """Weight parameter internal state."""
 
     @property
-    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    def weight(
+        self
+    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Weight parameter.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
@@ -61,7 +63,7 @@ class UnitNormDecoder(AbstractDecoder):
         return self._weight
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
@@ -148,8 +150,8 @@ class UnitNormDecoder(AbstractDecoder):
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
         self._weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = init.normal_(self._weight, mean=0, std=1)
+            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = init.normal_(self._weight, mean=0, std=1)  # type: ignore
 
         # Scale so that each row has unit norm
         self.constrain_weights_unit_norm()

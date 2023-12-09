@@ -4,6 +4,7 @@ from jaxtyping import Float, Int
 import pytest
 import torch
 from torch import Tensor
+from torch.nn import Parameter
 
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.base_store import ActivationStore
@@ -256,7 +257,9 @@ class TestRenormalizeAndScale:
     def calculate_expected_output(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
         neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
-        encoder_weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
+        encoder_weight: Float[
+            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ],
     ) -> Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Non-vectorized approach to compare against."""
         # Initialize variables
@@ -287,8 +290,8 @@ class TestRenormalizeAndScale:
         ] = torch.tensor([[3.0, 4.0, 5.0]])
         neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE] = torch.tensor([1, 0, 1, 0, 1])
         encoder_weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = torch.ones((DEFAULT_N_LEARNED_FEATURES, DEFAULT_N_INPUT_FEATURES))
+            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = Parameter(torch.ones((DEFAULT_N_LEARNED_FEATURES, DEFAULT_N_INPUT_FEATURES)))
 
         rescaled_input = ActivationResampler.renormalize_and_scale(
             sampled_input, neuron_activity, encoder_weight
@@ -304,7 +307,7 @@ class TestRenormalizeAndScale:
         """Test behavior when all neurons are alive."""
         sampled_input = torch.empty((0, 2), dtype=torch.float32)
         neuron_activity = torch.tensor([1, 4, 1, 3, 1, 1])
-        encoder_weight = torch.ones((6, 2))
+        encoder_weight = Parameter(torch.ones((6, 2)))
 
         rescaled_input = ActivationResampler.renormalize_and_scale(
             sampled_input, neuron_activity, encoder_weight

@@ -5,7 +5,7 @@ from typing import final
 from jaxtyping import Float, Int
 import torch
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Parameter
 
 from sparse_autoencoder.tensor_types import Axis
 
@@ -18,7 +18,9 @@ class AbstractDecoder(Module, ABC):
 
     @property
     @abstractmethod
-    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    def weight(
+        self
+    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Weight.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
@@ -27,7 +29,7 @@ class AbstractDecoder(Module, ABC):
 
     @property
     @abstractmethod
-    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting

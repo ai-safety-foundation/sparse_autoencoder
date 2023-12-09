@@ -37,14 +37,16 @@ class LinearEncoder(AbstractEncoder):
     _input_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    _weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+    _weight: Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
     """Weight parameter internal state."""
 
-    _bias: Float[Tensor, Axis.LEARNT_FEATURE]
+    _bias: Float[Parameter, Axis.LEARNT_FEATURE]
     """Bias parameter internal state."""
 
     @property
-    def weight(self) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+    def weight(
+        self
+    ) -> Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Weight parameter.
 
         Each row in the weights matrix acts as a dictionary vector, representing a single basis
@@ -53,12 +55,12 @@ class LinearEncoder(AbstractEncoder):
         return self._weight
 
     @property
-    def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.LEARNT_FEATURE]:
         """Bias parameter."""
         return self._bias
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
