@@ -22,7 +22,7 @@ from sparse_autoencoder.train.utils.wandb_sweep_types import (
 
 # Key default values (used to calculate other default values)
 DEFAULT_SOURCE_BATCH_SIZE: int = 16
-DEFAULT_SOURCE_CONTEXT_SIZE: int = 128
+DEFAULT_SOURCE_CONTEXT_SIZE: int = 256
 DEFAULT_BATCH_SIZE: int = 8192  # Should be a multiple of source batch size and context size
 DEFAULT_STORE_SIZE: int = round_to_multiple(3_000_000, DEFAULT_BATCH_SIZE)
 
@@ -243,7 +243,10 @@ class PipelineHyperparameters(NestedParameter):
     )
     """Validation frequency."""
 
-    validation_number_activations: Parameter[int] = field(default=Parameter(DEFAULT_BATCH_SIZE))
+    validation_number_activations: Parameter[int] = field(
+        # Default to a single batch of source data prompts
+        default=Parameter(DEFAULT_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE)
+    )
     """Number of activations to use for validation."""
 
 
