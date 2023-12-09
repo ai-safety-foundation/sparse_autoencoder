@@ -411,6 +411,11 @@ class Pipeline:
                     )
 
                     if parameter_updates is not None:
+                        wandb.log(
+                            {"resample/dead_neurons": len(parameter_updates.dead_neuron_indices)},
+                            commit=False,
+                        )
+
                         # Update the parameters
                         self.update_parameters(parameter_updates)
 
