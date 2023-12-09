@@ -5,6 +5,7 @@ GenericTextDataset should work with the following datasets:
 - the_pile_openwebtext2
 - roneneldan/TinyStories
 """
+from collections.abc import Mapping, Sequence
 from typing import TypedDict, final
 
 from datasets import IterableDataset
@@ -64,22 +65,22 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
 
     def __init__(
         self,
+        dataset_path: str,
         tokenizer: PreTrainedTokenizerBase,
-        context_size: int = 256,
         buffer_size: int = 1000,
-        preprocess_batch_size: int = 1000,
-        dataset_path: str = "monology/pile-uncopyrighted",
+        context_size: int = 256,
+        dataset_dir: str | None = None,
+        dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_split: str = "train",
+        preprocess_batch_size: int = 1000,
         *,
-        pre_download: bool | None = None,
+        pre_download: bool = False,
     ):
         """Initialize a generic text dataset from Hugging Face.
 
         Args:
+            dataset_path: Path to the dataset on Hugging Face (e.g. `'monology/pile-uncopyright'`).
             tokenizer: Tokenizer to process text data.
-            context_size: The context size to use when returning a list of tokenized prompts.
-                *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
-                a context size of 250.
             buffer_size: The buffer size to use when shuffling the dataset when streaming. When
                 streaming a dataset, this just pre-downloads at least `buffer_size` items and then
                 shuffles just that buffer. Note that the generated activations should also be
@@ -87,27 +88,33 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
                 strictly necessary here. Note also that this is the number of items in the dataset
                 (e.g. number of prompts) and is typically significantly less than the number of
                 tokenized prompts once the preprocessing function has been applied.
-            preprocess_batch_size: Batch size for preprocessing (tokenizing prompts).
-            dataset_path: Path to the dataset on Hugging Face.
+            context_size: The context size to use when returning a list of tokenized prompts.
+                *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
+                a context size of 250.
+            dataset_dir: Defining the `data_dir` of the dataset configuration.
+            dataset_files: Path(s) to source data file(s).
             dataset_split: Dataset split (e.g., 'train').
+            preprocess_batch_size: Batch size for preprocessing (tokenizing prompts).
             pre_download: Whether to pre-download the whole dataset.
         """
         self.tokenizer = tokenizer
 
         super().__init__(
+            buffer_size=buffer_size,
+            context_size=context_size,
+            dataset_dir=dataset_dir,
+            dataset_files=dataset_files,
             dataset_path=dataset_path,
             dataset_split=dataset_split,
-            context_size=context_size,
-            buffer_size=buffer_size,
-            preprocess_batch_size=preprocess_batch_size,
             pre_download=pre_download,
+            preprocess_batch_size=preprocess_batch_size,
         )
 
     def push_to_hugging_face_hub(
         self,
         repo_id: str,
         commit_message: str = "Upload preprocessed dataset using sparse_autoencoder.",
-        max_shard_size: str = "500MB",
+        max_shard_size: str | None = None,
         num_shards: int = 64,
         revision: str = "main",
         *,
@@ -121,16 +128,21 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
             pre-processed dataset to the Hugging Face hub.
 
         Warning:
+            You must be logged into HuggingFace (e.g with `huggingface-cli login` from the terminal)
+            to use this.
+
+        Warning:
             This will only work if the dataset is not streamed (i.e. if `pre_download=True` when
             initializing the dataset).
 
         Args:
             repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).
             commit_message: Commit message.
-            max_shard_size: Maximum shard size.
-            num_shards: Minimum number of shards to split the dataset into. A high number is
-                recommended here to allow for flexible distributed training of SAEs across nodes
-                (where e.g. each node fetches it's own shard).
+            max_shard_size: Maximum shard size (e.g. `'500MB'`). Should not be set if `num_shards`
+                is set.
+            num_shards: Number of shards to split the dataset into. A high number is recommended
+                here to allow for flexible distributed training of SAEs across nodes (where e.g.
+                each node fetches it's own shard).
             revision: Branch to push to.
             private: Whether to save the dataset privately.
 

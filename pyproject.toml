@@ -32,6 +32,7 @@
             syrupy=">=4.6.0"
 
         [tool.poetry.group.demos.dependencies]
+            huggingface-hub="^0.19.4"
             ipywidgets="^8.1.1"
             jupyterlab=">=3"
             transformer-lens=">=1.9.0"
