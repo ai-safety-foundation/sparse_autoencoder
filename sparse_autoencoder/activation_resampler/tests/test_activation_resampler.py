@@ -459,7 +459,6 @@ class TestStepResampler:
         total_activations_seen: int,
         should_update: bool,
         assert_fail_message: str,
-        full_activation_store: ActivationStore,
         autoencoder_model: SparseAutoencoder,
     ) -> None:
         """Check if max_updates, resample_interval and n_steps_collate are respected."""
@@ -472,13 +471,16 @@ class TestStepResampler:
             resample_interval=resample_interval,
             max_n_resamples=max_n_resamples,
             n_activations_activity_collate=1,
-            resample_dataset_size=100,
+            resample_dataset_size=1,
         )
 
         for activation_seen_count in range(1, total_activations_seen + 1):
+            activation_store = TensorActivationStore(1, DEFAULT_N_INPUT_FEATURES)
+            activation_store.append(torch.ones(DEFAULT_N_INPUT_FEATURES))
+
             updates = resampler.step_resampler(
                 batch_neuron_activity=neuron_activity_batch_size_1,
-                activation_store=full_activation_store,
+                activation_store=activation_store,
                 autoencoder=autoencoder_model,
                 loss_fn=L2ReconstructionLoss(),
                 train_batch_size=1,

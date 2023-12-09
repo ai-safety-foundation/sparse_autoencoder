@@ -321,7 +321,7 @@ class ActivationResampler(AbstractActivationResampler):
             >>> _seed = torch.manual_seed(0)  # For reproducibility in example
             >>> sampled_input = torch.tensor([[3.0, 4.0]])
             >>> neuron_activity = torch.tensor([3, 0, 5, 0, 1, 3])
-            >>> encoder_weight = torch.ones((6, 2))
+            >>> encoder_weight = Parameter(torch.ones((6, 2)))
             >>> rescaled_input = ActivationResampler.renormalize_and_scale(
             ...     sampled_input,
             ...     neuron_activity,
@@ -356,9 +356,10 @@ class ActivationResampler(AbstractActivationResampler):
             )
 
         # Calculate the average norm of the encoder weights for alive neurons.
+        detached_encoder_weight = encoder_weight.detach()  # Don't track gradients
         alive_encoder_weights: Float[
             Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = encoder_weight[alive_neuron_mask, :]
+        ] = detached_encoder_weight[alive_neuron_mask, :]
         average_alive_norm: Float[Tensor, Axis.SINGLE_ITEM] = alive_encoder_weights.norm(
             dim=-1
         ).mean()
