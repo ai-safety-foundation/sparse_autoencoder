@@ -1,5 +1,7 @@
 """Sweep."""
 from pathlib import Path
+import sys
+import traceback
 
 import torch
 from transformer_lens import HookedTransformer
@@ -201,12 +203,9 @@ def run_training_pipeline(
     )
 
 
-def sweep(sweep_config: SweepConfig) -> None:
-    """Main function to run the training pipeline with wandb hyperparameter sweep."""
-    sweep_id = wandb.sweep(sweep_config.to_dict(), project="sparse-autoencoder")
-
-    def train() -> None:
-        """Train the sparse autoencoder using the hyperparameters from the WandB sweep."""
+def train() -> None:
+    """Train the sparse autoencoder using the hyperparameters from the WandB sweep."""
+    try:
         # Set up WandB
         hyperparameters = setup_wandb()
         run_name: str = wandb.run.name  # type: ignore
@@ -243,6 +242,29 @@ def sweep(sweep_config: SweepConfig) -> None:
             source_data=source_data,
             run_name=run_name,
         )
+
+    # Explicit exception catching needed to show the stack trace in wandb sweeps
+    except Exception as _exception:  # noqa: BLE001
+        # Format the stack trace
+        full_stack_trace = traceback.format_exc(50)
+
+        stack_trace = "\n".join(
+            line for line in full_stack_trace.splitlines() if "wandb/sdk" not in line
+        )
+
+        # Log the exception stack trace to wandb
+        # wandb.log({"exception": stack_trace})
+
+        # Also print the stack trace to stderr
+        print(stack_trace, file=sys.stderr)  # noqa: T201
+
+        # Exit current run with an error code
+        sys.exit(1)
+
+
+def sweep(sweep_config: SweepConfig) -> None:
+    """Main function to run the training pipeline with wandb hyperparameter sweep."""
+    sweep_id = wandb.sweep(sweep_config.to_dict(), project="sparse-autoencoder")
 
     wandb.agent(sweep_id, train)
     wandb.finish()
