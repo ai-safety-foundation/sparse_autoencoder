@@ -293,10 +293,12 @@ class Hyperparameters(Parameters):
             self.activation_resampler.resample_dataset_size.value is not None
             and self.pipeline.max_store_size.value is not None
             and self.activation_resampler.resample_dataset_size.value
-            >= int(self.pipeline.max_store_size.value)
+            > int(self.pipeline.max_store_size.value)
         ):
             error_message = (
-                "Resample dataset size must be less than or equal to the pipeline max store size"
+                "Resample dataset size must be less than or equal to the pipeline max store size. "
+                f"Resample dataset size: {self.activation_resampler.resample_dataset_size.value}, "
+                f"pipeline max store size: {self.pipeline.max_store_size.value}."
             )
             raise ValueError(error_message)
 
