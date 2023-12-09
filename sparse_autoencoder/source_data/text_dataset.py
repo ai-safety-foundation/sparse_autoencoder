@@ -3,23 +3,11 @@
 GenericTextDataset should work with the following datasets:
 - monology/pile-uncopyrighted
 - the_pile_openwebtext2
-- roneneldan/TinyStories-33M
-- roneneldan/TinyStories-8M
-- roneneldan/TinyStories-3M
-- roneneldan/TinyStories-1Layer-21M
-- roneneldan/TinyStories-1M
-- roneneldan/TinyStories-2Layers-33M
-- roneneldan/TinyStories-Instruct-2Layers-33M
-- roneneldan/TinyStories-Instruct-28M
-- roneneldan/TinyStories-Instruct-33M
-- roneneldan/TinyStories-Instruct-8M
-- roneneldan/TinyStories-Instruct-3M
-- roneneldan/TinyStories-Instruct-1M
-- roneneldan/TinyStories-Instuct-1Layer-21M
-- roneneldan/TinyStories-28M
+- roneneldan/TinyStories
 """
 from typing import TypedDict, final
 
+from datasets import IterableDataset
 from transformers import PreTrainedTokenizerBase
 
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
@@ -82,16 +70,27 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
         preprocess_batch_size: int = 1000,
         dataset_path: str = "monology/pile-uncopyrighted",
         dataset_split: str = "train",
+        *,
+        pre_download: bool | None = None,
     ):
         """Initialize a generic text dataset from Hugging Face.
 
         Args:
             tokenizer: Tokenizer to process text data.
-            context_size: Context size for tokenized prompts.
-            buffer_size: Buffer size for shuffling the dataset.
-            preprocess_batch_size: Batch size for preprocessing.
+            context_size: The context size to use when returning a list of tokenized prompts.
+                *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
+                a context size of 250.
+            buffer_size: The buffer size to use when shuffling the dataset when streaming. When
+                streaming a dataset, this just pre-downloads at least `buffer_size` items and then
+                shuffles just that buffer. Note that the generated activations should also be
+                shuffled before training the sparse autoencoder, so a large buffer may not be
+                strictly necessary here. Note also that this is the number of items in the dataset
+                (e.g. number of prompts) and is typically significantly less than the number of
+                tokenized prompts once the preprocessing function has been applied.
+            preprocess_batch_size: Batch size for preprocessing (tokenizing prompts).
             dataset_path: Path to the dataset on Hugging Face.
             dataset_split: Dataset split (e.g., 'train').
+            pre_download: Whether to pre-download the whole dataset.
         """
         self.tokenizer = tokenizer
 
@@ -101,4 +100,55 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
             context_size=context_size,
             buffer_size=buffer_size,
             preprocess_batch_size=preprocess_batch_size,
+            pre_download=pre_download,
+        )
+
+    def push_to_hugging_face_hub(
+        self,
+        repo_id: str,
+        commit_message: str = "Upload preprocessed dataset using sparse_autoencoder.",
+        max_shard_size: str = "500MB",
+        num_shards: int = 64,
+        revision: str = "main",
+        *,
+        private: bool = False,
+    ) -> None:
+        """Share preprocessed dataset to Hugging Face hub.
+
+        Motivation:
+            Pre-processing a dataset can be time-consuming, so it is useful to be able to share the
+            pre-processed dataset with others. This function allows you to do that by pushing the
+            pre-processed dataset to the Hugging Face hub.
+
+        Warning:
+            This will only work if the dataset is not streamed (i.e. if `pre_download=True` when
+            initializing the dataset).
+
+        Args:
+            repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).
+            commit_message: Commit message.
+            max_shard_size: Maximum shard size.
+            num_shards: Minimum number of shards to split the dataset into. A high number is
+                recommended here to allow for flexible distributed training of SAEs across nodes
+                (where e.g. each node fetches it's own shard).
+            revision: Branch to push to.
+            private: Whether to save the dataset privately.
+
+        Raises:
+            TypeError: If the dataset is streamed.
+        """
+        if isinstance(self.dataset, IterableDataset):
+            error_message = (
+                "Cannot share a streamed dataset to Hugging Face. "
+                "Please use `pre_download=True` when initializing the dataset."
+            )
+            raise TypeError(error_message)
+
+        self.dataset.push_to_hub(
+            repo_id=repo_id,
+            commit_message=commit_message,
+            max_shard_size=max_shard_size,
+            num_shards=num_shards,
+            private=private,
+            revision=revision,
         )

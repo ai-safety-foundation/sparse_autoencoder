@@ -72,6 +72,8 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         buffer_size: int = 1000,
         preprocess_batch_size: int = 1000,
         dataset_split: str = "train",
+        *,
+        pre_download: bool | None = None,
     ):
         """Initialize a pre-tokenized dataset from Hugging Face.
 
@@ -81,6 +83,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
             buffer_size: Buffer size for shuffling the dataset.
             preprocess_batch_size: Batch size for preprocessing.
             dataset_split: Dataset split (e.g., `train`).
+            pre_download: Whether to pre-download the whole dataset.
         """
         super().__init__(
             dataset_path=dataset_path,
@@ -88,4 +91,5 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
             context_size=context_size,
             buffer_size=buffer_size,
             preprocess_batch_size=preprocess_batch_size,
+            pre_download=pre_download,
         )

@@ -89,6 +89,7 @@
         "relu",
         "resampler",
         "resid",
+        "roneneldan",
         "rtol",
         "runcap",
         "sharded",
