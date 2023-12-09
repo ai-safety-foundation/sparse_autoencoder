@@ -20,7 +20,7 @@ class AbstractEncoder(Module, ABC):
     @property
     @abstractmethod
     def weight(
-        self
+        self,
     ) -> Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Weight.
 

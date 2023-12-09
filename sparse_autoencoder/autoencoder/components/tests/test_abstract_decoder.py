@@ -26,7 +26,7 @@ class MockDecoder(AbstractDecoder):
 
     @property
     def weight(
-        self
+        self,
     ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Get the weight of the decoder."""
         return self._weight

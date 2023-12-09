@@ -42,7 +42,7 @@ def test_initialization(model_and_optimizer: tuple[torch.nn.Module, AdamWithRese
 
 
 def test_reset_state_all_parameters(
-    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset]
+    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset],
 ) -> None:
     """Test reset_state_all_parameters method."""
     _, optimizer = model_and_optimizer
@@ -76,7 +76,7 @@ def test_reset_neurons_state(model_and_optimizer: tuple[torch.nn.Module, AdamWit
 
 
 def test_reset_neurons_state_no_dead_neurons(
-    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset]
+    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset],
 ) -> None:
     """Test reset_neurons_state method with 0 dead neurons."""
     model, optimizer = model_and_optimizer

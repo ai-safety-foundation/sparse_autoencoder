@@ -436,7 +436,7 @@ class Pipeline:
 
     @staticmethod
     def stateful_dataloader_iterable(
-        dataloader: DataLoader[TorchTokenizedPrompts]
+        dataloader: DataLoader[TorchTokenizedPrompts],
     ) -> Iterable[TorchTokenizedPrompts]:
         """Create a stateful dataloader iterable.
 
