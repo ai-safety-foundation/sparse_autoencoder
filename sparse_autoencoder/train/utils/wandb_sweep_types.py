@@ -431,12 +431,6 @@ class WandbSweepConfig:
     project: str | None = None
     """The project for this sweep."""
 
-    runcap: int | None = None
-    """Run Cap.
-
-    Sweep will run no more than this number of runs, across any number of agents.
-    """
-
     def to_dict(self) -> dict[str, Any]:
         """Return dict representation of this object.
 
