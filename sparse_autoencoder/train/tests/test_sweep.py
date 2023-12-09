@@ -19,9 +19,9 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
     """Sweep config dummy fixture."""
     return {
         "activation_resampler": {
-            "dead_neuron_threshold": 0.0,
-            "max_resamples": 4,
-            "n_steps_collate": 100_000_000,
+            "threshold_is_dead_portion_fires": 0.0,
+            "max_n_resamples": 4,
+            "n_activations_activity_collate": 100_000_000,
             "resample_dataset_size": 819_200,
             "resample_interval": 200_000_000,
         },

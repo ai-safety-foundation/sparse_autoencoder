@@ -5,7 +5,7 @@ from typing import final
 from jaxtyping import Float, Int
 import torch
 from torch import Tensor
-from torch.nn import Module, Parameter
+from torch.nn import Module
 
 from sparse_autoencoder.tensor_types import Axis
 
@@ -27,7 +27,7 @@ class AbstractDecoder(Module, ABC):
 
     @property
     @abstractmethod
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting

@@ -252,9 +252,6 @@ def train() -> None:
             line for line in full_stack_trace.splitlines() if "wandb/sdk" not in line
         )
 
-        # Log the exception stack trace to wandb
-        # wandb.log({"exception": stack_trace})
-
         # Also print the stack trace to stderr
         print(stack_trace, file=sys.stderr)  # noqa: T201
 

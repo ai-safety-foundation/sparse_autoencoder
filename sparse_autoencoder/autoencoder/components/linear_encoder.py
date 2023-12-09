@@ -58,7 +58,7 @@ class LinearEncoder(AbstractEncoder):
         return self._bias
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
@@ -68,7 +68,7 @@ class LinearEncoder(AbstractEncoder):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self._weight, 0), (self._bias, 0)]  # type: ignore
+        return [(self.weight, 0), (self.bias, 0)]
 
     activation_function: ReLU
     """Activation function."""

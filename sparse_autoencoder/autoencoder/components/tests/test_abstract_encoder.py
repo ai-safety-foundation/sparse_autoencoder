@@ -43,9 +43,12 @@ class MockEncoder(AbstractEncoder):
 
     def reset_parameters(self) -> None:
         """Mock reset parameters."""
-        self._weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = init.kaiming_normal_(self._weight)
+        self._weight = init.kaiming_normal_(self._weight)
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
+        """Reset optimizer parameter details."""
+        return [(self.weight, 0), (self.bias, 0)]
 
 
 @pytest.fixture()

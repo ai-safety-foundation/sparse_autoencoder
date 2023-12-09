@@ -61,7 +61,7 @@ class UnitNormDecoder(AbstractDecoder):
         return self._weight
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
@@ -71,7 +71,7 @@ class UnitNormDecoder(AbstractDecoder):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self._weight, 1)]  # type: ignore
+        return [(self.weight, 1)]
 
     def __init__(
         self,

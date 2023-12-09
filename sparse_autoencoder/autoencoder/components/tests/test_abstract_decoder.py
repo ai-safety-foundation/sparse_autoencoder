@@ -27,6 +27,11 @@ class MockDecoder(AbstractDecoder):
         """Get the weight of the decoder."""
         return self._weight
 
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Tensor, int]]:
+        """Reset optimizer parameter details."""
+        return [(self.weight, 1)]  # type: ignore
+
     def forward(
         self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
     ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
