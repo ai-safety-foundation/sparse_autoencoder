@@ -335,7 +335,7 @@ class Pipeline:
         )
         for metric in self.metrics.validation_metrics:
             calculated = metric.calculate(validation_data)
-            wandb.log(data=calculated, step=self.total_activations_trained_on, commit=False)
+            wandb.log(data=calculated, commit=False)
 
     @final
     def save_checkpoint(self) -> None:
