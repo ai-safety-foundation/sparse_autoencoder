@@ -84,9 +84,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         Args:
             dataset_path: The path to the dataset on Hugging Face (e.g.
                 `alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2).
-            dataset_split: Dataset split (e.g. `train`).
             context_size: The context size for tokenized prompts.
-            buffer_size: Buffer size for shuffling the dataset.
             buffer_size: The buffer size to use when shuffling the dataset when streaming. When
                 streaming a dataset, this just pre-downloads at least `buffer_size` items and then
                 shuffles just that buffer. Note that the generated activations should also be
@@ -96,6 +94,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
                 tokenized prompts once the preprocessing function has been applied.
             dataset_dir: Defining the `data_dir` of the dataset configuration.
             dataset_files: Path(s) to source data file(s).
+            dataset_split: Dataset split (e.g. `train`).
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
             pre_download: Whether to pre-download the whole dataset.
