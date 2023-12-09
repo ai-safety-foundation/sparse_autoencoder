@@ -10,11 +10,7 @@ A sparse autoencoder for mechanistic interpretability research.
 [![Read the Docs
 Here](https://img.shields.io/badge/-Read%20the%20Docs%20Here-blue?style=for-the-badge&logo=Read-the-Docs&logoColor=white&link=https://ai-safety-foundation.github.io/sparse_autoencoder/)](https://ai-safety-foundation.github.io/sparse_autoencoder/)
 
-Train a Sparse Autoencoder in colab: <a target="_blank" href="https://colab.research.google.com/github/ai-safety-foundation/sparse_autoencoder/blob/main/docs/content/demo.ipynb">
-  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a>
-
-Or install for your project:
+Train a Sparse Autoencoder [in colab](https://colab.research.google.com/github/ai-safety-foundation/sparse_autoencoder/blob/main/docs/content/demo.ipynb), or install for your project:
 
 ```shell
 pip install sparse_autoencoder
