@@ -1,6 +1,6 @@
 """Linear encoder layer."""
 import math
-from typing import TYPE_CHECKING, final
+from typing import final
 
 from jaxtyping import Float
 import torch
@@ -9,10 +9,6 @@ from torch.nn import Parameter, ReLU, functional, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.tensor_types import Axis
-
-
-if TYPE_CHECKING:
-    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -61,6 +57,19 @@ class LinearEncoder(AbstractEncoder):
         """Bias parameter."""
         return self._bias
 
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
+        return [(self._weight, 0), (self._bias, 0)]  # type: ignore
+
     activation_function: ReLU
     """Activation function."""
 
@@ -81,8 +90,6 @@ class LinearEncoder(AbstractEncoder):
         )
         self._bias = Parameter(torch.zeros(learnt_features))
         self.activation_function = ReLU()
-
-        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 1)]
 
         self.reset_parameters()
 

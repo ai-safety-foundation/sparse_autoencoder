@@ -274,7 +274,7 @@ class Pipeline:
         )
 
         # Reset the optimizer
-        for parameter, axis in self.autoencoder.reset_param_names:
+        for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
             self.optimizer.reset_neurons_state(
                 parameter=parameter,
                 neuron_indices=parameter_updates.dead_neuron_indices,

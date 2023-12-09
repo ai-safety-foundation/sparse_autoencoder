@@ -1,19 +1,14 @@
 """Linear layer with unit norm weights."""
-from typing import TYPE_CHECKING, final
+from typing import final
 
 import einops
 from jaxtyping import Float
 import torch
 from torch import Tensor
-from torch.nn import init
-from torch.nn.parameter import Parameter
+from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.tensor_types import Axis
-
-
-if TYPE_CHECKING:
-    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -65,6 +60,19 @@ class UnitNormDecoder(AbstractDecoder):
         """
         return self._weight
 
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
+        return [(self._weight, 1)]  # type: ignore
+
     def __init__(
         self,
         learnt_features: int,
@@ -89,7 +97,6 @@ class UnitNormDecoder(AbstractDecoder):
                 (decoded_features, learnt_features),
             )
         )
-        self.reset_param_names: list[ParameterAxis] = [(self._weight, 1)]
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary

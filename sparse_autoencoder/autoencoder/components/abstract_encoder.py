@@ -5,7 +5,7 @@ from typing import final
 from jaxtyping import Float, Int
 import torch
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Parameter
 
 from sparse_autoencoder.tensor_types import Axis
 
@@ -30,6 +30,19 @@ class AbstractEncoder(Module, ABC):
     @abstractmethod
     def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
         """Bias."""
+
+    @property
+    @abstractmethod
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
 
     @abstractmethod
     def forward(
