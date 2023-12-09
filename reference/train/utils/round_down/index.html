@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../../flexible_demo/">
+        <link rel="prev" href="../get_model_device/">
       
       
-        <link rel="next" href="abstract_activation_resampler/">
+        <link rel="next" href="../wandb_sweep_types/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
     
     
       
-        <title>activation_resampler - Sparse Autoencoder</title>
+        <title>round_down - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.45e1311d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,19 +48,19 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../css/material_extra.css">
+      <link rel="stylesheet" href="../../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../../css/custom_formatting.css">
+      <link rel="stylesheet" href="../../../../css/custom_formatting.css">
     
-      <link rel="stylesheet" href="../../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#activation-resampler" class="md-skip">
+        <a href="#round-down-to-the-nearest-multiple" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              activation_resampler
+              round_down
             
           </span>
         </div>
@@ -235,7 +235,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -265,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -285,7 +285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../demo/" class="md-nav__link">
+      <a href="../../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -305,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../flexible_demo/" class="md-nav__link">
+      <a href="../../../../flexible_demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -361,26 +361,24 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -391,13 +389,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             activation_resampler
@@ -411,7 +409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -432,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="activation_resampler/" class="md-nav__link">
+      <a href="../../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -475,7 +473,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../activation_store/" class="md-nav__link ">
+            <a href="../../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -506,7 +504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/base_store/" class="md-nav__link">
+      <a href="../../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -527,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/disk_store/" class="md-nav__link">
+      <a href="../../../activation_store/disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -548,7 +546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/list_store/" class="md-nav__link">
+      <a href="../../../activation_store/list_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -604,7 +602,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../activation_store/utils/" class="md-nav__link ">
+            <a href="../../../activation_store/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -635,7 +633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/utils/extend_resize/" class="md-nav__link">
+      <a href="../../../activation_store/utils/extend_resize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -686,7 +684,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../autoencoder/" class="md-nav__link ">
+            <a href="../../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -717,7 +715,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -752,7 +750,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../autoencoder/components/" class="md-nav__link ">
+            <a href="../../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -783,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -804,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -825,7 +823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -846,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -867,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -888,7 +886,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -917,7 +915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/model/" class="md-nav__link">
+      <a href="../../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -960,7 +958,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../loss/" class="md-nav__link ">
+            <a href="../../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -991,7 +989,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/abstract_loss/" class="md-nav__link">
+      <a href="../../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1012,7 +1010,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/decoded_activations_l2/" class="md-nav__link">
+      <a href="../../../loss/decoded_activations_l2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,7 +1031,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,7 +1052,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/reducer/" class="md-nav__link">
+      <a href="../../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1097,7 +1095,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/" class="md-nav__link ">
+            <a href="../../../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1142,7 +1140,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/generate/" class="md-nav__link ">
+            <a href="../../../metrics/generate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1173,7 +1171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../../metrics/generate/abstract_generate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1202,7 +1200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/metrics_container/" class="md-nav__link">
+      <a href="../../../metrics/metrics_container/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1237,7 +1235,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/train/" class="md-nav__link ">
+            <a href="../../../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1268,7 +1266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1289,7 +1287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/capacity/" class="md-nav__link">
+      <a href="../../../metrics/train/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1310,7 +1308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/feature_density/" class="md-nav__link">
+      <a href="../../../metrics/train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1331,7 +1329,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/l0_norm_metric/" class="md-nav__link">
+      <a href="../../../metrics/train/l0_norm_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1352,7 +1350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/neuron_activity_metric/" class="md-nav__link">
+      <a href="../../../metrics/train/neuron_activity_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1395,7 +1393,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/validate/" class="md-nav__link ">
+            <a href="../../../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1426,7 +1424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1447,7 +1445,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/validate/model_reconstruction_score/" class="md-nav__link">
+      <a href="../../../metrics/validate/model_reconstruction_score/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1498,7 +1496,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../optimizer/" class="md-nav__link ">
+            <a href="../../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1529,7 +1527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1550,7 +1548,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1593,7 +1591,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../source_data/" class="md-nav__link ">
+            <a href="../../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1624,7 +1622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1645,7 +1643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/mock_dataset/" class="md-nav__link">
+      <a href="../../../source_data/mock_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1666,7 +1664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1687,7 +1685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/text_dataset/" class="md-nav__link">
+      <a href="../../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1730,7 +1728,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../source_model/" class="md-nav__link ">
+            <a href="../../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1761,7 +1759,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/replace_activations_hook/" class="md-nav__link">
+      <a href="../../../source_model/replace_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1782,7 +1780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1803,7 +1801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/zero_ablate_hook/" class="md-nav__link">
+      <a href="../../../source_model/zero_ablate_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1832,7 +1830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tensor_types/" class="md-nav__link">
+      <a href="../../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1850,24 +1848,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../train/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1884,7 +1884,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_10">
             <span class="md-nav__icon md-icon"></span>
             train
@@ -1898,7 +1898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../train/pipeline/" class="md-nav__link">
+      <a href="../../pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1919,7 +1919,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../train/sweep/" class="md-nav__link">
+      <a href="../../sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1940,7 +1940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../train/sweep_config/" class="md-nav__link">
+      <a href="../../sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1958,24 +1958,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10_4" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../train/utils/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1992,7 +1994,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_10_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_10_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_10_4">
             <span class="md-nav__icon md-icon"></span>
             utils
@@ -2006,7 +2008,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../train/utils/get_model_device/" class="md-nav__link">
+      <a href="../get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2024,10 +2026,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../train/utils/round_down/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    round_down
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2036,6 +2058,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.utils.round_down" class="md-nav__link">
+    <span class="md-ellipsis">
+      round_down
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.utils.round_down.round_to_multiple" class="md-nav__link">
+    <span class="md-ellipsis">
+      round_to_multiple()
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2048,7 +2108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2092,7 +2152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/" class="md-nav__link">
+      <a href="../../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2112,7 +2172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../citation/" class="md-nav__link">
+      <a href="../../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2152,9 +2212,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.activation_resampler" class="md-nav__link">
+  <a href="#sparse_autoencoder.train.utils.round_down" class="md-nav__link">
     <span class="md-ellipsis">
-      activation_resampler
+      round_down
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.utils.round_down.round_to_multiple" class="md-nav__link">
+    <span class="md-ellipsis">
+      round_to_multiple()
     </span>
   </a>
   
@@ -2175,17 +2244,17 @@
                   
 
 
-<h1 id="activation-resampler">Activation Resampler<a class="headerlink" href="#activation-resampler" title="Permanent link">¤</a></h1>
+<h1 id="round-down-to-the-nearest-multiple">Round down to the nearest multiple<a class="headerlink" href="#round-down-to-the-nearest-multiple" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.activation_resampler"></a>
+<a id="sparse_autoencoder.train.utils.round_down"></a>
   <div class="doc doc-contents first">
   
-      <p>Activation Resampler.</p>
+      <p>Round down to the nearest multiple.</p>
 
   
 
@@ -2198,6 +2267,185 @@
 
 
 
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="sparse_autoencoder.train.utils.round_down.round_to_multiple" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">round_to_multiple</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">multiple</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.train.utils.round_down.round_to_multiple" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Round down to the nearest multiple.</p>
+<p>Helper function for creating default values.</p>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>round_to_multiple(1023, 100)
+1000</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>int | float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The value to round down.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>multiple</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The multiple to round down to.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The value rounded down to the nearest multiple.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If <code>value</code> is less than <code>multiple</code>.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/train/utils/round_down.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">round_to_multiple</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">multiple</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: PYI041</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Round down to the nearest multiple.</span>
+
+<span class="sd">    Helper function for creating default values.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; round_to_multiple(1023, 100)</span>
+<span class="sd">        1000</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: The value to round down.</span>
+<span class="sd">        multiple: The multiple to round down to.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The value rounded down to the nearest multiple.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If `value` is less than `multiple`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">int_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">int_value</span> <span class="o">&lt;</span> <span class="n">multiple</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">=}</span><span class="s2"> must be greater than or equal to </span><span class="si">{</span><span class="n">multiple</span><span class="si">=}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">int_value</span> <span class="o">-</span> <span class="n">int_value</span> <span class="o">%</span> <span class="n">multiple</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
 
 
 
@@ -2252,14 +2500,14 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
-        <script src="../../javascript/custom_formatting.js"></script>
+        <script src="../../../../javascript/custom_formatting.js"></script>
       
-        <script src="../../javascript/mathjax.js"></script>
+        <script src="../../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
