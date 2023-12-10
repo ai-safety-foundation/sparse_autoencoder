@@ -294,9 +294,9 @@ class TestRunPipeline:
 
     def test_run_pipeline_calls_all_methods(self, pipeline_fixture: Pipeline) -> None:
         """Test that the run_pipeline method calls all the other methods."""
-        pipeline_fixture.validate_sae = MagicMock(spec=Pipeline.validate_sae)
-        pipeline_fixture.save_checkpoint = MagicMock(spec=Pipeline.save_checkpoint)
-        pipeline_fixture.activation_resampler.step_resampler = MagicMock(
+        pipeline_fixture.validate_sae = MagicMock(spec=Pipeline.validate_sae)  # type: ignore
+        pipeline_fixture.save_checkpoint = MagicMock(spec=Pipeline.save_checkpoint)  # type: ignore
+        pipeline_fixture.activation_resampler.step_resampler = MagicMock(  # type: ignore
             spec=ActivationResampler.step_resampler, return_value=None
         )
 
@@ -326,6 +326,7 @@ class TestRunPipeline:
             pipeline_fixture.save_checkpoint.call_count == checkpoint_expected_calls
         ), f"Checkpoint should have been called {checkpoint_expected_calls} times."
 
+        assert (pipeline_fixture.activation_resampler) is not None
         assert (
             pipeline_fixture.activation_resampler.step_resampler.call_count == total_loops
         ), f"Resampler should have been called {total_loops} times."
