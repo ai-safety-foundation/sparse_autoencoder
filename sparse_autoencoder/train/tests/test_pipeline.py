@@ -1,5 +1,4 @@
 """Test the pipeline module."""
-from math import ceil
 from typing import Any
 from unittest.mock import MagicMock
 
