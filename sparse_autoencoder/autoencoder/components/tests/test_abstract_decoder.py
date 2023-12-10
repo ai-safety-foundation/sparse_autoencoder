@@ -2,7 +2,7 @@
 
 from typing import final
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int64
 import pytest
 import torch
 from torch import Tensor
@@ -72,9 +72,9 @@ def test_update_dictionary_vectors_with_no_neurons(mock_decoder: MockDecoder) ->
     """Test update_dictionary_vectors with 0 neurons to update."""
     original_weight = mock_decoder.weight.clone()  # Save original weight for comparison
 
-    dictionary_vector_indices: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE] = torch.empty(
+    dictionary_vector_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE] = torch.empty(
         0,
-        dtype=torch.int,  # Empty tensor with 1 dimension
+        dtype=torch.int64,  # Empty tensor with 1 dimension
     )
     updates: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)] = torch.empty(
         (0, 0),
@@ -101,7 +101,7 @@ def test_update_dictionary_vectors_with_no_neurons(mock_decoder: MockDecoder) ->
 )
 def test_update_dictionary_vectors_with_neurons(
     mock_decoder: MockDecoder,
-    dictionary_vector_indices: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+    dictionary_vector_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE],
     updates: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)],
 ) -> None:
     """Test update_dictionary_vectors with 1 or 2 neurons to update."""

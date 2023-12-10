@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import final
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int64
 import torch
 from torch import Tensor
 from torch.nn import Module, Parameter
@@ -62,7 +62,7 @@ class AbstractEncoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
+        dictionary_vector_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX],
         updated_dictionary_weights: Float[
             Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ],
@@ -84,7 +84,7 @@ class AbstractEncoder(Module, ABC):
     @final
     def update_bias(
         self,
-        update_parameter_indices: Int[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+        update_parameter_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE],
         updated_bias_features: Float[Tensor, Axis.LEARNT_FEATURE] | float,
     ) -> None:
         """Update encoder bias.

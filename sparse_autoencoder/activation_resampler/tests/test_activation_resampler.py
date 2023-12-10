@@ -1,6 +1,6 @@
 """Tests for the resample_neurons module."""
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int, Int64
 import pytest
 import torch
 from torch import Tensor
@@ -256,7 +256,7 @@ class TestRenormalizeAndScale:
     @staticmethod
     def calculate_expected_output(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
-        neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
+        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
         encoder_weight: Float[
             Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ],
@@ -288,7 +288,7 @@ class TestRenormalizeAndScale:
         sampled_input: Float[
             Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ] = torch.tensor([[3.0, 4.0, 5.0]])
-        neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE] = torch.tensor([1, 0, 1, 0, 1])
+        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE] = torch.tensor([1, 0, 1, 0, 1])
         encoder_weight: Float[
             Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ] = Parameter(torch.ones((DEFAULT_N_LEARNED_FEATURES, DEFAULT_N_INPUT_FEATURES)))
@@ -323,7 +323,7 @@ class TestResampleDeadNeurons:
         self, full_activation_store: ActivationStore, autoencoder_model: SparseAutoencoder
     ) -> None:
         """Check it doesn't change anything if there are no dead neurons."""
-        neuron_activity = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int32)
+        neuron_activity = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int64)
         resampler = ActivationResampler(
             resample_interval=10,
             n_activations_activity_collate=10,
@@ -348,7 +348,7 @@ class TestResampleDeadNeurons:
         self, full_activation_store: ActivationStore, autoencoder_model: SparseAutoencoder
     ) -> None:
         """Check it updates a dead neuron's parameters."""
-        neuron_activity = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int32)
+        neuron_activity = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int64)
         dead_neuron_idx = 2
         neuron_activity[dead_neuron_idx] = 0
 
@@ -395,19 +395,19 @@ class TestStepResampler:
     @pytest.mark.parametrize(
         ("neuron_activity", "threshold", "expected_indices"),
         [
-            (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4], dtype=torch.int)),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4], dtype=torch.int64)),
             (
                 torch.tensor([1, 2, 3, 4, 5]),
                 0.0,
-                torch.tensor([], dtype=torch.int),
+                torch.tensor([], dtype=torch.int64),
             ),
-            (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4], dtype=torch.int)),
-            (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0], dtype=torch.int)),
+            (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4], dtype=torch.int64)),
+            (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0], dtype=torch.int64)),
         ],
     )
     def test_gets_dead_neuron_indices(
         self,
-        neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
+        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
         threshold: float,
         expected_indices: Tensor,
         full_activation_store: ActivationStore,
@@ -463,7 +463,7 @@ class TestStepResampler:
     ) -> None:
         """Check if max_updates, resample_interval and n_steps_collate are respected."""
         # Create neuron activity to log (with one dead neuron)
-        neuron_activity_batch_size_1 = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int32)
+        neuron_activity_batch_size_1 = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int64)
         neuron_activity_batch_size_1[2] = 0
 
         resampler = ActivationResampler(

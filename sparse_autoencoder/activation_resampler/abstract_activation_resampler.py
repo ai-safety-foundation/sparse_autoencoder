@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int, Int64
 from torch import Tensor
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
@@ -16,7 +16,7 @@ from sparse_autoencoder.tensor_types import Axis
 class ParameterUpdateResults:
     """Parameter update results from resampling dead neurons."""
 
-    dead_neuron_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX]
+    dead_neuron_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX]
     """Dead neuron indices."""
 
     dead_encoder_weight_updates: Float[
