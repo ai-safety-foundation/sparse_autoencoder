@@ -245,7 +245,7 @@ class PipelineHyperparameters(NestedParameter):
 
     validation_number_activations: Parameter[int] = field(
         # Default to a single batch of source data prompts
-        default=Parameter(DEFAULT_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE)
+        default=Parameter(DEFAULT_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE * 16)
     )
     """Number of activations to use for validation."""
 

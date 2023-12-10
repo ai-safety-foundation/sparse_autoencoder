@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import final
 from urllib.parse import quote_plus
 
-from jaxtyping import Int
+from jaxtyping import Int, Int64
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
@@ -183,7 +183,7 @@ class Pipeline:
 
     def train_autoencoder(
         self, activation_store: TensorActivationStore, train_batch_size: int
-    ) -> Int[Tensor, Axis.LEARNT_FEATURE]:
+    ) -> Int64[Tensor, Axis.LEARNT_FEATURE]:
         """Train the sparse autoencoder.
 
         Args:
@@ -200,8 +200,8 @@ class Pipeline:
             batch_size=train_batch_size,
         )
 
-        learned_activations_fired_count: Int[Tensor, Axis.LEARNT_FEATURE] = torch.zeros(
-            self.autoencoder.n_learned_features, dtype=torch.int32, device=autoencoder_device
+        learned_activations_fired_count: Int64[Tensor, Axis.LEARNT_FEATURE] = torch.zeros(
+            self.autoencoder.n_learned_features, dtype=torch.int64, device=autoencoder_device
         )
 
         for store_batch in activations_dataloader:
@@ -254,11 +254,11 @@ class Pipeline:
         return learned_activations_fired_count
 
     def update_parameters(self, parameter_updates: ParameterUpdateResults) -> None:
-        """Update the parameters of the model from the results of the resampler."""
-        if self.activation_resampler is None:
-            error_str = "No activation resampler has been set"
-            raise ValueError(error_str)
+        """Update the parameters of the model from the results of the resampler.
 
+        Args:
+            parameter_updates: Parameter updates from the resampler.
+        """
         # Update the weights and biases
         self.autoencoder.encoder.update_dictionary_vectors(
             parameter_updates.dead_neuron_indices,
@@ -394,7 +394,7 @@ class Pipeline:
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
-                batch_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE] = self.train_autoencoder(
+                batch_neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE] = self.train_autoencoder(
                     activation_store, train_batch_size=train_batch_size
                 )
 

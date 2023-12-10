@@ -1,6 +1,6 @@
 """Activation resampler."""
 from einops import rearrange
-from jaxtyping import Bool, Float, Int
+from jaxtyping import Bool, Float, Int64
 import torch
 from torch import Tensor
 from torch.nn import Parameter
@@ -139,13 +139,13 @@ class ActivationResampler(AbstractActivationResampler):
         self.neuron_activity_window_end = resample_interval
         self.neuron_activity_window_start = resample_interval - n_activations_activity_collate
         self._max_n_resamples = max_n_resamples
-        self._collated_neuron_activity = torch.zeros(n_learned_features, dtype=torch.int32)
+        self._collated_neuron_activity = torch.zeros(n_learned_features, dtype=torch.int64)
         self._resample_dataset_size = resample_dataset_size
         self._threshold_is_dead_portion_fires = threshold_is_dead_portion_fires
 
     def _get_dead_neuron_indices(
         self,
-    ) -> Int[Tensor, Axis.LEARNT_FEATURE_IDX]:
+    ) -> Int64[Tensor, Axis.LEARNT_FEATURE_IDX]:
         """Identify the indices of neurons that are dead.
 
         Identifies any neurons that have fired less than the threshold portion of the collated
@@ -171,7 +171,7 @@ class ActivationResampler(AbstractActivationResampler):
             self._collated_neuron_activity <= threshold_is_dead_number_fires
         )[0]
 
-        return dead_indices.to(dtype=torch.int)
+        return dead_indices.to(dtype=torch.int64)
 
     def compute_loss_and_get_activations(
         self,
@@ -299,7 +299,7 @@ class ActivationResampler(AbstractActivationResampler):
                 device=input_activations.device,
             ).to(input_activations.device)
 
-        sample_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX] = torch.multinomial(
+        sample_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX] = torch.multinomial(
             probabilities, num_samples=num_samples
         )
         return input_activations[sample_indices, :]
@@ -307,7 +307,7 @@ class ActivationResampler(AbstractActivationResampler):
     @staticmethod
     def renormalize_and_scale(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
-        neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
+        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
         encoder_weight: Float[
             Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ],
@@ -447,7 +447,7 @@ class ActivationResampler(AbstractActivationResampler):
 
     def step_resampler(
         self,
-        batch_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
+        batch_neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
         activation_store: ActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,

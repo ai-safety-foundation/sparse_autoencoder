@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import final
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int64
 import torch
 from torch import Tensor
 from torch.nn import Module, Parameter
@@ -61,7 +61,7 @@ class AbstractDecoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
+        dictionary_vector_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX],
         updated_weights: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)],
     ) -> None:
         """Update decoder dictionary vectors.
