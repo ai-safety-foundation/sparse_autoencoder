@@ -3143,13 +3143,13 @@ causes training to diverge.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">neuron_activity_window_end</span> <span class="o">=</span> <span class="n">resample_interval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">neuron_activity_window_start</span> <span class="o">=</span> <span class="n">resample_interval</span> <span class="o">-</span> <span class="n">n_activations_activity_collate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_n_resamples</span> <span class="o">=</span> <span class="n">max_n_resamples</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_collated_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collated_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="o">=</span> <span class="n">resample_dataset_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_threshold_is_dead_portion_fires</span> <span class="o">=</span> <span class="n">threshold_is_dead_portion_fires</span>
 
     <span class="k">def</span> <span class="nf">_get_dead_neuron_indices</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the indices of neurons that are dead.</span>
 
 <span class="sd">        Identifies any neurons that have fired less than the threshold portion of the collated</span>
@@ -3175,7 +3175,7 @@ causes training to diverge.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">_collated_neuron_activity</span> <span class="o">&lt;=</span> <span class="n">threshold_is_dead_number_fires</span>
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">dead_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dead_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">compute_loss_and_get_activations</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3303,7 +3303,7 @@ causes training to diverge.</p>
                 <span class="n">device</span><span class="o">=</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
             <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="n">sample_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
+        <span class="n">sample_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
             <span class="n">probabilities</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">input_activations</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">,</span> <span class="p">:]</span>
@@ -3311,7 +3311,7 @@ causes training to diverge.</p>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">renormalize_and_scale</span><span class="p">(</span>
         <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+        <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
         <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
             <span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
         <span class="p">],</span>
@@ -3451,7 +3451,7 @@ causes training to diverge.</p>
 
     <span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+        <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
         <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
         <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
@@ -3844,7 +3844,7 @@ the loss, as part of the resampling process to create the reset neuron weights.<
     <span class="bp">self</span><span class="o">.</span><span class="n">neuron_activity_window_end</span> <span class="o">=</span> <span class="n">resample_interval</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">neuron_activity_window_start</span> <span class="o">=</span> <span class="n">resample_interval</span> <span class="o">-</span> <span class="n">n_activations_activity_collate</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_max_n_resamples</span> <span class="o">=</span> <span class="n">max_n_resamples</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_collated_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_collated_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_resample_dataset_size</span> <span class="o">=</span> <span class="n">resample_dataset_size</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_threshold_is_dead_portion_fires</span> <span class="o">=</span> <span class="n">threshold_is_dead_portion_fires</span>
 </code></pre></div></td></tr></table></div>
@@ -4373,7 +4373,7 @@ tensor([[0.2000, 0.2000]])</p>
         <tr>
           <td><code>neuron_activity</code></td>
           <td>
-                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
+                <code><span title="jaxtyping.Int64">Int64</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4519,7 +4519,7 @@ tensor([[0.2000, 0.2000]])</p>
 <span class="normal">372</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">renormalize_and_scale</span><span class="p">(</span>
     <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+    <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
     <span class="n">encoder_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
     <span class="p">],</span>
@@ -5087,7 +5087,7 @@ sampled_input.tolist()
             <span class="n">device</span><span class="o">=</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_activations</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-    <span class="n">sample_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
+    <span class="n">sample_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span>
         <span class="n">probabilities</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">input_activations</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">,</span> <span class="p">:]</span>
@@ -5129,7 +5129,7 @@ sampled_input.tolist()
         <tr>
           <td><code>batch_neuron_activity</code></td>
           <td>
-                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
+                <code><span title="jaxtyping.Int64">Int64</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -5280,7 +5280,7 @@ sampled_input.tolist()
 <span class="normal">500</span>
 <span class="normal">501</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+    <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
     <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>

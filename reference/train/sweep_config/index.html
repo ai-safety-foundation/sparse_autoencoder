@@ -4585,7 +4585,7 @@ you should probably tune it.</p>
 
     <span class="n">validation_number_activations</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="c1"># Default to a single batch of source data prompts</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span><span class="p">)</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span> <span class="o">*</span> <span class="mi">16</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of activations to use for validation.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -4768,7 +4768,7 @@ you should probably tune it.</p>
 
 
 <h3 id="sparse_autoencoder.train.sweep_config.PipelineHyperparameters.validation_number_activations" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">validation_number_activations</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span><span class="p">))</span></code>
+          <code class="highlight language-python"><span class="n">validation_number_activations</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span> <span class="o">*</span> <span class="mi">16</span><span class="p">))</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
