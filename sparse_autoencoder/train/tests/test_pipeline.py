@@ -186,3 +186,56 @@ class TestUpdateParameters:
             decoder_weight_before[:, ~dead_neuron_indices],
             pipeline_fixture.autoencoder.decoder.weight[:, ~dead_neuron_indices],
         ), "Decoder weights should not have changed after training."
+
+    def test_optimizer_state_changed(self, pipeline_fixture: Pipeline) -> None:
+        """Test that the optimizer state has changed after training."""
+        store_size: int = 1000
+        store = pipeline_fixture.generate_activations(store_size)
+        pipeline_fixture.train_autoencoder(store, store_size)
+
+        # Set the optimizer state to all 1s
+        optimizer = pipeline_fixture.optimizer
+        model = pipeline_fixture.autoencoder
+        optimizer.state[model.encoder.weight]["exp_avg"] = torch.ones_like(
+            optimizer.state[model.encoder.weight]["exp_avg"], dtype=torch.float
+        )
+        optimizer.state[model.encoder.weight]["exp_avg_sq"] = torch.ones_like(
+            optimizer.state[model.encoder.weight]["exp_avg_sq"], dtype=torch.float
+        )
+
+        # Update the parameters
+        dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
+        pipeline_fixture.update_parameters(
+            ParameterUpdateResults(
+                dead_neuron_indices=dead_neuron_indices,
+                dead_encoder_weight_updates=torch.zeros_like(
+                    pipeline_fixture.autoencoder.encoder.weight[dead_neuron_indices],
+                    dtype=torch.float,
+                ),
+                dead_encoder_bias_updates=torch.zeros_like(
+                    pipeline_fixture.autoencoder.encoder.bias[dead_neuron_indices],
+                    dtype=torch.float,
+                ),
+                dead_decoder_weight_updates=torch.zeros_like(
+                    pipeline_fixture.autoencoder.decoder.weight[:, dead_neuron_indices],
+                    dtype=torch.float,
+                ),
+            )
+        )
+
+        # Check the optimizer state has changed
+        assert not torch.allclose(
+            optimizer.state[model.encoder.weight]["exp_avg"][dead_neuron_indices],
+            torch.ones_like(
+                optimizer.state[model.encoder.weight]["exp_avg"][dead_neuron_indices],
+                dtype=torch.float,
+            ),
+        ), "Optimizer dead neuron state should have changed after training."
+
+        assert torch.allclose(
+            optimizer.state[model.encoder.weight]["exp_avg"][~dead_neuron_indices],
+            torch.ones_like(
+                optimizer.state[model.encoder.weight]["exp_avg"][~dead_neuron_indices],
+                dtype=torch.float,
+            ),
+        ), "Optimizer non-dead neuron state should not have changed after training."
