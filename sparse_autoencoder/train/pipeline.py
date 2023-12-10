@@ -335,7 +335,8 @@ class Pipeline:
         )
         for metric in self.metrics.validation_metrics:
             calculated = metric.calculate(validation_data)
-            wandb.log(data=calculated, commit=False)
+            if wandb.run is not None:
+                wandb.log(data=calculated, commit=False)
 
     @final
     def save_checkpoint(self) -> None:
@@ -411,10 +412,15 @@ class Pipeline:
                     )
 
                     if parameter_updates is not None:
-                        wandb.log(
-                            {"resample/dead_neurons": len(parameter_updates.dead_neuron_indices)},
-                            commit=False,
-                        )
+                        if wandb.run is not None:
+                            wandb.log(
+                                {
+                                    "resample/dead_neurons": len(
+                                        parameter_updates.dead_neuron_indices
+                                    )
+                                },
+                                commit=False,
+                            )
 
                         # Update the parameters
                         self.update_parameters(parameter_updates)

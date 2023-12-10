@@ -174,3 +174,4 @@ class MockDataset(SourceDataset[TokenizedPrompts]):
             dataset_split: Dataset split (e.g. `train`).
         """
         self.dataset = ConsecutiveIntHuggingFaceDataset(context_size=context_size)  # type: ignore
+        self.context_size = context_size
