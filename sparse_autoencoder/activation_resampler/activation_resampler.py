@@ -358,7 +358,7 @@ class ActivationResampler(AbstractActivationResampler):
         # Calculate the average norm of the encoder weights for alive neurons.
         detached_encoder_weight = encoder_weight.detach()  # Don't track gradients
         alive_encoder_weights: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+            Tensor, Axis.names(Axis.ALIVE_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ] = detached_encoder_weight[alive_neuron_mask, :]
         average_alive_norm: Float[Tensor, Axis.SINGLE_ITEM] = alive_encoder_weights.norm(
             dim=-1
@@ -416,7 +416,7 @@ class ActivationResampler(AbstractActivationResampler):
             # vector for the dead autoencoder neuron.
             renormalized_input: Float[
                 Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-            ] = torch.nn.functional.normalize(sampled_input, dim=0)
+            ] = torch.nn.functional.normalize(sampled_input, dim=-1)
             dead_decoder_weight_updates = rearrange(
                 renormalized_input, "dead_neuron input_feature -> input_feature dead_neuron"
             )
