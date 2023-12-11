@@ -155,10 +155,11 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
 
     if hyperparameters["source_data"]["pre_tokenized"]:
         return PreTokenizedDataset(
-            dataset_path=hyperparameters["source_data"]["dataset_path"],
             context_size=hyperparameters["source_data"]["context_size"],
             dataset_dir=dataset_dir,
             dataset_files=dataset_files,
+            dataset_path=hyperparameters["source_data"]["dataset_path"],
+            pre_download=hyperparameters["source_data"]["pre_download"],
         )
 
     if hyperparameters["source_data"]["tokenizer_name"] is None:
@@ -171,12 +172,13 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
     tokenizer = AutoTokenizer.from_pretrained(hyperparameters["source_data"]["tokenizer_name"])
 
     return TextDataset(
-        dataset_path=hyperparameters["source_data"]["dataset_path"],
         context_size=hyperparameters["source_data"]["context_size"],
-        tokenizer=tokenizer,
         dataset_dir=dataset_dir,
         dataset_files=dataset_files,
+        dataset_path=hyperparameters["source_data"]["dataset_path"],
         n_processes_preprocessing=4,
+        pre_download=hyperparameters["source_data"]["pre_download"],
+        tokenizer=tokenizer,
     )
 
 
