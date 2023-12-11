@@ -141,12 +141,24 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
     Raises:
         ValueError: If the tokenizer name is not specified, but pre_tokenized is False.
     """
+    dataset_dir = (
+        hyperparameters["source_data"]["dataset_dir"]
+        if "dataset_dir" in hyperparameters["source_data"]
+        else None
+    )
+
+    dataset_files = (
+        hyperparameters["source_data"]["dataset_files"]
+        if "dataset_files" in hyperparameters["source_data"]
+        else None
+    )
+
     if hyperparameters["source_data"]["pre_tokenized"]:
         return PreTokenizedDataset(
             dataset_path=hyperparameters["source_data"]["dataset_path"],
             context_size=hyperparameters["source_data"]["context_size"],
-            dataset_dir=hyperparameters["source_data"]["dataset_dir"],
-            dataset_files=hyperparameters["source_data"]["dataset_files"],
+            dataset_dir=dataset_dir,
+            dataset_files=dataset_files,
         )
 
     if hyperparameters["source_data"]["tokenizer_name"] is None:
@@ -162,8 +174,9 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
         dataset_path=hyperparameters["source_data"]["dataset_path"],
         context_size=hyperparameters["source_data"]["context_size"],
         tokenizer=tokenizer,
-        dataset_dir=hyperparameters["source_data"]["dataset_dir"],
-        dataset_files=hyperparameters["source_data"]["dataset_files"],
+        dataset_dir=dataset_dir,
+        dataset_files=dataset_files,
+        n_processes_preprocessing=4,
     )
 
 
