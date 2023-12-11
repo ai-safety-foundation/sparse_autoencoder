@@ -174,12 +174,45 @@ class SourceDataHyperparameters(NestedParameter):
     context_size: Parameter[int] = field(default=Parameter(DEFAULT_SOURCE_CONTEXT_SIZE))
     """Context size."""
 
+    dataset_dir: Parameter[str | None] = field(default=Parameter(None))
+    """Dataset directory (within the HF dataset)"""
+
+    dataset_files: Parameter[str | None] = field(default=Parameter(None))
+    """Dataset files (within the HF dataset)."""
+
+    pre_tokenized: Parameter[bool] = field(default=Parameter(value=True))
+    """If the dataset is pre-tokenized."""
+
+    tokenizer_name: Parameter[str | None] = field(default=Parameter(None))
+    """Tokenizer name.
+
+    Only set this if the dataset is not pre-tokenized.
+    """
+
+    def __post_init__(self) -> None:
+        """Post initialisation checks.
+
+        Raises:
+            ValueError: If there is an error in the source data hyperparameters.
+        """
+        if self.pre_tokenized.value is False and self.tokenizer_name.value is None:
+            error_message = "The tokenizer name must be specified, when `pre_tokenized` is False."
+            raise ValueError(error_message)
+
+        if self.pre_tokenized.value is True and self.tokenizer_name.value is not None:
+            error_message = "The tokenizer name must not be set, when `pre_tokenized` is True."
+            raise ValueError(error_message)
+
 
 class SourceDataRuntimeHyperparameters(TypedDict):
     """Source data runtime hyperparameters."""
 
-    dataset_path: str
     context_size: int
+    dataset_dir: str | None
+    dataset_files: str | None
+    dataset_path: str
+    pre_tokenized: bool
+    tokenizer_name: str | None
 
 
 @dataclass(frozen=True)
