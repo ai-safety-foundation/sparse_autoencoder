@@ -176,7 +176,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             batch_size=preprocess_batch_size,
             fn_kwargs={"context_size": context_size},
             remove_columns=existing_columns,
-            num_proc=n_processes_preprocessing,
+            num_proc=n_processes_preprocessing,  # type: ignore (this is a valid argument)
         )
 
         if pre_download:
