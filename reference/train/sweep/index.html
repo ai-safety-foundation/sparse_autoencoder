@@ -2647,7 +2647,8 @@
 <span class="normal">239</span>
 <span class="normal">240</span>
 <span class="normal">241</span>
-<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_training_pipeline</span><span class="p">(</span>
+<span class="normal">242</span>
+<span class="normal">243</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_training_pipeline</span><span class="p">(</span>
     <span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">,</span>
     <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
@@ -2678,6 +2679,7 @@
     <span class="n">hook_point</span> <span class="o">=</span> <span class="n">get_act_name</span><span class="p">(</span>
         <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model&quot;</span><span class="p">][</span><span class="s2">&quot;hook_site&quot;</span><span class="p">],</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model&quot;</span><span class="p">][</span><span class="s2">&quot;hook_layer&quot;</span><span class="p">]</span>
     <span class="p">)</span>
+
     <span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
         <span class="n">activation_resampler</span><span class="o">=</span><span class="n">activation_resampler</span><span class="p">,</span>
         <span class="n">autoencoder</span><span class="o">=</span><span class="n">autoencoder</span><span class="p">,</span>
@@ -3552,12 +3554,12 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
-<span class="normal">302</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">302</span>
 <span class="normal">303</span>
 <span class="normal">304</span>
 <span class="normal">305</span>
-<span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">306</span>
+<span class="normal">307</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function to run the training pipeline with wandb hyperparameter sweep.&quot;&quot;&quot;</span>
     <span class="n">sweep_id</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">)</span>
 
@@ -3587,8 +3589,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">245</span>
-<span class="normal">246</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
@@ -3640,7 +3641,8 @@
 <span class="normal">295</span>
 <span class="normal">296</span>
 <span class="normal">297</span>
-<span class="normal">298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">298</span>
+<span class="normal">299</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the sparse autoencoder using the hyperparameters from the WandB sweep.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Set up WandB</span>
