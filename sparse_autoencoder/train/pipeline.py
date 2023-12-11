@@ -5,8 +5,10 @@ from functools import partial
 from json import dumps
 import os
 from pathlib import Path
+import subprocess
 from typing import final
 from urllib.parse import quote_plus
+import warnings
 
 from jaxtyping import Int, Int64
 import torch
@@ -341,6 +343,22 @@ class Pipeline:
             if wandb.run is not None:
                 wandb.log(data=calculated, commit=False)
 
+    @staticmethod
+    def get_git_commit_hash() -> None | str:
+        """Get the Git commit hash of the current directory."""
+        try:
+            return (
+                subprocess.check_output(["/usr/bin/git", "rev-parse", "HEAD"])  # noqa: S603
+                .decode("ascii")
+                .strip()
+            )
+        except subprocess.CalledProcessError:
+            # Handle the case where the directory is not a Git repository
+            warnings.warn(
+                "Directory is not a Git repository, not logging commit hash", stacklevel=1
+            )
+            return None
+
     @final
     def save_checkpoint(self) -> None:
         """Save the model as a checkpoint."""
@@ -350,8 +368,12 @@ class Pipeline:
             if not run_directory.exists():
                 run_directory.mkdir(parents=True)
             if "config.json" not in os.listdir(run_directory):
+                config_dict = dict(wandb.config)
+                git_hash = self.get_git_commit_hash()
+                if git_hash is not None:
+                    config_dict["git_hash"] = git_hash
                 with Path.open(run_directory / "config.json", "w") as config_file:
-                    config_file.write(dumps(dict(wandb.config)))
+                    config_file.write(dumps(config_dict, indent=4))
 
             file_path: Path = (
                 self.checkpoint_directory
