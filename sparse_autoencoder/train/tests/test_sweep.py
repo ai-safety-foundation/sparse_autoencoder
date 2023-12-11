@@ -46,7 +46,14 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
             "validation_number_activations": 1024,
         },
         "random_seed": 49,
-        "source_data": {"context_size": 128, "dataset_path": "NeelNanda/c4-code-tokenized-2b"},
+        "source_data": {
+            "context_size": 128,
+            "dataset_dir": None,
+            "dataset_files": None,
+            "dataset_path": "NeelNanda/c4-code-tokenized-2b",
+            "pre_tokenized": True,
+            "tokenizer_name": None,
+        },
         "source_model": {
             "dtype": "float32",
             "hook_dimension": 512,
