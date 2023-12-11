@@ -1,8 +1,9 @@
 """Abstract tokenized prompts dataset class."""
 from abc import ABC, abstractmethod
+from collections.abc import Mapping, Sequence
 from typing import Any, Generic, TypedDict, TypeVar, final
 
-from datasets import IterableDataset, load_dataset
+from datasets import Dataset, IterableDataset, load_dataset
 from jaxtyping import Int
 from torch import Tensor
 from torch.utils.data import DataLoader
@@ -62,8 +63,8 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
     a context size of 250.
     """
 
-    dataset: IterableDataset
-    """Underlying HuggingFace IterableDataset.
+    dataset: Dataset | IterableDataset
+    """Underlying HuggingFace Dataset.
 
     Warning:
         Hugging Face `Dataset` objects are confusingly not the same as PyTorch `Dataset` objects.
@@ -108,7 +109,11 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         dataset_split: str,
         context_size: int,
         buffer_size: int = 1000,
+        dataset_dir: str | None = None,
+        dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         preprocess_batch_size: int = 1000,
+        *,
+        pre_download: bool = False,
     ):
         """Initialise the dataset.
 
@@ -121,20 +126,45 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             context_size: The context size to use when returning a list of tokenized prompts.
                 *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used
                 a context size of 250.
-            buffer_size: The buffer size to use when shuffling the dataset. As the dataset is
-                streamed, this just pre-downloads at least `buffer_size` items and then shuffles
-                just that buffer. Note that the generated activations should also be shuffled before
-                training the sparse autoencoder, so a large buffer may not be strictly necessary
-                here. Note also that this is the number of items in the dataset (e.g. number of
-                prompts) and is typically significantly less than the number of tokenized prompts
-                once the preprocessing function has been applied.
+            buffer_size: The buffer size to use when shuffling the dataset when streaming. When
+                streaming a dataset, this just pre-downloads at least `buffer_size` items and then
+                shuffles just that buffer. Note that the generated activations should also be
+                shuffled before training the sparse autoencoder, so a large buffer may not be
+                strictly necessary here. Note also that this is the number of items in the dataset
+                (e.g. number of prompts) and is typically significantly less than the number of
+                tokenized prompts once the preprocessing function has been applied.
+            dataset_dir: Defining the `data_dir` of the dataset configuration.
+            dataset_files: Path(s) to source data file(s).
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
+            pre_download: Whether to pre-download the whole dataset.
+
+        Raises:
+            TypeError: If the loaded dataset is not a Hugging Face `Dataset` or `IterableDataset`.
         """
         self.context_size = context_size
 
         # Load the dataset
-        dataset: IterableDataset = load_dataset(dataset_path, streaming=True, split=dataset_split)  # type: ignore
+        should_stream = not pre_download
+        loaded_dataset = load_dataset(
+            dataset_path,
+            streaming=should_stream,
+            split=dataset_split,
+            data_dir=dataset_dir,
+            data_files=dataset_files,
+        )
+
+        # Check the dataset is a Hugging Face Dataset or IterableDataset
+        if not isinstance(loaded_dataset, Dataset) and not isinstance(
+            loaded_dataset, IterableDataset
+        ):
+            error_message = (
+                f"Expected Hugging Face dataset to be a Dataset or IterableDataset, but got "
+                f"{type(loaded_dataset)}."
+            )
+            raise TypeError(error_message)
+
+        dataset: Dataset | IterableDataset = loaded_dataset
 
         # Setup preprocessing
         existing_columns: list[str] = list(next(iter(dataset)).keys())
@@ -146,10 +176,14 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             remove_columns=existing_columns,
         )
 
-        # Setup approximate shuffling. As the dataset is streamed, this just pre-downloads at least
-        # `buffer_size` items and then shuffles just that buffer.
-        # https://huggingface.co/docs/datasets/v2.14.5/stream#shuffle
-        self.dataset = mapped_dataset.shuffle(buffer_size=buffer_size)
+        if pre_download:
+            # Download the whole dataset
+            self.dataset = mapped_dataset.shuffle()
+        else:
+            # Setup approximate shuffling. As the dataset is streamed, this just pre-downloads at
+            # least `buffer_size` items and then shuffles just that buffer.
+            # https://huggingface.co/docs/datasets/v2.14.5/stream#shuffle
+            self.dataset = mapped_dataset.shuffle(buffer_size=buffer_size)  # type: ignore
 
     @final
     def __iter__(self) -> Any:  # noqa: ANN401

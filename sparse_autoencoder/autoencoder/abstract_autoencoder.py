@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Parameter
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
@@ -33,6 +33,22 @@ class AbstractAutoencoder(Module, ABC):
     @abstractmethod
     def post_decoder_bias(self) -> AbstractOuterBias:
         """Post-decoder bias."""
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
+        return (
+            self.encoder.reset_optimizer_parameter_details
+            + self.decoder.reset_optimizer_parameter_details
+        )
 
     @abstractmethod
     def forward(

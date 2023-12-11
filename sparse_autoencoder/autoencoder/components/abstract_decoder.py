@@ -2,10 +2,10 @@
 from abc import ABC, abstractmethod
 from typing import final
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int64
 import torch
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Parameter
 
 from sparse_autoencoder.tensor_types import Axis
 
@@ -18,11 +18,26 @@ class AbstractDecoder(Module, ABC):
 
     @property
     @abstractmethod
-    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    def weight(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Weight.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
         element in the learned activation space.
+        """
+
+    @property
+    @abstractmethod
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
 
     @abstractmethod
@@ -46,7 +61,7 @@ class AbstractDecoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
+        dictionary_vector_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX],
         updated_weights: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)],
     ) -> None:
         """Update decoder dictionary vectors.

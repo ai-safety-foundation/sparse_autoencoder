@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from jaxtyping import Float, Int
+from jaxtyping import Float, Int, Int64
 from torch import Tensor
 
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
@@ -16,7 +16,7 @@ from sparse_autoencoder.tensor_types import Axis
 class ParameterUpdateResults:
     """Parameter update results from resampling dead neurons."""
 
-    dead_neuron_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX]
+    dead_neuron_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX]
     """Dead neuron indices."""
 
     dead_encoder_weight_updates: Float[
@@ -34,24 +34,28 @@ class ParameterUpdateResults:
 
 
 class AbstractActivationResampler(ABC):
-    """Abstract activation resampler."""
+    """Abstract activation resampler.
 
-    _resample_dataset_size: int | None = None
-    """Resample dataset size.
+    Developer guide:
 
-    If none, will use the train dataset size.
-    """
+        This is just an interface (there are no implemented methods, so it is just a glorified type
+        signature).
 
-    collated_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE] | None
-    """Collated neuron activity.
+        It is setup this way so that users can add their own alternative activation resampler with
+        the same interface, and then easily drop them in as a replacement for the training pipeline.
+        If you find you need it to be more flexible (e.g. have more inputs), please do just submit
+        an issue and/or a PR.
 
-    How many times each neuron has fired, over the current collation window.
+        If you want to implement your own activation resampler (i.e. you want to experiment with
+        changing the way the weight updates are calculated), you should probably create your own
+        custom resampler by extending this class. By default this should be done by installing the
+        sparse_autoencoder library (and then extending this class in your own codebase), but if you
+        think it would be useful for others as well please do also submit an issue/PR for this.
     """
 
     @abstractmethod
     def step_resampler(
         self,
-        last_resampled: int,
         batch_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
         activation_store: TensorActivationStore,
         autoencoder: SparseAutoencoder,
@@ -61,28 +65,7 @@ class AbstractActivationResampler(ABC):
         """Resample dead neurons.
 
         Args:
-            last_resampled: Number of steps since last resampled.
             batch_neuron_activity: Number of times each neuron fired in current batch.
-            activation_store: Activation store.
-            autoencoder: Sparse autoencoder model.
-            loss_fn: Loss function.
-            train_batch_size: Train batch size (also used for resampling).
-
-        Returns:
-            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
-        """
-
-    @abstractmethod
-    def resample_dead_neurons(
-        self,
-        activation_store: TensorActivationStore,
-        autoencoder: SparseAutoencoder,
-        loss_fn: AbstractLoss,
-        train_batch_size: int,
-    ) -> ParameterUpdateResults:
-        """Resample dead neurons.
-
-        Args:
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.

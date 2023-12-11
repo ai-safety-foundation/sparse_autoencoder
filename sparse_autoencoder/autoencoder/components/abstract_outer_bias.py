@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Parameter
 
 from sparse_autoencoder.tensor_types import Axis
 
@@ -16,7 +16,7 @@ class AbstractOuterBias(Module, ABC):
 
     @property
     @abstractmethod
-    def bias(self) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.INPUT_OUTPUT_FEATURE]:
         """Bias.
 
         May be a reference to a bias parameter in the parent module, if using e.g. a tied bias.

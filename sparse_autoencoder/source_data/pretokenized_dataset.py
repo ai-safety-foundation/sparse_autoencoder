@@ -8,8 +8,10 @@ PreTokenizedDataset should work with any of the following tokenized datasets:
 - NeelNanda/code-tokenized
 - NeelNanda/c4-code-tokenized-2b
 - NeelNanda/pile-old-tokenized-2b
+- alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2
 
 """
+from collections.abc import Mapping, Sequence
 from typing import TypedDict, final
 
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
@@ -70,22 +72,40 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         dataset_path: str,
         context_size: int = 256,
         buffer_size: int = 1000,
-        preprocess_batch_size: int = 1000,
+        dataset_dir: str | None = None,
+        dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_split: str = "train",
+        preprocess_batch_size: int = 1000,
+        *,
+        pre_download: bool = False,
     ):
         """Initialize a pre-tokenized dataset from Hugging Face.
 
         Args:
-            dataset_path: The path to the dataset on Hugging Face.
+            dataset_path: The path to the dataset on Hugging Face (e.g.
+                `alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2).
             context_size: The context size for tokenized prompts.
-            buffer_size: Buffer size for shuffling the dataset.
-            preprocess_batch_size: Batch size for preprocessing.
-            dataset_split: Dataset split (e.g., `train`).
+            buffer_size: The buffer size to use when shuffling the dataset when streaming. When
+                streaming a dataset, this just pre-downloads at least `buffer_size` items and then
+                shuffles just that buffer. Note that the generated activations should also be
+                shuffled before training the sparse autoencoder, so a large buffer may not be
+                strictly necessary here. Note also that this is the number of items in the dataset
+                (e.g. number of prompts) and is typically significantly less than the number of
+                tokenized prompts once the preprocessing function has been applied.
+            dataset_dir: Defining the `data_dir` of the dataset configuration.
+            dataset_files: Path(s) to source data file(s).
+            dataset_split: Dataset split (e.g. `train`).
+            preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
+                tokenizing prompts).
+            pre_download: Whether to pre-download the whole dataset.
         """
         super().__init__(
+            buffer_size=buffer_size,
+            context_size=context_size,
+            dataset_dir=dataset_dir,
+            dataset_files=dataset_files,
             dataset_path=dataset_path,
             dataset_split=dataset_split,
-            context_size=context_size,
-            buffer_size=buffer_size,
+            pre_download=pre_download,
             preprocess_batch_size=preprocess_batch_size,
         )

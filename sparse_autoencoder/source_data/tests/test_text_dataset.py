@@ -10,7 +10,9 @@ def test_tokenized_prompts_correct_size(context_size: int) -> None:
     """Test that the tokenized prompts have the correct context size."""
     tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
 
-    data = TextDataset(tokenizer=tokenizer, context_size=context_size)
+    data = TextDataset(
+        tokenizer=tokenizer, context_size=context_size, dataset_path="monology/pile-uncopyrighted"
+    )
 
     # Check the first 100 items
     iterable = iter(data.dataset)
@@ -28,7 +30,9 @@ def test_dataloader_correct_size_items() -> None:
     batch_size = 10
     context_size = 250
     tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
-    data = TextDataset(tokenizer=tokenizer, context_size=context_size)
+    data = TextDataset(
+        tokenizer=tokenizer, context_size=context_size, dataset_path="monology/pile-uncopyrighted"
+    )
     dataloader = data.get_dataloader(batch_size=batch_size)
 
     checks = 100

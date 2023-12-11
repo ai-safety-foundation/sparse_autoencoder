@@ -1,6 +1,6 @@
 """Linear encoder layer."""
 import math
-from typing import TYPE_CHECKING, final
+from typing import final
 
 from jaxtyping import Float
 import torch
@@ -9,10 +9,6 @@ from torch.nn import Parameter, ReLU, functional, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.tensor_types import Axis
-
-
-if TYPE_CHECKING:
-    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -41,14 +37,16 @@ class LinearEncoder(AbstractEncoder):
     _input_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    _weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+    _weight: Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
     """Weight parameter internal state."""
 
-    _bias: Float[Tensor, Axis.LEARNT_FEATURE]
+    _bias: Float[Parameter, Axis.LEARNT_FEATURE]
     """Bias parameter internal state."""
 
     @property
-    def weight(self) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+    def weight(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Weight parameter.
 
         Each row in the weights matrix acts as a dictionary vector, representing a single basis
@@ -57,9 +55,22 @@ class LinearEncoder(AbstractEncoder):
         return self._weight
 
     @property
-    def bias(self) -> Float[Tensor, Axis.LEARNT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.LEARNT_FEATURE]:
         """Bias parameter."""
         return self._bias
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
+        return [(self.weight, 0), (self.bias, 0)]
 
     activation_function: ReLU
     """Activation function."""
@@ -81,8 +92,6 @@ class LinearEncoder(AbstractEncoder):
         )
         self._bias = Parameter(torch.zeros(learnt_features))
         self.activation_function = ReLU()
-
-        self.reset_param_names: list[ParameterAxis] = [(self._weight, 0), (self._bias, 1)]
 
         self.reset_parameters()
 

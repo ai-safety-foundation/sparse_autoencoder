@@ -1,6 +1,6 @@
 # serializer version: 1
 # name: test_setup_activation_resampler
-  'ActivationResampler(resample_interval=200000000, max_resamples=4, n_steps_collate=100000000, resample_dataset_size=819200, dead_neuron_threshold=0.0)'
+  'ActivationResampler(neuron_activity_window_start=200000000, neuron_activity_window_end=200000000, max_resamples=4, resample_dataset_size=819200, dead_neuron_threshold=0.0)'
 # ---
 # name: test_setup_autoencoder
   '''

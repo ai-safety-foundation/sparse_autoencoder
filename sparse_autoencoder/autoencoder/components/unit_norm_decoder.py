@@ -1,19 +1,14 @@
 """Linear layer with unit norm weights."""
-from typing import TYPE_CHECKING, final
+from typing import final
 
 import einops
 from jaxtyping import Float
 import torch
 from torch import Tensor
-from torch.nn import init
-from torch.nn.parameter import Parameter
+from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.tensor_types import Axis
-
-
-if TYPE_CHECKING:
-    from sparse_autoencoder.optimizer.abstract_optimizer import ParameterAxis
 
 
 @final
@@ -53,17 +48,32 @@ class UnitNormDecoder(AbstractDecoder):
     _decoded_features: int
     """Number of decoded features (outputs from this layer)."""
 
-    _weight: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
+    _weight: Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
     """Weight parameter internal state."""
 
     @property
-    def weight(self) -> Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    def weight(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
         """Weight parameter.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
         element in the learned activation space.
         """
         return self._weight
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
+        return [(self.weight, 1)]
 
     def __init__(
         self,
@@ -89,7 +99,6 @@ class UnitNormDecoder(AbstractDecoder):
                 (decoded_features, learnt_features),
             )
         )
-        self.reset_param_names: list[ParameterAxis] = [(self._weight, 1)]
         self.reset_parameters()
 
         # Register backward hook to remove any gradient information parallel to the dictionary
@@ -141,8 +150,8 @@ class UnitNormDecoder(AbstractDecoder):
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
         self._weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = init.normal_(self._weight, mean=0, std=1)
+            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+        ] = init.normal_(self._weight, mean=0, std=1)  # type: ignore
 
         # Scale so that each row has unit norm
         self.constrain_weights_unit_norm()

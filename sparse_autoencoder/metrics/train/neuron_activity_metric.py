@@ -5,7 +5,7 @@ activity, and the number of neurons that are almost dead.
 """
 from typing import Any
 
-from jaxtyping import Int
+from jaxtyping import Int64
 import numpy as np
 from numpy.typing import NDArray
 import torch
@@ -43,7 +43,7 @@ class NeuronActivityHorizonData:
     _steps_since_last_calculated: int
     """Steps since last calculated."""
 
-    _neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE]
+    _neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE]
     """Neuron activity since inception."""
 
     _thresholds: list[float]
@@ -52,8 +52,8 @@ class NeuronActivityHorizonData:
     @property
     def _dead_count(self) -> int:
         """Dead count."""
-        dead_bool_mask: Int[Tensor, Axis.LEARNT_FEATURE] = self._neuron_activity == 0
-        count_dead: Int[Tensor, Axis.SINGLE_ITEM] = dead_bool_mask.sum()
+        dead_bool_mask: Int64[Tensor, Axis.LEARNT_FEATURE] = self._neuron_activity == 0
+        count_dead: Int64[Tensor, Axis.SINGLE_ITEM] = dead_bool_mask.sum()
         return int(count_dead.item())
 
     @property
@@ -64,8 +64,8 @@ class NeuronActivityHorizonData:
     @property
     def _alive_count(self) -> int:
         """Alive count."""
-        alive_bool_mask: Int[Tensor, Axis.LEARNT_FEATURE] = self._neuron_activity > 0
-        count_alive: Int[Tensor, Axis.SINGLE_ITEM] = alive_bool_mask.sum()
+        alive_bool_mask: Int64[Tensor, Axis.LEARNT_FEATURE] = self._neuron_activity > 0
+        count_alive: Int64[Tensor, Axis.SINGLE_ITEM] = alive_bool_mask.sum()
         return int(count_alive.item())
 
     def _almost_dead(self, threshold: float) -> int | None:
@@ -74,10 +74,10 @@ class NeuronActivityHorizonData:
         if threshold_in_activations < 1:
             return None
 
-        almost_dead_bool_mask: Int[Tensor, Axis.LEARNT_FEATURE] = (
+        almost_dead_bool_mask: Int64[Tensor, Axis.LEARNT_FEATURE] = (
             self._neuron_activity < threshold_in_activations
         )
-        count_almost_dead: Int[Tensor, Axis.SINGLE_ITEM] = almost_dead_bool_mask.sum()
+        count_almost_dead: Int64[Tensor, Axis.SINGLE_ITEM] = almost_dead_bool_mask.sum()
         return int(count_almost_dead.item())
 
     @property
@@ -141,7 +141,7 @@ class NeuronActivityHorizonData:
         self._horizon_steps = approximate_activation_horizon // train_batch_size
         self._horizon_number_activations = self._horizon_steps * train_batch_size
 
-    def step(self, neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE]) -> dict[str, Any]:
+    def step(self, neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE]) -> dict[str, Any]:
         """Step the neuron activity horizon data.
 
         Args:
@@ -231,7 +231,7 @@ class NeuronActivityMetric(AbstractTrainMetric):
         log = {}
 
         for horizon_data in self._data:
-            fired_count: Int[Tensor, Axis.LEARNT_FEATURE] = (
+            fired_count: Int64[Tensor, Axis.LEARNT_FEATURE] = (
                 (data.learned_activations > 0).sum(dim=0).detach().cpu()
             )
             horizon_specific_log = horizon_data.step(fired_count)
