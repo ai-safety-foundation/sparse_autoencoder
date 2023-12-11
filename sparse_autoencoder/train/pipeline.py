@@ -2,6 +2,7 @@
 from collections.abc import Iterable
 from datetime import datetime, timezone
 from functools import partial
+import importlib.metadata
 from json import dumps
 import os
 from pathlib import Path
@@ -355,8 +356,18 @@ class Pipeline:
         except subprocess.CalledProcessError:
             # Handle the case where the directory is not a Git repository
             warnings.warn(
-                "Directory is not a Git repository, not logging commit hash", stacklevel=1
+                "Directory is not a Git repository, not logging commit hash", stacklevel=2
             )
+            return None
+
+    @staticmethod
+    def get_package_version() -> str | None:
+        """Get the version of the package."""
+        try:
+            return importlib.metadata.version("sparse-autoencoder")
+        except importlib.metadata.PackageNotFoundError:
+            # Handle the case where the directory is not a Git repository
+            warnings.warn("Package not found, not logging version", stacklevel=2)
             return None
 
     @final
@@ -369,9 +380,13 @@ class Pipeline:
                 run_directory.mkdir(parents=True)
             if "config.json" not in os.listdir(run_directory):
                 config_dict = dict(wandb.config)
+
                 git_hash = self.get_git_commit_hash()
-                if git_hash is not None:
-                    config_dict["git_hash"] = git_hash
+                config_dict["git_hash"] = git_hash
+
+                package_version = self.get_package_version()
+                config_dict["package_version"] = package_version
+
                 with Path.open(run_directory / "config.json", "w") as config_file:
                     config_file.write(dumps(config_dict, indent=4))
 
