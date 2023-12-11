@@ -111,6 +111,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         buffer_size: int = 1000,
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
+        n_processes_preprocessing: int | None = None,
         preprocess_batch_size: int = 1000,
         *,
         pre_download: bool = False,
@@ -135,6 +136,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
                 tokenized prompts once the preprocessing function has been applied.
             dataset_dir: Defining the `data_dir` of the dataset configuration.
             dataset_files: Path(s) to source data file(s).
+            n_processes_preprocessing: The number of processes to use for preprocessing.
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
             pre_download: Whether to pre-download the whole dataset.
@@ -174,6 +176,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             batch_size=preprocess_batch_size,
             fn_kwargs={"context_size": context_size},
             remove_columns=existing_columns,
+            num_proc=n_processes_preprocessing,
         )
 
         if pre_download:
