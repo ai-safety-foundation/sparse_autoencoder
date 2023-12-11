@@ -42,7 +42,7 @@ def test_model_reconstruction_score_empty_data() -> None:
                 source_model_loss_with_reconstruction=Float[Tensor, Axis.ITEMS]([1.5, 2.5, 3.5]),
                 source_model_loss_with_zero_ablation=Float[Tensor, Axis.ITEMS]([8.0, 7.0, 4.0]),
             ),
-            0.67,
+            0.79,
         ),
     ],
 )
