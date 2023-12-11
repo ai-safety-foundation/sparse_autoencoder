@@ -5,7 +5,7 @@ Weights & Biases just provide a JSON Schema, so we've converted here to dataclas
 from abc import ABC
 from dataclasses import asdict, dataclass, is_dataclass
 from enum import Enum, auto
-from typing import Any, Generic, TypeAlias, TypeVar, final
+from typing import Any, Generic, TypeVar, final
 
 from strenum import LowercaseStrEnum
 

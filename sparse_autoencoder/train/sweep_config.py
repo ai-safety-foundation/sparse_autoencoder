@@ -195,11 +195,11 @@ class SourceDataHyperparameters(NestedParameter):
         Raises:
             ValueError: If there is an error in the source data hyperparameters.
         """
-        if self.pre_tokenized.value is False and self.tokenizer_name.value is None:
+        if self.pre_tokenized.value is False and not isinstance(self.tokenizer_name, Parameter):
             error_message = "The tokenizer name must be specified, when `pre_tokenized` is False."
             raise ValueError(error_message)
 
-        if self.pre_tokenized.value is True and self.tokenizer_name.value is not None:
+        if self.pre_tokenized.value is True and isinstance(self.tokenizer_name, Parameter):
             error_message = "The tokenizer name must not be set, when `pre_tokenized` is True."
             raise ValueError(error_message)
 
