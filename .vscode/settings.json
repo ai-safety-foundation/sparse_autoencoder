@@ -9,8 +9,8 @@
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": true
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
   },
   "editor.formatOnSave": true,
   "evenBetterToml.formatter.allowedBlankLines": 1,
@@ -45,4 +45,3 @@
     "*"
   ]
 }
-
