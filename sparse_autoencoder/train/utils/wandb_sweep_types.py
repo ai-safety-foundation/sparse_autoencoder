@@ -269,6 +269,7 @@ ParamType = TypeVar(
     float,
     int,
     str,
+    list[str],
 )
 
 

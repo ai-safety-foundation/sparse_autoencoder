@@ -177,8 +177,11 @@ class SourceDataHyperparameters(NestedParameter):
     dataset_dir: Parameter[str] | None = field(default=None)
     """Dataset directory (within the HF dataset)"""
 
-    dataset_files: Parameter[str] | None = field(default=None)
+    dataset_files: Parameter[list[str]] | None = field(default=None)
     """Dataset files (within the HF dataset)."""
+
+    pre_download: Parameter[bool] = field(default=Parameter(value=False))
+    """Whether to pre-download the dataset."""
 
     pre_tokenized: Parameter[bool] = field(default=Parameter(value=True))
     """If the dataset is pre-tokenized."""
@@ -209,8 +212,9 @@ class SourceDataRuntimeHyperparameters(TypedDict):
 
     context_size: int
     dataset_dir: str | None
-    dataset_files: str | None
+    dataset_files: list[str] | None
     dataset_path: str
+    pre_download: bool
     pre_tokenized: bool
     tokenizer_name: str | None
 

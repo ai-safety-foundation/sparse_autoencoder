@@ -53,6 +53,7 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
             "dataset_path": "NeelNanda/c4-code-tokenized-2b",
             "pre_tokenized": True,
             "tokenizer_name": None,
+            "pre_download": False,
         },
         "source_model": {
             "dtype": "float32",
