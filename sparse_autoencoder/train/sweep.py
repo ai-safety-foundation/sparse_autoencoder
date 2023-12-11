@@ -217,6 +217,7 @@ def run_training_pipeline(
     hook_point = get_act_name(
         hyperparameters["source_model"]["hook_site"], hyperparameters["source_model"]["hook_layer"]
     )
+
     pipeline = Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,

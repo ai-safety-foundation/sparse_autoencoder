@@ -1,5 +1,5 @@
 """Test the pipeline module."""
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from unittest.mock import MagicMock
 
 import pytest
@@ -24,6 +24,10 @@ from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
     ValidationMetricData,
 )
 from sparse_autoencoder.source_data.mock_dataset import MockDataset
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @pytest.fixture()
@@ -289,6 +293,22 @@ class TestValidateSAE:
         ), "Zero ablation loss should be more than base loss."
 
 
+class TestSaveCheckpoint:
+    """Test the save_checkpoint method."""
+
+    def test_saves_locally(self, pipeline_fixture: Pipeline) -> None:
+        """Test that the save_checkpoint method saves the checkpoint locally."""
+        saved_checkpoint: Path = pipeline_fixture.save_checkpoint()
+        assert saved_checkpoint.exists(), "Checkpoint file should exist."
+
+    def test_saves_final(self, pipeline_fixture: Pipeline) -> None:
+        """Test that the save_checkpoint method saves the final checkpoint."""
+        saved_checkpoint: Path = pipeline_fixture.save_checkpoint(is_final=True)
+        assert (
+            "final.pt" in saved_checkpoint.name
+        ), "Checkpoint file should be named '<run_name>_final.pt'."
+
+
 class TestRunPipeline:
     """Test the run_pipeline method."""
 
@@ -306,7 +326,7 @@ class TestRunPipeline:
 
         total_loops = 5
         validate_expected_calls = 2
-        checkpoint_expected_calls = 5
+        checkpoint_expected_calls = 6  # Includes final
 
         pipeline_fixture.run_pipeline(
             train_batch_size=train_batch_size,
@@ -314,7 +334,7 @@ class TestRunPipeline:
             max_activations=store_size * 5,
             validation_number_activations=store_size,
             validate_frequency=store_size * (total_loops // validate_expected_calls),
-            checkpoint_frequency=store_size * (total_loops // checkpoint_expected_calls),
+            checkpoint_frequency=store_size * (total_loops // checkpoint_expected_calls - 1),
         )
 
         # Check the number of calls
