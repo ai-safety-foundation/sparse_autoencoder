@@ -174,16 +174,16 @@ class SourceDataHyperparameters(NestedParameter):
     context_size: Parameter[int] = field(default=Parameter(DEFAULT_SOURCE_CONTEXT_SIZE))
     """Context size."""
 
-    dataset_dir: Parameter[str | None] = field(default=Parameter(None))
+    dataset_dir: Parameter[str] | None = field(default=None)
     """Dataset directory (within the HF dataset)"""
 
-    dataset_files: Parameter[str | None] = field(default=Parameter(None))
+    dataset_files: Parameter[str] | None = field(default=None)
     """Dataset files (within the HF dataset)."""
 
     pre_tokenized: Parameter[bool] = field(default=Parameter(value=True))
     """If the dataset is pre-tokenized."""
 
-    tokenizer_name: Parameter[str | None] = field(default=Parameter(None))
+    tokenizer_name: Parameter[str] | None = field(default=None)
     """Tokenizer name.
 
     Only set this if the dataset is not pre-tokenized.

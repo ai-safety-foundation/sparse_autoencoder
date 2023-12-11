@@ -264,11 +264,12 @@ class Metric:
         return self.__str__()
 
 
-OptionalFloat: TypeAlias = float | None
-OptionalInt: TypeAlias = int | None
-OptionalStr: TypeAlias = str | None
-
-ParamType = TypeVar("ParamType", float, int, str, OptionalFloat, OptionalInt, OptionalStr)
+ParamType = TypeVar(
+    "ParamType",
+    float,
+    int,
+    str,
+)
 
 
 @dataclass(frozen=True)
