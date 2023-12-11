@@ -2564,7 +2564,7 @@
         <tr>
           <td><code>source_data</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.PreTokenizedDataset" href="../../#sparse_autoencoder.PreTokenizedDataset">PreTokenizedDataset</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../../source_data/abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2594,33 +2594,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
@@ -2647,14 +2621,40 @@
 <span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span>
-<span class="normal">203</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_training_pipeline</span><span class="p">(</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_training_pipeline</span><span class="p">(</span>
     <span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">,</span>
     <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
     <span class="n">loss</span><span class="p">:</span> <span class="n">LossReducer</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="p">:</span> <span class="n">AdamWithReset</span><span class="p">,</span>
     <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">ActivationResampler</span><span class="p">,</span>
-    <span class="n">source_data</span><span class="p">:</span> <span class="n">PreTokenizedDataset</span><span class="p">,</span>
+    <span class="n">source_data</span><span class="p">:</span> <span class="n">SourceDataset</span><span class="p">,</span>
     <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the training pipeline for the sparse autoencoder.</span>
@@ -2779,10 +2779,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
@@ -2800,7 +2797,10 @@
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_activation_resampler</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActivationResampler</span><span class="p">:</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_activation_resampler</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActivationResampler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the activation resampler for the autoencoder.</span>
 
 <span class="sd">    Args:</span>
@@ -2914,10 +2914,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
 <span class="normal">72</span>
@@ -2931,7 +2928,10 @@
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
-<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_autoencoder</span><span class="p">(</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_autoencoder</span><span class="p">(</span>
     <span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseAutoencoder</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the sparse autoencoder.</span>
@@ -3027,10 +3027,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
@@ -3041,7 +3038,10 @@
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_loss_function</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossReducer</span><span class="p">:</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_loss_function</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossReducer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the loss function for the autoencoder.</span>
 
 <span class="sd">    Args:</span>
@@ -3148,10 +3148,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
 <span class="normal">109</span>
@@ -3171,7 +3168,10 @@
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_optimizer</span><span class="p">(</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_optimizer</span><span class="p">(</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span> <span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdamWithReset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the optimizer for the autoencoder.</span>
@@ -3253,18 +3253,42 @@
   <table>
     <thead>
       <tr>
-<th>Name</th>        <th>Type</th>
+        <th>Type</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
         <tr>
-<td><code>PreTokenizedDataset</code></td>          <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.PreTokenizedDataset" href="../../#sparse_autoencoder.PreTokenizedDataset">PreTokenizedDataset</a></code>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../../source_data/abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a></code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The initialized source data.</p>
+              <p>The initialized source dataset.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If the tokenizer name is not specified, but pre_tokenized is False.</p>
             </div>
           </td>
         </tr>
@@ -3273,10 +3297,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
@@ -3285,18 +3306,67 @@
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_source_data</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PreTokenizedDataset</span><span class="p">:</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_source_data</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SourceDataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the source data for training.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        hyperparameters: The hyperparameters dictionary.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        PreTokenizedDataset: The initialized source data.</span>
+<span class="sd">        The initialized source dataset.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the tokenizer name is not specified, but pre_tokenized is False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">PreTokenizedDataset</span><span class="p">(</span>
+    <span class="k">if</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;pre_tokenized&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">PreTokenizedDataset</span><span class="p">(</span>
+            <span class="n">dataset_path</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;dataset_path&quot;</span><span class="p">],</span>
+            <span class="n">context_size</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;context_size&quot;</span><span class="p">],</span>
+            <span class="n">dataset_dir</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;dataset_dir&quot;</span><span class="p">],</span>
+            <span class="n">dataset_files</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;dataset_files&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;tokenizer_name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;If pre_tokenized is False, then tokenizer_name must be specified in the &quot;</span>
+            <span class="s2">&quot;hyperparameters.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;tokenizer_name&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">TextDataset</span><span class="p">(</span>
         <span class="n">dataset_path</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;dataset_path&quot;</span><span class="p">],</span>
         <span class="n">context_size</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;context_size&quot;</span><span class="p">],</span>
+        <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+        <span class="n">dataset_dir</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;dataset_dir&quot;</span><span class="p">],</span>
+        <span class="n">dataset_files</span><span class="o">=</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_data&quot;</span><span class="p">][</span><span class="s2">&quot;dataset_files&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -3376,10 +3446,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
@@ -3388,7 +3455,10 @@
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_source_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HookedTransformer</span><span class="p">:</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_source_model</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HookedTransformer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the source model using HookedTransformer.</span>
 
 <span class="sd">    Args:</span>
@@ -3425,10 +3495,10 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_wandb</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">RuntimeHyperparameters</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_wandb</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">RuntimeHyperparameters</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise wandb for experiment tracking.&quot;&quot;&quot;</span>
     <span class="n">wandb</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">wandb</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
@@ -3456,12 +3526,12 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function to run the training pipeline with wandb hyperparameter sweep.&quot;&quot;&quot;</span>
     <span class="n">sweep_id</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">)</span>
 
@@ -3491,33 +3561,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">232</span>
 <span class="normal">233</span>
 <span class="normal">234</span>
 <span class="normal">235</span>
@@ -3544,7 +3588,33 @@
 <span class="normal">256</span>
 <span class="normal">257</span>
 <span class="normal">258</span>
-<span class="normal">259</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the sparse autoencoder using the hyperparameters from the WandB sweep.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Set up WandB</span>
