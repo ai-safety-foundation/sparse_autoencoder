@@ -354,7 +354,6 @@ class Pipeline:
                 .strip()
             )
         except subprocess.CalledProcessError:
-            # Handle the case where the directory is not a Git repository
             warnings.warn(
                 "Directory is not a Git repository, not logging commit hash", stacklevel=2
             )
@@ -366,7 +365,6 @@ class Pipeline:
         try:
             return importlib.metadata.version("sparse-autoencoder")
         except importlib.metadata.PackageNotFoundError:
-            # Handle the case where the directory is not a Git repository
             warnings.warn("Package not found, not logging version", stacklevel=2)
             return None
 
