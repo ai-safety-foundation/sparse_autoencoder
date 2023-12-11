@@ -2756,7 +2756,19 @@ generation of the activations dataset.</p>
 <span class="normal">219</span>
 <span class="normal">220</span>
 <span class="normal">221</span>
-<span class="normal">222</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract source dataset.</span>
 
 <span class="sd">    Source dataset that is used to generate the activations dataset (by running forward passes of</span>
@@ -2822,6 +2834,7 @@ generation of the activations dataset.</p>
         <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_processes_preprocessing</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">pre_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2846,6 +2859,7 @@ generation of the activations dataset.</p>
 <span class="sd">                tokenized prompts once the preprocessing function has been applied.</span>
 <span class="sd">            dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
 <span class="sd">            dataset_files: Path(s) to source data file(s).</span>
+<span class="sd">            n_processes_preprocessing: The number of processes to use for preprocessing.</span>
 <span class="sd">            preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.</span>
 <span class="sd">                tokenizing prompts).</span>
 <span class="sd">            pre_download: Whether to pre-download the whole dataset.</span>
@@ -2857,7 +2871,7 @@ generation of the activations dataset.</p>
 
         <span class="c1"># Load the dataset</span>
         <span class="n">should_stream</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">pre_download</span>
-        <span class="n">loaded_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
             <span class="n">dataset_path</span><span class="p">,</span>
             <span class="n">streaming</span><span class="o">=</span><span class="n">should_stream</span><span class="p">,</span>
             <span class="n">split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
@@ -2865,35 +2879,45 @@ generation of the activations dataset.</p>
             <span class="n">data_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Check the dataset is a Hugging Face Dataset or IterableDataset</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loaded_dataset</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">loaded_dataset</span><span class="p">,</span> <span class="n">IterableDataset</span>
-        <span class="p">):</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected Hugging Face dataset to be a Dataset or IterableDataset, but got &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">loaded_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span> <span class="o">|</span> <span class="n">IterableDataset</span> <span class="o">=</span> <span class="n">loaded_dataset</span>
-
         <span class="c1"># Setup preprocessing</span>
         <span class="n">existing_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">mapped_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span>
-            <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
-            <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
-            <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
-        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">pre_download</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Expected Hugging Face dataset to be a Dataset when pre-downloading, but got &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
             <span class="c1"># Download the whole dataset</span>
+            <span class="n">mapped_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span>
+                <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
+                <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
+                <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+                <span class="n">num_proc</span><span class="o">=</span><span class="n">n_processes_preprocessing</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Setup approximate shuffling. As the dataset is streamed, this just pre-downloads at</span>
             <span class="c1"># least `buffer_size` items and then shuffles just that buffer.</span>
             <span class="c1"># https://huggingface.co/docs/datasets/v2.14.5/stream#shuffle</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">IterableDataset</span><span class="p">):</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Expected Hugging Face dataset to be an IterableDataset when streaming, but &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+            <span class="n">mapped_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span>
+                <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
+                <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
+                <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
     <span class="nd">@final</span>
@@ -3003,7 +3027,7 @@ a context size of 250.</p>
 
 
 <h3 id="sparse_autoencoder.source_data.abstract_dataset.SourceDataset.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">dataset_split</span><span class="p">,</span> <span class="n">context_size</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">dataset_split</span><span class="p">,</span> <span class="n">context_size</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_processes_preprocessing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -3117,6 +3141,20 @@ tokenized prompts once the preprocessing function has been applied.</p>
           <td>
             <div class="doc-md-description">
               <p>Path(s) to source data file(s).</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>n_processes_preprocessing</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The number of processes to use for preprocessing.</p>
             </div>
           </td>
           <td>
@@ -3262,7 +3300,19 @@ tokenizing prompts).</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
-<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3271,6 +3321,7 @@ tokenizing prompts).</p>
     <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_processes_preprocessing</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">pre_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -3295,6 +3346,7 @@ tokenizing prompts).</p>
 <span class="sd">            tokenized prompts once the preprocessing function has been applied.</span>
 <span class="sd">        dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
 <span class="sd">        dataset_files: Path(s) to source data file(s).</span>
+<span class="sd">        n_processes_preprocessing: The number of processes to use for preprocessing.</span>
 <span class="sd">        preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.</span>
 <span class="sd">            tokenizing prompts).</span>
 <span class="sd">        pre_download: Whether to pre-download the whole dataset.</span>
@@ -3306,7 +3358,7 @@ tokenizing prompts).</p>
 
     <span class="c1"># Load the dataset</span>
     <span class="n">should_stream</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">pre_download</span>
-    <span class="n">loaded_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
         <span class="n">dataset_path</span><span class="p">,</span>
         <span class="n">streaming</span><span class="o">=</span><span class="n">should_stream</span><span class="p">,</span>
         <span class="n">split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
@@ -3314,35 +3366,45 @@ tokenizing prompts).</p>
         <span class="n">data_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Check the dataset is a Hugging Face Dataset or IterableDataset</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loaded_dataset</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">loaded_dataset</span><span class="p">,</span> <span class="n">IterableDataset</span>
-    <span class="p">):</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Expected Hugging Face dataset to be a Dataset or IterableDataset, but got &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">loaded_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-    <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span> <span class="o">|</span> <span class="n">IterableDataset</span> <span class="o">=</span> <span class="n">loaded_dataset</span>
-
     <span class="c1"># Setup preprocessing</span>
     <span class="n">existing_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="n">mapped_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span>
-        <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
-        <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
-        <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
-    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">pre_download</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected Hugging Face dataset to be a Dataset when pre-downloading, but got &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
         <span class="c1"># Download the whole dataset</span>
+        <span class="n">mapped_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span>
+            <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
+            <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
+            <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+            <span class="n">num_proc</span><span class="o">=</span><span class="n">n_processes_preprocessing</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Setup approximate shuffling. As the dataset is streamed, this just pre-downloads at</span>
         <span class="c1"># least `buffer_size` items and then shuffles just that buffer.</span>
         <span class="c1"># https://huggingface.co/docs/datasets/v2.14.5/stream#shuffle</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">IterableDataset</span><span class="p">):</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected Hugging Face dataset to be an IterableDataset when streaming, but &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+        <span class="n">mapped_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span>
+            <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
+            <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
+            <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -3369,13 +3431,13 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate Dunder Method.</span>
 
@@ -3407,13 +3469,13 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Next Dunder Method.</span>
 
@@ -3498,25 +3560,25 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
 <span class="normal">221</span>
-<span class="normal">222</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a PyTorch DataLoader.</span>
 

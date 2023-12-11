@@ -5087,16 +5087,16 @@ you should probably tune it.</p>
     <span class="n">context_size</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span><span class="p">))</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context size.&quot;&quot;&quot;</span>
 
-    <span class="n">dataset_dir</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+    <span class="n">dataset_dir</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset directory (within the HF dataset)&quot;&quot;&quot;</span>
 
-    <span class="n">dataset_files</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+    <span class="n">dataset_files</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset files (within the HF dataset).&quot;&quot;&quot;</span>
 
     <span class="n">pre_tokenized</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;If the dataset is pre-tokenized.&quot;&quot;&quot;</span>
 
-    <span class="n">tokenizer_name</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+    <span class="n">tokenizer_name</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tokenizer name.</span>
 
 <span class="sd">    Only set this if the dataset is not pre-tokenized.</span>
@@ -5108,11 +5108,11 @@ you should probably tune it.</p>
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If there is an error in the source data hyperparameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;The tokenizer name must be specified, when `pre_tokenized` is False.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;The tokenizer name must not be set, when `pre_tokenized` is True.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5157,7 +5157,7 @@ you should probably tune it.</p>
 
 
 <h3 id="sparse_autoencoder.train.sweep_config.SourceDataHyperparameters.dataset_dir" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">dataset_dir</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span></code>
+          <code class="highlight language-python"><span class="n">dataset_dir</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5180,7 +5180,7 @@ you should probably tune it.</p>
 
 
 <h3 id="sparse_autoencoder.train.sweep_config.SourceDataHyperparameters.dataset_files" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">dataset_files</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span></code>
+          <code class="highlight language-python"><span class="n">dataset_files</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5248,7 +5248,7 @@ you should probably tune it.</p>
 
 
 <h3 id="sparse_autoencoder.train.sweep_config.SourceDataHyperparameters.tokenizer_name" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">tokenizer_name</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span></code>
+          <code class="highlight language-python"><span class="n">tokenizer_name</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5328,11 +5328,11 @@ you should probably tune it.</p>
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If there is an error in the source data hyperparameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
         <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;The tokenizer name must be specified, when `pre_tokenized` is False.&quot;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_tokenized</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer_name</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
         <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;The tokenizer name must not be set, when `pre_tokenized` is True.&quot;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
