@@ -97,9 +97,9 @@ class AbstractLoss(Module, ABC):
         # Reduction parameter is over the batch dimension (not the component dimension)
         match reduction:
             case LossReductionType.MEAN:
-                return itemwise_loss.mean(dim=0).squeeze()
+                return itemwise_loss.mean(dim=0)
             case LossReductionType.SUM:
-                return itemwise_loss.sum(dim=0).squeeze()
+                return itemwise_loss.sum(dim=0)
 
     def batch_scalar_loss_with_log(
         self,

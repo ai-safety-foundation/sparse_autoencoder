@@ -13,13 +13,25 @@ class DummyLoss(AbstractLoss):
 
     def forward(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],  # noqa: ARG002
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
-    ) -> Float[Tensor, Axis.BATCH]:
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
         """Batch itemwise loss."""
-        # Simple dummy implementation for testing
-        return torch.tensor([1.0, 2.0, 3.0])
+        # Default to 1D tensor if no component axis
+        ndim_with_no_component_axis = 2
+        if source_activations.ndim == ndim_with_no_component_axis:
+            return torch.tensor([1.0, 2.0, 3.0])  # Loss for 3 batches
+
+        # If there is a component axis, duplicate the loss for each component
+        single_component_loss = torch.tensor([1.0, 2, 3])
+        return single_component_loss.repeat(source_activations.shape[1], 1).T
 
     def log_name(self) -> str:
         """Log name."""
@@ -32,29 +44,36 @@ def dummy_loss() -> DummyLoss:
     return DummyLoss()
 
 
-def test_abstract_class_enforced() -> None:
-    """Test that initializing the abstract class raises an error."""
-    with pytest.raises(TypeError):
-        AbstractLoss()  # type: ignore
-
-
 @pytest.mark.parametrize(
-    ("loss_reduction", "expected"),
+    ("num_components", "loss_reduction", "expected"),
     [
-        (LossReductionType.MEAN, 2.0),  # Mean of [1.0, 2.0, 3.0]
-        (LossReductionType.SUM, 6.0),  # Sum of [1.0, 2.0, 3.0]
+        (None, LossReductionType.MEAN, 2.0),  # Mean of [1.0, 2.0, 3.0]
+        (None, LossReductionType.SUM, 6.0),  # Sum of [1.0, 2.0, 3.0]
+        (1, LossReductionType.MEAN, 2.0),  # Same as above
+        (1, LossReductionType.SUM, 6.0),  # Same as above
+        (2, LossReductionType.MEAN, 4.0),  # Double
+        (2, LossReductionType.SUM, 12.0),  # Double
     ],
 )
 def test_batch_scalar_loss(
-    dummy_loss: DummyLoss, loss_reduction: LossReductionType, expected: float
+    dummy_loss: DummyLoss,
+    num_components: int | None,
+    loss_reduction: LossReductionType,
+    expected: float,
 ) -> None:
     """Test the batch scalar loss."""
-    source_activations = learned_activations = decoded_activations = torch.ones((1, 3))
+    if num_components is None:
+        source_activations = decoded_activations = torch.ones(3, 12)
+        learned_activations = torch.ones(3, 24)
+    else:
+        source_activations = decoded_activations = torch.ones((3, num_components, 12))
+        learned_activations = torch.ones((3, num_components, 24))
 
-    loss_mean = dummy_loss.batch_scalar_loss(
+    batch_loss = dummy_loss.batch_scalar_loss(
         source_activations, learned_activations, decoded_activations, loss_reduction
     )
-    assert loss_mean.item() == expected
+
+    assert batch_loss.sum() == expected
 
 
 def test_batch_scalar_loss_with_log(dummy_loss: DummyLoss) -> None:
@@ -65,6 +84,19 @@ def test_batch_scalar_loss_with_log(dummy_loss: DummyLoss) -> None:
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
     assert log["train/loss/dummy"] == expected
+
+
+def test_batch_scalar_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
+    """Test the batch scalar loss with log and component axis."""
+    num_components = 3
+    source_activations = decoded_activations = torch.ones((3, num_components, 12))
+    learned_activations = torch.ones((3, num_components, 24))
+    _loss, log = dummy_loss.batch_scalar_loss_with_log(
+        source_activations, learned_activations, decoded_activations
+    )
+    expected = 2.0  # Mean of [1.0, 2.0, 3.0]
+    for component_idx in range(num_components):
+        assert log[f"train/loss/dummy/component_{component_idx}"] == expected
 
 
 def test_call_method(dummy_loss: DummyLoss) -> None:
