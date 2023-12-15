@@ -1104,6 +1104,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3_4" id="__nav_5_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/tensor_shape/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tensor_shape
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2518,8 +2592,7 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
-<span class="normal"> 15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
 <span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
@@ -2743,7 +2816,25 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
-<span class="normal">239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">UnitNormDecoder</span><span class="p">(</span><span class="n">AbstractDecoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Constrained unit norm linear decoder layer.</span>
 
@@ -2774,19 +2865,19 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="sd">        loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_learnt_features</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of learnt features (inputs to this layer).&quot;&quot;&quot;</span>
-
-    <span class="n">_decoded_features</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of decoded features (outputs from this layer).&quot;&quot;&quot;</span>
-
-    <span class="n">_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
+    <span class="n">_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Parameter</span><span class="p">,</span>
+        <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">),</span>
+    <span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Weight parameter internal state.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Parameter</span><span class="p">,</span>
+        <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">),</span>
+    <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Weight parameter.</span>
 
 <span class="sd">        Each column in the weights matrix acts as a dictionary vector, representing a single basis</span>
@@ -2805,12 +2896,13 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="sd">            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to</span>
 <span class="sd">            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">decoded_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">enable_gradient_hook</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2819,16 +2911,19 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="sd">        Args:</span>
 <span class="sd">            learnt_features: Number of learnt features in the autoencoder.</span>
 <span class="sd">            decoded_features: Number of decoded (output) features in the autoencoder.</span>
+<span class="sd">            n_components: Number of source model components the SAE is trained on.</span>
 <span class="sd">            enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before</span>
 <span class="sd">                applying the gradient step, to maintain unit norm of the dictionary vectors).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create the linear layer as per the standard PyTorch linear layer</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span> <span class="o">=</span> <span class="n">decoded_features</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">learnt_features</span><span class="o">=</span><span class="n">learnt_features</span><span class="p">,</span>
+            <span class="n">decoded_features</span><span class="o">=</span><span class="n">decoded_features</span><span class="p">,</span>
+            <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span>
+                <span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
@@ -2853,7 +2948,7 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; layer = UnitNormDecoder(3, 3)</span>
+<span class="sd">            &gt;&gt;&gt; layer = UnitNormDecoder(3, 3, None)</span>
 <span class="sd">            &gt;&gt;&gt; layer.weight.data = torch.ones((3, 3)) * 10</span>
 <span class="sd">            &gt;&gt;&gt; layer.constrain_weights_unit_norm()</span>
 <span class="sd">            &gt;&gt;&gt; column_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=0))</span>
@@ -2862,7 +2957,7 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize or reset the parameters.</span>
@@ -2870,7 +2965,7 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
 <span class="sd">            &gt;&gt;&gt; # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)</span>
-<span class="sd">            &gt;&gt;&gt; layer = UnitNormDecoder(learnt_features=4, decoded_features=3)</span>
+<span class="sd">            &gt;&gt;&gt; layer = UnitNormDecoder(learnt_features=4, decoded_features=3, n_components=None)</span>
 <span class="sd">            &gt;&gt;&gt; layer.reset_parameters()</span>
 <span class="sd">            &gt;&gt;&gt; # Get the norm across the rows (by summing across the columns)</span>
 <span class="sd">            &gt;&gt;&gt; column_norms = torch.sum(layer.weight ** 2, dim=0)</span>
@@ -2882,7 +2977,8 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
         <span class="c1"># normalisation here, since we immediately scale the weights to have unit norm (so the</span>
         <span class="c1"># initial standard deviation doesn&#39;t matter). Note also that `init.normal_` is in place.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+            <span class="n">Parameter</span><span class="p">,</span>
+            <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">),</span>
         <span class="p">]</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="c1"># Scale so that each row has unit norm</span>
@@ -2890,8 +2986,13 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 
     <span class="k">def</span> <span class="nf">_weight_backward_hook</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">grad</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+        <span class="n">grad</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span>
+            <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Unit norm backward hook.</span>
 
 <span class="sd">        By subtracting the projection of the gradient onto the dictionary vectors, we remove the</span>
@@ -2929,23 +3030,24 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
         <span class="c1"># to the dictionary vectors, i.e. the component that moves to or from the center of the</span>
         <span class="c1"># hypersphere.</span>
         <span class="n">normalized_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">Tensor</span><span class="p">,</span>
+            <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">),</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">scalar_projections</span> <span class="o">=</span> <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
             <span class="n">grad</span><span class="p">,</span>
             <span class="n">normalized_weight</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                -&gt; ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">projection</span> <span class="o">=</span> <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
             <span class="n">scalar_projections</span><span class="p">,</span>
             <span class="n">normalized_weight</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                -&gt; ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Subtracting the parallel component from the gradient leaves only the component that is</span>
@@ -2954,8 +3056,8 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
         <span class="k">return</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">projection</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass.</span>
 
 <span class="sd">        Args:</span>
@@ -2964,7 +3066,13 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="sd">        Returns:</span>
 <span class="sd">            Output of the forward pass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">            ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
@@ -3046,7 +3154,7 @@ dictionary vectors.</p>
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.weight" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span></code>
+          <code class="highlight language-python"><span class="n">weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -3073,7 +3181,7 @@ element in the learned activation space.</p>
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">learnt_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">enable_gradient_hook</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">learnt_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">enable_gradient_hook</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3124,6 +3232,20 @@ element in the learned activation space.</p>
           </td>
         </tr>
         <tr>
+          <td><code>n_components</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of source model components the SAE is trained on.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
           <td><code>enable_gradient_hook</code></td>
           <td>
                 <code>bool</code>
@@ -3143,8 +3265,7 @@ applying the gradient step, to maintain unit norm of the dictionary vectors).</p
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
-<span class="normal"> 79</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
@@ -3172,10 +3293,16 @@ applying the gradient step, to maintain unit norm of the dictionary vectors).</p
 <span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span>
-<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">decoded_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">enable_gradient_hook</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3184,16 +3311,19 @@ applying the gradient step, to maintain unit norm of the dictionary vectors).</p
 <span class="sd">    Args:</span>
 <span class="sd">        learnt_features: Number of learnt features in the autoencoder.</span>
 <span class="sd">        decoded_features: Number of decoded (output) features in the autoencoder.</span>
+<span class="sd">        n_components: Number of source model components the SAE is trained on.</span>
 <span class="sd">        enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before</span>
 <span class="sd">            applying the gradient step, to maintain unit norm of the dictionary vectors).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create the linear layer as per the standard PyTorch linear layer</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span> <span class="o">=</span> <span class="n">decoded_features</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">learnt_features</span><span class="o">=</span><span class="n">learnt_features</span><span class="p">,</span>
+        <span class="n">decoded_features</span><span class="o">=</span><span class="n">decoded_features</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span>
+            <span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">decoded_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">),</span>
         <span class="p">)</span>
     <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
@@ -3240,7 +3370,7 @@ with asynchronous operations, etc).</p>
 <blockquote>
 <blockquote>
 <p>import torch
-layer = UnitNormDecoder(3, 3)
+layer = UnitNormDecoder(3, 3, None)
 layer.weight.data = torch.ones((3, 3)) * 10
 layer.constrain_weights_unit_norm()
 column_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=0))
@@ -3252,12 +3382,7 @@ column_norms.round(decimals=3).tolist()
 </details>
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
@@ -3276,7 +3401,12 @@ column_norms.round(decimals=3).tolist()
 <span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">constrain_weights_unit_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">constrain_weights_unit_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Constrain the weights to have unit norm.</span>
 
 <span class="sd">    Warning:</span>
@@ -3291,7 +3421,7 @@ column_norms.round(decimals=3).tolist()
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; layer = UnitNormDecoder(3, 3)</span>
+<span class="sd">        &gt;&gt;&gt; layer = UnitNormDecoder(3, 3, None)</span>
 <span class="sd">        &gt;&gt;&gt; layer.weight.data = torch.ones((3, 3)) * 10</span>
 <span class="sd">        &gt;&gt;&gt; layer.constrain_weights_unit_norm()</span>
 <span class="sd">        &gt;&gt;&gt; column_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=0))</span>
@@ -3300,7 +3430,7 @@ column_norms.round(decimals=3).tolist()
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3325,9 +3455,9 @@ column_norms.round(decimals=3).tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3368,7 +3498,7 @@ column_norms.round(decimals=3).tolist()
         <tr>
           <td><code>x</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3395,7 +3525,7 @@ column_norms.round(decimals=3).tolist()
     <tbody>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3408,20 +3538,26 @@ column_norms.round(decimals=3).tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward pass.</span>
 
 <span class="sd">    Args:</span>
@@ -3430,7 +3566,13 @@ column_norms.round(decimals=3).tolist()
 <span class="sd">    Returns:</span>
 <span class="sd">        Output of the forward pass.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">        ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">            -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3460,7 +3602,7 @@ column_norms.round(decimals=3).tolist()
 <blockquote>
 <p>import torch</p>
 <h4 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters--create-a-layer-with-4-columns-learnt-features-and-3-rows-decoded-features">Create a layer with 4 columns (learnt features) and 3 rows (decoded features)<a class="headerlink" href="#sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters--create-a-layer-with-4-columns-learnt-features-and-3-rows-decoded-features" title="Permanent link">¤</a></h4>
-<p>layer = UnitNormDecoder(learnt_features=4, decoded_features=3)
+<p>layer = UnitNormDecoder(learnt_features=4, decoded_features=3, n_components=None)
 layer.reset_parameters()</p>
 <h4 id="sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters--get-the-norm-across-the-rows-by-summing-across-the-columns">Get the norm across the rows (by summing across the columns)<a class="headerlink" href="#sparse_autoencoder.autoencoder.components.unit_norm_decoder.UnitNormDecoder.reset_parameters--get-the-norm-across-the-rows-by-summing-across-the-columns" title="Permanent link">¤</a></h4>
 <p>column_norms = torch.sum(layer.weight ** 2, dim=0)
@@ -3472,12 +3614,7 @@ column_norms.round(decimals=3).tolist()
 </details>
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
@@ -3494,13 +3631,19 @@ column_norms.round(decimals=3).tolist()
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
-<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize or reset the parameters.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)</span>
-<span class="sd">        &gt;&gt;&gt; layer = UnitNormDecoder(learnt_features=4, decoded_features=3)</span>
+<span class="sd">        &gt;&gt;&gt; layer = UnitNormDecoder(learnt_features=4, decoded_features=3, n_components=None)</span>
 <span class="sd">        &gt;&gt;&gt; layer.reset_parameters()</span>
 <span class="sd">        &gt;&gt;&gt; # Get the norm across the rows (by summing across the columns)</span>
 <span class="sd">        &gt;&gt;&gt; column_norms = torch.sum(layer.weight ** 2, dim=0)</span>
@@ -3512,7 +3655,8 @@ column_norms.round(decimals=3).tolist()
     <span class="c1"># normalisation here, since we immediately scale the weights to have unit norm (so the</span>
     <span class="c1"># initial standard deviation doesn&#39;t matter). Note also that `init.normal_` is in place.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="n">Parameter</span><span class="p">,</span>
+        <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
     <span class="c1"># Scale so that each row has unit norm</span>

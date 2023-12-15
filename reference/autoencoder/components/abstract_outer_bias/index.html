@@ -1035,6 +1035,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3_4" id="__nav_5_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/tensor_shape/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tensor_shape
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2380,12 +2454,18 @@
 <span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
-<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractOuterBias</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractOuterBias</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract Pre-Encoder or Post-Decoder Bias Module.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Bias.</span>
 
 <span class="sd">        May be a reference to a bias parameter in the parent module, if using e.g. a tied bias.</span>
@@ -2394,8 +2474,10 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
 <span class="sd">        Args:</span>
@@ -2423,7 +2505,7 @@
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.abstract_outer_bias.AbstractOuterBias.bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">bias</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span></code>
+          <code class="highlight language-python"><span class="n">bias</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -2479,7 +2561,7 @@
         <tr>
           <td><code>x</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2506,7 +2588,7 @@
     <tbody>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2519,9 +2601,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_outer_bias.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -2531,11 +2611,17 @@
 <span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
-<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
 <span class="sd">    Args:</span>

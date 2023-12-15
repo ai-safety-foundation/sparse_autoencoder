@@ -943,6 +943,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="autoencoder/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3_4" id="__nav_5_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="autoencoder/utils/tensor_shape/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tensor_shape
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4124,6 +4198,15 @@
   <a href="#sparse_autoencoder.SparseAutoencoder.geometric_median_dataset" class="md-nav__link">
     <span class="md-ellipsis">
       geometric_median_dataset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.SparseAutoencoder.n_components" class="md-nav__link">
+    <span class="md-ellipsis">
+      n_components
     </span>
   </a>
   
@@ -8531,7 +8614,7 @@ implementation  include <code>tied_bias</code>, <code>_encoder._weight</code>, <
         <tr>
           <td><code>neuron_indices</code></td>
           <td>
-                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <span title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</span>]</code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -22324,8 +22407,7 @@ tokenizing prompts).</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 17</span>
-<span class="normal"> 18</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
 <span class="normal"> 19</span>
 <span class="normal"> 20</span>
 <span class="normal"> 21</span>
@@ -22450,21 +22532,53 @@ tokenizing prompts).</p>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">SparseAutoencoder</span><span class="p">(</span><span class="n">AbstractAutoencoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Autoencoder Model.&quot;&quot;&quot;</span>
 
-    <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span>
+    <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimated Geometric Median of the Dataset.</span>
 
 <span class="sd">    Used for initialising :attr:`tied_bias`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">tied_bias</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
+    <span class="n">tied_bias</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tied Bias Parameter.</span>
 
 <span class="sd">    The same bias is used pre-encoder and post-decoder.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of source model components the SAE is trained on.&quot;&quot;&quot;</span>
 
     <span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of Input Features.&quot;&quot;&quot;</span>
@@ -22504,7 +22618,11 @@ tokenizing prompts).</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Sparse Autoencoder Model.</span>
 
@@ -22514,43 +22632,56 @@ tokenizing prompts).</p>
 <span class="sd">            n_learned_features: Number of learned features. The initial paper experimented with 1 to</span>
 <span class="sd">                256 times the number of input features, and primarily used a multiple of 8.</span>
 <span class="sd">            geometric_median_dataset: Estimated geometric median of the dataset.</span>
+<span class="sd">            n_components: Number of source model components the SAE is trained on. This is useful if</span>
+<span class="sd">                you want to train the SAE on several components of the source model at once. If</span>
+<span class="sd">                `None`, the SAE is assumed to be trained on just one component (in this case the</span>
+<span class="sd">                model won&#39;t contain a component axis in any of the parameters).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">n_input_features</span> <span class="o">=</span> <span class="n">n_input_features</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_learned_features</span> <span class="o">=</span> <span class="n">n_learned_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">n_components</span>
 
         <span class="c1"># Store the geometric median of the dataset (so that we can reset parameters). This is not a</span>
         <span class="c1"># parameter itself (the tied bias parameter is used for that), so gradients are disabled.</span>
+        <span class="n">tied_bias_shape</span> <span class="o">=</span> <span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_input_features</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">geometric_median_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tied_bias_shape</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># Initialize the tied bias</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tied_bias_shape</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
 
+        <span class="c1"># Initialize the components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span>
-            <span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span>
+            <span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
+            <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
+            <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span>
-            <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span>
+            <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
+            <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
+            <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
-        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
     <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
@@ -22640,7 +22771,7 @@ tokenizing prompts).</p>
 
 
 <h3 id="sparse_autoencoder.SparseAutoencoder.geometric_median_dataset" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span></code>
+          <code class="highlight language-python"><span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -22653,6 +22784,28 @@ tokenizing prompts).</p>
   
       <p>Estimated Geometric Median of the Dataset.</p>
 <p>Used for initialising :attr:<code>tied_bias</code>.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.SparseAutoencoder.n_components" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">n_components</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.SparseAutoencoder.n_components" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Number of source model components the SAE is trained on.</p>
   </div>
 
 </div>
@@ -22751,7 +22904,7 @@ tokenizing prompts).</p>
 
 
 <h3 id="sparse_autoencoder.SparseAutoencoder.tied_bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">tied_bias</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">))</span></code>
+          <code class="highlight language-python"><span class="n">tied_bias</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tied_bias_shape</span><span class="p">))</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -22777,7 +22930,7 @@ tokenizing prompts).</p>
 
 
 <h3 id="sparse_autoencoder.SparseAutoencoder.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">geometric_median_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">geometric_median_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.SparseAutoencoder.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -22832,11 +22985,28 @@ from TransformerLens).</p>
         <tr>
           <td><code>geometric_median_dataset</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>] | None</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)] | None</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>Estimated geometric median of the dataset.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>n_components</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of source model components the SAE is trained on. This is useful if
+you want to train the SAE on several components of the source model at once. If
+<code>None</code>, the SAE is assumed to be trained on just one component (in this case the
+model won't contain a component axis in any of the parameters).</p>
             </div>
           </td>
           <td>
@@ -22848,15 +23018,7 @@ from TransformerLens).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
 <span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
@@ -22891,11 +23053,38 @@ from TransformerLens).</p>
 <span class="normal">107</span>
 <span class="normal">108</span>
 <span class="normal">109</span>
-<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">n_input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Sparse Autoencoder Model.</span>
 
@@ -22905,33 +23094,44 @@ from TransformerLens).</p>
 <span class="sd">        n_learned_features: Number of learned features. The initial paper experimented with 1 to</span>
 <span class="sd">            256 times the number of input features, and primarily used a multiple of 8.</span>
 <span class="sd">        geometric_median_dataset: Estimated geometric median of the dataset.</span>
+<span class="sd">        n_components: Number of source model components the SAE is trained on. This is useful if</span>
+<span class="sd">            you want to train the SAE on several components of the source model at once. If</span>
+<span class="sd">            `None`, the SAE is assumed to be trained on just one component (in this case the</span>
+<span class="sd">            model won&#39;t contain a component axis in any of the parameters).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">n_input_features</span> <span class="o">=</span> <span class="n">n_input_features</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">n_learned_features</span> <span class="o">=</span> <span class="n">n_learned_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">n_components</span>
 
     <span class="c1"># Store the geometric median of the dataset (so that we can reset parameters). This is not a</span>
     <span class="c1"># parameter itself (the tied bias parameter is used for that), so gradients are disabled.</span>
+    <span class="n">tied_bias_shape</span> <span class="o">=</span> <span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_input_features</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">geometric_median_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tied_bias_shape</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1"># Initialize the tied bias</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_input_features</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tied_bias_shape</span><span class="p">))</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
 
+    <span class="c1"># Initialize the components</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span>
-        <span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span>
+        <span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
+        <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span>
-        <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span>
+        <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
+        <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span>
@@ -22973,7 +23173,7 @@ from TransformerLens).</p>
         <tr>
           <td><code>x</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -23000,7 +23200,7 @@ from TransformerLens).</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)], <span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]]</code>
+                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)], <span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -23013,31 +23213,35 @@ from TransformerLens).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
-    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
+    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
 <span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
@@ -23076,10 +23280,10 @@ from TransformerLens).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the tied parameters.&quot;&quot;&quot;</span>
     <span class="c1"># The tied bias is initialised as the geometric median of the dataset</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span>
@@ -23107,12 +23311,12 @@ from TransformerLens).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>
