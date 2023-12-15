@@ -61,7 +61,11 @@ class Axis(LowercaseStrEnum):
     """Alive feature."""
 
     # Feature indices
+    INPUT_OUTPUT_FEATURE_IDX = auto()
+    """Input or output feature index."""
+
     LEARNT_FEATURE_IDX = auto()
+    """Learn feature index."""
 
     # Other
     POSITION = auto()

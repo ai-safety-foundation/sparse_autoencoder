@@ -29,7 +29,7 @@ class AbstractEncoder(Module, ABC):
         self,
         input_features: int,
         learnt_features: int,
-        n_components: int | None = None,
+        n_components: int | None,
     ) -> None:
         """Initialise the encoder.
 
@@ -99,7 +99,7 @@ class AbstractEncoder(Module, ABC):
         ],
         updated_dictionary_weights: Float[
             Tensor,
-            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX, Axis.INPUT_OUTPUT_FEATURE),
         ],
     ) -> None:
         """Update encoder dictionary vectors.
@@ -117,18 +117,20 @@ class AbstractEncoder(Module, ABC):
             if self._n_components is None:
                 self.weight[dictionary_vector_indices] = updated_dictionary_weights
             else:
-                self.weight[:, dictionary_vector_indices] = updated_dictionary_weights
+                for component_idx in range(self._n_components):
+                    self.weight[
+                        component_idx, dictionary_vector_indices[component_idx]
+                    ] = updated_dictionary_weights[component_idx]
 
     @final
     def update_bias(
         self,
         update_parameter_indices: Int64[
-            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
         ],
         updated_bias_features: Float[
-            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
-        ]
-        | float,
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
+        ],
     ) -> None:
         """Update encoder bias.
 
@@ -143,4 +145,5 @@ class AbstractEncoder(Module, ABC):
             if self._n_components is None:
                 self.bias[update_parameter_indices] = updated_bias_features
             else:
-                self.bias[:, update_parameter_indices] = updated_bias_features
+                for component_idx in range(self._n_components):
+                    self.bias[component_idx, update_parameter_indices] = updated_bias_features

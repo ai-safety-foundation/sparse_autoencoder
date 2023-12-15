@@ -28,7 +28,7 @@ class AbstractDecoder(Module, ABC):
         self,
         learnt_features: int,
         decoded_features: int,
-        n_components: int | None = None,
+        n_components: int | None,
     ) -> None:
         """Initialise the decoder.
 
@@ -95,7 +95,7 @@ class AbstractDecoder(Module, ABC):
         ],
         updated_weights: Float[
             Tensor,
-            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE),
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE_IDX),
         ],
     ) -> None:
         """Update decoder dictionary vectors.
@@ -114,7 +114,10 @@ class AbstractDecoder(Module, ABC):
             if self._n_components is None:
                 self.weight[:, dictionary_vector_indices] = updated_weights
             else:
-                self.weight[:, :, dictionary_vector_indices] = updated_weights
+                for component_idx in range(self._n_components):
+                    self.weight[
+                        component_idx, :, dictionary_vector_indices[component_idx]
+                    ] = updated_weights[component_idx]
 
     @abstractmethod
     def constrain_weights_unit_norm(self) -> None:

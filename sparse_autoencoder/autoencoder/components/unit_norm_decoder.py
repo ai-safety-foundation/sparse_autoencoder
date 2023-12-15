@@ -80,7 +80,7 @@ class UnitNormDecoder(AbstractDecoder):
         self,
         learnt_features: int,
         decoded_features: int,
-        n_components: int | None = None,
+        n_components: int | None,
         *,
         enable_gradient_hook: bool = True,
     ) -> None:
@@ -126,7 +126,7 @@ class UnitNormDecoder(AbstractDecoder):
 
         Example:
             >>> import torch
-            >>> layer = UnitNormDecoder(3, 3)
+            >>> layer = UnitNormDecoder(3, 3, None)
             >>> layer.weight.data = torch.ones((3, 3)) * 10
             >>> layer.constrain_weights_unit_norm()
             >>> column_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=0))
@@ -143,7 +143,7 @@ class UnitNormDecoder(AbstractDecoder):
         Example:
             >>> import torch
             >>> # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)
-            >>> layer = UnitNormDecoder(learnt_features=4, decoded_features=3)
+            >>> layer = UnitNormDecoder(learnt_features=4, decoded_features=3, n_components=None)
             >>> layer.reset_parameters()
             >>> # Get the norm across the rows (by summing across the columns)
             >>> column_norms = torch.sum(layer.weight ** 2, dim=0)

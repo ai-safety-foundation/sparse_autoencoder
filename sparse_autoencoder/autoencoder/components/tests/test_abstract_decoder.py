@@ -20,7 +20,9 @@ class MockDecoder(AbstractDecoder):
 
     def __init__(self, learnt_features: int = 3, decoded_features: int = 4) -> None:
         """Initialise the mock decoder."""
-        super().__init__(decoded_features=decoded_features, learnt_features=learnt_features)
+        super().__init__(
+            decoded_features=decoded_features, learnt_features=learnt_features, n_components=None
+        )
         torch.random.manual_seed(0)
         self._weight = Parameter(torch.empty(decoded_features, learnt_features))
 

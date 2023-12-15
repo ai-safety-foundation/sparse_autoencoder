@@ -15,7 +15,9 @@ BATCH_SIZE = 2
 @pytest.fixture()
 def encoder() -> LinearEncoder:
     """Fixture to create a LinearEncoder instance."""
-    return LinearEncoder(input_features=INPUT_FEATURES, learnt_features=LEARNT_FEATURES)
+    return LinearEncoder(
+        input_features=INPUT_FEATURES, learnt_features=LEARNT_FEATURES, n_components=None
+    )
 
 
 def test_reset_parameters(encoder: LinearEncoder) -> None:

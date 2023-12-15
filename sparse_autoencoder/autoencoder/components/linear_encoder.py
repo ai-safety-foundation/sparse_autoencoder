@@ -2,7 +2,6 @@
 import math
 from typing import final
 
-import einops
 from jaxtyping import Float
 import torch
 from torch import Tensor
@@ -80,7 +79,7 @@ class LinearEncoder(AbstractEncoder):
         self,
         input_features: int,
         learnt_features: int,
-        n_components: int | None = None,
+        n_components: int | None,
     ):
         """Initialize the linear encoder layer.
 

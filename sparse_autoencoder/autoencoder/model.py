@@ -89,8 +89,8 @@ class SparseAutoencoder(AbstractAutoencoder):
                 from TransformerLens).
             n_learned_features: Number of learned features. The initial paper experimented with 1 to
                 256 times the number of input features, and primarily used a multiple of 8.
-            n_components: Number of source model components the SAE is trained on.
             geometric_median_dataset: Estimated geometric median of the dataset.
+            n_components: Number of source model components the SAE is trained on.
         """
         super().__init__()
 
@@ -112,14 +112,19 @@ class SparseAutoencoder(AbstractAutoencoder):
         self.tied_bias = Parameter(torch.empty(tied_bias_shape))
         self.initialize_tied_parameters()
 
+        # Initialize the components
         self._pre_encoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER)
 
         self._encoder = LinearEncoder(
-            input_features=n_input_features, learnt_features=n_learned_features
+            input_features=n_input_features,
+            learnt_features=n_learned_features,
+            n_components=n_components,
         )
 
         self._decoder = UnitNormDecoder(
-            learnt_features=n_learned_features, decoded_features=n_input_features
+            learnt_features=n_learned_features,
+            decoded_features=n_input_features,
+            n_components=n_components,
         )
 
         self._post_decoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER)
@@ -140,27 +145,7 @@ class SparseAutoencoder(AbstractAutoencoder):
 
         Returns:
             Tuple of learned activations and decoded activations.
-
-        Raises:
-            ValueError: If the input has the wrong number of axes.
         """
-        # Validate the input
-        if self.n_components is not None:
-            # Check x has 3 axis
-            if x.ndim != 3:  # noqa: PLR2004
-                error_message = f"Expected 3 axis, as {self.n_components} is not None. Got {x.ndim}"
-                raise ValueError(error_message)
-
-            # Check x's second axis is the correct size
-            if x.shape[1] != self.n_components:
-                error_message = (
-                    f"Expected second axis to be of size {self.n_components}, got {x.shape[1]}"
-                )
-                raise ValueError(error_message)
-        elif x.ndim != 2:  # noqa: PLR2004
-            error_message = f"Expected 2 axis, as {self.n_components} is None. Got {x.ndim}"
-            raise ValueError(error_message)
-
         x = self._pre_encoder_bias(x)
         learned_activations = self._encoder(x)
         x = self._decoder(learned_activations)

@@ -20,7 +20,9 @@ class MockEncoder(AbstractEncoder):
 
     def __init__(self, encoded_features: int = 4, learnt_features: int = 3) -> None:
         """Initialise."""
-        super().__init__(input_features=encoded_features, learnt_features=learnt_features)
+        super().__init__(
+            input_features=encoded_features, learnt_features=learnt_features, n_components=None
+        )
         torch.random.manual_seed(0)
         self._weight: Parameter = Parameter(torch.empty(learnt_features, encoded_features))
         self._bias: Parameter = Parameter(torch.empty(encoded_features))

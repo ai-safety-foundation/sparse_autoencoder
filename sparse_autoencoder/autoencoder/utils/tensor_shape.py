@@ -22,9 +22,9 @@ def shape_with_optional_dimensions(*shape: int | None) -> tuple[int, ...]:
         ()
 
     Args:
-        shape: Tuple of optional dimensions.
+        *shape: Axis sizes, with `None` representing an optional axis.
 
     Returns:
-        Tuple of dimensions.
+        Axis sizes.
     """
     return tuple(dimension for dimension in shape if dimension is not None)
