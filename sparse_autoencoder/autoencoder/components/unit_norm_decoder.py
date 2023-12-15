@@ -8,6 +8,7 @@ from torch import Tensor
 from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
+from sparse_autoencoder.autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -42,19 +43,19 @@ class UnitNormDecoder(AbstractDecoder):
         loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).
     """
 
-    _learnt_features: int
-    """Number of learnt features (inputs to this layer)."""
-
-    _decoded_features: int
-    """Number of decoded features (outputs from this layer)."""
-
-    _weight: Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]
+    _weight: Float[
+        Parameter,
+        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE),
+    ]
     """Weight parameter internal state."""
 
     @property
     def weight(
         self,
-    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    ) -> Float[
+        Parameter,
+        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE),
+    ]:
         """Weight parameter.
 
         Each column in the weights matrix acts as a dictionary vector, representing a single basis
@@ -73,12 +74,13 @@ class UnitNormDecoder(AbstractDecoder):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self.weight, 1)]
+        return [(self.weight, -1)]
 
     def __init__(
         self,
         learnt_features: int,
         decoded_features: int,
+        n_components: int | None,
         *,
         enable_gradient_hook: bool = True,
     ) -> None:
@@ -87,16 +89,19 @@ class UnitNormDecoder(AbstractDecoder):
         Args:
             learnt_features: Number of learnt features in the autoencoder.
             decoded_features: Number of decoded (output) features in the autoencoder.
+            n_components: Number of source model components the SAE is trained on.
             enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before
                 applying the gradient step, to maintain unit norm of the dictionary vectors).
         """
         # Create the linear layer as per the standard PyTorch linear layer
-        super().__init__()
-        self._learnt_features = learnt_features
-        self._decoded_features = decoded_features
+        super().__init__(
+            learnt_features=learnt_features,
+            decoded_features=decoded_features,
+            n_components=n_components,
+        )
         self._weight = Parameter(
             torch.empty(
-                (decoded_features, learnt_features),
+                shape_with_optional_dimensions(n_components, decoded_features, learnt_features),
             )
         )
         self.reset_parameters()
@@ -121,7 +126,7 @@ class UnitNormDecoder(AbstractDecoder):
 
         Example:
             >>> import torch
-            >>> layer = UnitNormDecoder(3, 3)
+            >>> layer = UnitNormDecoder(3, 3, None)
             >>> layer.weight.data = torch.ones((3, 3)) * 10
             >>> layer.constrain_weights_unit_norm()
             >>> column_norms = torch.sqrt(torch.sum(layer.weight ** 2, dim=0))
@@ -130,7 +135,7 @@ class UnitNormDecoder(AbstractDecoder):
 
         """
         with torch.no_grad():
-            torch.nn.functional.normalize(self._weight, dim=0, out=self._weight)
+            torch.nn.functional.normalize(self._weight, dim=-2, out=self._weight)
 
     def reset_parameters(self) -> None:
         """Initialize or reset the parameters.
@@ -138,7 +143,7 @@ class UnitNormDecoder(AbstractDecoder):
         Example:
             >>> import torch
             >>> # Create a layer with 4 columns (learnt features) and 3 rows (decoded features)
-            >>> layer = UnitNormDecoder(learnt_features=4, decoded_features=3)
+            >>> layer = UnitNormDecoder(learnt_features=4, decoded_features=3, n_components=None)
             >>> layer.reset_parameters()
             >>> # Get the norm across the rows (by summing across the columns)
             >>> column_norms = torch.sum(layer.weight ** 2, dim=0)
@@ -150,7 +155,8 @@ class UnitNormDecoder(AbstractDecoder):
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
         self._weight: Float[
-            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+            Parameter,
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
         ] = init.normal_(self._weight, mean=0, std=1)  # type: ignore
 
         # Scale so that each row has unit norm
@@ -158,8 +164,13 @@ class UnitNormDecoder(AbstractDecoder):
 
     def _weight_backward_hook(
         self,
-        grad: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
-    ) -> Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+        grad: Float[
+            Tensor,
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
+        ],
+    ) -> Float[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+    ]:
         r"""Unit norm backward hook.
 
         By subtracting the projection of the gradient onto the dictionary vectors, we remove the
@@ -197,23 +208,24 @@ class UnitNormDecoder(AbstractDecoder):
         # to the dictionary vectors, i.e. the component that moves to or from the center of the
         # hypersphere.
         normalized_weight: Float[
-            Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ] = self._weight / torch.norm(self._weight, dim=0, keepdim=True)
+            Tensor,
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
+        ] = self._weight / torch.norm(self._weight, dim=-2, keepdim=True)
 
         scalar_projections = einops.einsum(
             grad,
             normalized_weight,
-            f"{Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}, \
-                {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
-                -> {Axis.INPUT_OUTPUT_FEATURE}",
+            f"... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}, \
+                ... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
+                -> ... {Axis.INPUT_OUTPUT_FEATURE}",
         )
 
         projection = einops.einsum(
             scalar_projections,
             normalized_weight,
-            f"{Axis.INPUT_OUTPUT_FEATURE}, \
-                {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
-                -> {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}",
+            f"... {Axis.INPUT_OUTPUT_FEATURE}, \
+                ... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
+                -> ... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE}",
         )
 
         # Subtracting the parallel component from the gradient leaves only the component that is
@@ -222,8 +234,8 @@ class UnitNormDecoder(AbstractDecoder):
         return grad - projection
 
     def forward(
-        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
+        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward pass.
 
         Args:
@@ -232,7 +244,13 @@ class UnitNormDecoder(AbstractDecoder):
         Returns:
             Output of the forward pass.
         """
-        return torch.nn.functional.linear(x, self._weight)
+        return einops.einsum(
+            x,
+            self.weight,
+            f"{Axis.BATCH} ... {Axis.LEARNT_FEATURE}, \
+            ... {Axis.INPUT_OUTPUT_FEATURE} {Axis.LEARNT_FEATURE} \
+                -> {Axis.BATCH} ... {Axis.INPUT_OUTPUT_FEATURE}",
+        )
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""

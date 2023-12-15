@@ -17,20 +17,49 @@ class AbstractEncoder(Module, ABC):
     function.
     """
 
+    _learnt_features: int
+    """Number of learnt features (inputs to this layer)."""
+
+    _input_features: int
+    """Number of input features from the source model."""
+
+    _n_components: int | None
+
+    def __init__(
+        self,
+        input_features: int,
+        learnt_features: int,
+        n_components: int | None,
+    ) -> None:
+        """Initialise the encoder.
+
+        Args:
+            input_features: Number of input features to the autoencoder.
+            learnt_features: Number of learnt features in the autoencoder.
+            n_components: Number of source model components the SAE is trained on.
+        """
+        super().__init__()
+        self._learnt_features = learnt_features
+        self._input_features = input_features
+        self._n_components = n_components
+
     @property
     @abstractmethod
     def weight(
         self,
-    ) -> Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+    ) -> Float[
+        Parameter,
+        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
+    ]:
         """Weight.
 
-        Each row in the weights matrix acts as a dictionary vector, representing a single basis
-        element in the learned activation space.
+        Each row in the weights matrix (for a specific component) acts as a dictionary vector,
+        representing a single basis element in the learned activation space.
         """
 
     @property
     @abstractmethod
-    def bias(self) -> Float[Parameter, Axis.LEARNT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
         """Bias."""
 
     @property
@@ -48,8 +77,11 @@ class AbstractEncoder(Module, ABC):
 
     @abstractmethod
     def forward(
-        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]:
+        self,
+        x: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
         """Forward pass.
 
         Args:
@@ -62,9 +94,12 @@ class AbstractEncoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX],
+        dictionary_vector_indices: Int64[
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
+        ],
         updated_dictionary_weights: Float[
-            Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+            Tensor,
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX, Axis.INPUT_OUTPUT_FEATURE),
         ],
     ) -> None:
         """Update encoder dictionary vectors.
@@ -75,17 +110,27 @@ class AbstractEncoder(Module, ABC):
             dictionary_vector_indices: Indices of the dictionary vectors to update.
             updated_dictionary_weights: Updated weights for just these dictionary vectors.
         """
-        if len(dictionary_vector_indices) == 0:
+        if dictionary_vector_indices.numel() == 0:
             return
 
         with torch.no_grad():
-            self.weight[dictionary_vector_indices, :] = updated_dictionary_weights
+            if self._n_components is None:
+                self.weight[dictionary_vector_indices] = updated_dictionary_weights
+            else:
+                for component_idx in range(self._n_components):
+                    self.weight[
+                        component_idx, dictionary_vector_indices[component_idx]
+                    ] = updated_dictionary_weights[component_idx]
 
     @final
     def update_bias(
         self,
-        update_parameter_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE],
-        updated_bias_features: Float[Tensor, Axis.LEARNT_FEATURE] | float,
+        update_parameter_indices: Int64[
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
+        ],
+        updated_bias_features: Float[
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
+        ],
     ) -> None:
         """Update encoder bias.
 
@@ -93,8 +138,12 @@ class AbstractEncoder(Module, ABC):
             update_parameter_indices: Indices of the bias features to update.
             updated_bias_features: Updated bias features for just these indices.
         """
-        if len(update_parameter_indices) == 0:
+        if update_parameter_indices.numel() == 0:
             return
 
         with torch.no_grad():
-            self.bias[update_parameter_indices] = updated_bias_features
+            if self._n_components is None:
+                self.bias[update_parameter_indices] = updated_bias_features
+            else:
+                for component_idx in range(self._n_components):
+                    self.bias[component_idx, update_parameter_indices] = updated_bias_features

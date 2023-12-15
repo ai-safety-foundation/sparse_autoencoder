@@ -6,14 +6,14 @@ from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNorm
 
 def test_initialization() -> None:
     """Test that the weights are initialized with unit norm."""
-    layer = UnitNormDecoder(learnt_features=3, decoded_features=4)
+    layer = UnitNormDecoder(learnt_features=3, decoded_features=4, n_components=None)
     weight_norms = torch.norm(layer.weight, dim=0)
     assert torch.allclose(weight_norms, torch.ones_like(weight_norms))
 
 
 def test_forward_pass() -> None:
     """Test the forward pass of the layer."""
-    layer = UnitNormDecoder(learnt_features=3, decoded_features=4)
+    layer = UnitNormDecoder(learnt_features=3, decoded_features=4, n_components=None)
     input_tensor = torch.randn(5, 3)  # Batch size of 5, learnt features of 3
     output = layer(input_tensor)
     assert output.shape == (5, 4)  # Batch size of 5, decoded features of 4
@@ -22,7 +22,7 @@ def test_forward_pass() -> None:
 def test_multiple_training_steps() -> None:
     """Test the unit norm constraint over multiple training iterations."""
     torch.random.manual_seed(0)
-    layer = UnitNormDecoder(learnt_features=3, decoded_features=4)
+    layer = UnitNormDecoder(learnt_features=3, decoded_features=4, n_components=None)
     optimizer = torch.optim.Adam(layer.parameters(), lr=0.01)
     for _ in range(4):
         data = torch.randn(5, 3)
@@ -44,7 +44,7 @@ def test_unit_norm_decreases() -> None:
         data = torch.randn((1, 3), requires_grad=True)
 
         # run with the backward hook
-        layer = UnitNormDecoder(learnt_features=3, decoded_features=4)
+        layer = UnitNormDecoder(learnt_features=3, decoded_features=4, n_components=None)
         layer_weights = torch.nn.Parameter(layer.weight.clone())
         optimizer = torch.optim.SGD(layer.parameters(), lr=0.1, momentum=0)
         logits = layer(data)
@@ -55,7 +55,7 @@ def test_unit_norm_decreases() -> None:
 
         # Run without the hook
         layer_without_hook = UnitNormDecoder(
-            learnt_features=3, decoded_features=4, enable_gradient_hook=False
+            learnt_features=3, decoded_features=4, n_components=None, enable_gradient_hook=False
         )
         layer_without_hook._weight = layer_weights  # type: ignore (testing only)  # noqa: SLF001
         optimizer_without_hook = torch.optim.SGD(

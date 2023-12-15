@@ -20,7 +20,9 @@ class MockEncoder(AbstractEncoder):
 
     def __init__(self, encoded_features: int = 4, learnt_features: int = 3) -> None:
         """Initialise."""
-        super().__init__()
+        super().__init__(
+            input_features=encoded_features, learnt_features=learnt_features, n_components=None
+        )
         torch.random.manual_seed(0)
         self._weight: Parameter = Parameter(torch.empty(learnt_features, encoded_features))
         self._bias: Parameter = Parameter(torch.empty(encoded_features))
@@ -74,11 +76,15 @@ def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) ->
     torch.random.manual_seed(0)
     original_weight = mock_encoder.weight.clone()  # Save original weight for comparison
 
-    dictionary_vector_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE] = torch.empty(
+    dictionary_vector_indices: Int64[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ] = torch.empty(
         0,
         dtype=torch.int64,  # Empty tensor with 1 dimension
     )
-    updates: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE] = torch.empty(
+    updates: Float[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ] = torch.empty(
         (0, 0),
         dtype=torch.float,  # Empty tensor with 2 dimensions
     )
@@ -103,8 +109,10 @@ def test_update_dictionary_vectors_with_no_neurons(mock_encoder: MockEncoder) ->
 )
 def test_update_dictionary_vectors_with_neurons(
     mock_encoder: MockEncoder,
-    dictionary_vector_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE],
-    updates: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+    dictionary_vector_indices: Int64[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ],
+    updates: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
 ) -> None:
     """Test update_dictionary_vectors with 1 or 2 neurons to update."""
     mock_encoder.update_dictionary_vectors(dictionary_vector_indices, updates)
