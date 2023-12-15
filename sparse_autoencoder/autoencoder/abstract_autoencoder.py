@@ -12,7 +12,14 @@ from sparse_autoencoder.tensor_types import Axis
 
 
 class AbstractAutoencoder(Module, ABC):
-    """Abstract Sparse Autoencoder Model."""
+    """Abstract Sparse Autoencoder Model.
+
+    Warning:
+        All components should support an optional component axis, which comes after the batch axis
+            (as various PyTorch helpers assume the batch axis is the first axis). This means all
+            parameters must be created with this dimension if n_components is not None. And all type
+            signatures should allow for it.
+    """
 
     @property
     @abstractmethod
@@ -53,15 +60,18 @@ class AbstractAutoencoder(Module, ABC):
     @abstractmethod
     def forward(
         self,
-        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        x: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
     ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)],
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
     ]:
         """Forward Pass.
 
         Args:
-            x: Input activations (e.g. activations from an MLP layer in a transformer model).
+            x: Input activations (e.g. activations from an MLP layer (or MLP layers) in a
+                transformer model).
 
         Returns:
             Tuple of learned activations and decoded activations.
