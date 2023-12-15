@@ -153,7 +153,12 @@ class AbstractLoss(Module, ABC):
 
         # Add in the current loss module's metric
         log_name = "train/loss/" + self.log_name()
-        metrics[log_name] = current_module_loss.detach().cpu().item()
+        loss_to_log: list = current_module_loss.tolist()
+        if len(loss_to_log) == 1:
+            metrics[log_name] = loss_to_log[0]
+        else:
+            for component_idx, component_loss in enumerate(loss_to_log):
+                metrics[log_name + f"/component_{component_idx}"] = component_loss
 
         return current_module_loss, metrics
 
