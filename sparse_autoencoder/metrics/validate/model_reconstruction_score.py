@@ -9,6 +9,7 @@ from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
 
 if TYPE_CHECKING:
     from sparse_autoencoder.tensor_types import Axis
+
 from jaxtyping import Float
 from torch import Tensor
 
@@ -63,10 +64,10 @@ class ModelReconstructionScore(AbstractValidationMetric):
         zero_ablate_loss_minus_reconstruction_loss: Float[Tensor, Axis.ITEMS] = (
             data.source_model_loss_with_zero_ablation - data.source_model_loss_with_reconstruction
         )
-        model_reconstruction_score_itemwise: Float[Tensor, Axis.ITEMS] = (
-            zero_ablate_loss_minus_reconstruction_loss / zero_ablate_loss_minus_default_loss
+        model_reconstruction_score: float = (
+            zero_ablate_loss_minus_reconstruction_loss.mean().item()
+            / zero_ablate_loss_minus_default_loss.mean().item()
         )
-        model_reconstruction_score: float = model_reconstruction_score_itemwise.mean().item()
 
         # Get the other metrics
         validation_baseline_loss: float = data.source_model_loss.mean().item()
