@@ -25,7 +25,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         tensor(0.5000)
     """
 
-    l1_coefficient: float
+    l1_coefficient: float | Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
     """L1 coefficient."""
 
     def log_name(self) -> str:
@@ -36,7 +36,9 @@ class LearnedActivationsL1Loss(AbstractLoss):
         """
         return "learned_activations_l1_loss_penalty"
 
-    def __init__(self, l1_coefficient: float) -> None:
+    def __init__(
+        self, l1_coefficient: float | Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
+    ) -> None:
         """Initialize the absolute error loss.
 
         Args:
@@ -50,10 +52,19 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
     def _l1_loss(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],  # noqa: ARG002
-    ) -> tuple[Float[Tensor, Axis.BATCH], Float[Tensor, Axis.BATCH]]:
+        source_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[  # noqa: ARG002s
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> tuple[
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
+    ]:
         """Learned activations L1 (absolute error) loss.
 
         Args:
@@ -66,16 +77,30 @@ class LearnedActivationsL1Loss(AbstractLoss):
             Tuple of itemwise absolute loss, and itemwise absolute loss multiplied by the l1
             coefficient.
         """
-        absolute_loss = torch.abs(learned_activations).sum(dim=-1)
-        absolute_loss_penalty = absolute_loss * self.l1_coefficient
+        # Absolute loss is the summed absolute value of the learned activations (i.e. over the
+        # learned feature axis).
+        absolute_loss: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)] = torch.abs(
+            learned_activations
+        ).sum(dim=-1)
+
+        absolute_loss_penalty: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)] = (
+            absolute_loss * self.l1_coefficient
+        )
+
         return absolute_loss, absolute_loss_penalty
 
     def forward(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-    ) -> Float[Tensor, Axis.BATCH]:
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
         """Learned activations L1 (absolute error) loss.
 
         Args:
@@ -92,11 +117,17 @@ class LearnedActivationsL1Loss(AbstractLoss):
     # Override to add both the loss and the penalty to the log
     def batch_scalar_loss_with_log(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
         reduction: LossReductionType = LossReductionType.MEAN,
-    ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], LossLogType]:
+    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], LossLogType]:
         """Learned activations L1 (absolute error) loss, with log.
 
         Args:
@@ -117,11 +148,11 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
         match reduction:
             case LossReductionType.MEAN:
-                batch_scalar_loss = absolute_loss.mean().squeeze()
-                batch_scalar_loss_penalty = absolute_loss_penalty.mean().squeeze()
+                batch_scalar_loss = absolute_loss.mean(0).squeeze()
+                batch_scalar_loss_penalty = absolute_loss_penalty.mean(0).squeeze()
             case LossReductionType.SUM:
-                batch_scalar_loss = absolute_loss.sum().squeeze()
-                batch_scalar_loss_penalty = absolute_loss_penalty.sum().squeeze()
+                batch_scalar_loss = absolute_loss.sum(0).squeeze()
+                batch_scalar_loss_penalty = absolute_loss_penalty.sum(0).squeeze()
 
         metrics = {
             "train/loss/" + "learned_activations_l1_loss": batch_scalar_loss.item(),

@@ -12,13 +12,11 @@ from sparse_autoencoder.tensor_types import Axis
 
 
 class LossReductionType(LowercaseStrEnum):
-    """Loss reduction type (across batch items)."""
+    """Loss reduction type."""
 
     MEAN = "mean"
-    """Mean loss across batch items."""
 
     SUM = "sum"
-    """Sum the loss from all batch items."""
 
 
 LossLogType: TypeAlias = dict[str, int | float | str]
@@ -45,10 +43,16 @@ class AbstractLoss(Module, ABC):
     @abstractmethod
     def forward(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-    ) -> Float[Tensor, Axis.BATCH]:
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
         """Batch itemwise loss.
 
         Args:
@@ -64,12 +68,18 @@ class AbstractLoss(Module, ABC):
     @final
     def batch_scalar_loss(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
         reduction: LossReductionType = LossReductionType.MEAN,
-    ) -> Float[Tensor, Axis.SINGLE_ITEM]:
-        """Batch scalar loss.
+    ) -> Float[Tensor, Axis.COMPONENT_OPTIONAL]:
+        """Batch loss (component-wise loss).
 
         Args:
             source_activations: Source activations (input activations to the autoencoder from the
@@ -84,20 +94,27 @@ class AbstractLoss(Module, ABC):
         """
         itemwise_loss = self.forward(source_activations, learned_activations, decoded_activations)
 
+        # Reduction parameter is over the batch dimension (not the component dimension)
         match reduction:
             case LossReductionType.MEAN:
-                return itemwise_loss.mean().squeeze()
+                return itemwise_loss.mean(dim=0).squeeze()
             case LossReductionType.SUM:
-                return itemwise_loss.sum().squeeze()
+                return itemwise_loss.sum(dim=0).squeeze()
 
     def batch_scalar_loss_with_log(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
         reduction: LossReductionType = LossReductionType.MEAN,
-    ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], LossLogType]:
-        """Batch scalar loss.
+    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], LossLogType]:
+        """Batch loss (component-wise loss) with logging.
 
         Args:
             source_activations: Source activations (input activations to the autoencoder from the
@@ -110,7 +127,7 @@ class AbstractLoss(Module, ABC):
         Returns:
             Tuple of the batch scalar loss and a dict of any properties to log.
         """
-        children_loss_scalars: list[Float[Tensor, Axis.SINGLE_ITEM]] = []
+        children_loss_scalars: list[Float[Tensor, Axis.COMPONENT_OPTIONAL]] = []
         metrics: LossLogType = {}
 
         # If the loss module has children (e.g. it is a reducer):
@@ -126,7 +143,7 @@ class AbstractLoss(Module, ABC):
                 metrics.update(child_metrics)
 
             # Get the total loss & metric
-            current_module_loss = torch.stack(children_loss_scalars).sum()
+            current_module_loss = torch.stack(children_loss_scalars).sum(0)
 
         # Otherwise if it is a leaf loss module:
         else:
@@ -143,9 +160,15 @@ class AbstractLoss(Module, ABC):
     @final
     def __call__(
         self,
-        source_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        learned_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-        decoded_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
         reduction: LossReductionType = LossReductionType.MEAN,
     ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], LossLogType]:
         """Batch scalar loss.
