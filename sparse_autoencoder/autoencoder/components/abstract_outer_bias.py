@@ -16,7 +16,9 @@ class AbstractOuterBias(Module, ABC):
 
     @property
     @abstractmethod
-    def bias(self) -> Float[Parameter, Axis.INPUT_OUTPUT_FEATURE]:
+    def bias(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Bias.
 
         May be a reference to a bias parameter in the parent module, if using e.g. a tied bias.
@@ -25,8 +27,10 @@ class AbstractOuterBias(Module, ABC):
     @abstractmethod
     def forward(
         self,
-        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
+        x: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward Pass.
 
         Args:

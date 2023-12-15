@@ -16,15 +16,44 @@ class AbstractDecoder(Module, ABC):
     Typically includes just a :attr:`weight` parameter.
     """
 
+    _learnt_features: int
+    """Number of learnt features (inputs to this layer)."""
+
+    _decoded_features: int
+    """Number of decoded features (outputs from this layer)."""
+
+    _n_components: int | None
+
+    def __init__(
+        self,
+        learnt_features: int,
+        decoded_features: int,
+        n_components: int | None = None,
+    ) -> None:
+        """Initialise the decoder.
+
+        Args:
+            learnt_features: Number of learnt features in the autoencoder.
+            decoded_features: Number of decoded (output) features in the autoencoder.
+            n_components: Number of source model components the SAE is trained on.
+        """
+        super().__init__()
+        self._learnt_features = learnt_features
+        self._decoded_features = decoded_features
+        self._n_components = n_components
+
     @property
     @abstractmethod
     def weight(
         self,
-    ) -> Float[Parameter, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE)]:
+    ) -> Float[
+        Parameter,
+        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE),
+    ]:
         """Weight.
 
-        Each column in the weights matrix acts as a dictionary vector, representing a single basis
-        element in the learned activation space.
+        Each column in the weights matrix (for a specific component) acts as a dictionary vector,
+        representing a single basis element in the learned activation space.
         """
 
     @property
@@ -43,8 +72,8 @@ class AbstractDecoder(Module, ABC):
     @abstractmethod
     def forward(
         self,
-        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
+        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward Pass.
 
         Args:
@@ -61,8 +90,13 @@ class AbstractDecoder(Module, ABC):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX],
-        updated_weights: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)],
+        dictionary_vector_indices: Int64[
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
+        ],
+        updated_weights: Float[
+            Tensor,
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE),
+        ],
     ) -> None:
         """Update decoder dictionary vectors.
 
@@ -73,11 +107,14 @@ class AbstractDecoder(Module, ABC):
             dictionary_vector_indices: Indices of the dictionary vectors to update.
             updated_weights: Updated weights for just these dictionary vectors.
         """
-        if len(dictionary_vector_indices) == 0:
+        if dictionary_vector_indices.numel() == 0:
             return
 
         with torch.no_grad():
-            self.weight[:, dictionary_vector_indices] = updated_weights
+            if self._n_components is None:
+                self.weight[:, dictionary_vector_indices] = updated_weights
+            else:
+                self.weight[:, :, dictionary_vector_indices] = updated_weights
 
     @abstractmethod
     def constrain_weights_unit_norm(self) -> None:

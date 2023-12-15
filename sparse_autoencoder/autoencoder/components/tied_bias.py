@@ -31,16 +31,22 @@ class TiedBias(AbstractOuterBias):
 
     _bias_position: TiedBiasPosition
 
-    _bias_reference: Float[Parameter, Axis.INPUT_OUTPUT_FEATURE]
+    _bias_reference: Float[
+        Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ]
 
     @property
-    def bias(self) -> Float[Parameter, Axis.INPUT_OUTPUT_FEATURE]:
+    def bias(
+        self,
+    ) -> Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Bias."""
         return self._bias_reference
 
     def __init__(
         self,
-        bias_reference: Float[Parameter, Axis.INPUT_OUTPUT_FEATURE],
+        bias_reference: Float[
+            Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
         position: TiedBiasPosition,
     ) -> None:
         """Initialize the bias layer.
@@ -60,8 +66,10 @@ class TiedBias(AbstractOuterBias):
 
     def forward(
         self,
-        x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]:
+        x: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Forward Pass.
 
         Args:

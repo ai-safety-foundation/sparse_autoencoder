@@ -2,10 +2,11 @@
 import math
 from typing import final
 
+import einops
 from jaxtyping import Float
 import torch
 from torch import Tensor
-from torch.nn import Parameter, ReLU, functional, init
+from torch.nn import Parameter, ReLU, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.tensor_types import Axis
@@ -31,22 +32,22 @@ class LinearEncoder(AbstractEncoder):
     $$
     """
 
-    _learnt_features: int
-    """Number of learnt features (inputs to this layer)."""
-
-    _input_features: int
-    """Number of decoded features (outputs from this layer)."""
-
-    _weight: Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+    _weight: Float[
+        Parameter,
+        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
+    ]
     """Weight parameter internal state."""
 
-    _bias: Float[Parameter, Axis.LEARNT_FEATURE]
+    _bias: Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
     """Bias parameter internal state."""
 
     @property
     def weight(
         self,
-    ) -> Float[Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+    ) -> Float[
+        Parameter,
+        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
+    ]:
         """Weight parameter.
 
         Each row in the weights matrix acts as a dictionary vector, representing a single basis
@@ -55,7 +56,7 @@ class LinearEncoder(AbstractEncoder):
         return self._weight
 
     @property
-    def bias(self) -> Float[Parameter, Axis.LEARNT_FEATURE]:
+    def bias(self) -> Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
         """Bias parameter."""
         return self._bias
 
@@ -70,7 +71,7 @@ class LinearEncoder(AbstractEncoder):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self.weight, 0), (self.bias, 0)]
+        return [(self.weight, -2), (self.bias, -2)]
 
     activation_function: ReLU
     """Activation function."""
@@ -79,9 +80,20 @@ class LinearEncoder(AbstractEncoder):
         self,
         input_features: int,
         learnt_features: int,
+        n_components: int | None = None,
     ):
-        """Initialize the linear encoder layer."""
-        super().__init__()
+        """Initialize the linear encoder layer.
+
+        Args:
+            input_features: Number of input features to the autoencoder.
+            learnt_features: Number of learnt features in the autoencoder.
+            n_components: Number of source model components the SAE is trained on.
+        """
+        super().__init__(
+            input_features=input_features,
+            learnt_features=learnt_features,
+            n_components=n_components,
+        )
         self._learnt_features = learnt_features
         self._input_features = input_features
 
@@ -107,8 +119,11 @@ class LinearEncoder(AbstractEncoder):
         init.uniform_(self._bias, -bound, bound)
 
     def forward(
-        self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)]:
+        self,
+        x: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
         """Forward pass.
 
         Args:
@@ -117,7 +132,7 @@ class LinearEncoder(AbstractEncoder):
         Returns:
             Output of the forward pass.
         """
-        z = functional.linear(x, self.weight, self.bias)
+        z = torch.nn.functional.linear(x, self.weight, self.bias)
         return self.activation_function(z)
 
     def extra_repr(self) -> str:
