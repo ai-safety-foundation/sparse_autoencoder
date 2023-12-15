@@ -244,7 +244,13 @@ class UnitNormDecoder(AbstractDecoder):
         Returns:
             Output of the forward pass.
         """
-        return torch.nn.functional.linear(x, self._weight)
+        return einops.einsum(
+            x,
+            self.weight,
+            f"{Axis.BATCH} ... {Axis.LEARNT_FEATURE}, \
+            ... {Axis.INPUT_OUTPUT_FEATURE} {Axis.LEARNT_FEATURE} \
+                -> {Axis.BATCH} ... {Axis.INPUT_OUTPUT_FEATURE}",
+        )
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""

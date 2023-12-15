@@ -2,6 +2,7 @@
 import math
 from typing import final
 
+import einops
 from jaxtyping import Float
 import torch
 from torch import Tensor
@@ -131,7 +132,17 @@ class LinearEncoder(AbstractEncoder):
         Returns:
             Output of the forward pass.
         """
-        z = torch.nn.functional.linear(x, self.weight, self.bias)
+        z = (
+            einops.einsum(
+                x,
+                self.weight,
+                f"{Axis.BATCH} ... {Axis.INPUT_OUTPUT_FEATURE}, \
+            ... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
+                -> {Axis.BATCH} ... {Axis.LEARNT_FEATURE}",
+            )
+            + self.bias
+        )
+
         return self.activation_function(z)
 
     def extra_repr(self) -> str:
