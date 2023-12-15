@@ -2,6 +2,7 @@
 from collections.abc import Iterable
 from functools import partial
 from pathlib import Path
+import tempfile
 from typing import final
 from urllib.parse import quote_plus
 
@@ -30,6 +31,9 @@ from sparse_autoencoder.source_model.store_activations_hook import store_activat
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils import get_model_device
+
+
+DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(tempfile.gettempdir()) / "sparse_autoencoder"
 
 
 class Pipeline:
@@ -79,7 +83,7 @@ class Pipeline:
     """Total number of activations trained on state."""
 
     @final
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         activation_resampler: AbstractActivationResampler | None,
         autoencoder: SparseAutoencoder,
@@ -90,7 +94,7 @@ class Pipeline:
         source_dataset: SourceDataset,
         source_model: HookedTransformer,
         run_name: str = "sparse_autoencoder",
-        checkpoint_directory: Path | None = None,
+        checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
         log_frequency: int = 100,
         metrics: MetricsContainer = default_metrics,
         source_data_batch_size: int = 12,
@@ -339,15 +343,34 @@ class Pipeline:
                 wandb.log(data=calculated, commit=False)
 
     @final
-    def save_checkpoint(self) -> None:
-        """Save the model as a checkpoint."""
-        if self.checkpoint_directory:
-            run_name_file_system_safe = quote_plus(self.run_name)
-            file_path: Path = (
-                self.checkpoint_directory
-                / f"{run_name_file_system_safe}-{self.total_activations_trained_on}.pt"
-            )
-            torch.save(self.autoencoder.state_dict(), file_path)
+    def save_checkpoint(self, *, is_final: bool = False) -> Path:
+        """Save the model as a checkpoint.
+
+        Args:
+            is_final: Whether this is the final checkpoint.
+
+        Returns:
+            Path to the saved checkpoint.
+        """
+        # Create the name
+        name: str = f"{self.run_name}_{'final' if is_final else self.total_activations_trained_on}"
+        safe_name = quote_plus(name, safe="_")
+
+        # Save locally
+        self.checkpoint_directory.mkdir(parents=True, exist_ok=True)
+        file_path: Path = self.checkpoint_directory / f"{safe_name}.pt"
+        torch.save(
+            self.autoencoder.state_dict(),
+            file_path,
+        )
+
+        # Upload to wandb
+        if wandb.run is not None:
+            artifact = wandb.Artifact(safe_name, type="model")
+            artifact.add_file(str(file_path))
+            wandb.log_artifact(artifact)
+
+        return file_path
 
     def run_pipeline(
         self,
@@ -439,6 +462,9 @@ class Pipeline:
 
                 # Update the progress bar
                 progress_bar.update(store_size)
+
+        # Save the final checkpoint
+        self.save_checkpoint(is_final=True)
 
     @staticmethod
     def stateful_dataloader_iterable(

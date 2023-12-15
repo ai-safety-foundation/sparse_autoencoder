@@ -33,7 +33,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     The names of the parameters, so that we can find them later when resetting the state.
     """
 
-    def __init__(  # noqa: PLR0913 (extending existing implementation)
+    def __init__(  # (extending existing implementation)
         self,
         params: params_t,
         lr: float | Tensor = 1e-3,

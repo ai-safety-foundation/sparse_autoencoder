@@ -264,7 +264,13 @@ class Metric:
         return self.__str__()
 
 
-ParamType = TypeVar("ParamType", float, int, str)
+ParamType = TypeVar(
+    "ParamType",
+    float,
+    int,
+    str,
+    list[str],
+)
 
 
 @dataclass(frozen=True)

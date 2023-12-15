@@ -6,6 +6,7 @@ import traceback
 import torch
 from transformer_lens import HookedTransformer
 from transformer_lens.utils import get_act_name, get_device
+from transformers import AutoTokenizer
 import wandb
 
 from sparse_autoencoder import (
@@ -18,6 +19,8 @@ from sparse_autoencoder import (
     PreTokenizedDataset,
     SparseAutoencoder,
 )
+from sparse_autoencoder.source_data.abstract_dataset import SourceDataset
+from sparse_autoencoder.source_data.text_dataset import TextDataset
 from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
     SweepConfig,
@@ -126,18 +129,56 @@ def setup_optimizer(
     )
 
 
-def setup_source_data(hyperparameters: RuntimeHyperparameters) -> PreTokenizedDataset:
+def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
     """Setup the source data for training.
 
     Args:
         hyperparameters: The hyperparameters dictionary.
 
     Returns:
-        PreTokenizedDataset: The initialized source data.
+        The initialized source dataset.
+
+    Raises:
+        ValueError: If the tokenizer name is not specified, but pre_tokenized is False.
     """
-    return PreTokenizedDataset(
-        dataset_path=hyperparameters["source_data"]["dataset_path"],
+    dataset_dir = (
+        hyperparameters["source_data"]["dataset_dir"]
+        if "dataset_dir" in hyperparameters["source_data"]
+        else None
+    )
+
+    dataset_files = (
+        hyperparameters["source_data"]["dataset_files"]
+        if "dataset_files" in hyperparameters["source_data"]
+        else None
+    )
+
+    if hyperparameters["source_data"]["pre_tokenized"]:
+        return PreTokenizedDataset(
+            context_size=hyperparameters["source_data"]["context_size"],
+            dataset_dir=dataset_dir,
+            dataset_files=dataset_files,
+            dataset_path=hyperparameters["source_data"]["dataset_path"],
+            pre_download=hyperparameters["source_data"]["pre_download"],
+        )
+
+    if hyperparameters["source_data"]["tokenizer_name"] is None:
+        error_message = (
+            "If pre_tokenized is False, then tokenizer_name must be specified in the "
+            "hyperparameters."
+        )
+        raise ValueError(error_message)
+
+    tokenizer = AutoTokenizer.from_pretrained(hyperparameters["source_data"]["tokenizer_name"])
+
+    return TextDataset(
         context_size=hyperparameters["source_data"]["context_size"],
+        dataset_dir=dataset_dir,
+        dataset_files=dataset_files,
+        dataset_path=hyperparameters["source_data"]["dataset_path"],
+        n_processes_preprocessing=4,
+        pre_download=hyperparameters["source_data"]["pre_download"],
+        tokenizer=tokenizer,
     )
 
 
@@ -154,7 +195,7 @@ def run_training_pipeline(
     loss: LossReducer,
     optimizer: AdamWithReset,
     activation_resampler: ActivationResampler,
-    source_data: PreTokenizedDataset,
+    source_data: SourceDataset,
     run_name: str,
 ) -> None:
     """Run the training pipeline for the sparse autoencoder.
@@ -178,6 +219,7 @@ def run_training_pipeline(
     hook_point = get_act_name(
         hyperparameters["source_model"]["hook_site"], hyperparameters["source_model"]["hook_layer"]
     )
+
     pipeline = Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,

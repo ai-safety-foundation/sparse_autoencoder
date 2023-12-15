@@ -180,7 +180,7 @@
             convention="google"
 
         [tool.ruff.lint.pylint]
-            max-args=10
+            max-args=15
 
 [tool.pyright]
     # All rules apart from base are shown explicitly below

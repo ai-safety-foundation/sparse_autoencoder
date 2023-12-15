@@ -111,6 +111,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         buffer_size: int = 1000,
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
+        n_processes_preprocessing: int | None = None,
         preprocess_batch_size: int = 1000,
         *,
         pre_download: bool = False,
@@ -135,6 +136,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
                 tokenized prompts once the preprocessing function has been applied.
             dataset_dir: Defining the `data_dir` of the dataset configuration.
             dataset_files: Path(s) to source data file(s).
+            n_processes_preprocessing: The number of processes to use for preprocessing.
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
             pre_download: Whether to pre-download the whole dataset.
@@ -146,7 +148,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
 
         # Load the dataset
         should_stream = not pre_download
-        loaded_dataset = load_dataset(
+        dataset = load_dataset(
             dataset_path,
             streaming=should_stream,
             split=dataset_split,
@@ -154,35 +156,45 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             data_files=dataset_files,
         )
 
-        # Check the dataset is a Hugging Face Dataset or IterableDataset
-        if not isinstance(loaded_dataset, Dataset) and not isinstance(
-            loaded_dataset, IterableDataset
-        ):
-            error_message = (
-                f"Expected Hugging Face dataset to be a Dataset or IterableDataset, but got "
-                f"{type(loaded_dataset)}."
-            )
-            raise TypeError(error_message)
-
-        dataset: Dataset | IterableDataset = loaded_dataset
-
         # Setup preprocessing
         existing_columns: list[str] = list(next(iter(dataset)).keys())
-        mapped_dataset = dataset.map(
-            self.preprocess,
-            batched=True,
-            batch_size=preprocess_batch_size,
-            fn_kwargs={"context_size": context_size},
-            remove_columns=existing_columns,
-        )
 
         if pre_download:
+            if not isinstance(dataset, Dataset):
+                error_message = (
+                    f"Expected Hugging Face dataset to be a Dataset when pre-downloading, but got "
+                    f"{type(dataset)}."
+                )
+                raise TypeError(error_message)
+
             # Download the whole dataset
+            mapped_dataset = dataset.map(
+                self.preprocess,
+                batched=True,
+                batch_size=preprocess_batch_size,
+                fn_kwargs={"context_size": context_size},
+                remove_columns=existing_columns,
+                num_proc=n_processes_preprocessing,
+            )
             self.dataset = mapped_dataset.shuffle()
         else:
             # Setup approximate shuffling. As the dataset is streamed, this just pre-downloads at
             # least `buffer_size` items and then shuffles just that buffer.
             # https://huggingface.co/docs/datasets/v2.14.5/stream#shuffle
+            if not isinstance(dataset, IterableDataset):
+                error_message = (
+                    f"Expected Hugging Face dataset to be an IterableDataset when streaming, but "
+                    f"got {type(dataset)}."
+                )
+                raise TypeError(error_message)
+
+            mapped_dataset = dataset.map(
+                self.preprocess,
+                batched=True,
+                batch_size=preprocess_batch_size,
+                fn_kwargs={"context_size": context_size},
+                remove_columns=existing_columns,
+            )
             self.dataset = mapped_dataset.shuffle(buffer_size=buffer_size)  # type: ignore
 
     @final
