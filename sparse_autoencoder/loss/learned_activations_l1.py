@@ -154,14 +154,14 @@ class LearnedActivationsL1Loss(AbstractLoss):
                 batch_scalar_loss = absolute_loss.sum(0).squeeze()
                 batch_scalar_loss_penalty = absolute_loss_penalty.sum(0).squeeze()
 
-        batch_loss_to_log = batch_scalar_loss.tolist()
-        batch_loss_penalty_to_log = batch_scalar_loss_penalty.tolist()
+        batch_loss_to_log: list | float = batch_scalar_loss.tolist()
+        batch_loss_penalty_to_log: list | float = batch_scalar_loss_penalty.tolist()
 
         # Create the log
         metrics = {}
-        if len(batch_loss_to_log) == 1:
-            metrics["train/loss/learned_activations_l1_loss"] = batch_loss_to_log[0]
-            metrics[f"train/loss/{self.log_name()}"] = batch_loss_penalty_to_log[0]
+        if isinstance(batch_loss_to_log, float):
+            metrics["train/loss/learned_activations_l1_loss"] = batch_loss_to_log
+            metrics[f"train/loss/{self.log_name()}"] = batch_loss_penalty_to_log
         else:
             for component_idx, (component_loss, component_loss_penalty) in enumerate(
                 zip(batch_loss_to_log, batch_loss_penalty_to_log)

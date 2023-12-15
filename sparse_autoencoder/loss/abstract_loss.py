@@ -153,9 +153,9 @@ class AbstractLoss(Module, ABC):
 
         # Add in the current loss module's metric
         log_name = "train/loss/" + self.log_name()
-        loss_to_log: list = current_module_loss.tolist()
-        if len(loss_to_log) == 1:
-            metrics[log_name] = loss_to_log[0]
+        loss_to_log: list | float = current_module_loss.tolist()
+        if isinstance(loss_to_log, float):
+            metrics[log_name] = loss_to_log
         else:
             for component_idx, component_loss in enumerate(loss_to_log):
                 metrics[log_name + f"/component_{component_idx}"] = component_loss
