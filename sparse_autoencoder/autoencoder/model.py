@@ -90,7 +90,10 @@ class SparseAutoencoder(AbstractAutoencoder):
             n_learned_features: Number of learned features. The initial paper experimented with 1 to
                 256 times the number of input features, and primarily used a multiple of 8.
             geometric_median_dataset: Estimated geometric median of the dataset.
-            n_components: Number of source model components the SAE is trained on.
+            n_components: Number of source model components the SAE is trained on. This is useful if
+                you want to train the SAE on several components of the source model at once. If
+                `None`, the SAE is assumed to be trained on just one component (in this case the
+                model won't contain a component axis in any of the parameters).
         """
         super().__init__()
 

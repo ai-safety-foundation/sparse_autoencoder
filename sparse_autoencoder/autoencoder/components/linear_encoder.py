@@ -71,7 +71,7 @@ class LinearEncoder(AbstractEncoder):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self.weight, -2), (self.bias, -2)]
+        return [(self.weight, -2), (self.bias, -1)]
 
     activation_function: ReLU
     """Activation function."""
