@@ -72,3 +72,29 @@ def test_unit_norm_decreases() -> None:
         absolute_diff_with_hook = torch.abs(weight_norms_with_hook - target_norms)
         absolute_diff_without_hook = torch.abs(weight_norms_without_hook - target_norms)
         assert torch.all(absolute_diff_with_hook < absolute_diff_without_hook)
+
+
+def test_output_same_without_component_dim_vs_with_1_component() -> None:
+    """Test the forward pass gives identical results for None and 1 component."""
+    decoded_features = 2
+    learnt_features = 4
+    batch_size = 1
+
+    # Create the layers to compare
+    torch.manual_seed(1)
+    decoder_without_components_dim = UnitNormDecoder(
+        decoded_features=decoded_features, learnt_features=learnt_features, n_components=None
+    )
+    torch.manual_seed(1)
+    decoder_with_1_component = UnitNormDecoder(
+        decoded_features=decoded_features, learnt_features=learnt_features, n_components=1
+    )
+
+    # Create the input
+    input_tensor = torch.randn(batch_size, learnt_features)
+    input_with_components_dim = input_tensor.unsqueeze(1)
+
+    # Check the output is the same
+    output_without_components_dim = decoder_without_components_dim(input_tensor)
+    output_with_1_component = decoder_with_1_component(input_with_components_dim)
+    assert torch.allclose(output_without_components_dim, output_with_1_component.squeeze(1))

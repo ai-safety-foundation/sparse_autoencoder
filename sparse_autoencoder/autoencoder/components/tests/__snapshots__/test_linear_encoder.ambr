@@ -2,8 +2,40 @@
 # name: test_extra_repr
   '''
   LinearEncoder(
-    in_features=10, out_features=5
+    in_features=2, out_features=3
     (activation_function): ReLU()
   )
   '''
+# ---
+# name: test_forward_pass_result_matches_the_snapshot[1]
+  tensor([[[0.0716, 0.3242, 0.3932]],
+  
+          [[0.0000, 0.1928, 0.0000]],
+  
+          [[0.0000, 0.0188, 0.0000]],
+  
+          [[0.0000, 0.1916, 0.0000]]], grad_fn=<ReluBackward0>)
+# ---
+# name: test_forward_pass_result_matches_the_snapshot[3]
+  tensor([[[0.0000, 1.7160, 0.0000],
+           [0.0348, 1.7786, 0.5731],
+           [0.2476, 1.4540, 1.2760]],
+  
+          [[0.0397, 1.7910, 0.6043],
+           [0.0000, 1.6718, 0.0000],
+           [0.0000, 1.8241, 0.0000]],
+  
+          [[0.0000, 1.6628, 0.0000],
+           [0.0000, 1.5777, 0.1704],
+           [0.0000, 1.7307, 0.0322]],
+  
+          [[0.0000, 2.2555, 0.0000],
+           [0.0398, 1.1812, 0.1480],
+           [0.0000, 1.3681, 0.0673]]], grad_fn=<ReluBackward0>)
+# ---
+# name: test_forward_pass_result_matches_the_snapshot[None]
+  tensor([[0.0716, 0.3242, 0.3932],
+          [0.0000, 0.1928, 0.0000],
+          [0.0000, 0.0188, 0.0000],
+          [0.0000, 0.1916, 0.0000]], grad_fn=<ReluBackward0>)
 # ---

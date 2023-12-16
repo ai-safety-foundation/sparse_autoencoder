@@ -20,7 +20,7 @@ from sparse_autoencoder.activation_resampler.abstract_activation_resampler impor
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss
+from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
 from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
@@ -220,8 +220,11 @@ class Pipeline:
 
             # Get loss & metrics
             metrics = {}
-            total_loss, loss_metrics = self.loss.batch_scalar_loss_with_log(
-                batch, learned_activations, reconstructed_activations
+            total_loss, loss_metrics = self.loss.scalar_loss_with_log(
+                batch,
+                learned_activations,
+                reconstructed_activations,
+                component_reduction=LossReductionType.MEAN,
             )
             metrics.update(loss_metrics)
 

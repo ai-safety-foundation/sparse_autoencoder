@@ -1,0 +1,7 @@
+# serializer version: 1
+# name: test_l2_loss_with_varying_input_shapes[input_shape0-learned_activations_shape0]
+  '[5043, 10200]'
+# ---
+# name: test_l2_loss_with_varying_input_shapes[input_shape1-learned_activations_shape1]
+  '[[26640, 3069, 3791, 10252], [26593, 12966, 17873, 21149]]'
+# ---
