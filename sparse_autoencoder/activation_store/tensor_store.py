@@ -7,9 +7,6 @@ from sparse_autoencoder.activation_store.base_store import (
     ActivationStore,
     StoreFullError,
 )
-from sparse_autoencoder.activation_store.utils.extend_resize import (
-    resize_to_single_item_dimension,
-)
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -26,63 +23,83 @@ class TensorActivationStore(ActivationStore):
     Create an empty activation dataset:
 
         >>> import torch
-        >>> store = TensorActivationStore(max_items=1000, num_neurons=100)
+        >>> store = TensorActivationStore(max_items=1000, num_neurons=100, num_components=2)
 
-    Add a single activation vector to the dataset:
+    Add a single activation vector to the dataset (for a component):
 
-        >>> store.append(torch.randn(100))
+        >>> store.append(torch.randn(100), component_idx=0)
+        >>> store.append(torch.randn(100), component_idx=1)
         >>> len(store)
         1
 
-    Add a [batch, pos, neurons] activation tensor to the dataset:
+    Add a [batch, neurons] activation tensor to the dataset:
 
         >>> store.empty()
-        >>> batch = torch.randn(10, 10, 100)
-        >>> store.extend(batch)
+        >>> batch = torch.randn(10, 100)
+        >>> store.extend(batch, component_idx=0)
+        >>> store.extend(batch, component_idx=1)
         >>> len(store)
-        100
+        10
 
     Shuffle the dataset **before passing it to the DataLoader**:
 
         >>> store.shuffle() # Faster than using the DataLoader shuffle argument
-        >>> loader = torch.utils.data.DataLoader(store, shuffle=False, batch_size=2)
 
     Use the dataloader to iterate over the dataset:
 
+        >>> loader = torch.utils.data.DataLoader(store, shuffle=False, batch_size=2)
         >>> next_item = next(iter(loader))
         >>> next_item.shape
-        torch.Size([2, 100])
+        torch.Size([2, 2, 100])
     """
 
-    _data: Float[Tensor, Axis.names(Axis.ITEMS, Axis.INPUT_OUTPUT_FEATURE)]
+    _data: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)]
     """Underlying Tensor Data Store."""
 
-    items_stored: int = 0
+    _items_stored: list[int]
     """Number of items stored."""
 
     max_items: int
     """Maximum Number of Items to Store."""
 
+    _num_components: int
+    """Number of components"""
+
+    @property
+    def num_components(self) -> int:
+        """Number of components."""
+        return self._num_components
+
+    @property
+    def current_activations_stored_per_component(self) -> list[int]:
+        """Number of activations stored per component."""
+        return self._items_stored
+
     def __init__(
         self,
         max_items: int,
         num_neurons: int,
+        num_components: int = 1,
         device: torch.device | None = None,
     ) -> None:
         """Initialise the Tensor Activation Store.
 
         Args:
-            max_items: Maximum number of items to store (individual activation vectors)
+            max_items: Maximum number of items to store per component (individual activation
+                vectors).
             num_neurons: Number of neurons in each activation vector.
+            num_components: Number of components to store (i.e. number of source models).
             device: Device to store the activation vectors on.
         """
-        self._data = torch.empty((max_items, num_neurons), device=device)
+        self._num_components = num_components
+        self._items_stored = [0] * num_components
         self._max_items = max_items
+        self._data = torch.empty((max_items, num_components, num_neurons), device=device)
 
     def __len__(self) -> int:
         """Length Dunder Method.
 
-        Returns the number of activation vectors in the dataset.
+        Returns the number of activation vectors per component in the dataset.
 
         Example:
             >>> import torch
@@ -95,7 +112,8 @@ class TensorActivationStore(ActivationStore):
         Returns:
             The number of activation vectors in the dataset.
         """
-        return self.items_stored
+        # Min as this is the amount of activations that can be fetched by get_item
+        return min(self.current_activations_stored_per_component)
 
     def __sizeof__(self) -> int:
         """Sizeof Dunder Method.
@@ -111,16 +129,18 @@ class TensorActivationStore(ActivationStore):
         """
         return self._data.element_size() * self._data.nelement()
 
-    def __getitem__(self, index: int) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
+    def __getitem__(
+        self, index: int
+    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Get Item Dunder Method.
 
-        Example:
-        >>> import torch
-        >>> store = TensorActivationStore(max_items=2, num_neurons=5)
-        >>> store.append(torch.zeros(5))
-        >>> store.append(torch.ones(5))
-        >>> store[1]
-        tensor([1., 1., 1., 1., 1.])
+        Examples:
+            >>> import torch
+            >>> store = TensorActivationStore(max_items=2, num_neurons=5)
+            >>> store.append(torch.zeros(5))
+            >>> store.append(torch.ones(5))
+            >>> store[1]
+            tensor([1., 1., 1., 1., 1.])
 
         Args:
             index: The index of the tensor to fetch.
@@ -132,10 +152,12 @@ class TensorActivationStore(ActivationStore):
             IndexError: If the index is out of range.
         """
         # Check in range
-        if index >= self.items_stored:
-            msg = f"Index {index} out of range (only {self.items_stored} items stored)"
+        if index >= len(self):
+            msg = f"Index {index} out of range (only {len(self)} items stored)"
             raise IndexError(msg)
 
+        if self._num_components == 1:
+            return self._data[index, 0]
         return self._data[index]
 
     def shuffle(self) -> None:
@@ -155,17 +177,19 @@ class TensorActivationStore(ActivationStore):
         [0.0, 2.0, 1.0]
         """
         # Generate a permutation of the indices for the active data
-        perm = torch.randperm(self.items_stored)
+        perm = torch.randperm(len(self))
 
         # Use this permutation to shuffle the active data in-place
-        self._data[: self.items_stored] = self._data[perm]
+        self._data[: len(self)] = self._data[perm]
 
-    def append(self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]) -> None:
+    def append(
+        self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE], component_idx: int = 0
+    ) -> None:
         """Add a single item to the store.
 
         Example:
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
+        >>> store = TensorActivationStore(max_items=10, num_neurons=5, num_components=1)
         >>> store.append(torch.zeros(5))
         >>> store.append(torch.ones(5))
         >>> store[1]
@@ -173,60 +197,52 @@ class TensorActivationStore(ActivationStore):
 
         Args:
             item: The item to append to the dataset.
+            component_idx: The component index to append the item to.
 
         Raises:
             IndexError: If there is no space remaining.
         """
         # Check we have space
-        if self.items_stored + 1 > self._max_items:
+        if self._items_stored[component_idx] + 1 > self._max_items:
             raise StoreFullError
 
-        self._data[self.items_stored] = item.to(
+        self._data[self._items_stored[component_idx], component_idx] = item.to(
             self._data.device,
         )
-        self.items_stored += 1
+        self._items_stored[component_idx] += 1
 
-    def extend(self, batch: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]) -> None:
+    def extend(
+        self,
+        batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        component_idx: int = 0,
+    ) -> None:
         """Add a batch to the store.
 
         Examples:
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, num_neurons=5)
         >>> store.extend(torch.zeros(2, 5))
-        >>> store.items_stored
+        >>> len(store)
         2
-
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
-        >>> store.extend(torch.zeros(3, 3, 5))
-        >>> store.items_stored
-        9
 
         Args:
             batch: The batch to append to the dataset.
+            component_idx: The component index to append the batch to.
 
         Raises:
             IndexError: If there is no space remaining.
         """
-        reshaped: Float[
-            Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)
-        ] = resize_to_single_item_dimension(
-            batch,
-        )
-
         # Check we have space
-        num_activation_tensors: int = reshaped.shape[0]
-        if self.items_stored + num_activation_tensors > self._max_items:
-            if reshaped.shape[0] > self._max_items:
-                msg = f"Single batch of {num_activation_tensors} activations is larger than the \
-                    total maximum in the store of {self._max_items}."
-                raise ValueError(msg)
-
+        num_activation_tensors: int = batch.shape[0]
+        if self._items_stored[component_idx] + num_activation_tensors > self._max_items:
             raise StoreFullError
 
-        self._data[self.items_stored : self.items_stored + num_activation_tensors] = reshaped.to(
-            self._data.device
-        )
-        self.items_stored += num_activation_tensors
+        self._data[
+            self._items_stored[component_idx] : self._items_stored[component_idx]
+            + num_activation_tensors,
+            component_idx,
+        ] = batch.to(self._data.device)
+        self._items_stored[component_idx] += num_activation_tensors
 
     def empty(self) -> None:
         """Empty the store.
@@ -235,11 +251,11 @@ class TensorActivationStore(ActivationStore):
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, num_neurons=5)
         >>> store.extend(torch.zeros(2, 5))
-        >>> store.items_stored
+        >>> len(store)
         2
         >>> store.empty()
-        >>> store.items_stored
+        >>> len(store)
         0
         """
         # We don't need to zero the data, just reset the number of items stored
-        self.items_stored = 0
+        self._items_stored = [0 for _ in self._items_stored]

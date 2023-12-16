@@ -11,7 +11,9 @@ from torch.utils.data import Dataset
 from sparse_autoencoder.tensor_types import Axis
 
 
-class ActivationStore(Dataset[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]], ABC):
+class ActivationStore(
+    Dataset[Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]], ABC
+):
     """Activation Store Abstract Class.
 
     Extends the `torch.utils.data.Dataset` class to provide an activation store, with additional
@@ -25,6 +27,15 @@ class ActivationStore(Dataset[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]], ABC):
     Example:
     >>> import torch
     >>> class MyActivationStore(ActivationStore):
+    ...
+    ...     @property
+    ...     def current_activations_stored_per_component(self):
+    ...        raise NotImplementedError
+    ...
+    ...     @property
+    ...     def num_components(self):
+    ...         raise NotImplementedError
+    ...
     ...     def __init__(self):
     ...         super().__init__()
     ...         self._data = [] # In this example, we just store in a list
@@ -51,12 +62,18 @@ class ActivationStore(Dataset[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]], ABC):
     """
 
     @abstractmethod
-    def append(self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]) -> Future | None:
+    def append(
+        self,
+        item: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE)],
+        component_idx: int,
+    ) -> Future | None:
         """Add a Single Item to the Store."""
 
     @abstractmethod
     def extend(
-        self, batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+        self,
+        batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
+        component_idx: int,
     ) -> Future | None:
         """Add a Batch to the Store."""
 
@@ -64,12 +81,24 @@ class ActivationStore(Dataset[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]], ABC):
     def empty(self) -> None:
         """Empty the Store."""
 
+    @property
+    @abstractmethod
+    def num_components(self) -> int:
+        """Number of components."""
+
+    @property
+    @abstractmethod
+    def current_activations_stored_per_component(self) -> list[int]:
+        """Current activations stored per component."""
+
     @abstractmethod
     def __len__(self) -> int:
         """Get the Length of the Store."""
 
     @abstractmethod
-    def __getitem__(self, index: int) -> Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]:
+    def __getitem__(
+        self, index: int
+    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
         """Get an Item from the Store."""
 
     def shuffle(self) -> None:
@@ -77,7 +106,11 @@ class ActivationStore(Dataset[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]], ABC):
 
     @final
     def fill_with_test_data(
-        self, num_batches: int = 16, batch_size: int = 16, input_features: int = 256
+        self,
+        num_batches: int = 16,
+        batch_size: int = 16,
+        num_components: int = 1,
+        input_features: int = 256,
     ) -> None:
         """Fill the store with test data.
 
@@ -99,11 +132,13 @@ class ActivationStore(Dataset[Float[Tensor, Axis.INPUT_OUTPUT_FEATURE]], ABC):
         Args:
             num_batches: Number of batches to fill the store with.
             batch_size: Number of items per batch.
+            num_components: Number of source model components the SAE is trained on.
             input_features: Number of input features per item.
         """
         for _ in range(num_batches):
-            sample = torch.rand((batch_size, input_features))
-            self.extend(sample)
+            for component_idx in range(num_components):
+                sample = torch.rand(batch_size, input_features)
+                self.extend(sample, component_idx)
 
 
 class StoreFullError(IndexError):

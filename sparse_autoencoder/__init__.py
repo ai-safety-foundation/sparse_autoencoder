@@ -1,7 +1,6 @@
 """Sparse Autoencoder Library."""
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.disk_store import DiskActivationStore
-from sparse_autoencoder.activation_store.list_store import ListActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import LossLogType, LossReductionType
