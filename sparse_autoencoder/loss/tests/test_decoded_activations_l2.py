@@ -3,8 +3,8 @@ import pytest
 from syrupy.session import SnapshotSession
 import torch
 
-from sparse_autoencoder.autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 @pytest.fixture()
