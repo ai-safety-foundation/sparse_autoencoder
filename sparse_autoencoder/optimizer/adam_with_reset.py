@@ -5,7 +5,7 @@ This reset method is useful when resampling dead neurons during training.
 from collections.abc import Iterator
 from typing import final
 
-from jaxtyping import Int
+from jaxtyping import Float, Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Adam
@@ -36,7 +36,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     def __init__(  # (extending existing implementation)
         self,
         params: params_t,
-        lr: float | Tensor = 1e-3,
+        lr: float | Float[Tensor, Axis.names(Axis.SINGLE_ITEM)] = 1e-3,
         betas: tuple[float, float] = (0.9, 0.999),
         eps: float = 1e-8,
         weight_decay: float = 0,
@@ -145,10 +145,49 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
                     max_exp_avg_sq: Tensor = state["max_exp_avg_sq"]
                     max_exp_avg_sq.zero_()
 
+    @staticmethod
+    def zero_fill_multi_dimensional(
+        input_tensor: Tensor,
+        neuron_indices: Int[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)],
+        axis: int,
+    ) -> Tensor:
+        """Multi-dimensional version of torch index fill.
+
+        Args:
+            input_tensor: Input tensor to modify.
+            neuron_indices: The indices of the neurons to reset.
+            axis: Dimension along which to index.
+
+        Returns:
+            The modified input tensor.
+
+        Raises:
+            ValueError: If the neuron indices are not 1D or 2D (if the component dimension is
+                present) tensors.
+        """
+        # Make sure neuron indices are on the same device as the state
+        output_tensor: Tensor = input_tensor.clone()
+        neuron_indices = neuron_indices.to(input_tensor.device)
+
+        match neuron_indices.ndim:
+            case 1:
+                output_tensor.index_fill_(axis, neuron_indices, 0)
+            case 2:
+                for component_idx in range(neuron_indices.shape[0]):
+                    output_tensor[component_idx].index_fill_(axis, neuron_indices, 0)
+            case _:
+                error_message = (
+                    "Neuron indices must be 1D or 2D (if the component dimension is "
+                    "present) tensors."
+                )
+                raise ValueError(error_message)
+
+        return output_tensor
+
     def reset_neurons_state(
         self,
         parameter: Parameter,
-        neuron_indices: Int[Tensor, Axis.LEARNT_FEATURE_IDX],
+        neuron_indices: Int[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)],
         axis: int,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.
@@ -176,7 +215,8 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             parameter: The parameter to be reset. Examples from the standard sparse autoencoder
                 implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,
             neuron_indices: The indices of the neurons to reset.
-            axis: The axis of the parameter to reset.
+            axis: The axis of the state values to reset (i.e. the input/output features axis, as
+                we're resetting all input/output features for a specific dead neuron).
         """
         # Get the state of the parameter
         state = self.state[parameter]
@@ -191,13 +231,17 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
 
         # Reset running averages for the specified neurons
         if "exp_avg" in state:
-            exp_avg: Tensor = state["exp_avg"]
-            exp_avg.index_fill_(axis, neuron_indices.to(exp_avg.device), 0)
+            state["exp_avg"] = self.zero_fill_multi_dimensional(
+                state["exp_avg"], neuron_indices, axis
+            )
+
         if "exp_avg_sq" in state:
-            exp_avg_sq: Tensor = state["exp_avg_sq"]
-            exp_avg_sq.index_fill_(axis, neuron_indices.to(exp_avg_sq.device), 0)
+            state["exp_avg_sq"] = self.zero_fill_multi_dimensional(
+                state["exp_avg_sq"], neuron_indices, axis
+            )
 
         # If AdamW is used (weight decay fix), also reset the max exp_avg_sq
         if "max_exp_avg_sq" in state:
-            max_exp_avg_sq: Tensor = state["max_exp_avg_sq"]
-            max_exp_avg_sq.index_fill_(axis, neuron_indices.to(max_exp_avg_sq.device), 0)
+            state["max_exp_avg_sq"] = self.zero_fill_multi_dimensional(
+                state["max_exp_avg_sq"], neuron_indices, axis
+            )
