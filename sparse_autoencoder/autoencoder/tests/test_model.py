@@ -56,7 +56,7 @@ def test_forward_pass_result_matches_the_snapshot(
     )
 
     output = model.forward(input_tensor)
-    assert output == snapshot, "Forward pass result has changed."
+    assert output[1] == snapshot, "Forward pass result has changed."
 
 
 def test_forward_pass_same_without_components_and_1_component() -> None:
