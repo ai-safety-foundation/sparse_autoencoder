@@ -18,7 +18,7 @@ def test_hook_stores_activations() -> None:
     model = HookedTransformer.from_pretrained("tiny-stories-1M")
 
     model.add_hook(
-        "blocks.1.mlp.hook_post",
+        "blocks.0.mlp.hook_post",
         partial(store_activations_hook, store=store),
     )
 

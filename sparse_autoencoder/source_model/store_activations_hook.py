@@ -21,8 +21,8 @@ def store_activations_hook(
 
         >>> from functools import partial
         >>> from transformer_lens import HookedTransformer
-        >>> from sparse_autoencoder.activation_store.list_store import ListActivationStore
-        >>> store = ListActivationStore()
+        >>> from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
+        >>> store = TensorActivationStore(max_items=1000, num_neurons=256)
         >>> model = HookedTransformer.from_pretrained("tiny-stories-1M")
         Loaded pretrained model tiny-stories-1M into HookedTransformer
 
@@ -30,7 +30,7 @@ def store_activations_hook(
         create the tokens for a forward pass.
 
         >>> model.add_hook(
-        ...     "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
+        ...     "blocks.0.hook_mlp_out", partial(store_activations_hook, store=store)
         ... )
         >>> tokens = model.to_tokens("Hello world")
         >>> tokens.shape
@@ -42,6 +42,8 @@ def store_activations_hook(
         layer).
 
         >>> _output = model.forward("Hello world", stop_at_layer=1) # Change this layer as required
+        >>> _output.shape
+
         >>> len(store)
         3
 
@@ -53,6 +55,7 @@ def store_activations_hook(
     Returns:
         Unmodified activations.
     """
+    print(value.shape)
     store.extend(value)
 
     # Return the unmodified value

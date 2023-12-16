@@ -65,7 +65,7 @@ class ActivationStore(
     def append(
         self,
         item: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int,
+        component_idx: int = 0,
     ) -> Future | None:
         """Add a Single Item to the Store."""
 
@@ -73,7 +73,7 @@ class ActivationStore(
     def extend(
         self,
         batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int,
+        component_idx: int = 0,
     ) -> Future | None:
         """Add a Batch to the Store."""
 
