@@ -32,6 +32,7 @@ def l1_loss_component_l1_coefficient() -> LearnedActivationsL1Loss:
             tensor([[2.0, -3.0], [2.0, -3.0]]),  # (batch, learnt_feature)
             tensor([0.5, 0.5]),
         ),
+        # Tests with components dimension
         (
             0.1,
             repeat(
