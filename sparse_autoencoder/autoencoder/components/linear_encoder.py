@@ -137,8 +137,8 @@ class LinearEncoder(AbstractEncoder):
                 x,
                 self.weight,
                 f"{Axis.BATCH} ... {Axis.INPUT_OUTPUT_FEATURE}, \
-            ... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
-                -> {Axis.BATCH} ... {Axis.LEARNT_FEATURE}",
+                    ... {Axis.LEARNT_FEATURE} {Axis.INPUT_OUTPUT_FEATURE} \
+                    -> {Axis.BATCH} ... {Axis.LEARNT_FEATURE}",
             )
             + self.bias
         )
