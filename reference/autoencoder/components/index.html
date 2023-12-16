@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -4928,8 +4928,8 @@ used as the encoder in a sparse autoencoder (excluding any outer tied bias).</p>
                 <span class="n">x</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">            ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="s2">                    ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                    -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
         <span class="p">)</span>
@@ -5366,8 +5366,8 @@ element in the learned activation space.</p>
             <span class="n">x</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">        ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">            -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="s2">                ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
     <span class="p">)</span>
