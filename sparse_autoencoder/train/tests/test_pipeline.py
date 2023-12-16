@@ -258,7 +258,7 @@ class TestValidateSAE:
 
     def test_reconstruction_loss_more_than_base(self, pipeline_fixture: Pipeline) -> None:
         """Test that the reconstruction loss is more than the base loss."""
-        torch.manual_seed(0)
+        torch.manual_seed(42)
 
         # Create a dummy metric, so we can retrieve the stored data afterwards
         class StoreValidationMetric(AbstractValidationMetric):
