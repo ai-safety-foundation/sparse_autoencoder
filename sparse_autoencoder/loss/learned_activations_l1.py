@@ -115,7 +115,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         return self._l1_loss(source_activations, learned_activations, decoded_activations)[1]
 
     # Override to add both the loss and the penalty to the log
-    def batch_scalar_loss_with_log(
+    def scalar_loss_with_log(
         self,
         source_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
@@ -126,33 +126,41 @@ class LearnedActivationsL1Loss(AbstractLoss):
         decoded_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-        reduction: LossReductionType = LossReductionType.MEAN,
+        batch_reduction: LossReductionType = LossReductionType.MEAN,
+        component_reduction: LossReductionType = LossReductionType.NONE,
     ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], LossLogType]:
-        """Learned activations L1 (absolute error) loss, with log.
+        """Scalar L1 loss (reduced across the batch and component axis) with logging.
 
         Args:
             source_activations: Source activations (input activations to the autoencoder from the
                 source model).
             learned_activations: Learned activations (intermediate activations in the autoencoder).
             decoded_activations: Decoded activations.
-            reduction: Loss reduction type. Typically you would choose LossReductionType.MEAN to
-                make the loss independent of the batch size.
+            batch_reduction: Batch reduction type. Typically you would choose LossReductionType.MEAN
+                to make the loss independent of the batch size.
+            component_reduction: Component reduction type.
 
         Returns:
             Tuple of the L1 absolute error batch scalar loss and a dict of the properties to log
                 (loss before and after the l1 coefficient).
+
+        Raises:
+            ValueError: If batch_reduction is LossReductionType.NONE.
         """
         absolute_loss, absolute_loss_penalty = self._l1_loss(
             source_activations, learned_activations, decoded_activations
         )
 
-        match reduction:
+        match batch_reduction:
             case LossReductionType.MEAN:
                 batch_scalar_loss = absolute_loss.mean(0).squeeze()
                 batch_scalar_loss_penalty = absolute_loss_penalty.mean(0).squeeze()
             case LossReductionType.SUM:
                 batch_scalar_loss = absolute_loss.sum(0).squeeze()
                 batch_scalar_loss_penalty = absolute_loss_penalty.sum(0).squeeze()
+            case LossReductionType.NONE:
+                error_message = "Batch reduction type NONE not supported."
+                raise ValueError(error_message)
 
         batch_loss_to_log: list | float = batch_scalar_loss.tolist()
         batch_loss_penalty_to_log: list | float = batch_scalar_loss_penalty.tolist()
@@ -172,6 +180,14 @@ class LearnedActivationsL1Loss(AbstractLoss):
                 metrics[
                     f"train/loss/{self.log_name()}/component_{component_idx}"
                 ] = component_loss_penalty
+
+        match component_reduction:
+            case LossReductionType.MEAN:
+                batch_scalar_loss_penalty = batch_scalar_loss_penalty.mean(0)
+            case LossReductionType.SUM:
+                batch_scalar_loss_penalty = batch_scalar_loss_penalty.sum(0)
+            case LossReductionType.NONE:
+                pass
 
         return batch_scalar_loss_penalty, metrics
 

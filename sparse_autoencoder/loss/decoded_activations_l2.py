@@ -61,7 +61,10 @@ class L2ReconstructionLoss(AbstractLoss):
         decoded_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
+    ) -> (
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+        | Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]
+    ):
         """Calculate the L2 reconstruction loss.
 
         Args:
@@ -80,3 +83,5 @@ class L2ReconstructionLoss(AbstractLoss):
                 return square_error_loss.mean(dim=-1)
             case LossReductionType.SUM:
                 return square_error_loss.sum(dim=-1)
+            case LossReductionType.NONE:
+                return square_error_loss

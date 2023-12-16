@@ -55,13 +55,13 @@ def dummy_loss() -> DummyLoss:
         (2, LossReductionType.SUM, 12.0),  # Double
     ],
 )
-def test_batch_scalar_loss(
+def test_batch_loss(
     dummy_loss: DummyLoss,
     num_components: int | None,
     loss_reduction: LossReductionType,
     expected: float,
 ) -> None:
-    """Test the batch scalar loss."""
+    """Test the batch loss."""
     if num_components is None:
         source_activations = decoded_activations = torch.ones(3, 12)
         learned_activations = torch.ones(3, 24)
@@ -69,29 +69,29 @@ def test_batch_scalar_loss(
         source_activations = decoded_activations = torch.ones((3, num_components, 12))
         learned_activations = torch.ones((3, num_components, 24))
 
-    batch_loss = dummy_loss.batch_scalar_loss(
+    batch_loss = dummy_loss.batch_loss(
         source_activations, learned_activations, decoded_activations, loss_reduction
     )
 
     assert batch_loss.sum() == expected
 
 
-def test_batch_scalar_loss_with_log(dummy_loss: DummyLoss) -> None:
-    """Test the batch scalar loss with log."""
+def test_batch_loss_with_log(dummy_loss: DummyLoss) -> None:
+    """Test the scalar loss with log."""
     source_activations = learned_activations = decoded_activations = torch.ones((1, 3))
-    _loss, log = dummy_loss.batch_scalar_loss_with_log(
+    _loss, log = dummy_loss.scalar_loss_with_log(
         source_activations, learned_activations, decoded_activations
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
     assert log["train/loss/dummy"] == expected
 
 
-def test_batch_scalar_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
-    """Test the batch scalar loss with log and component axis."""
+def test_batch_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
+    """Test the scalar loss with log and component axis."""
     num_components = 3
     source_activations = decoded_activations = torch.ones((3, num_components, 12))
     learned_activations = torch.ones((3, num_components, 24))
-    _loss, log = dummy_loss.batch_scalar_loss_with_log(
+    _loss, log = dummy_loss.scalar_loss_with_log(
         source_activations, learned_activations, decoded_activations
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
