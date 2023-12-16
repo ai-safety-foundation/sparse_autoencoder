@@ -15,6 +15,8 @@ from sparse_autoencoder.tensor_types import Axis
 
 DEFAULT_DISK_ACTIVATION_STORE_PATH = Path(tempfile.gettempdir()) / "activation_store"
 
+NUMBERS_FROM_FILENAME_COMPILED_REGEX = re.compile(r"\d+")
+
 
 class DiskActivationStore(ActivationStore):
     """Disk Activation Store.
@@ -51,7 +53,7 @@ class DiskActivationStore(ActivationStore):
     _max_cache_size: int
     """Maximum Number of Activation Vectors to cache in Memory."""
 
-    _disk_n_activation_vectors_per_component: int | None
+    _disk_n_activation_vectors_per_component: int | None = None
     """Length of the Store (on disk)."""
 
     _num_components: int
@@ -114,12 +116,12 @@ class DiskActivationStore(ActivationStore):
             >>> store = DiskActivationStore(max_cache_size=2, empty_dir=True, num_neurons=100)
             >>> store.append(torch.randn(100))
             >>> store._write_to_disk()
-            >>> print(len(store))
+            >>> len(store)
             1
         """
         # Save to disk
         items = self._cache[: min(self._items_stored)]
-        filename = f"{len(self)}-{self._items_stored}.pt"
+        filename = f"{len(self)}-{min(self._items_stored)}.pt"
         torch.save(items, self._storage_path / filename)
 
         # Update the number of items stored
@@ -141,7 +143,7 @@ class DiskActivationStore(ActivationStore):
         >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
         >>> store.append(torch.randn(100))
         >>> store.append(torch.randn(100)) # Triggers a write of the last item to disk
-        >>> print(len(store))
+        >>> len(store)
         1
 
         Args:
@@ -159,7 +161,7 @@ class DiskActivationStore(ActivationStore):
     def extend(
         self,
         batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int = 1,
+        component_idx: int = 0,
     ) -> None:
         """Add a Batch to the Store.
 
@@ -167,7 +169,7 @@ class DiskActivationStore(ActivationStore):
             >>> store = DiskActivationStore(max_cache_size=10, empty_dir=True, num_neurons=100)
             >>> store.extend(torch.randn(10, 100))
             >>> store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk
-            >>> print(len(store))
+            >>> len(store)
             10
 
         Args:
@@ -200,8 +202,8 @@ class DiskActivationStore(ActivationStore):
 
         self._items_stored[component_idx] += num_activation_tensors
 
-    def wait_for_writes_to_complete(self) -> None:
-        """Wait for Writes to Complete.
+    def finalise(self) -> None:
+        """Finalise.
 
         This should be called after the last batch has been added to the store. It will wait for
         all activation vectors to be written to disk.
@@ -209,8 +211,8 @@ class DiskActivationStore(ActivationStore):
         Example:
             >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
             >>> store.append(torch.randn(100))
-            >>> store.wait_for_writes_to_complete()
-            >>> print(len(store))
+            >>> store.finalise()
+            >>> len(store)
             1
         """
         if min(self._items_stored) > 0:
@@ -231,11 +233,11 @@ class DiskActivationStore(ActivationStore):
             >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
             >>> store.append(torch.randn(100))
             >>> store.append(torch.randn(100))
-            >>> print(len(store))
+            >>> len(store)
             1
 
             >>> store.empty()
-            >>> print(len(store))
+            >>> len(store)
             0
         """
         for file in self._all_filenames:
@@ -243,22 +245,31 @@ class DiskActivationStore(ActivationStore):
         self._disk_n_activation_vectors_per_component = 0
 
     @staticmethod
-    def get_idx_from_filename(filename: Path) -> tuple[int, int]:
-        """Get the end index from a filename.
+    def get_store_tensor_indices_from_filename(filename: Path) -> tuple[int, int]:
+        """Get the start and end indices from a filename.
 
         Example:
             >>> filename = Path("0-100.pt")
-            >>> DiskActivationStore.get_idx_from_filename(filename)
+            >>> DiskActivationStore.get_store_tensor_indices_from_filename(filename)
             (0, 100)
 
         Args:
-            filename: Filename to extract the end index from.
+            filename: Filename to extract the indices from.
 
         Returns:
-            The end index of the filename.
+            The start and end index of the filename.
+
+        Raises:
+            ValueError: If the filename does not contain two numeric values.
         """
-        numbers = re.findall(r"\d+", str(filename))
-        return (numbers[0], numbers[1])
+        numbers = NUMBERS_FROM_FILENAME_COMPILED_REGEX.findall(filename.stem)
+        numbers_expected: int = 2
+
+        if len(numbers) != numbers_expected:
+            error_message = f"Filename {filename} does not contain two numeric values."
+            raise ValueError(error_message)
+
+        return (int(numbers[0]), int(numbers[1]))
 
     def __getitem__(
         self, index: int
@@ -280,11 +291,14 @@ class DiskActivationStore(ActivationStore):
         """
         # Find the file containing the activation vector
         for filename in self._all_filenames:
-            indexes = self.get_idx_from_filename(filename)
+            indexes = self.get_store_tensor_indices_from_filename(filename)
 
             # Load if the index is in the range of the file
-            if index > indexes[0] and index < indexes[1]:
+            if index >= indexes[0] and index <= indexes[1]:
                 activation_vectors = torch.load(filename)
+
+                if self._num_components == 1:
+                    return activation_vectors[index % self._max_cache_size, 0]
                 return activation_vectors[index % self._max_cache_size]
 
         # If still not found
@@ -296,7 +310,7 @@ class DiskActivationStore(ActivationStore):
 
         Example:
             >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
-            >>> print(len(store))
+            >>> len(store)
             0
 
         Returns:
@@ -307,7 +321,7 @@ class DiskActivationStore(ActivationStore):
             max_size: int = 0
 
             for filename in self._all_filenames:
-                filename_end_idx = self.get_idx_from_filename(filename)[1]
+                filename_end_idx = self.get_store_tensor_indices_from_filename(filename)[1]
                 self._disk_n_activation_vectors_per_component = max(max_size, filename_end_idx)
 
             self._disk_n_activation_vectors_per_component = max_size
@@ -316,4 +330,4 @@ class DiskActivationStore(ActivationStore):
 
     def __del__(self) -> None:
         """Delete Dunder Method."""
-        self.wait_for_writes_to_complete()
+        self.finalise()
