@@ -86,7 +86,7 @@ def test_batch_loss_with_log(dummy_loss: DummyLoss) -> None:
     assert log["train/loss/dummy"] == expected
 
 
-def test_batch_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
+def test_scalar_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
     """Test the scalar loss with log and component axis."""
     num_components = 3
     source_activations = decoded_activations = torch.ones((3, num_components, 12))
