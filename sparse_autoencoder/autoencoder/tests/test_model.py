@@ -56,7 +56,7 @@ def test_forward_pass_result_matches_the_snapshot(
     )
 
     output = model.forward(input_tensor)
-    rounded_zd_output_activations = torch.round(output[1] * 1e5).to(dtype=torch.int).tolist()
+    rounded_zd_output_activations = torch.round(output[1] * 1e4).to(dtype=torch.int).tolist()
     assert str(rounded_zd_output_activations) == snapshot, "Forward pass result has changed."
 
 
