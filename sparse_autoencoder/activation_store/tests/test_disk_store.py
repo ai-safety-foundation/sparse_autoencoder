@@ -1,9 +1,11 @@
 """Tests for the DiskActivationStore."""
+import pytest
 import torch
 
 from sparse_autoencoder.activation_store.disk_store import DiskActivationStore
 
 
+@pytest.skip("Disk check doesn't work on CD.")
 def test_extended_items_all_returned_with_get() -> None:
     """Test that all items extended onto the store can be got back."""
     num_neurons: int = 128
