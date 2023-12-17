@@ -44,6 +44,9 @@ class Axis(LowercaseStrEnum):
     BATCH = auto()
     """Batch of items that the SAE is being trained on."""
 
+    STORE_BATCH = auto()
+    """Batch of items to be written to the store."""
+
     ITEMS = auto()
     """Arbitrary number of items."""
 
@@ -74,7 +77,7 @@ class Axis(LowercaseStrEnum):
     SINGLE_ITEM = ""
     """Single item axis."""
 
-    ANY = "*any"
+    ANY = "..."
     """Any number of axis."""
 
     @staticmethod

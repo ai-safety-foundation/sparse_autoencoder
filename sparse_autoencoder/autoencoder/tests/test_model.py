@@ -6,8 +6,8 @@ import torch
 from torch import Tensor
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 def test_initialize_tied_bias() -> None:

@@ -8,8 +8,8 @@ from torch import Tensor
 from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
-from sparse_autoencoder.autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 @final

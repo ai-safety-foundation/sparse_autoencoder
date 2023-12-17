@@ -6,18 +6,19 @@ import torch
 from torch import Tensor
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder.activation_store.list_store import ListActivationStore
+from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import Axis
 
 
 def test_hook_stores_activations() -> None:
     """Test that the hook stores activations correctly."""
-    store = ListActivationStore()
+    store = TensorActivationStore(max_items=100, num_neurons=256)
+
     model = HookedTransformer.from_pretrained("tiny-stories-1M")
 
     model.add_hook(
-        "blocks.1.mlp.hook_post",
+        "blocks.0.mlp.hook_post",
         partial(store_activations_hook, store=store),
     )
 

@@ -4,7 +4,7 @@ from syrupy.session import SnapshotSession
 import torch
 
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
-from sparse_autoencoder.autoencoder.utils.tensor_shape import shape_with_optional_dimensions
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 # Constants for testing

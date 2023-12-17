@@ -4,14 +4,19 @@ from torch import Tensor
 from transformer_lens.hook_points import HookPoint
 
 from sparse_autoencoder.activation_store.base_store import ActivationStore
+from sparse_autoencoder.source_model.reshape_activations import (
+    ReshapeActivationsFunction,
+    reshape_to_last_dimension,
+)
 from sparse_autoencoder.tensor_types import Axis
 
 
 def store_activations_hook(
-    value: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)],
+    value: Float[Tensor, Axis.names(Axis.ANY)],
     hook: HookPoint,  # noqa: ARG001
     store: ActivationStore,
-) -> Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]:
+    reshape_method: ReshapeActivationsFunction = reshape_to_last_dimension,
+) -> Float[Tensor, Axis.names(Axis.ANY)]:
     """Store Activations Hook.
 
     Useful for getting just the specific activations wanted, rather than the full cache.
@@ -21,8 +26,8 @@ def store_activations_hook(
 
         >>> from functools import partial
         >>> from transformer_lens import HookedTransformer
-        >>> from sparse_autoencoder.activation_store.list_store import ListActivationStore
-        >>> store = ListActivationStore()
+        >>> from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
+        >>> store = TensorActivationStore(max_items=1000, num_neurons=64)
         >>> model = HookedTransformer.from_pretrained("tiny-stories-1M")
         Loaded pretrained model tiny-stories-1M into HookedTransformer
 
@@ -30,7 +35,7 @@ def store_activations_hook(
         create the tokens for a forward pass.
 
         >>> model.add_hook(
-        ...     "blocks.0.mlp.hook_post", partial(store_activations_hook, store=store)
+        ...     "blocks.0.hook_mlp_out", partial(store_activations_hook, store=store)
         ... )
         >>> tokens = model.to_tokens("Hello world")
         >>> tokens.shape
@@ -49,11 +54,16 @@ def store_activations_hook(
         value: The activations to store.
         hook: The hook point.
         store: The activation store. This should be pre-initialised with `functools.partial`.
+        reshape_method: The method to reshape the activations before storing them.
 
     Returns:
         Unmodified activations.
     """
-    store.extend(value)
+    reshaped: Float[
+        Tensor, Axis.names(Axis.STORE_BATCH, Axis.INPUT_OUTPUT_FEATURE)
+    ] = reshape_method(value)
+
+    store.extend(reshaped)
 
     # Return the unmodified value
     return value
