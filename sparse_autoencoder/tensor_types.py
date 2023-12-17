@@ -74,7 +74,7 @@ class Axis(LowercaseStrEnum):
     SINGLE_ITEM = ""
     """Single item axis."""
 
-    ANY = "*any"
+    ANY = "..."
     """Any number of axis."""
 
     @staticmethod
