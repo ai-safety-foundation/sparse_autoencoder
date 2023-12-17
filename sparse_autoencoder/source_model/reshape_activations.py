@@ -1,4 +1,4 @@
-"""Methods to reshape Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)] into Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]."""
+"""Methods to reshape activation tensors."""
 from collections.abc import Callable
 from functools import reduce
 from typing import Any, TypeAlias, cast
