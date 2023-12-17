@@ -12,11 +12,11 @@ from sparse_autoencoder.tensor_types import Axis
 
 
 def store_activations_hook(
-    value: Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)],
+    value: Float[Tensor, Axis.names(Axis.ANY)],
     hook: HookPoint,  # noqa: ARG001
     store: ActivationStore,
     reshape_method: ReshapeActivationsFunction = reshape_to_last_dimension,
-) -> Float[Tensor, Axis.names(Axis.ANY, Axis.INPUT_OUTPUT_FEATURE)]:
+) -> Float[Tensor, Axis.names(Axis.ANY)]:
     """Store Activations Hook.
 
     Useful for getting just the specific activations wanted, rather than the full cache.
@@ -59,7 +59,9 @@ def store_activations_hook(
     Returns:
         Unmodified activations.
     """
-    reshaped = reshape_method(value)
+    reshaped: Float[
+        Tensor, Axis.names(Axis.STORE_BATCH, Axis.INPUT_OUTPUT_FEATURE)
+    ] = reshape_method(value)
 
     store.extend(reshaped)
 

@@ -64,7 +64,6 @@ __all__ = [
     "Kind",
     "L2ReconstructionLoss",
     "LearnedActivationsL1Loss",
-    "ListActivationStore",
     "LossHyperparameters",
     "LossLogType",
     "LossReducer",
