@@ -2,6 +2,7 @@
 
 from jaxtyping import Float
 import pytest
+import torch
 from torch import Tensor
 
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
@@ -22,7 +23,7 @@ def test_model_reconstruction_score_empty_data() -> None:
     )
     metric = ModelReconstructionScore()
     result = metric.calculate(data)
-    assert result == {}
+    assert result == []
 
 
 @pytest.mark.parametrize(
@@ -30,9 +31,9 @@ def test_model_reconstruction_score_empty_data() -> None:
     [
         (
             ValidationMetricData(
-                source_model_loss=Float[Tensor, Axis.ITEMS]([3.0, 3.0, 3.0]),
-                source_model_loss_with_reconstruction=Float[Tensor, Axis.ITEMS]([3.0, 3.0, 3.0]),
-                source_model_loss_with_zero_ablation=Float[Tensor, Axis.ITEMS]([4.0, 4.0, 4.0]),
+                source_model_loss=torch.tensor([3.0, 3.0, 3.0]),
+                source_model_loss_with_reconstruction=torch.tensor([3.0, 3.0, 3.0]),
+                source_model_loss_with_zero_ablation=torch.tensor([4.0, 4.0, 4.0]),
             ),
             1.0,
         ),
@@ -55,5 +56,9 @@ def test_model_reconstruction_score_various_data(
     calculation for different sets of input data.
     """
     metric = ModelReconstructionScore()
-    result = metric.calculate(data)
-    assert round(result["validate/model_reconstruction_score"], 2) == expected_score
+    calculated = metric.calculate(data)
+    result = calculated[3].wandb_log["validate/reconstruction_score"]
+
+    assert isinstance(result, float), """The result should be a float."""
+
+    assert round(result, 2) == expected_score
