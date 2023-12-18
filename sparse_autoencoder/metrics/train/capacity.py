@@ -10,6 +10,7 @@ import torch
 from torch import Tensor
 import wandb
 
+from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
@@ -20,7 +21,8 @@ from sparse_autoencoder.tensor_types import Axis
 class CapacityMetric(AbstractTrainMetric):
     """Capacities Metrics for Learned Features.
 
-    Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural Networks](https://arxiv.org/pdf/2210.01892.pdf).
+    Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural
+    Networks](https://arxiv.org/pdf/2210.01892.pdf).
 
     Capacity is intuitively measuring the 'proportion of a dimension' assigned to a feature.
     Formally it's the ratio of the squared dot product of a feature with itself to the sum of its
@@ -34,7 +36,12 @@ class CapacityMetric(AbstractTrainMetric):
     def capacities(
         features: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
     ) -> Float[Tensor, Axis.BATCH]:
-        """Calculate capacities.
+        r"""Calculate capacities.
+
+        $$
+        \text{squared_dot_products} =
+
+        $$
 
         Example:
             >>> import torch
@@ -52,11 +59,18 @@ class CapacityMetric(AbstractTrainMetric):
         """
         squared_dot_products = (
             einops.einsum(
-                features, features, "n_feats1 feat_dim, n_feats2 feat_dim -> n_feats1 n_feats2"
+                features,
+                features,
+                "batch_1 feat_dim, batch_2 feat_dim \
+                    -> batch_1 batch_2",
             )
             ** 2
         )
-        sum_of_sq_dot = squared_dot_products.sum(dim=-1)
+
+        sum_of_sq_dot: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT)
+        ] = squared_dot_products.sum(dim=-1)
+
         return torch.diag(squared_dot_products) / sum_of_sq_dot
 
     @staticmethod
@@ -79,11 +93,19 @@ class CapacityMetric(AbstractTrainMetric):
         bins, values = histogram(numpy_capacities, bins=20, range=(0, 1))
         return wandb.Histogram(np_histogram=(bins, values))
 
-    def calculate(self, data: TrainMetricData) -> dict[str, Any]:
+    def calculate(self, data: TrainMetricData) -> list[MetricResult]:
         """Calculate the capacities for a training batch."""
-        train_batch_capacities = self.capacities(data.learned_activations)
-        train_batch_capacities_histogram = self.wandb_capacities_histogram(train_batch_capacities)
+        histograms = []
 
-        return {
-            "train/batch_capacities_histogram": train_batch_capacities_histogram,
-        }
+        for component_learned_activation in data.learned_activations:
+            train_batch_capacities = self.capacities(component_learned_activation)
+            histograms.append(self.wandb_capacities_histogram(train_batch_capacities))
+
+        return [
+            MetricResult(
+                name="capacities",
+                component_wise_values=histograms,
+                pipeline_location=self.metric_location,
+                component_names=self._component_names,
+            )
+        ]
