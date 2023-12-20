@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../generate/abstract_generate_metric/">
+        <link rel="prev" href="../abstract_metric/">
       
       
         <link rel="next" href="../train/">
@@ -1052,69 +1052,16 @@
   
   
   
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_1" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../generate/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    generate
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_5_1" id="__nav_5_5_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_1">
-            <span class="md-nav__icon md-icon"></span>
-            generate
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    abstract_generate_metric
+    abstract_metric
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1199,15 +1146,6 @@
   
     <nav class="md-nav" aria-label="MetricsContainer">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.metrics_container.MetricsContainer.generate_metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      generate_metrics
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.metrics_container.MetricsContainer.train_metrics" class="md-nav__link">
@@ -1420,11 +1358,11 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../validate/" class="md-nav__link ">
+            <a href="../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
-    validate
+    utils
   </span>
   
 
@@ -1439,6 +1377,101 @@
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/add_component_axis_if_missing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    add_component_axis_if_missing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/find_metric_result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    find_metric_result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../validate/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    validate
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5_5" id="__nav_5_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_5">
             <span class="md-nav__icon md-icon"></span>
             validate
           </label>
@@ -2300,15 +2333,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.metrics_container.MetricsContainer.generate_metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      generate_metrics
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.metrics_container.MetricsContainer.train_metrics" class="md-nav__link">
     <span class="md-ellipsis">
       train_metrics
@@ -2411,11 +2435,13 @@
 
   
       <p>Metrics container.</p>
-<p>Stores all metrics used in a pipeline.</p>
+<p>Stores all metrics used in a pipeline, and allows updating of the component names for all at
+once.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/metrics_container.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
+<span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
@@ -2426,18 +2452,13 @@
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MetricsContainer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metrics container.</span>
 
-<span class="sd">    Stores all metrics used in a pipeline.</span>
+<span class="sd">    Stores all metrics used in a pipeline, and allows updating of the component names for all at</span>
+<span class="sd">    once.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">generate_metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AbstractGenerateMetric</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Metrics for the generate section.&quot;&quot;&quot;</span>
 
     <span class="n">train_metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AbstractTrainMetric</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metrics for the train section.&quot;&quot;&quot;</span>
@@ -2456,29 +2477,6 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.metrics.metrics_container.MetricsContainer.generate_metrics" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">generate_metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AbstractGenerateMetric</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.metrics.metrics_container.MetricsContainer.generate_metrics" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Metrics for the generate section.</p>
-  </div>
-
-</div>
 
 <div class="doc doc-object doc-attribute">
 

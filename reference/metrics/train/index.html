@@ -1052,69 +1052,16 @@
   
   
   
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_1" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../generate/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    generate
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_5_1" id="__nav_5_5_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_1">
-            <span class="md-nav__icon md-icon"></span>
-            generate
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    abstract_generate_metric
+    abstract_metric
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1322,11 +1269,11 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../validate/" class="md-nav__link ">
+            <a href="../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
-    validate
+    utils
   </span>
   
 
@@ -1341,6 +1288,101 @@
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/add_component_axis_if_missing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    add_component_axis_if_missing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/find_metric_result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    find_metric_result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../validate/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    validate
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5_5" id="__nav_5_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_5">
             <span class="md-nav__icon md-icon"></span>
             validate
           </label>
@@ -2193,6 +2235,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.train.AbstractTrainMetric.location" class="md-nav__link">
+    <span class="md-ellipsis">
+      location
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.AbstractTrainMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
       calculate()
@@ -2258,31 +2309,43 @@
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><span title="abc.ABC">ABC</span></code></p>
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.AbstractMetric" href="../abstract_metric/#sparse_autoencoder.metrics.abstract_metric.AbstractMetric">AbstractMetric</a></code>, <code><span title="abc.ABC">ABC</span></code></p>
 
   
       <p>Abstract train metric.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/train/abstract_train_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractTrainMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractTrainMetric</span><span class="p">(</span><span class="n">AbstractMetric</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract train metric.&quot;&quot;&quot;</span>
 
+    <span class="nd">@final</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetricLocation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Metric type name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">MetricLocation</span><span class="o">.</span><span class="n">TRAIN</span>
+
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate any metrics.</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate any metrics component wise.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data: Train metric data.</span>
@@ -2302,6 +2365,28 @@
 
 
 
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.metrics.train.AbstractTrainMetric.location" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.metrics.train.AbstractTrainMetric.location" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Metric type name.</p>
+  </div>
+
+</div>
 
 
 
@@ -2323,7 +2408,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Calculate any metrics.</p>
+      <p>Calculate any metrics component wise.</p>
 
 
 
@@ -2368,7 +2453,7 @@
     <tbody>
         <tr>
           <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="../abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2381,18 +2466,18 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/abstract_train_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate any metrics.</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate any metrics component wise.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data: Train metric data.</span>

@@ -1052,69 +1052,16 @@
   
   
   
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_1" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../generate/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    generate
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_5_1" id="__nav_5_5_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_1">
-            <span class="md-nav__icon md-icon"></span>
-            generate
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../../generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="../../abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    abstract_generate_metric
+    abstract_metric
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1395,11 +1342,11 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../validate/" class="md-nav__link ">
+            <a href="../../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
-    validate
+    utils
   </span>
   
 
@@ -1414,6 +1361,101 @@
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/add_component_axis_if_missing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    add_component_axis_if_missing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/find_metric_result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    find_metric_result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../validate/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    validate
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5_5" id="__nav_5_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_5">
             <span class="md-nav__icon md-icon"></span>
             validate
           </label>
@@ -2340,12 +2382,7 @@ this over the batch.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/train/l0_norm_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -2353,7 +2390,27 @@ this over the batch.</p>
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
-<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">TrainBatchLearnedActivationsL0</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Learned activations L0 norm sparsity metric.</span>
 
@@ -2361,12 +2418,27 @@ this over the batch.</p>
 <span class="sd">    this over the batch.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a log item for Weights and Biases.&quot;&quot;&quot;</span>
-        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">n_non_zero_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
-        <span class="n">batch_average</span> <span class="o">=</span> <span class="n">n_non_zero_activations</span> <span class="o">/</span> <span class="n">batch_size</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train/learned_activations_l0_norm&quot;</span><span class="p">:</span> <span class="n">batch_average</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the L0 norm sparsity metric, component wise..&quot;&quot;&quot;</span>
+        <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span>
+
+        <span class="n">n_non_zero_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+
+        <span class="n">batch_average</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">=</span> <span class="n">einops</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+            <span class="n">n_non_zero_activations</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">MetricResult</span><span class="p">(</span>
+                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;learned_activations_l0_norm&quot;</span><span class="p">,</span>
+                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">batch_average</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2396,21 +2468,51 @@ this over the batch.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Create a log item for Weights and Biases.</p>
+      <p>Create the L0 norm sparsity metric, component wise..</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/l0_norm_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a log item for Weights and Biases.&quot;&quot;&quot;</span>
-    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">n_non_zero_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
-    <span class="n">batch_average</span> <span class="o">=</span> <span class="n">n_non_zero_activations</span> <span class="o">/</span> <span class="n">batch_size</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train/learned_activations_l0_norm&quot;</span><span class="p">:</span> <span class="n">batch_average</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the L0 norm sparsity metric, component wise..&quot;&quot;&quot;</span>
+    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span>
+
+    <span class="n">n_non_zero_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+
+    <span class="n">batch_average</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">=</span> <span class="n">einops</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+        <span class="n">n_non_zero_activations</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">MetricResult</span><span class="p">(</span>
+            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;learned_activations_l0_norm&quot;</span><span class="p">,</span>
+            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">batch_average</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

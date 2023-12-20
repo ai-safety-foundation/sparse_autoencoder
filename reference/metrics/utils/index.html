@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../abstract_validate_metric/">
+        <link rel="prev" href="../train/neuron_activity_metric/">
       
       
-        <link rel="next" href="../../../optimizer/">
+        <link rel="next" href="add_component_axis_if_missing/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
     
     
       
-        <title>model_reconstruction_score - Sparse Autoencoder</title>
+        <title>utils - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,19 +48,19 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../css/material_extra.css">
+      <link rel="stylesheet" href="../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../../../../css/custom_formatting.css">
+      <link rel="stylesheet" href="../../../css/custom_formatting.css">
     
-      <link rel="stylesheet" href="../../../../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../../../../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../../../../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#model-reconstruction-score" class="md-skip">
+        <a href="#metric-utils" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              model_reconstruction_score
+              utils
             
           </span>
         </div>
@@ -235,7 +235,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -265,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -285,7 +285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../demo/" class="md-nav__link">
+      <a href="../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -305,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../flexible_demo/" class="md-nav__link">
+      <a href="../../../flexible_demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -325,7 +325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../pre-process-datasets/" class="md-nav__link">
+      <a href="../../../pre-process-datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -398,7 +398,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../activation_resampler/" class="md-nav__link ">
+            <a href="../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -429,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -450,7 +450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -493,7 +493,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../activation_store/" class="md-nav__link ">
+            <a href="../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -524,7 +524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../activation_store/base_store/" class="md-nav__link">
+      <a href="../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -545,7 +545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../activation_store/disk_store/" class="md-nav__link">
+      <a href="../../activation_store/disk_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -566,7 +566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -609,7 +609,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../autoencoder/" class="md-nav__link ">
+            <a href="../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -640,7 +640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -675,7 +675,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../autoencoder/components/" class="md-nav__link ">
+            <a href="../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -706,7 +706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/components/abstract_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -727,7 +727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/components/abstract_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -748,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -769,7 +769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -790,7 +790,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -811,7 +811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -840,7 +840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../autoencoder/model/" class="md-nav__link">
+      <a href="../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -883,7 +883,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../loss/" class="md-nav__link ">
+            <a href="../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -914,7 +914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../loss/abstract_loss/" class="md-nav__link">
+      <a href="../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -935,7 +935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../loss/decoded_activations_l2/" class="md-nav__link">
+      <a href="../../loss/decoded_activations_l2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -956,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -977,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../loss/reducer/" class="md-nav__link">
+      <a href="../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1022,7 +1022,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1053,7 +1053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../abstract_metric/" class="md-nav__link">
+      <a href="../abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1074,7 +1074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics_container/" class="md-nav__link">
+      <a href="../metrics_container/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1109,7 +1109,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../train/" class="md-nav__link ">
+            <a href="../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1140,7 +1140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/abstract_train_metric/" class="md-nav__link">
+      <a href="../train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1161,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/capacity/" class="md-nav__link">
+      <a href="../train/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1182,7 +1182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/feature_density/" class="md-nav__link">
+      <a href="../train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1203,7 +1203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/l0_norm_metric/" class="md-nav__link">
+      <a href="../train/l0_norm_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1224,106 +1224,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/neuron_activity_metric/" class="md-nav__link">
+      <a href="../train/neuron_activity_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     neuron_activity_metric
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_4" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../utils/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    utils
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_5_4" id="__nav_5_5_4_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_4">
-            <span class="md-nav__icon md-icon"></span>
-            utils
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../utils/add_component_axis_if_missing/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    add_component_axis_if_missing
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../utils/find_metric_result/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    find_metric_result
   </span>
   
 
@@ -1359,12 +1264,107 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_4" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_5_4" id="__nav_5_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="add_component_axis_if_missing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    add_component_axis_if_missing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="find_metric_result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    find_metric_result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1381,7 +1381,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5_5">
             <span class="md-nav__icon md-icon"></span>
             validate
@@ -1395,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../abstract_validate_metric/" class="md-nav__link">
+      <a href="../validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1413,30 +1413,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    model_reconstruction_score
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../validate/model_reconstruction_score/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1445,59 +1425,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score" class="md-nav__link">
-    <span class="md-ellipsis">
-      model_reconstruction_score
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="md-nav__link">
-    <span class="md-ellipsis">
-      ModelReconstructionScore
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ModelReconstructionScore">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="md-nav__link">
-    <span class="md-ellipsis">
-      calculate()
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1540,7 +1467,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../optimizer/" class="md-nav__link ">
+            <a href="../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1571,7 +1498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1592,7 +1519,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1635,7 +1562,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../source_data/" class="md-nav__link ">
+            <a href="../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1666,7 +1593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1687,7 +1614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_data/mock_dataset/" class="md-nav__link">
+      <a href="../../source_data/mock_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1708,7 +1635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1729,7 +1656,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_data/text_dataset/" class="md-nav__link">
+      <a href="../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1772,7 +1699,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../source_model/" class="md-nav__link ">
+            <a href="../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1803,7 +1730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_model/replace_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/replace_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1824,7 +1751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_model/reshape_activations/" class="md-nav__link">
+      <a href="../../source_model/reshape_activations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1845,7 +1772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1866,7 +1793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../source_model/zero_ablate_hook/" class="md-nav__link">
+      <a href="../../source_model/zero_ablate_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1895,7 +1822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tensor_types/" class="md-nav__link">
+      <a href="../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1930,7 +1857,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../train/" class="md-nav__link ">
+            <a href="../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1961,7 +1888,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../train/pipeline/" class="md-nav__link">
+      <a href="../../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1982,7 +1909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../train/sweep/" class="md-nav__link">
+      <a href="../../train/sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2003,7 +1930,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../train/sweep_config/" class="md-nav__link">
+      <a href="../../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2038,7 +1965,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../train/utils/" class="md-nav__link ">
+            <a href="../../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2069,7 +1996,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../train/utils/get_model_device/" class="md-nav__link">
+      <a href="../../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2090,7 +2017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../train/utils/round_down/" class="md-nav__link">
+      <a href="../../train/utils/round_down/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2111,7 +2038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2162,7 +2089,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utils/" class="md-nav__link ">
+            <a href="../../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2193,7 +2120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utils/tensor_shape/" class="md-nav__link">
+      <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2229,7 +2156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../contributing/" class="md-nav__link">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2249,7 +2176,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../citation/" class="md-nav__link">
+      <a href="../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2289,35 +2216,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.utils" class="md-nav__link">
     <span class="md-ellipsis">
-      model_reconstruction_score
+      utils
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="md-nav__link">
-    <span class="md-ellipsis">
-      ModelReconstructionScore
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ModelReconstructionScore">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="md-nav__link">
-    <span class="md-ellipsis">
-      calculate()
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2336,17 +2239,17 @@
                   
 
 
-<h1 id="model-reconstruction-score">Model reconstruction score<a class="headerlink" href="#model-reconstruction-score" title="Permanent link">¤</a></h1>
+<h1 id="metric-utils">Metric utils<a class="headerlink" href="#metric-utils" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.metrics.validate.model_reconstruction_score"></a>
+<a id="sparse_autoencoder.metrics.utils"></a>
   <div class="doc doc-contents first">
   
-      <p>Model reconstruction score.</p>
+      <p>Metric utils.</p>
 
   
 
@@ -2358,461 +2261,6 @@
 
 
 
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="doc doc-heading">
-          <code>ModelReconstructionScore</code>
-
-
-<a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.validate.abstract_validate_metric.AbstractValidationMetric" href="../abstract_validate_metric/#sparse_autoencoder.metrics.validate.abstract_validate_metric.AbstractValidationMetric">AbstractValidationMetric</a></code></p>
-
-  
-      <p>Model reconstruction score.</p>
-<p>Creates a score that measures how well the model can reconstruct the data.</p>
-<div class="arithmatex">\[
-\begin{align*}
-    v &amp;= \text{number of validation items} \\
-    l \in{\mathbb{R}^v} &amp;= \text{loss with no changes to the source model} \\
-    l_\text{recon} \in{\mathbb{R}^v} &amp;= \text{loss with reconstruction} \\
-    l_\text{zero} \in{\mathbb{R}^v} &amp;= \text{loss with zero ablation} \\
-    s &amp;= \text{reconstruction score} \\
-    s_\text{itemwise} &amp;= \frac{l_\text{zero} - l_\text{recon}}{l_\text{zero} - l} \\
-    s &amp;= \sum_{i=1}^v s_\text{itemwise} / v
-\end{align*}
-\]</div>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/metrics/validate/model_reconstruction_score.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelReconstructionScore</span><span class="p">(</span><span class="n">AbstractValidationMetric</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Model reconstruction score.</span>
-
-<span class="sd">    Creates a score that measures how well the model can reconstruct the data.</span>
-
-<span class="sd">    $$</span>
-<span class="sd">    \begin{align*}</span>
-<span class="sd">        v &amp;= \text{number of validation items} \\</span>
-<span class="sd">        l \in{\mathbb{R}^v} &amp;= \text{loss with no changes to the source model} \\</span>
-<span class="sd">        l_\text{recon} \in{\mathbb{R}^v} &amp;= \text{loss with reconstruction} \\</span>
-<span class="sd">        l_\text{zero} \in{\mathbb{R}^v} &amp;= \text{loss with zero ablation} \\</span>
-<span class="sd">        s &amp;= \text{reconstruction score} \\</span>
-<span class="sd">        s_\text{itemwise} &amp;= \frac{l_\text{zero} - l_\text{recon}}{l_\text{zero} - l} \\</span>
-<span class="sd">        s &amp;= \sum_{i=1}^v s_\text{itemwise} / v</span>
-<span class="sd">    \end{align*}</span>
-<span class="sd">    $$</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the model reconstruction score.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; data = ValidationMetricData(</span>
-<span class="sd">            ...     source_model_loss=torch.tensor([2.0, 2.0, 2.0]),</span>
-<span class="sd">            ...     source_model_loss_with_reconstruction=torch.tensor([3.0, 3.0, 3.0]),</span>
-<span class="sd">            ...     source_model_loss_with_zero_ablation=torch.tensor([5.0, 5.0, 5.0])</span>
-<span class="sd">            ... )</span>
-<span class="sd">            &gt;&gt;&gt; metric = ModelReconstructionScore()</span>
-<span class="sd">            &gt;&gt;&gt; result = metric.calculate(data)</span>
-<span class="sd">            &gt;&gt;&gt; round(result[3].aggregate_value.item(), 3)</span>
-<span class="sd">            0.667</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            data: Validation data.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Model reconstruction score.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Return no statistics if the data is empty (e.g. if we&#39;re at the very end of training)</span>
-        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
-
-        <span class="c1"># Calculate the reconstruction score</span>
-        <span class="n">zero_ablate_loss_minus_default_loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span>
-        <span class="n">zero_ablate_loss_minus_reconstruction_loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span>
-
-        <span class="n">model_reconstruction_score</span> <span class="o">=</span> <span class="n">zero_ablate_loss_minus_reconstruction_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
-            <span class="mi">0</span>
-        <span class="p">)</span> <span class="o">/</span> <span class="n">zero_ablate_loss_minus_default_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-        <span class="c1"># Get the other metrics</span>
-        <span class="n">validation_baseline_loss</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">validation_loss_with_reconstruction</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">validation_loss_with_zero_ablation</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="n">MetricResult</span><span class="p">(</span>
-                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">validation_baseline_loss</span><span class="p">,</span>
-                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;baseline_loss&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">MetricResult</span><span class="p">(</span>
-                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
-                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;loss_with_reconstruction&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">MetricResult</span><span class="p">(</span>
-                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
-                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;loss_with_zero_ablation&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">MetricResult</span><span class="p">(</span>
-                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">model_reconstruction_score</span><span class="p">,</span>
-                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-        <span class="p">]</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.metrics.validate.model_reconstruction_score.ModelReconstructionScore.calculate" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Calculate the model reconstruction score.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>import torch
-data = ValidationMetricData(
-...     source_model_loss=torch.tensor([2.0, 2.0, 2.0]),
-...     source_model_loss_with_reconstruction=torch.tensor([3.0, 3.0, 3.0]),
-...     source_model_loss_with_zero_ablation=torch.tensor([5.0, 5.0, 5.0])
-... )
-metric = ModelReconstructionScore()
-result = metric.calculate(data)
-round(result[3].aggregate_value.item(), 3)
-0.667</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>data</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.validate.abstract_validate_metric.ValidationMetricData" href="../abstract_validate_metric/#sparse_autoencoder.metrics.validate.abstract_validate_metric.ValidationMetricData">ValidationMetricData</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Validation data.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="../../abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Model reconstruction score.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/metrics/validate/model_reconstruction_score.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">ValidationMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the model reconstruction score.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; data = ValidationMetricData(</span>
-<span class="sd">        ...     source_model_loss=torch.tensor([2.0, 2.0, 2.0]),</span>
-<span class="sd">        ...     source_model_loss_with_reconstruction=torch.tensor([3.0, 3.0, 3.0]),</span>
-<span class="sd">        ...     source_model_loss_with_zero_ablation=torch.tensor([5.0, 5.0, 5.0])</span>
-<span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt; metric = ModelReconstructionScore()</span>
-<span class="sd">        &gt;&gt;&gt; result = metric.calculate(data)</span>
-<span class="sd">        &gt;&gt;&gt; round(result[3].aggregate_value.item(), 3)</span>
-<span class="sd">        0.667</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        data: Validation data.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Model reconstruction score.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Return no statistics if the data is empty (e.g. if we&#39;re at the very end of training)</span>
-    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[]</span>
-
-    <span class="c1"># Calculate the reconstruction score</span>
-    <span class="n">zero_ablate_loss_minus_default_loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span>
-    <span class="n">zero_ablate_loss_minus_reconstruction_loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span>
-
-    <span class="n">model_reconstruction_score</span> <span class="o">=</span> <span class="n">zero_ablate_loss_minus_reconstruction_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
-        <span class="mi">0</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="n">zero_ablate_loss_minus_default_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="c1"># Get the other metrics</span>
-    <span class="n">validation_baseline_loss</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">validation_loss_with_reconstruction</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_reconstruction</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">validation_loss_with_zero_ablation</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">source_model_loss_with_zero_ablation</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="n">MetricResult</span><span class="p">(</span>
-            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">validation_baseline_loss</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-            <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;baseline_loss&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">MetricResult</span><span class="p">(</span>
-            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">validation_loss_with_reconstruction</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-            <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;loss_with_reconstruction&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">MetricResult</span><span class="p">(</span>
-            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">validation_loss_with_zero_ablation</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-            <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;loss_with_zero_ablation&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">MetricResult</span><span class="p">(</span>
-            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">model_reconstruction_score</span><span class="p">,</span>
-            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reconstruction_score&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">]</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-</div>
 
 
 
@@ -2868,14 +2316,14 @@ round(result[3].aggregate_value.item(), 3)
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
-        <script src="../../../../javascript/custom_formatting.js"></script>
+        <script src="../../../javascript/custom_formatting.js"></script>
       
-        <script src="../../../../javascript/mathjax.js"></script>
+        <script src="../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

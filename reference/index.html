@@ -1044,69 +1044,16 @@
   
   
   
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_1" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="metrics/generate/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    generate
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_5_1" id="__nav_5_5_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_1">
-            <span class="md-nav__icon md-icon"></span>
-            generate
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="metrics/generate/abstract_generate_metric/" class="md-nav__link">
+      <a href="metrics/abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    abstract_generate_metric
+    abstract_metric
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1312,11 +1259,11 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="metrics/validate/" class="md-nav__link ">
+            <a href="metrics/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
-    validate
+    utils
   </span>
   
 
@@ -1331,6 +1278,101 @@
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metrics/utils/add_component_axis_if_missing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    add_component_axis_if_missing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metrics/utils/find_metric_result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    find_metric_result
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="metrics/validate/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    validate
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5_5" id="__nav_5_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5_5">
             <span class="md-nav__icon md-icon"></span>
             validate
           </label>
@@ -2167,15 +2209,6 @@
   <a href="#sparse_autoencoder" class="md-nav__link">
     <span class="md-ellipsis">
       sparse_autoencoder
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.LossLogType" class="md-nav__link">
-    <span class="md-ellipsis">
-      LossLogType
     </span>
   </a>
   
@@ -4392,28 +4425,6 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h2 id="sparse_autoencoder.LossLogType" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">LossLogType</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.LossLogType" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Loss log dict.</p>
-  </div>
-
-</div>
 
 
 <div class="doc doc-object doc-class">
@@ -9107,7 +9118,8 @@ with is typically 2-4.</p>
 
   
       <p>Capacities Metrics for Learned Features.</p>
-<p>Measure the capacity of a set of features as defined in <a href="https://arxiv.org/pdf/2210.01892.pdf">Polysemanticity and Capacity in Neural Networks</a>.</p>
+<p>Measure the capacity of a set of features as defined in <a href="https://arxiv.org/pdf/2210.01892.pdf">Polysemanticity and Capacity in Neural
+Networks</a>.</p>
 <p>Capacity is intuitively measuring the 'proportion of a dimension' assigned to a feature.
 Formally it's the ratio of the squared dot product of a feature with itself to the sum of its
 squared dot products of all features.</p>
@@ -9116,79 +9128,102 @@ squared dot products of all features.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CapacityMetric</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CapacityMetric</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Capacities Metrics for Learned Features.</span>
 
-<span class="sd">    Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural Networks](https://arxiv.org/pdf/2210.01892.pdf).</span>
+<span class="sd">    Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural</span>
+<span class="sd">    Networks](https://arxiv.org/pdf/2210.01892.pdf).</span>
 
 <span class="sd">    Capacity is intuitively measuring the &#39;proportion of a dimension&#39; assigned to a feature.</span>
 <span class="sd">    Formally it&#39;s the ratio of the squared dot product of a feature with itself to the sum of its</span>
@@ -9200,16 +9235,16 @@ squared dot products of all features.</p>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">capacities</span><span class="p">(</span>
-        <span class="n">features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate capacities.</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate capacities.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; orthogonal_features = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])</span>
+<span class="sd">            &gt;&gt;&gt; orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])</span>
 <span class="sd">            &gt;&gt;&gt; orthogonal_caps = CapacityMetric.capacities(orthogonal_features)</span>
 <span class="sd">            &gt;&gt;&gt; orthogonal_caps</span>
-<span class="sd">            tensor([1., 1., 1.])</span>
+<span class="sd">            tensor([[1., 1., 1.]])</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            features: A collection of features.</span>
@@ -9218,19 +9253,31 @@ squared dot products of all features.</p>
 <span class="sd">            A 1D tensor of capacities, where each element is the capacity of the corresponding</span>
 <span class="sd">            feature.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">squared_dot_products</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">squared_dot_products</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-                <span class="n">features</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="s2">&quot;n_feats1 feat_dim, n_feats2 feat_dim -&gt; n_feats1 n_feats2&quot;</span>
+                <span class="n">features</span><span class="p">,</span>
+                <span class="n">features</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;batch_1 </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                    batch_2 </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                    -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> batch_1 batch_2&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="o">**</span> <span class="mi">2</span>
         <span class="p">)</span>
-        <span class="n">sum_of_sq_dot</span> <span class="o">=</span> <span class="n">squared_dot_products</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">squared_dot_products</span><span class="p">)</span> <span class="o">/</span> <span class="n">sum_of_sq_dot</span>
+
+        <span class="n">sum_of_sq_dot</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">squared_dot_products</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">diagonal</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span>
+            <span class="n">squared_dot_products</span><span class="p">,</span> <span class="n">dim1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">diagonal</span> <span class="o">/</span> <span class="n">sum_of_sq_dot</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">wandb_capacities_histogram</span><span class="p">(</span>
-        <span class="n">capacities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">:</span>
+        <span class="n">capacities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a W&amp;B histogram of the capacities.</span>
 
 <span class="sd">        This can be logged with Weights &amp; Biases using e.g. `wandb.log({&quot;capacities_histogram&quot;:</span>
@@ -9242,19 +9289,28 @@ squared dot products of all features.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            Weights &amp; Biases histogram for logging with `wandb.log`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">numpy_capacities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacities</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">np_capacities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">capacities</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
-        <span class="n">bins</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">(</span><span class="n">numpy_capacities</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+        <span class="n">np_histograms</span> <span class="o">=</span> <span class="p">[</span><span class="n">histogram</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">capacity</span> <span class="ow">in</span> <span class="n">np_capacities</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="n">np_histogram</span><span class="p">)</span> <span class="k">for</span> <span class="n">np_histogram</span> <span class="ow">in</span> <span class="n">np_histograms</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the capacities for a training batch.&quot;&quot;&quot;</span>
         <span class="n">train_batch_capacities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacities</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
-        <span class="n">train_batch_capacities_histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_capacities_histogram</span><span class="p">(</span><span class="n">train_batch_capacities</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;train/batch_capacities_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_capacities_histogram</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="n">histograms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_capacities_histogram</span><span class="p">(</span><span class="n">train_batch_capacities</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">MetricResult</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;capacities&quot;</span><span class="p">,</span>
+                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">histograms</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                <span class="n">aggregate_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Don&#39;t aggregate histograms</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -9288,21 +9344,33 @@ squared dot products of all features.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the capacities for a training batch.&quot;&quot;&quot;</span>
     <span class="n">train_batch_capacities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacities</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
-    <span class="n">train_batch_capacities_histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_capacities_histogram</span><span class="p">(</span><span class="n">train_batch_capacities</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;train/batch_capacities_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_capacities_histogram</span><span class="p">,</span>
-    <span class="p">}</span>
+    <span class="n">histograms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_capacities_histogram</span><span class="p">(</span><span class="n">train_batch_capacities</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">MetricResult</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;capacities&quot;</span><span class="p">,</span>
+            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">histograms</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">aggregate_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Don&#39;t aggregate histograms</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -9335,10 +9403,10 @@ squared dot products of all features.</p>
 <blockquote>
 <blockquote>
 <p>import torch
-orthogonal_features = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])
+orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])
 orthogonal_caps = CapacityMetric.capacities(orthogonal_features)
 orthogonal_caps
-tensor([1., 1., 1.])</p>
+tensor([[1., 1., 1.]])</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -9359,7 +9427,7 @@ tensor([1., 1., 1.])</p>
         <tr>
           <td><code>features</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -9386,7 +9454,7 @@ tensor([1., 1., 1.])</p>
     <tbody>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -9396,7 +9464,7 @@ tensor([1., 1., 1.])</p>
         </tr>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -9436,18 +9504,30 @@ tensor([1., 1., 1.])</p>
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
-<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">capacities</span><span class="p">(</span>
-    <span class="n">features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate capacities.</span>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate capacities.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; orthogonal_features = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])</span>
+<span class="sd">        &gt;&gt;&gt; orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])</span>
 <span class="sd">        &gt;&gt;&gt; orthogonal_caps = CapacityMetric.capacities(orthogonal_features)</span>
 <span class="sd">        &gt;&gt;&gt; orthogonal_caps</span>
-<span class="sd">        tensor([1., 1., 1.])</span>
+<span class="sd">        tensor([[1., 1., 1.]])</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        features: A collection of features.</span>
@@ -9456,14 +9536,26 @@ tensor([1., 1., 1.])</p>
 <span class="sd">        A 1D tensor of capacities, where each element is the capacity of the corresponding</span>
 <span class="sd">        feature.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">squared_dot_products</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">squared_dot_products</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-            <span class="n">features</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="s2">&quot;n_feats1 feat_dim, n_feats2 feat_dim -&gt; n_feats1 n_feats2&quot;</span>
+            <span class="n">features</span><span class="p">,</span>
+            <span class="n">features</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;batch_1 </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">                batch_2 </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> batch_1 batch_2&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="o">**</span> <span class="mi">2</span>
     <span class="p">)</span>
-    <span class="n">sum_of_sq_dot</span> <span class="o">=</span> <span class="n">squared_dot_products</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">squared_dot_products</span><span class="p">)</span> <span class="o">/</span> <span class="n">sum_of_sq_dot</span>
+
+    <span class="n">sum_of_sq_dot</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">squared_dot_products</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">diagonal</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span>
+        <span class="n">squared_dot_products</span><span class="p">,</span> <span class="n">dim1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">diagonal</span> <span class="o">/</span> <span class="n">sum_of_sq_dot</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -9508,7 +9600,7 @@ wandb_capacities_histogram(capacities)})</code>.</p>
         <tr>
           <td><code>capacities</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -9535,7 +9627,7 @@ wandb_capacities_histogram(capacities)})</code>.</p>
     <tbody>
         <tr>
           <td>
-                <code><span title="wandb.Histogram">Histogram</span></code>
+                <code>list[<span title="wandb.Histogram">Histogram</span>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -9548,28 +9640,31 @@ wandb_capacities_histogram(capacities)})</code>.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
-<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">wandb_capacities_histogram</span><span class="p">(</span>
-    <span class="n">capacities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">:</span>
+    <span class="n">capacities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a W&amp;B histogram of the capacities.</span>
 
 <span class="sd">    This can be logged with Weights &amp; Biases using e.g. `wandb.log({&quot;capacities_histogram&quot;:</span>
@@ -9581,10 +9676,13 @@ wandb_capacities_histogram(capacities)})</code>.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        Weights &amp; Biases histogram for logging with `wandb.log`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">numpy_capacities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacities</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">np_capacities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">capacities</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
-    <span class="n">bins</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">(</span><span class="n">numpy_capacities</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+    <span class="n">np_histograms</span> <span class="o">=</span> <span class="p">[</span><span class="n">histogram</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">capacity</span> <span class="ow">in</span> <span class="n">np_capacities</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="n">np_histogram</span><span class="p">)</span> <span class="k">for</span> <span class="n">np_histogram</span> <span class="ow">in</span> <span class="n">np_histograms</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -12547,7 +12645,8 @@ method to efficiently tune hyperparameters.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">302</span>
+<span class="normal">303</span>
 <span class="normal">304</span>
 <span class="normal">305</span>
 <span class="normal">306</span>
@@ -12604,8 +12703,7 @@ method to efficiently tune hyperparameters.</p>
 <span class="normal">357</span>
 <span class="normal">358</span>
 <span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">360</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Hyperparameters</span><span class="p">(</span><span class="n">Parameters</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sweep Hyperparameters.&quot;&quot;&quot;</span>
 
@@ -12720,7 +12818,8 @@ method to efficiently tune hyperparameters.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">327</span>
+<span class="normal">328</span>
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
@@ -12734,8 +12833,7 @@ method to efficiently tune hyperparameters.</p>
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Post initialisation checks.&quot;&quot;&quot;</span>
     <span class="c1"># Check the resample dataset size &lt;= the store size (currently only works if value is used</span>
     <span class="c1"># for both).</span>
@@ -12775,10 +12873,10 @@ method to efficiently tune hyperparameters.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">358</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">357</span>
+<span class="normal">358</span>
 <span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">360</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation of this object.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
@@ -12806,7 +12904,8 @@ method to efficiently tune hyperparameters.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">344</span>
+<span class="normal">345</span>
 <span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
@@ -12816,8 +12915,7 @@ method to efficiently tune hyperparameters.</p>
 <span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String representation of this object.&quot;&quot;&quot;</span>
     <span class="n">items_representation</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13041,8 +13139,8 @@ input_activations = torch.tensor([[5.0, 4], [3.0, 4]])
 output_activations = torch.tensor([[1.0, 5], [1.0, 5]])
 unused_activations = torch.zeros_like(input_activations)</p>
 <h3 id="sparse_autoencoder.L2ReconstructionLoss--outputs-both-loss-and-metrics-to-log">Outputs both loss and metrics to log<a class="headerlink" href="#sparse_autoencoder.L2ReconstructionLoss--outputs-both-loss-and-metrics-to-log" title="Permanent link">¤</a></h3>
-<p>loss(input_activations, unused_activations, output_activations)
-(tensor(5.5000), {'train/loss/l2_reconstruction_loss': 5.5})</p>
+<p>loss.forward(input_activations, unused_activations, output_activations)
+tensor([8.5000, 2.5000])</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -13141,8 +13239,8 @@ unused_activations = torch.zeros_like(input_activations)</p>
 <span class="sd">        &gt;&gt;&gt; output_activations = torch.tensor([[1.0, 5], [1.0, 5]])</span>
 <span class="sd">        &gt;&gt;&gt; unused_activations = torch.zeros_like(input_activations)</span>
 <span class="sd">        &gt;&gt;&gt; # Outputs both loss and metrics to log</span>
-<span class="sd">        &gt;&gt;&gt; loss(input_activations, unused_activations, output_activations)</span>
-<span class="sd">        (tensor(5.5000), {&#39;train/loss/l2_reconstruction_loss&#39;: 5.5})</span>
+<span class="sd">        &gt;&gt;&gt; loss.forward(input_activations, unused_activations, output_activations)</span>
+<span class="sd">        tensor([8.5000, 2.5000])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span>
@@ -13559,7 +13657,7 @@ multiplied by the l1_coefficient (designed to encourage sparsity).</p>
 learned_activations = torch.tensor([[2.0, -3], [2.0, -3]])
 unused_activations = torch.zeros_like(learned_activations)</p>
 <h3 id="sparse_autoencoder.LearnedActivationsL1Loss--returns-loss-and-metrics-to-log">Returns loss and metrics to log<a class="headerlink" href="#sparse_autoencoder.LearnedActivationsL1Loss--returns-loss-and-metrics-to-log" title="Permanent link">¤</a></h3>
-<p>l1_loss(unused_activations, learned_activations, unused_activations)[0]
+<p>l1_loss.forward(unused_activations, learned_activations, unused_activations)[0]
 tensor(0.5000)</p>
 </blockquote>
 </blockquote>
@@ -13567,8 +13665,7 @@ tensor(0.5000)</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/loss/learned_activations_l1.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 12</span>
-<span class="normal"> 13</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 13</span>
 <span class="normal"> 14</span>
 <span class="normal"> 15</span>
 <span class="normal"> 16</span>
@@ -13751,7 +13848,9 @@ tensor(0.5000)</p>
 <span class="normal">193</span>
 <span class="normal">194</span>
 <span class="normal">195</span>
-<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">LearnedActivationsL1Loss</span><span class="p">(</span><span class="n">AbstractLoss</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Learned activations L1 (absolute error) loss.</span>
 
@@ -13763,7 +13862,7 @@ tensor(0.5000)</p>
 <span class="sd">        &gt;&gt;&gt; learned_activations = torch.tensor([[2.0, -3], [2.0, -3]])</span>
 <span class="sd">        &gt;&gt;&gt; unused_activations = torch.zeros_like(learned_activations)</span>
 <span class="sd">        &gt;&gt;&gt; # Returns loss and metrics to log</span>
-<span class="sd">        &gt;&gt;&gt; l1_loss(unused_activations, learned_activations, unused_activations)[0]</span>
+<span class="sd">        &gt;&gt;&gt; l1_loss.forward(unused_activations, learned_activations, unused_activations)[0]</span>
 <span class="sd">        tensor(0.5000)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -13870,7 +13969,7 @@ tensor(0.5000)</p>
         <span class="p">],</span>
         <span class="n">batch_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
         <span class="n">component_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">],</span> <span class="n">LossLogType</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scalar L1 loss (reduced across the batch and component axis) with logging.</span>
 
 <span class="sd">        Args:</span>
@@ -13904,24 +14003,25 @@ tensor(0.5000)</p>
                 <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Batch reduction type NONE not supported.&quot;</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
-        <span class="n">batch_loss_to_log</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="n">batch_loss_penalty_to_log</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
         <span class="c1"># Create the log</span>
-        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">batch_loss_to_log</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-            <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;train/loss/learned_activations_l1_loss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_loss_to_log</span>
-            <span class="n">metrics</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;train/loss/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_loss_penalty_to_log</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">component_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">component_loss</span><span class="p">,</span> <span class="n">component_loss_penalty</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">batch_loss_to_log</span><span class="p">,</span> <span class="n">batch_loss_penalty_to_log</span><span class="p">)</span>
-            <span class="p">):</span>
-                <span class="n">metrics</span><span class="p">[</span>
-                    <span class="sa">f</span><span class="s2">&quot;train/loss/learned_activations_l1_loss/component_</span><span class="si">{</span><span class="n">component_idx</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">component_loss</span>
-                <span class="n">metrics</span><span class="p">[</span>
-                    <span class="sa">f</span><span class="s2">&quot;train/loss/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span><span class="si">}</span><span class="s2">/component_</span><span class="si">{</span><span class="n">component_idx</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">component_loss_penalty</span>
+        <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">MetricResult</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;learned_activations_l1&quot;</span><span class="p">,</span>
+                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="k">else</span> <span class="n">batch_scalar_loss</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="n">MetricLocation</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">MetricResult</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">(),</span>
+                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="k">else</span> <span class="n">batch_scalar_loss_penalty</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="n">MetricLocation</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
 
         <span class="k">match</span> <span class="n">component_reduction</span><span class="p">:</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
@@ -14024,8 +14124,7 @@ approximate guide if you use e.g. 2x this number of tokens you might consider us
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/learned_activations_l1.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
-<span class="normal">40</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -14036,7 +14135,8 @@ approximate guide if you use e.g. 2x this number of tokens you might consider us
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">l1_coefficient</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the absolute error loss.</span>
@@ -14073,9 +14173,9 @@ approximate guide if you use e.g. 2x this number of tokens you might consider us
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/learned_activations_l1.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extra representation string.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;l1_coefficient=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">l1_coefficient</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -14185,8 +14285,7 @@ source model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/learned_activations_l1.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 92</span>
-<span class="normal"> 93</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
 <span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
@@ -14208,7 +14307,8 @@ source model).</p>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+<span class="normal">115</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -14280,13 +14380,13 @@ source model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/learned_activations_l1.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
-<span class="normal">32</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
-<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">log_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">log_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Log name.</span>
 
 <span class="sd">    Returns:</span>
@@ -14416,7 +14516,7 @@ to make the loss independent of the batch size.</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>], <a class="autorefs autorefs-internal" title="sparse_autoencoder.loss.abstract_loss.LossLogType" href="loss/abstract_loss/#sparse_autoencoder.loss.abstract_loss.LossLogType">LossLogType</a>]</code>
+                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>], list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -14454,8 +14554,7 @@ to make the loss independent of the batch size.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/learned_activations_l1.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
-<span class="normal">119</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
@@ -14528,7 +14627,9 @@ to make the loss independent of the batch size.</p>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
-<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scalar_loss_with_log</span><span class="p">(</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scalar_loss_with_log</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -14541,7 +14642,7 @@ to make the loss independent of the batch size.</p>
     <span class="p">],</span>
     <span class="n">batch_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
     <span class="n">component_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">],</span> <span class="n">LossLogType</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scalar L1 loss (reduced across the batch and component axis) with logging.</span>
 
 <span class="sd">    Args:</span>
@@ -14575,24 +14676,25 @@ to make the loss independent of the batch size.</p>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Batch reduction type NONE not supported.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
-    <span class="n">batch_loss_to_log</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">batch_loss_penalty_to_log</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
     <span class="c1"># Create the log</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">batch_loss_to_log</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;train/loss/learned_activations_l1_loss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_loss_to_log</span>
-        <span class="n">metrics</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;train/loss/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_loss_penalty_to_log</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">component_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">component_loss</span><span class="p">,</span> <span class="n">component_loss_penalty</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
-            <span class="nb">zip</span><span class="p">(</span><span class="n">batch_loss_to_log</span><span class="p">,</span> <span class="n">batch_loss_penalty_to_log</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="n">metrics</span><span class="p">[</span>
-                <span class="sa">f</span><span class="s2">&quot;train/loss/learned_activations_l1_loss/component_</span><span class="si">{</span><span class="n">component_idx</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="n">component_loss</span>
-            <span class="n">metrics</span><span class="p">[</span>
-                <span class="sa">f</span><span class="s2">&quot;train/loss/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">()</span><span class="si">}</span><span class="s2">/component_</span><span class="si">{</span><span class="n">component_idx</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="n">component_loss_penalty</span>
+    <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">MetricResult</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;learned_activations_l1&quot;</span><span class="p">,</span>
+            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">batch_scalar_loss</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="n">batch_scalar_loss</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">MetricLocation</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">MetricResult</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="n">postfix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log_name</span><span class="p">(),</span>
+            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">batch_scalar_loss_penalty</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="n">batch_scalar_loss_penalty</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">MetricLocation</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
 
     <span class="k">match</span> <span class="n">component_reduction</span><span class="p">:</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
@@ -15462,14 +15564,14 @@ source model).</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LossReductionType</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LossReductionType</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Loss reduction type.&quot;&quot;&quot;</span>
 
     <span class="n">MEAN</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span>
@@ -16983,10 +17085,7 @@ set.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 42</span>
 <span class="normal"> 43</span>
 <span class="normal"> 44</span>
 <span class="normal"> 45</span>
@@ -17454,7 +17553,15 @@ set.</p>
 <span class="normal">507</span>
 <span class="normal">508</span>
 <span class="normal">509</span>
-<span class="normal">510</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -17637,21 +17744,21 @@ set.</p>
             <span class="n">learned_activations</span><span class="p">,</span> <span class="n">reconstructed_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
             <span class="c1"># Get loss &amp; metrics</span>
-            <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">total_loss</span><span class="p">,</span> <span class="n">loss_metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">scalar_loss_with_log</span><span class="p">(</span>
                 <span class="n">batch</span><span class="p">,</span>
                 <span class="n">learned_activations</span><span class="p">,</span>
                 <span class="n">reconstructed_activations</span><span class="p">,</span>
                 <span class="n">component_reduction</span><span class="o">=</span><span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">loss_metrics</span><span class="p">)</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">loss_metrics</span><span class="p">)</span>
 
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">train_metrics</span><span class="p">:</span>
                     <span class="n">calculated</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span>
                         <span class="n">TrainMetricData</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">reconstructed_activations</span><span class="p">)</span>
                     <span class="p">)</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculated</span><span class="p">)</span>
+                    <span class="n">metrics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">calculated</span><span class="p">)</span>
 
             <span class="c1"># Store count of how many neurons have fired</span>
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -17670,8 +17777,11 @@ set.</p>
                 <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span> <span class="o">/</span> <span class="n">train_batch_size</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_frequency</span>
                 <span class="o">==</span> <span class="mi">0</span>
             <span class="p">):</span>
+                <span class="n">log</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">metric_result</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metric_result</span><span class="o">.</span><span class="n">wandb_log</span><span class="p">)</span>
                 <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
-                    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">metrics</span><span class="p">,</span> <span class="o">**</span><span class="n">loss_metrics</span><span class="p">},</span>
+                    <span class="n">log</span><span class="p">,</span>
                     <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span><span class="p">,</span>
                     <span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="p">)</span>
@@ -17759,9 +17869,11 @@ set.</p>
             <span class="n">source_model_loss_with_zero_ablation</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses_with_zero_ablation</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">validation_metrics</span><span class="p">:</span>
-            <span class="n">calculated</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">validation_data</span><span class="p">)</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">metric_result</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">validation_data</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metric_result</span><span class="o">.</span><span class="n">wandb_log</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">wandb</span><span class="o">.</span><span class="n">run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">calculated</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
@@ -18444,10 +18556,7 @@ set.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
@@ -18493,7 +18602,10 @@ set.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
@@ -18645,10 +18757,7 @@ set.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
@@ -18695,7 +18804,10 @@ set.</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
-<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations.</span>
 
 <span class="sd">    Args:</span>
@@ -18871,15 +18983,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">378</span>
-<span class="normal">379</span>
-<span class="normal">380</span>
-<span class="normal">381</span>
-<span class="normal">382</span>
-<span class="normal">383</span>
-<span class="normal">384</span>
-<span class="normal">385</span>
-<span class="normal">386</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">386</span>
 <span class="normal">387</span>
 <span class="normal">388</span>
 <span class="normal">389</span>
@@ -18963,7 +19067,15 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">467</span>
 <span class="normal">468</span>
 <span class="normal">469</span>
-<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">max_store_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -19134,15 +19246,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">356</span>
 <span class="normal">357</span>
 <span class="normal">358</span>
 <span class="normal">359</span>
@@ -19162,7 +19266,15 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">373</span>
 <span class="normal">374</span>
 <span class="normal">375</span>
-<span class="normal">376</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.</span>
 
@@ -19320,15 +19432,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">472</span>
-<span class="normal">473</span>
-<span class="normal">474</span>
-<span class="normal">475</span>
-<span class="normal">476</span>
-<span class="normal">477</span>
-<span class="normal">478</span>
-<span class="normal">479</span>
-<span class="normal">480</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">480</span>
 <span class="normal">481</span>
 <span class="normal">482</span>
 <span class="normal">483</span>
@@ -19358,7 +19462,15 @@ different data.</p>
 <span class="normal">507</span>
 <span class="normal">508</span>
 <span class="normal">509</span>
-<span class="normal">510</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">stateful_dataloader_iterable</span><span class="p">(</span>
     <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
@@ -19489,10 +19601,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
@@ -19562,7 +19671,13 @@ different data.</p>
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
-<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the sparse autoencoder.</span>
@@ -19596,21 +19711,21 @@ different data.</p>
         <span class="n">learned_activations</span><span class="p">,</span> <span class="n">reconstructed_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
         <span class="c1"># Get loss &amp; metrics</span>
-        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">total_loss</span><span class="p">,</span> <span class="n">loss_metrics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">scalar_loss_with_log</span><span class="p">(</span>
             <span class="n">batch</span><span class="p">,</span>
             <span class="n">learned_activations</span><span class="p">,</span>
             <span class="n">reconstructed_activations</span><span class="p">,</span>
             <span class="n">component_reduction</span><span class="o">=</span><span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">loss_metrics</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">loss_metrics</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">train_metrics</span><span class="p">:</span>
                 <span class="n">calculated</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span>
                     <span class="n">TrainMetricData</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">reconstructed_activations</span><span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculated</span><span class="p">)</span>
+                <span class="n">metrics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">calculated</span><span class="p">)</span>
 
         <span class="c1"># Store count of how many neurons have fired</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -19629,8 +19744,11 @@ different data.</p>
             <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span> <span class="o">/</span> <span class="n">train_batch_size</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_frequency</span>
             <span class="o">==</span> <span class="mi">0</span>
         <span class="p">):</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">metric_result</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metric_result</span><span class="o">.</span><span class="n">wandb_log</span><span class="p">)</span>
             <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
-                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">metrics</span><span class="p">,</span> <span class="o">**</span><span class="n">loss_metrics</span><span class="p">},</span>
+                <span class="n">log</span><span class="p">,</span>
                 <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span><span class="p">,</span>
                 <span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
@@ -19690,13 +19808,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
@@ -19716,7 +19828,13 @@ different data.</p>
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
-<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="n">ParameterUpdateResults</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="n">ParameterUpdateResults</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the parameters of the model from the results of the resampler.</span>
 
 <span class="sd">    Args:</span>
@@ -19797,13 +19915,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
 <span class="normal">298</span>
 <span class="normal">299</span>
 <span class="normal">300</span>
@@ -19852,7 +19964,15 @@ different data.</p>
 <span class="normal">343</span>
 <span class="normal">344</span>
 <span class="normal">345</span>
-<span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_number_activations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_number_activations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 
 <span class="sd">    Args:</span>
@@ -19905,9 +20025,11 @@ different data.</p>
         <span class="n">source_model_loss_with_zero_ablation</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">losses_with_zero_ablation</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">validation_metrics</span><span class="p">:</span>
-        <span class="n">calculated</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">validation_data</span><span class="p">)</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">metric_result</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">validation_data</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metric_result</span><span class="o">.</span><span class="n">wandb_log</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">wandb</span><span class="o">.</span><span class="n">run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">calculated</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -19981,8 +20103,7 @@ different data.</p>
 <span class="normal">283</span>
 <span class="normal">284</span>
 <span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">286</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">PipelineHyperparameters</span><span class="p">(</span><span class="n">NestedParameter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline hyperparameters.&quot;&quot;&quot;</span>
 
@@ -20014,8 +20135,7 @@ different data.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validation frequency.&quot;&quot;&quot;</span>
 
     <span class="n">validation_number_activations</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="c1"># Default to a single batch of source data prompts</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span> <span class="o">*</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_SOURCE_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of activations to use for validation.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -20198,7 +20318,7 @@ different data.</p>
 
 
 <h3 id="sparse_autoencoder.PipelineHyperparameters.validation_number_activations" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">validation_number_activations</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span> <span class="o">*</span> <span class="mi">16</span><span class="p">))</span></code>
+          <code class="highlight language-python"><span class="n">validation_number_activations</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">DEFAULT_SOURCE_BATCH_SIZE</span> <span class="o">*</span> <span class="n">DEFAULT_SOURCE_CONTEXT_SIZE</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -22419,15 +22539,15 @@ model won't contain a component axis in any of the parameters).</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/sweep_config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">364</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">363</span>
+<span class="normal">364</span>
 <span class="normal">365</span>
 <span class="normal">366</span>
 <span class="normal">367</span>
 <span class="normal">368</span>
 <span class="normal">369</span>
 <span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="normal">371</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">SweepConfig</span><span class="p">(</span><span class="n">WandbSweepConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sweep Config.&quot;&quot;&quot;</span>
 
@@ -25143,7 +25263,9 @@ tracking the progress of training.</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/train/feature_density.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
 <span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
@@ -25238,7 +25360,25 @@ tracking the progress of training.</p>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TrainBatchFeatureDensityMetric</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TrainBatchFeatureDensityMetric</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train batch feature density.</span>
 
 <span class="sd">    Percentage of samples in which each feature was active (i.e. the neuron has &quot;fired&quot;), in a</span>
@@ -25255,7 +25395,10 @@ tracking the progress of training.</p>
 
     <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the train batch feature density metric.</span>
 
 <span class="sd">        Args:</span>
@@ -25266,17 +25409,18 @@ tracking the progress of training.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
 
     <span class="k">def</span> <span class="nf">feature_density</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count how many times each feature was active.</span>
 
 <span class="sd">        Percentage of samples in which each feature was active (i.e. the neuron has &quot;fired&quot;).</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; activations = torch.tensor([[0.5, 0.5, 0.0], [0.5, 0.0, 0.0001]])</span>
+<span class="sd">            &gt;&gt;&gt; activations = torch.tensor([[[0.5, 0.5, 0.0]], [[0.5, 0.0, 0.0001]]])</span>
 <span class="sd">            &gt;&gt;&gt; TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()</span>
-<span class="sd">            [1.0, 0.5, 0.0]</span>
+<span class="sd">            [[1.0, 0.5, 0.0]]</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            activations: Sample of cached activations (the Autoencoder&#39;s learned features).</span>
@@ -25284,18 +25428,23 @@ tracking the progress of training.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            Number of times each feature was active in a sample.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">has_fired</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gt</span><span class="p">(</span>
-            <span class="n">activations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+        <span class="n">has_fired</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gt</span><span class="p">(</span><span class="n">activations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span>  <span class="c1"># Move to float so it can be averaged</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">einops</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">has_fired</span><span class="p">,</span> <span class="s2">&quot;sample activation -&gt; activation&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">einops</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+            <span class="n">has_fired</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">                -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">wandb_feature_density_histogram</span><span class="p">(</span>
-        <span class="n">feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">:</span>
+        <span class="n">feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a W&amp;B histogram of the feature density.</span>
 
 <span class="sd">        This can be logged with Weights &amp; Biases using e.g. `wandb.log({&quot;feature_density_histogram&quot;:</span>
@@ -25308,12 +25457,18 @@ tracking the progress of training.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            Weights &amp; Biases histogram for logging with `wandb.log`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">numpy_feature_density</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature_density</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">numpy_feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">feature_density</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
-        <span class="n">bins</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">(</span><span class="n">numpy_feature_density</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+        <span class="n">np_histograms</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">histogram</span><span class="p">(</span><span class="n">component_feature_density</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">component_feature_density</span> <span class="ow">in</span> <span class="n">numpy_feature_density</span>
+        <span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="n">np_histogram</span><span class="p">)</span> <span class="k">for</span> <span class="n">np_histogram</span> <span class="ow">in</span> <span class="n">np_histograms</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the train batch feature density metrics.</span>
 
 <span class="sd">        Args:</span>
@@ -25323,17 +25478,22 @@ tracking the progress of training.</p>
 <span class="sd">            Dictionary with the train batch feature density metric, and a histogram of the feature</span>
 <span class="sd">            density.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">train_batch_feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_density</span><span class="p">(</span>
-            <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span>
+        <span class="n">train_batch_feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_density</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
+
+        <span class="n">component_wise_histograms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_feature_density_histogram</span><span class="p">(</span>
+            <span class="n">train_batch_feature_density</span>
         <span class="p">)</span>
 
-        <span class="n">train_batch_feature_density_histogram</span><span class="p">:</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">wandb_feature_density_histogram</span><span class="p">(</span><span class="n">train_batch_feature_density</span><span class="p">)</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;train/batch_feature_density_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_feature_density_histogram</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">MetricResult</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;feature_density&quot;</span><span class="p">,</span>
+                <span class="n">component_wise_values</span><span class="o">=</span><span class="n">component_wise_histograms</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                <span class="n">aggregate_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Don&#39;t aggregate the histograms</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -25398,7 +25558,9 @@ This should be close to zero.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/feature_density.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
@@ -25406,7 +25568,11 @@ This should be close to zero.</p>
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
-<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the train batch feature density metric.</span>
 
 <span class="sd">    Args:</span>
@@ -25480,7 +25646,7 @@ This should be close to zero.</p>
     <tbody>
         <tr>
           <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -25490,7 +25656,7 @@ This should be close to zero.</p>
         </tr>
         <tr>
           <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -25503,27 +25669,32 @@ This should be close to zero.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/feature_density.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
 <span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the train batch feature density metrics.</span>
 
 <span class="sd">    Args:</span>
@@ -25533,17 +25704,22 @@ This should be close to zero.</p>
 <span class="sd">        Dictionary with the train batch feature density metric, and a histogram of the feature</span>
 <span class="sd">        density.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">train_batch_feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_density</span><span class="p">(</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span>
+    <span class="n">train_batch_feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_density</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
+
+    <span class="n">component_wise_histograms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_feature_density_histogram</span><span class="p">(</span>
+        <span class="n">train_batch_feature_density</span>
     <span class="p">)</span>
 
-    <span class="n">train_batch_feature_density_histogram</span><span class="p">:</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wandb_feature_density_histogram</span><span class="p">(</span><span class="n">train_batch_feature_density</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;train/batch_feature_density_histogram&quot;</span><span class="p">:</span> <span class="n">train_batch_feature_density_histogram</span><span class="p">,</span>
-    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">MetricResult</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;feature_density&quot;</span><span class="p">,</span>
+            <span class="n">component_wise_values</span><span class="o">=</span><span class="n">component_wise_histograms</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">aggregate_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Don&#39;t aggregate the histograms</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -25573,9 +25749,9 @@ This should be close to zero.</p>
 <blockquote>
 <blockquote>
 <p>import torch
-activations = torch.tensor([[0.5, 0.5, 0.0], [0.5, 0.0, 0.0001]])
+activations = torch.tensor([[[0.5, 0.5, 0.0]], [[0.5, 0.0, 0.0001]]])
 TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
-[1.0, 0.5, 0.0]</p>
+[[1.0, 0.5, 0.0]]</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -25596,7 +25772,7 @@ TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
         <tr>
           <td><code>activations</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -25623,7 +25799,7 @@ TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
     <tbody>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -25636,8 +25812,7 @@ TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/feature_density.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
@@ -25661,18 +25836,26 @@ TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">feature_density</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]:</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">feature_density</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Count how many times each feature was active.</span>
 
 <span class="sd">    Percentage of samples in which each feature was active (i.e. the neuron has &quot;fired&quot;).</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; activations = torch.tensor([[0.5, 0.5, 0.0], [0.5, 0.0, 0.0001]])</span>
+<span class="sd">        &gt;&gt;&gt; activations = torch.tensor([[[0.5, 0.5, 0.0]], [[0.5, 0.0, 0.0001]]])</span>
 <span class="sd">        &gt;&gt;&gt; TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()</span>
-<span class="sd">        [1.0, 0.5, 0.0]</span>
+<span class="sd">        [[1.0, 0.5, 0.0]]</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        activations: Sample of cached activations (the Autoencoder&#39;s learned features).</span>
@@ -25680,13 +25863,18 @@ TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
 <span class="sd">    Returns:</span>
 <span class="sd">        Number of times each feature was active in a sample.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">has_fired</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gt</span><span class="p">(</span>
-        <span class="n">activations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+    <span class="n">has_fired</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gt</span><span class="p">(</span><span class="n">activations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
         <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span>  <span class="c1"># Move to float so it can be averaged</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">einops</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">has_fired</span><span class="p">,</span> <span class="s2">&quot;sample activation -&gt; activation&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">einops</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+        <span class="n">has_fired</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
+<span class="s2">            -&gt; </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -25731,7 +25919,7 @@ wandb_feature_density_histogram(feature_density)})</code>.</p>
         <tr>
           <td><code>feature_density</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -25759,7 +25947,7 @@ using :func:<code>feature_activity_count</code>.</p>
     <tbody>
         <tr>
           <td>
-                <code><span title="wandb.Histogram">Histogram</span></code>
+                <code>list[<span title="wandb.Histogram">Histogram</span>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -25772,29 +25960,35 @@ using :func:<code>feature_activity_count</code>.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/feature_density.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">wandb_feature_density_histogram</span><span class="p">(</span>
-    <span class="n">feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">:</span>
+    <span class="n">feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a W&amp;B histogram of the feature density.</span>
 
 <span class="sd">    This can be logged with Weights &amp; Biases using e.g. `wandb.log({&quot;feature_density_histogram&quot;:</span>
@@ -25807,10 +26001,16 @@ using :func:<code>feature_activity_count</code>.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        Weights &amp; Biases histogram for logging with `wandb.log`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">numpy_feature_density</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature_density</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">numpy_feature_density</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">feature_density</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
-    <span class="n">bins</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">(</span><span class="n">numpy_feature_density</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+    <span class="n">np_histograms</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">histogram</span><span class="p">(</span><span class="n">component_feature_density</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">component_feature_density</span> <span class="ow">in</span> <span class="n">numpy_feature_density</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">wandb</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span><span class="n">np_histogram</span><span class="o">=</span><span class="n">np_histogram</span><span class="p">)</span> <span class="k">for</span> <span class="n">np_histogram</span> <span class="ow">in</span> <span class="n">np_histograms</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
