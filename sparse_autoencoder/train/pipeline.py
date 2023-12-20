@@ -255,8 +255,11 @@ class Pipeline:
                 and int(self.total_activations_trained_on / train_batch_size) % self.log_frequency
                 == 0
             ):
+                log = {}
+                for metric_result in metrics:
+                    log.update(metric_result.wandb_log)
                 wandb.log(
-                    data=[metric.wandb_log for metric in metrics],
+                    log,
                     step=self.total_activations_trained_on,
                     commit=True,
                 )
@@ -344,9 +347,11 @@ class Pipeline:
             source_model_loss_with_zero_ablation=torch.tensor(losses_with_zero_ablation),
         )
         for metric in self.metrics.validation_metrics:
-            calculated = metric.calculate(validation_data)
             if wandb.run is not None:
-                wandb.log(data=calculated, commit=False)
+                log = {}
+                for metric_result in metric.calculate(validation_data):
+                    log.update(metric_result.wandb_log)
+                wandb.log(log, commit=False)
 
     @final
     def save_checkpoint(self, *, is_final: bool = False) -> Path:
