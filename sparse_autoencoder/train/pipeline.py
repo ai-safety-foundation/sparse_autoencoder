@@ -347,10 +347,10 @@ class Pipeline:
             source_model_loss_with_zero_ablation=torch.tensor(losses_with_zero_ablation),
         )
         for metric in self.metrics.validation_metrics:
+            log = {}
+            for metric_result in metric.calculate(validation_data):
+                log.update(metric_result.wandb_log)
             if wandb.run is not None:
-                log = {}
-                for metric_result in metric.calculate(validation_data):
-                    log.update(metric_result.wandb_log)
                 wandb.log(log, commit=False)
 
     @final
