@@ -20,8 +20,8 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
 from sparse_autoencoder.tensor_types import Axis
 
 
-DEFAULT_HORIZONS = [100_000, 1_000_000, 10_000_000]
-"""Default horizons."""
+DEFAULT_HORIZONS = [10_000, 100_000, 1_000_000, 10_000_000]
+"""Default horizons (in number of logged activations)."""
 
 DEFAULT_THRESHOLDS = [1e-5, 1e-6]
 """Default thresholds for determining if a neuron is almost dead."""
