@@ -3,15 +3,16 @@
 Logs the number of dead and alive neurons at various horizons. Also logs histograms of neuron
 activity, and the number of neurons that are almost dead.
 """
-from typing import Any
-
-from jaxtyping import Int64
+from jaxtyping import Float, Int, Int64
 import numpy as np
-from numpy.typing import NDArray
 import torch
 from torch import Tensor
 import wandb
 
+from sparse_autoencoder.metrics.abstract_metric import (
+    MetricLocation,
+    MetricResult,
+)
 from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
@@ -19,15 +20,15 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
 from sparse_autoencoder.tensor_types import Axis
 
 
-DEFAULT_HORIZONS = [10_000, 100_000, 500_000, 1_000_000, 10_000_000]
-"""Default horizons."""
+DEFAULT_HORIZONS = [10_000, 100_000, 1_000_000, 10_000_000]
+"""Default horizons (in number of logged activations)."""
 
 DEFAULT_THRESHOLDS = [1e-5, 1e-6]
 """Default thresholds for determining if a neuron is almost dead."""
 
 
 class NeuronActivityHorizonData:
-    """Neuron activity data for a single horizon.
+    """Neuron activity data for a specific horizon (number of activations seen).
 
     For each time horizon we store some data (e.g. the number of times each neuron fired inside this
     time horizon). This class also contains some helper methods for then calculating metrics from
@@ -43,105 +44,156 @@ class NeuronActivityHorizonData:
     _steps_since_last_calculated: int
     """Steps since last calculated."""
 
-    _neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE]
+    _neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]
     """Neuron activity since inception."""
 
     _thresholds: list[float]
     """Thresholds for almost dead neurons."""
 
+    _n_components: int
+    """Number of components."""
+
+    _n_learned_features: int
+    """Number of learned features."""
+
     @property
-    def _dead_count(self) -> int:
+    def _dead_count(self) -> Int[Tensor, Axis.COMPONENT]:
         """Dead count."""
-        dead_bool_mask: Int64[Tensor, Axis.LEARNT_FEATURE] = self._neuron_activity == 0
-        count_dead: Int64[Tensor, Axis.SINGLE_ITEM] = dead_bool_mask.sum()
-        return int(count_dead.item())
+        dead_bool_mask: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)] = (
+            self._neuron_activity == 0
+        )
+        return dead_bool_mask.sum(-1)
 
     @property
-    def _dead_fraction(self) -> float:
+    def _dead_fraction(self) -> Float[Tensor, Axis.COMPONENT]:
         """Dead fraction."""
-        return self._dead_count / self._neuron_activity.shape[-1]
+        return self._dead_count / self._n_learned_features
 
     @property
-    def _alive_count(self) -> int:
+    def _alive_count(self) -> Int[Tensor, Axis.COMPONENT]:
         """Alive count."""
-        alive_bool_mask: Int64[Tensor, Axis.LEARNT_FEATURE] = self._neuron_activity > 0
-        count_alive: Int64[Tensor, Axis.SINGLE_ITEM] = alive_bool_mask.sum()
-        return int(count_alive.item())
+        alive_bool_mask: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)] = (
+            self._neuron_activity > 0
+        )
 
-    def _almost_dead(self, threshold: float) -> int | None:
+        return alive_bool_mask.sum(-1)
+
+    def _almost_dead(self, threshold: float) -> Int[Tensor, Axis.COMPONENT]:
         """Almost dead count."""
         threshold_in_activations: float = threshold * self._horizon_number_activations
-        if threshold_in_activations < 1:
-            return None
 
-        almost_dead_bool_mask: Int64[Tensor, Axis.LEARNT_FEATURE] = (
+        almost_dead_bool_mask: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)] = (
             self._neuron_activity < threshold_in_activations
         )
-        count_almost_dead: Int64[Tensor, Axis.SINGLE_ITEM] = almost_dead_bool_mask.sum()
-        return int(count_almost_dead.item())
+
+        return almost_dead_bool_mask.sum(-1)
 
     @property
-    def _activity_histogram(self) -> wandb.Histogram:
+    def _activity_histogram(self) -> list[wandb.Histogram]:
         """Activity histogram."""
-        numpy_neuron_activity: NDArray[np.float_] = self._neuron_activity.detach().cpu().numpy()
-        bins, values = np.histogram(numpy_neuron_activity, bins=50)
-        return wandb.Histogram(np_histogram=(bins, values))
+        numpy_neuron_activity: Float[
+            np.ndarray, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ] = self._neuron_activity.cpu().numpy()
+
+        np_histograms = [np.histogram(activity) for activity in numpy_neuron_activity]
+
+        return [wandb.Histogram(np_histogram=histogram) for histogram in np_histograms]
 
     @property
-    def _log_activity_histogram(self) -> wandb.Histogram:
+    def _log_activity_histogram(self) -> list[wandb.Histogram]:
         """Log activity histogram."""
-        numpy_neuron_activity: NDArray[np.float_] = self._neuron_activity.detach().cpu().numpy()
         log_epsilon = 0.1  # To avoid log(0)
-        log_neuron_activity = np.log(numpy_neuron_activity + log_epsilon)
-        bins, values = np.histogram(log_neuron_activity, bins=50)
-        return wandb.Histogram(np_histogram=(bins, values))
+        log_neuron_activity: Float[
+            Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ] = torch.log(self._neuron_activity + log_epsilon)
+
+        numpy_log_neuron_activity: Float[
+            np.ndarray, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ] = log_neuron_activity.cpu().numpy()
+
+        np_histograms = [np.histogram(activity) for activity in numpy_log_neuron_activity]
+
+        return [wandb.Histogram(np_histogram=histogram) for histogram in np_histograms]
 
     @property
-    def name(self) -> str:
-        """Name."""
-        return f"over_{self._horizon_number_activations}_activations"
+    def metric_results(self) -> list[MetricResult]:
+        """Metric results."""
+        metric_location = MetricLocation.TRAIN
+        name = "learned_neuron_activity"
 
-    @property
-    def wandb_log_values(self) -> dict[str, Any]:
-        """Wandb log values."""
-        log = {
-            f"train/activity/{self.name}/dead_count": self._dead_count,
-            f"train/activity/{self.name}/alive_count": self._alive_count,
-            f"train/activity/{self.name}/activity_histogram": self._activity_histogram,
-            f"train/activity/{self.name}/log_activity_histogram": self._log_activity_histogram,
-        }
+        results = [
+            MetricResult(
+                component_wise_values=self._dead_count,
+                location=metric_location,
+                name=name,
+                postfix=f"dead_over_{self._horizon_number_activations}_activations",
+            ),
+            MetricResult(
+                component_wise_values=self._alive_count,
+                location=metric_location,
+                name=name,
+                postfix=f"alive_over_{self._horizon_number_activations}_activations",
+            ),
+            MetricResult(
+                component_wise_values=self._activity_histogram,
+                location=metric_location,
+                name=name,
+                postfix=f"activity_histogram_over_{self._horizon_number_activations}_activations",
+                aggregate_approach=None,  # Don't show aggregate across components
+            ),
+            MetricResult(
+                component_wise_values=self._log_activity_histogram,
+                location=metric_location,
+                name=name,
+                postfix=f"log_activity_histogram_over_{self._horizon_number_activations}_activations",
+                aggregate_approach=None,  # Don't show aggregate across components
+            ),
+        ]
 
-        for threshold in self._thresholds:
-            almost_dead_count = self._almost_dead(threshold)
-            if almost_dead_count is not None:
-                log[f"train/activity/{self.name}/almost_dead_{threshold}"] = almost_dead_count
+        threshold_results = [
+            MetricResult(
+                component_wise_values=self._almost_dead(threshold),
+                location=metric_location,
+                name=name,
+                postfix=f"almost_dead_{threshold:.1e}_over_{self._horizon_number_activations}_activations",
+            )
+            for threshold in self._thresholds
+        ]
 
-        return log
+        return results + threshold_results
 
     def __init__(
         self,
         approximate_activation_horizon: int,
-        train_batch_size: int,
+        number_components: int,
         number_learned_features: int,
         thresholds: list[float],
+        train_batch_size: int,
     ) -> None:
         """Initialise the neuron activity horizon data.
 
         Args:
             approximate_activation_horizon: Approximate activation horizon.
-            train_batch_size: Train batch size.
+            number_components: Number of components.
             number_learned_features: Number of learned features.
             thresholds: Thresholds for almost dead neurons.
+            train_batch_size: Train batch size.
         """
         self._steps_since_last_calculated = 0
-        self._neuron_activity = torch.zeros(number_learned_features, dtype=torch.int64)
+        self._neuron_activity = torch.zeros(
+            (number_components, number_learned_features), dtype=torch.int64
+        )
         self._thresholds = thresholds
+        self._n_components = number_components
+        self._n_learned_features = number_learned_features
 
         # Get a precise activation_horizon
         self._horizon_steps = approximate_activation_horizon // train_batch_size
         self._horizon_number_activations = self._horizon_steps * train_batch_size
 
-    def step(self, neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE]) -> dict[str, Any]:
+    def step(
+        self, neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]
+    ) -> list[MetricResult]:
         """Step the neuron activity horizon data.
 
         Args:
@@ -151,26 +203,23 @@ class NeuronActivityHorizonData:
             Dictionary of metrics (or empty dictionary if no metrics are ready to be logged).
         """
         self._steps_since_last_calculated += 1
-        self._neuron_activity += neuron_activity
+        self._neuron_activity += neuron_activity.cpu()
 
         if self._steps_since_last_calculated >= self._horizon_steps:
-            result = {**self.wandb_log_values}
+            result = [*self.metric_results]
             self._steps_since_last_calculated = 0
             self._neuron_activity = torch.zeros_like(self._neuron_activity)
             return result
 
-        return {}
+        return []
 
 
 class NeuronActivityMetric(AbstractTrainMetric):
     """Neuron activity metric."""
 
     _approximate_horizons: list[int]
-
     _data: list[NeuronActivityHorizonData]
-
     _initialised: bool = False
-
     _thresholds: list[float]
 
     def __init__(
@@ -199,6 +248,7 @@ class NeuronActivityMetric(AbstractTrainMetric):
         """
         train_batch_size = data.learned_activations.shape[0]
         number_learned_features = data.learned_activations.shape[-1]
+        number_components = data.learned_activations.shape[-2]
 
         for horizon in self._approximate_horizons:
             # Don't add horizons that are smaller than the train batch size
@@ -208,15 +258,16 @@ class NeuronActivityMetric(AbstractTrainMetric):
             self._data.append(
                 NeuronActivityHorizonData(
                     approximate_activation_horizon=horizon,
-                    train_batch_size=train_batch_size,
+                    number_components=number_components,
                     number_learned_features=number_learned_features,
                     thresholds=self._thresholds,
+                    train_batch_size=train_batch_size,
                 )
             )
 
         self._initialised = True
 
-    def calculate(self, data: TrainMetricData) -> dict[str, Any]:
+    def calculate(self, data: TrainMetricData) -> list[MetricResult]:
         """Calculate the neuron activity metrics.
 
         Args:
@@ -228,13 +279,13 @@ class NeuronActivityMetric(AbstractTrainMetric):
         if not self._initialised:
             self.initialise_horizons(data)
 
-        log = {}
+        fired_count: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)] = (
+            data.learned_activations > 0
+        ).sum(dim=0)
 
-        for horizon_data in self._data:
-            fired_count: Int64[Tensor, Axis.LEARNT_FEATURE] = (
-                (data.learned_activations > 0).sum(dim=0).detach().cpu()
-            )
-            horizon_specific_log = horizon_data.step(fired_count)
-            log.update(horizon_specific_log)
+        horizon_specific_logs: list[list[MetricResult]] = [
+            horizon_data.step(fired_count) for horizon_data in self._data
+        ]
 
-        return log
+        # Flatten and return
+        return [log for logs in horizon_specific_logs for log in logs]

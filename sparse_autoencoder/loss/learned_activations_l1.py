@@ -5,7 +5,8 @@ from jaxtyping import Float
 import torch
 from torch import Tensor
 
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossLogType, LossReductionType
+from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
+from sparse_autoencoder.metrics.abstract_metric import MetricLocation, MetricResult
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -21,7 +22,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         >>> learned_activations = torch.tensor([[2.0, -3], [2.0, -3]])
         >>> unused_activations = torch.zeros_like(learned_activations)
         >>> # Returns loss and metrics to log
-        >>> l1_loss(unused_activations, learned_activations, unused_activations)[0]
+        >>> l1_loss.forward(unused_activations, learned_activations, unused_activations)[0]
         tensor(0.5000)
     """
 
@@ -128,7 +129,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         ],
         batch_reduction: LossReductionType = LossReductionType.MEAN,
         component_reduction: LossReductionType = LossReductionType.NONE,
-    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], LossLogType]:
+    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], list[MetricResult]]:
         """Scalar L1 loss (reduced across the batch and component axis) with logging.
 
         Args:
@@ -162,24 +163,25 @@ class LearnedActivationsL1Loss(AbstractLoss):
                 error_message = "Batch reduction type NONE not supported."
                 raise ValueError(error_message)
 
-        batch_loss_to_log: list | float = batch_scalar_loss.tolist()
-        batch_loss_penalty_to_log: list | float = batch_scalar_loss_penalty.tolist()
-
         # Create the log
-        metrics = {}
-        if isinstance(batch_loss_to_log, float):
-            metrics["train/loss/learned_activations_l1_loss"] = batch_loss_to_log
-            metrics[f"train/loss/{self.log_name()}"] = batch_loss_penalty_to_log
-        else:
-            for component_idx, (component_loss, component_loss_penalty) in enumerate(
-                zip(batch_loss_to_log, batch_loss_penalty_to_log)
-            ):
-                metrics[
-                    f"train/loss/learned_activations_l1_loss/component_{component_idx}"
-                ] = component_loss
-                metrics[
-                    f"train/loss/{self.log_name()}/component_{component_idx}"
-                ] = component_loss_penalty
+        metrics: list[MetricResult] = [
+            MetricResult(
+                name="loss",
+                postfix="learned_activations_l1",
+                component_wise_values=batch_scalar_loss.unsqueeze(0)
+                if batch_scalar_loss.ndim == 0
+                else batch_scalar_loss,
+                location=MetricLocation.TRAIN,
+            ),
+            MetricResult(
+                name="loss",
+                postfix=self.log_name(),
+                component_wise_values=batch_scalar_loss_penalty.unsqueeze(0)
+                if batch_scalar_loss_penalty.ndim == 0
+                else batch_scalar_loss_penalty,
+                location=MetricLocation.TRAIN,
+            ),
+        ]
 
         match component_reduction:
             case LossReductionType.MEAN:

@@ -1,6 +1,7 @@
 """Model reconstruction score."""
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
+from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
     AbstractValidationMetric,
     ValidationMetricData,
@@ -32,7 +33,7 @@ class ModelReconstructionScore(AbstractValidationMetric):
     $$
     """
 
-    def calculate(self, data: ValidationMetricData) -> dict[str, Any]:
+    def calculate(self, data: ValidationMetricData) -> list[MetricResult]:
         """Calculate the model reconstruction score.
 
         Example:
@@ -44,7 +45,7 @@ class ModelReconstructionScore(AbstractValidationMetric):
             ... )
             >>> metric = ModelReconstructionScore()
             >>> result = metric.calculate(data)
-            >>> round(result['validate/model_reconstruction_score'], 3)
+            >>> round(result[3].aggregate_value.item(), 3)
             0.667
 
         Args:
@@ -55,32 +56,47 @@ class ModelReconstructionScore(AbstractValidationMetric):
         """
         # Return no statistics if the data is empty (e.g. if we're at the very end of training)
         if data.source_model_loss.numel() == 0:
-            return {}
+            return []
 
         # Calculate the reconstruction score
-        zero_ablate_loss_minus_default_loss: Float[Tensor, Axis.ITEMS] = (
-            data.source_model_loss_with_zero_ablation - data.source_model_loss
-        )
-        zero_ablate_loss_minus_reconstruction_loss: Float[Tensor, Axis.ITEMS] = (
-            data.source_model_loss_with_zero_ablation - data.source_model_loss_with_reconstruction
-        )
-        model_reconstruction_score: float = (
-            zero_ablate_loss_minus_reconstruction_loss.mean().item()
-            / zero_ablate_loss_minus_default_loss.mean().item()
-        )
+        zero_ablate_loss_minus_default_loss: Float[
+            Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT_OPTIONAL)
+        ] = data.source_model_loss_with_zero_ablation - data.source_model_loss
+        zero_ablate_loss_minus_reconstruction_loss: Float[
+            Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT_OPTIONAL)
+        ] = data.source_model_loss_with_zero_ablation - data.source_model_loss_with_reconstruction
+
+        model_reconstruction_score = zero_ablate_loss_minus_reconstruction_loss.mean(
+            0
+        ) / zero_ablate_loss_minus_default_loss.mean(0)
 
         # Get the other metrics
-        validation_baseline_loss: float = data.source_model_loss.mean().item()
-        validation_loss_with_reconstruction: float = (
-            data.source_model_loss_with_reconstruction.mean().item()
-        )
-        validation_loss_with_zero_ablation: float = (
-            data.source_model_loss_with_zero_ablation.mean().item()
-        )
+        validation_baseline_loss = data.source_model_loss.mean(0)
+        validation_loss_with_reconstruction = data.source_model_loss_with_reconstruction.mean(0)
+        validation_loss_with_zero_ablation = data.source_model_loss_with_zero_ablation.mean(0)
 
-        return {
-            "validate/baseline_loss": validation_baseline_loss,
-            "validate/loss_with_reconstruction": validation_loss_with_reconstruction,
-            "validate/loss_with_zero_ablation": validation_loss_with_zero_ablation,
-            "validate/model_reconstruction_score": model_reconstruction_score,
-        }
+        return [
+            MetricResult(
+                component_wise_values=validation_baseline_loss,
+                location=self.location,
+                name="reconstruction_score",
+                postfix="baseline_loss",
+            ),
+            MetricResult(
+                component_wise_values=validation_loss_with_reconstruction,
+                location=self.location,
+                name="reconstruction_score",
+                postfix="loss_with_reconstruction",
+            ),
+            MetricResult(
+                component_wise_values=validation_loss_with_zero_ablation,
+                location=self.location,
+                name="reconstruction_score",
+                postfix="loss_with_zero_ablation",
+            ),
+            MetricResult(
+                component_wise_values=model_reconstruction_score,
+                location=self.location,
+                name="reconstruction_score",
+            ),
+        ]

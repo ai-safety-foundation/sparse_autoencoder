@@ -184,7 +184,7 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
 
 def setup_wandb() -> RuntimeHyperparameters:
     """Initialise wandb for experiment tracking."""
-    wandb.init(project="sparse-autoencoder")
+    wandb.init()
     return dict(wandb.config)  # type: ignore
 
 

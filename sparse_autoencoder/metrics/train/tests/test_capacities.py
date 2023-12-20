@@ -10,25 +10,35 @@ from torch import Tensor
 
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
+from sparse_autoencoder.metrics.utils.find_metric_result import find_metric_result
 from sparse_autoencoder.tensor_types import Axis
 
 
 @pytest.mark.parametrize(
     ("features", "expected_capacities"),
     [
-        (
-            torch.tensor([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]),
-            torch.tensor([1.0, 1.0]),
+        pytest.param(
+            torch.tensor([[[1.0, 0.0, 0.0]], [[0.0, 1.0, 0.0]]]),
+            torch.tensor([[1.0, 1.0]]),
+            id="orthogonal",
         ),
-        (
-            torch.tensor([[-0.8, -0.8, -0.8], [-0.8, -0.8, -0.8]]),
-            torch.ones(2) / 2,
-        ),
-        (
+        pytest.param(
             torch.tensor(
-                [[1.0, 0.0, 0], [1 / math.sqrt(2), 1 / math.sqrt(2), 0.0], [0.0, 0.0, 1.0]]
+                [[[1.0, 0.0, 0.0], [-0.8, -0.8, -0.8]], [[0.0, 1.0, 0.0], [-0.8, -0.8, -0.8]]]
             ),
-            torch.tensor([2 / 3, 2 / 3, 1.0]),
+            torch.tensor([[1.0, 1.0], [0.5, 0.5]]),
+            id="orthogonal_2_components",
+        ),
+        pytest.param(
+            torch.tensor([[[-0.8, -0.8, -0.8]], [[-0.8, -0.8, -0.8]]]),
+            torch.ones(2).unsqueeze(0) / 2,
+            id="same_feature",
+        ),
+        pytest.param(
+            torch.tensor(
+                [[[1.0, 0.0, 0]], [[1 / math.sqrt(2), 1 / math.sqrt(2), 0.0]], [[0.0, 0.0, 1.0]]]
+            ),
+            torch.tensor([2 / 3, 2 / 3, 1.0]).unsqueeze(0),
         ),
     ],
 )
@@ -43,14 +53,6 @@ def test_calc_capacities(
     ), "Capacity calculation is incorrect."
 
 
-def test_wandb_capacity_histogram(snapshot: SnapshotSession) -> None:
-    """Check the Weights & Biases Histogram is created correctly."""
-    capacities = torch.tensor([0.5, 0.1, 1, 1, 1])
-    res = CapacityMetric.wandb_capacities_histogram(capacities)
-
-    assert res.histogram == snapshot
-
-
 def test_calculate_returns_histogram() -> None:
     """Check the calculate function returns a histogram."""
     metric = CapacityMetric()
@@ -62,4 +64,31 @@ def test_calculate_returns_histogram() -> None:
             decoded_activations=activations,
         )
     )
-    assert "train/batch_capacities_histogram" in res
+    find_metric_result(res, name="capacities")
+
+
+def test_weights_biases_log_matches_snapshot(snapshot: SnapshotSession) -> None:
+    """Test the log function for Weights & Biases."""
+    n_batches = 10
+    n_components = 6
+    n_input_features = 4
+    n_learned_features = 8
+
+    # Create some data
+    torch.manual_seed(0)
+    data = TrainMetricData(
+        input_activations=torch.rand((n_batches, n_components, n_input_features)),
+        learned_activations=torch.rand((n_batches, n_components, n_learned_features)),
+        decoded_activations=torch.rand((n_batches, n_components, n_input_features)),
+    )
+
+    # Get the wandb log
+    metric = CapacityMetric()
+    results = metric.calculate(data)
+    weights_biases_logs = [result.wandb_log for result in results]
+
+    assert len(weights_biases_logs) == 1, """Should only be one metric result."""
+    assert (
+        len(results[0].component_wise_values) == n_components
+    ), """Should be one histogram per component."""
+    assert weights_biases_logs == snapshot

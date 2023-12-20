@@ -83,7 +83,7 @@ def test_batch_loss_with_log(dummy_loss: DummyLoss) -> None:
         source_activations, learned_activations, decoded_activations
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["train/loss/dummy"] == expected
+    assert log[0].component_wise_values[0] == expected
 
 
 def test_scalar_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
@@ -96,7 +96,7 @@ def test_scalar_loss_with_log_and_component_axis(dummy_loss: DummyLoss) -> None:
     )
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
     for component_idx in range(num_components):
-        assert log[f"train/loss/dummy/component_{component_idx}"] == expected
+        assert log[0].component_wise_values[component_idx] == expected
 
 
 def test_call_method(dummy_loss: DummyLoss) -> None:
@@ -104,4 +104,4 @@ def test_call_method(dummy_loss: DummyLoss) -> None:
     source_activations = learned_activations = decoded_activations = torch.ones((1, 3))
     _loss, log = dummy_loss(source_activations, learned_activations, decoded_activations)
     expected = 2.0  # Mean of [1.0, 2.0, 3.0]
-    assert log["train/loss/dummy"] == expected
+    assert log[0].component_wise_values[0] == expected

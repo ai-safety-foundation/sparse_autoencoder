@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from functools import partial
 from pathlib import Path
 import tempfile
-from typing import final
+from typing import TYPE_CHECKING, final
 from urllib.parse import quote_plus
 
 from jaxtyping import Int, Int64
@@ -32,6 +32,9 @@ from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils import get_model_device
 
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.metrics.abstract_metric import MetricResult
 
 DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(tempfile.gettempdir()) / "sparse_autoencoder"
 
@@ -219,21 +222,21 @@ class Pipeline:
             learned_activations, reconstructed_activations = self.autoencoder(batch)
 
             # Get loss & metrics
-            metrics = {}
+            metrics: list[MetricResult] = []
             total_loss, loss_metrics = self.loss.scalar_loss_with_log(
                 batch,
                 learned_activations,
                 reconstructed_activations,
                 component_reduction=LossReductionType.MEAN,
             )
-            metrics.update(loss_metrics)
+            metrics.extend(loss_metrics)
 
             with torch.no_grad():
                 for metric in self.metrics.train_metrics:
                     calculated = metric.calculate(
                         TrainMetricData(batch, learned_activations, reconstructed_activations)
                     )
-                    metrics.update(calculated)
+                    metrics.extend(calculated)
 
             # Store count of how many neurons have fired
             with torch.no_grad():
@@ -252,8 +255,11 @@ class Pipeline:
                 and int(self.total_activations_trained_on / train_batch_size) % self.log_frequency
                 == 0
             ):
+                log = {}
+                for metric_result in metrics:
+                    log.update(metric_result.wandb_log)
                 wandb.log(
-                    data={**metrics, **loss_metrics},
+                    log,
                     step=self.total_activations_trained_on,
                     commit=True,
                 )
@@ -341,9 +347,11 @@ class Pipeline:
             source_model_loss_with_zero_ablation=torch.tensor(losses_with_zero_ablation),
         )
         for metric in self.metrics.validation_metrics:
-            calculated = metric.calculate(validation_data)
+            log = {}
+            for metric_result in metric.calculate(validation_data):
+                log.update(metric_result.wandb_log)
             if wandb.run is not None:
-                wandb.log(data=calculated, commit=False)
+                wandb.log(log, commit=False)
 
     @final
     def save_checkpoint(self, *, is_final: bool = False) -> Path:
