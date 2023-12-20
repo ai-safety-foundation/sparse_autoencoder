@@ -193,12 +193,22 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             return
 
         # Reset running averages for the specified neurons
+        no_component_n_dimensions: int = 2
         if "exp_avg" in state:
-            state["exp_avg"][component_idx].index_fill_(axis, neuron_indices, 0)
+            if state["exp_avg"].ndim == no_component_n_dimensions:
+                state["exp_avg"].index_fill_(axis, neuron_indices, 0)
+            else:
+                state["exp_avg"][component_idx].index_fill_(axis, neuron_indices, 0)
 
         if "exp_avg_sq" in state:
-            state["exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
+            if state["exp_avg_sq"].ndim == no_component_n_dimensions:
+                state["exp_avg_sq"].index_fill_(axis, neuron_indices, 0)
+            else:
+                state["exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
 
         # If AdamW is used (weight decay fix), also reset the max exp_avg_sq
         if "max_exp_avg_sq" in state:
-            state["max_exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
+            if state["max_exp_avg_sq"].ndim == no_component_n_dimensions:
+                state["max_exp_avg_sq"].index_fill_(axis, neuron_indices, 0)
+            else:
+                state["max_exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)

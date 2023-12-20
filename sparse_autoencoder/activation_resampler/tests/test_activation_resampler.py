@@ -85,50 +85,6 @@ class TestInit:
 
         assert resampler.neuron_activity_window_start == expected_window_start
 
-    def test_n_steps_collate_less_0_errors(self) -> None:
-        """Check it raises an error if the number of steps to collate <= 0."""
-        with pytest.raises(
-            ValueError,
-            match=r"greater than 0",
-        ):
-            ActivationResampler(n_learned_features=100, n_activations_activity_collate=-1)
-
-        with pytest.raises(
-            ValueError,
-            match=r"greater than 0",
-        ):
-            ActivationResampler(n_learned_features=100, n_activations_activity_collate=0)
-
-    def test_threshold_is_dead_portion_error(self) -> None:
-        """Check it raises if the threshold is dead portion is <0 or >1."""
-        with pytest.raises(
-            ValueError,
-            match=r"between 0 and 1",
-        ):
-            ActivationResampler(n_learned_features=100, threshold_is_dead_portion_fires=-1.0)
-
-        with pytest.raises(
-            ValueError,
-            match=r"between 0 and 1",
-        ):
-            ActivationResampler(n_learned_features=10, threshold_is_dead_portion_fires=2.0)
-
-    def test_max_n_resamples_less_0_error(self) -> None:
-        """Check it raises if the max number or resamples is less than 0."""
-        with pytest.raises(
-            ValueError,
-            match=r"greater than 0",
-        ):
-            ActivationResampler(n_learned_features=100, max_n_resamples=-1)
-
-    def test_resample_dataset_size_less_0_error(self) -> None:
-        """Check it raises if the resample dataset size is less than 0."""
-        with pytest.raises(
-            ValueError,
-            match=r"greater than 0",
-        ):
-            ActivationResampler(n_learned_features=100, resample_dataset_size=-1)
-
 
 class TestComputeLossAndGetActivations:
     """Tests for compute_loss_and_get_activations."""
@@ -323,9 +279,10 @@ class TestResampleDeadNeurons:
         self, full_activation_store: ActivationStore, autoencoder_model: SparseAutoencoder
     ) -> None:
         """Check it doesn't change anything if there are no dead neurons."""
-        neuron_activity = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int64)
+        neuron_activity = torch.ones((1, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64)
         resampler = ActivationResampler(
             resample_interval=10,
+            n_components=1,
             n_activations_activity_collate=10,
             n_learned_features=autoencoder_model.n_learned_features,
             resample_dataset_size=100,
@@ -339,24 +296,44 @@ class TestResampleDeadNeurons:
         )
 
         assert updates is not None, "Should have updated"
-        assert updates.dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
-        assert updates.dead_decoder_weight_updates.numel() == 0, "Should not have any dead neurons"
-        assert updates.dead_encoder_weight_updates.numel() == 0, "Should not have any dead neurons"
-        assert updates.dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
+        print(updates)
+        assert updates[0].dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
+        assert (
+            updates[0].dead_decoder_weight_updates.numel() == 0
+        ), "Should not have any dead neurons"
+        assert (
+            updates[0].dead_encoder_weight_updates.numel() == 0
+        ), "Should not have any dead neurons"
+        assert updates[0].dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
 
     def test_updates_a_dead_neuron_parameters(
-        self, full_activation_store: ActivationStore, autoencoder_model: SparseAutoencoder
+        self,
     ) -> None:
         """Check it updates a dead neuron's parameters."""
-        neuron_activity = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int64)
-        dead_neuron_idx = 2
-        neuron_activity[dead_neuron_idx] = 0
+        neuron_activity = torch.ones((2, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64)
+
+        autoencoder_model = SparseAutoencoder(
+            n_input_features=DEFAULT_N_INPUT_FEATURES,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+            n_components=2,
+        )
+
+        full_activation_store = TensorActivationStore(
+            100, DEFAULT_N_INPUT_FEATURES, num_components=2
+        )
+        full_activation_store.fill_with_test_data(1, 100, 2, DEFAULT_N_INPUT_FEATURES)
+
+        # Dead neurons as (component_idx, neuron_idx)
+        dead_neurons: list[tuple[int, int]] = [(0, 2), (1, 3)]
+        for component_idx, neuron_idx in dead_neurons:
+            neuron_activity[component_idx, neuron_idx] = 0
 
         # Get the current & updated parameters
         current_parameters = autoencoder_model.state_dict()
         resampler = ActivationResampler(
             resample_interval=10,
             n_activations_activity_collate=10,
+            n_components=2,
             n_learned_features=autoencoder_model.n_learned_features,
             resample_dataset_size=100,
         )
@@ -370,23 +347,35 @@ class TestResampleDeadNeurons:
         assert parameter_updates is not None, "Should have updated"
 
         # Check the updated ones have changed
-        current_dead_decoder_weights = current_parameters["_decoder._weight"][:, dead_neuron_idx]
-        updated_dead_decoder_weights = parameter_updates.dead_encoder_weight_updates.squeeze()
-        assert not torch.equal(
-            current_dead_decoder_weights, updated_dead_decoder_weights
-        ), "Dead decoder weights should have changed."
+        for component_idx, neuron_idx in dead_neurons:
+            # Decoder
+            decoder_weights = current_parameters["_decoder._weight"]
+            current_dead_neuron_weights = decoder_weights[component_idx, neuron_idx]
+            updated_dead_decoder_weights = parameter_updates[
+                component_idx
+            ].dead_encoder_weight_updates.squeeze()
+            assert not torch.equal(
+                current_dead_neuron_weights, updated_dead_decoder_weights
+            ), "Dead decoder weights should have changed."
 
-        current_dead_encoder_weights = current_parameters["_encoder._weight"][dead_neuron_idx]
-        updated_dead_encoder_weights = parameter_updates.dead_encoder_weight_updates.squeeze()
-        assert not torch.equal(
-            current_dead_encoder_weights, updated_dead_encoder_weights
-        ), "Dead encoder weights should have changed."
+            # Encoder
+            current_dead_encoder_weights = current_parameters["_encoder._weight"][
+                component_idx, neuron_idx
+            ]
+            updated_dead_encoder_weights = parameter_updates[
+                component_idx
+            ].dead_encoder_weight_updates.squeeze()
+            assert not torch.equal(
+                current_dead_encoder_weights, updated_dead_encoder_weights
+            ), "Dead encoder weights should have changed."
 
-        current_dead_encoder_bias = current_parameters["_encoder._bias"][dead_neuron_idx]
-        updated_dead_encoder_bias = parameter_updates.dead_encoder_bias_updates
-        assert not torch.equal(
-            current_dead_encoder_bias, updated_dead_encoder_bias
-        ), "Dead encoder bias should have changed."
+            current_dead_encoder_bias = current_parameters["_encoder._bias"][
+                component_idx, neuron_idx
+            ]
+            updated_dead_encoder_bias = parameter_updates[component_idx].dead_encoder_bias_updates
+            assert not torch.equal(
+                current_dead_encoder_bias, updated_dead_encoder_bias
+            ), "Dead encoder bias should have changed."
 
 
 class TestStepResampler:
@@ -432,8 +421,8 @@ class TestStepResampler:
         assert res is not None
 
         assert torch.allclose(
-            res.dead_neuron_indices, expected_indices
-        ), f"Expected {expected_indices}, got {res.dead_neuron_indices}"
+            res[0].dead_neuron_indices, expected_indices
+        ), f"Expected {expected_indices}, got {res[0].dead_neuron_indices}"
 
     @pytest.mark.parametrize(
         (

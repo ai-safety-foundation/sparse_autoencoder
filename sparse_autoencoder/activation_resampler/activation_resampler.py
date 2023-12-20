@@ -1,6 +1,9 @@
 """Activation resampler."""
+from typing import Annotated
+
 from einops import rearrange
 from jaxtyping import Bool, Float, Int64
+from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.nn import Parameter
@@ -82,15 +85,16 @@ class ActivationResampler(AbstractActivationResampler):
     neuron_activity_window_start: int
     """Start of the window for collecting neuron activity."""
 
+    @validate_call
     def __init__(
         self,
-        n_learned_features: int,
-        n_components: int = 0,
-        resample_interval: int = 200_000_000,
-        max_n_resamples: int = 4,
-        n_activations_activity_collate: int = 100_000_000,
-        resample_dataset_size: int = 819_200,
-        threshold_is_dead_portion_fires: float = 0.0,
+        n_learned_features: PositiveInt,
+        n_components: NonNegativeInt = 1,
+        resample_interval: PositiveInt = 200_000_000,
+        max_n_resamples: NonNegativeInt = 4,
+        n_activations_activity_collate: PositiveInt = 100_000_000,
+        resample_dataset_size: PositiveInt = 819_200,
+        threshold_is_dead_portion_fires: Annotated[float, Field(strict=True, ge=0, le=1)] = 0.0,
     ) -> None:
         r"""Initialize the activation resampler.
 
@@ -114,30 +118,10 @@ class ActivationResampler(AbstractActivationResampler):
         Raises:
             ValueError: If any of the arguments are invalid (e.g. negative integers).
         """
-        if n_activations_activity_collate <= 0:
-            error_message = "Number of steps to collate must be greater than 0."
-            raise ValueError(error_message)
-
         if n_activations_activity_collate > resample_interval:
             error_message = (
                 "Number of steps to collate must be less than or equal to the resample interval."
             )
-            raise ValueError(error_message)
-
-        if threshold_is_dead_portion_fires < 0 or threshold_is_dead_portion_fires > 1:
-            error_message = (
-                "Threshold portion of times that a dead neuron fires, must be between 0 and 1."
-            )
-            raise ValueError(error_message)
-
-        if max_n_resamples < 0:
-            error_message = (
-                "Maximum number of resamples must be greater than 0. For unlimited, use inf."
-            )
-            raise ValueError(error_message)
-
-        if resample_dataset_size < 0:
-            error_message = "Resample dataset size must be greater than 0."
             raise ValueError(error_message)
 
         super().__init__()
@@ -323,7 +307,7 @@ class ActivationResampler(AbstractActivationResampler):
     @staticmethod
     def renormalize_and_scale(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
-        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
+        neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         encoder_weight: Float[
             Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
         ],
