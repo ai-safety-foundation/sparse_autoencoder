@@ -6,7 +6,7 @@ import traceback
 
 import torch
 from transformer_lens import HookedTransformer
-from transformer_lens.utils import get_act_name, get_device
+from transformer_lens.utils import get_device
 from transformers import AutoTokenizer
 import wandb
 
