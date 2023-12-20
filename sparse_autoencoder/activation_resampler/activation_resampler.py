@@ -405,7 +405,8 @@ class ActivationResampler(AbstractActivationResampler):
             component_idx: Component index
 
         Returns:
-            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
+            For each component that the SAE is being trained on, the indices of dead neurons and the
+            updates for the encoder and decoder weights and biases.
         """
         with torch.no_grad():
             dead_neuron_indices = self._get_dead_neuron_indices(component_idx=component_idx)
@@ -481,7 +482,8 @@ class ActivationResampler(AbstractActivationResampler):
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
-            Parameter update results if resampled, else None.
+            Parameter update results (for each component that the SAE is being trained on) if
+            resampling is due. Otherwise None.
         """
         # Update the counter
         self._activations_seen_since_last_resample += len(activation_store)

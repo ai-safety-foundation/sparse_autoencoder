@@ -1,5 +1,6 @@
 """Sweep."""
 from pathlib import Path
+import re
 import sys
 import traceback
 
@@ -188,6 +189,48 @@ def setup_wandb() -> RuntimeHyperparameters:
     return dict(wandb.config)  # type: ignore
 
 
+def stop_layer_from_cache_names(cache_names: list[str]) -> int:
+    """Get the stop layer from the cache names.
+
+    Examples:
+        >>> cache_names = [
+        ...     "blocks.0.hook_mlp_out",
+        ...     "blocks.1.hook_mlp_out",
+        ...     "blocks.2.hook_mlp_out",
+        ...     ]
+        >>> stop_layer_from_cache_names(cache_names)
+        2
+
+        >>> cache_names = [
+        ...     "blocks.0.hook_x.0.y",
+        ...     "blocks.0.hook_x.1.y",
+        ...     ]
+        >>> stop_layer_from_cache_names(cache_names)
+        0
+
+    Args:
+        cache_names (list[str]): The cache names.
+
+    Returns:
+        int: The stop layer.
+
+    Raises:
+        ValueError: If no number is found in the cache names.
+    """
+    cache_layers: list[int] = []
+
+    first_number_in_string_regex = re.compile(r"[0-9]+")
+
+    for cache_name in cache_names:
+        cache_layer = first_number_in_string_regex.findall(cache_name)
+        if len(cache_layer) == 0:
+            error_message = f"Could not find a number in the cache name {cache_name}."
+            raise ValueError(error_message)
+        cache_layers.append(int(cache_layer[0]))
+
+    return max(cache_layers)
+
+
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
     source_model: HookedTransformer,
@@ -216,16 +259,15 @@ def run_training_pipeline(
     random_seed = hyperparameters["random_seed"]
     torch.random.manual_seed(random_seed)
 
-    hook_point = get_act_name(
-        hyperparameters["source_model"]["hook_site"], hyperparameters["source_model"]["hook_layer"]
-    )
+    cache_names = hyperparameters["source_model"]["cache_names"]
+    stop_layer = stop_layer_from_cache_names(cache_names)
 
     pipeline = Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,
-        cache_names=[hook_point],
+        cache_names=cache_names,
         checkpoint_directory=checkpoint_path,
-        layer=hyperparameters["source_model"]["hook_layer"],
+        layer=stop_layer,
         loss=loss,
         optimizer=optimizer,
         source_data_batch_size=hyperparameters["pipeline"]["source_data_batch_size"],

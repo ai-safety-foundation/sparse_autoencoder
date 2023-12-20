@@ -226,11 +226,8 @@ class SourceModelHyperparameters(NestedParameter):
     name: Parameter[str]
     """Source model name."""
 
-    hook_site: Parameter[str]
+    cache_names: Parameter[list[str]]
     """Source model hook site."""
-
-    hook_layer: Parameter[int]
-    """Source model hook point layer."""
 
     hook_dimension: Parameter[int]
     """Source model hook point dimension."""
@@ -243,8 +240,7 @@ class SourceModelRuntimeHyperparameters(TypedDict):
     """Source model runtime hyperparameters."""
 
     name: str
-    hook_site: str
-    hook_layer: int
+    cache_names: list[str]
     hook_dimension: int
     dtype: str
 
