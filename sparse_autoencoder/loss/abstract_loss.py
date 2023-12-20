@@ -1,6 +1,6 @@
 """Abstract loss."""
 from abc import ABC, abstractmethod
-from typing import TypeAlias, final
+from typing import final
 
 from jaxtyping import Float
 from strenum import LowercaseStrEnum
@@ -8,6 +8,7 @@ import torch
 from torch import Tensor
 from torch.nn import Module
 
+from sparse_autoencoder.metrics.abstract_metric import MetricLocation, MetricResult
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -19,10 +20,6 @@ class LossReductionType(LowercaseStrEnum):
     SUM = "sum"
 
     NONE = "none"
-
-
-LossLogType: TypeAlias = dict[str, int | float | str]
-"""Loss log dict."""
 
 
 class AbstractLoss(Module, ABC):
@@ -122,7 +119,7 @@ class AbstractLoss(Module, ABC):
         ],
         batch_reduction: LossReductionType = LossReductionType.MEAN,
         component_reduction: LossReductionType = LossReductionType.NONE,
-    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], LossLogType]:
+    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], list[MetricResult]]:
         """Scalar loss (reduced across the batch and component axis) with logging.
 
         Args:
@@ -138,7 +135,7 @@ class AbstractLoss(Module, ABC):
             Tuple of the batch scalar loss and a dict of any properties to log.
         """
         children_loss_scalars: list[Float[Tensor, Axis.COMPONENT_OPTIONAL]] = []
-        metrics: LossLogType = {}
+        metrics: list[MetricResult] = []
 
         # If the loss module has children (e.g. it is a reducer):
         if len(self._modules) > 0:
@@ -152,7 +149,7 @@ class AbstractLoss(Module, ABC):
                     # component-wise losses in reducers.
                 )
                 children_loss_scalars.append(child_loss)
-                metrics.update(child_metrics)
+                metrics.extend(child_metrics)
 
             # Get the total loss & metric
             current_module_loss = torch.stack(children_loss_scalars).sum(0)
@@ -162,15 +159,16 @@ class AbstractLoss(Module, ABC):
             current_module_loss = self.batch_loss(
                 source_activations, learned_activations, decoded_activations, batch_reduction
             )
-
         # Add in the current loss module's metric
-        log_name = "train/loss/" + self.log_name()
-        loss_to_log: list | float = current_module_loss.tolist()
-        if isinstance(loss_to_log, float):
-            metrics[log_name] = loss_to_log
-        else:
-            for component_idx, component_loss in enumerate(loss_to_log):
-                metrics[log_name + f"/component_{component_idx}"] = component_loss
+        log = MetricResult(
+            location=MetricLocation.TRAIN,
+            name="loss",
+            postfix=self.log_name(),
+            component_wise_values=current_module_loss.unsqueeze(0)
+            if current_module_loss.ndim == 0
+            else current_module_loss,
+        )
+        metrics.append(log)
 
         # Reduce the current module loss across the component dimension
         match component_reduction:
@@ -196,7 +194,7 @@ class AbstractLoss(Module, ABC):
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
         reduction: LossReductionType = LossReductionType.MEAN,
-    ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], LossLogType]:
+    ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], list[MetricResult]]:
         """Batch scalar loss.
 
         Args:

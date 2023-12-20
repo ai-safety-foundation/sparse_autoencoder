@@ -1,0 +1,14 @@
+# serializer version: 1
+# name: test_weights_biases_log_matches_snapshot
+  list([
+    dict({
+      'component_0/train/learned_activations_l0_norm': tensor(8.),
+      'component_1/train/learned_activations_l0_norm': tensor(8.),
+      'component_2/train/learned_activations_l0_norm': tensor(8.),
+      'component_3/train/learned_activations_l0_norm': tensor(8.),
+      'component_4/train/learned_activations_l0_norm': tensor(8.),
+      'component_5/train/learned_activations_l0_norm': tensor(8.),
+      'train/learned_activations_l0_norm': tensor([8., 8., 8., 8., 8., 8.]),
+    }),
+  ])
+# ---

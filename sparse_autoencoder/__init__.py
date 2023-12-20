@@ -3,7 +3,7 @@ from sparse_autoencoder.activation_resampler.activation_resampler import Activat
 from sparse_autoencoder.activation_store.disk_store import DiskActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.abstract_loss import LossLogType, LossReductionType
+from sparse_autoencoder.loss.abstract_loss import LossReductionType
 from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
 from sparse_autoencoder.loss.reducer import LossReducer
@@ -65,7 +65,6 @@ __all__ = [
     "L2ReconstructionLoss",
     "LearnedActivationsL1Loss",
     "LossHyperparameters",
-    "LossLogType",
     "LossReducer",
     "LossReductionType",
     "Method",

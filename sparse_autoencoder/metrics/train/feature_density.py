@@ -32,15 +32,17 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
 
     threshold: float
 
-    def __init__(self, threshold: float = 0.0, component_names: list[str] | None = None) -> None:
+    def __init__(
+        self,
+        threshold: float = 0.0,
+    ) -> None:
         """Initialise the train batch feature density metric.
 
         Args:
             threshold: Threshold for considering a feature active (i.e. the neuron has "fired").
                 This should be close to zero.
-            component_names: Component names if there are multiple components.
         """
-        super().__init__(component_names=component_names)
+        super().__init__()
         self.threshold = threshold
 
     def feature_density(
@@ -78,7 +80,7 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
 
     @staticmethod
     def wandb_feature_density_histogram(
-        feature_density: Float[Tensor, (Axis.COMPONENT, Axis.LEARNT_FEATURE)],
+        feature_density: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
     ) -> list[wandb.Histogram]:
         """Create a W&B histogram of the feature density.
 
@@ -94,7 +96,7 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
         """
         numpy_feature_density: Float[
             np.ndarray, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
-        ] = feature_density.numpy()
+        ] = feature_density.cpu().numpy()
 
         np_histograms = [
             histogram(component_feature_density, bins=50)
@@ -123,10 +125,9 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
 
         return [
             MetricResult(
-                name="batch_feature_density",
+                name="feature_density",
                 component_wise_values=component_wise_histograms,
-                pipeline_location=self.metric_location,
+                location=self.location,
                 aggregate_approach=None,  # Don't aggregate the histograms
-                component_names=self._component_names,
             )
         ]

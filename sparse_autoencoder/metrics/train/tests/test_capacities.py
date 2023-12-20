@@ -10,6 +10,7 @@ from torch import Tensor
 
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
+from sparse_autoencoder.metrics.utils.find_metric_result import find_metric_result
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -62,4 +63,27 @@ def test_calculate_returns_histogram() -> None:
             decoded_activations=activations,
         )
     )
-    assert "train/batch_capacities_histogram" in res
+    find_metric_result(res, name="capacities")
+
+
+def test_weights_biases_log_matches_snapshot(snapshot: SnapshotSession) -> None:
+    """Test the log function for Weights & Biases."""
+    n_batches = 10
+    n_components = 6
+    n_input_features = 4
+    n_learned_features = 8
+
+    # Create some data
+    torch.manual_seed(0)
+    data = TrainMetricData(
+        input_activations=torch.rand((n_batches, n_components, n_input_features)),
+        learned_activations=torch.rand((n_batches, n_components, n_learned_features)),
+        decoded_activations=torch.rand((n_batches, n_components, n_input_features)),
+    )
+
+    # Get the wandb log
+    metric = CapacityMetric()
+    results = metric.calculate(data)
+    weights_biases_logs = [result.wandb_log for result in results]
+
+    assert weights_biases_logs == snapshot

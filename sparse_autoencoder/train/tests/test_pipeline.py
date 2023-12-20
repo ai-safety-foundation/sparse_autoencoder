@@ -1,5 +1,5 @@
 """Test the pipeline module."""
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
 
 import pytest
@@ -19,6 +19,7 @@ from sparse_autoencoder.activation_resampler.abstract_activation_resampler impor
 )
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
+from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
     AbstractValidationMetric,
     ValidationMetricData,
@@ -265,10 +266,10 @@ class TestValidateSAE:
 
             data: ValidationMetricData | None
 
-            def calculate(self, data: ValidationMetricData) -> dict[str, Any]:
+            def calculate(self, data: ValidationMetricData) -> list[MetricResult]:
                 """Store the data."""
                 self.data = data
-                return {}
+                return []
 
         dummy_metric = StoreValidationMetric()
         pipeline_fixture.metrics.validation_metrics.append(dummy_metric)

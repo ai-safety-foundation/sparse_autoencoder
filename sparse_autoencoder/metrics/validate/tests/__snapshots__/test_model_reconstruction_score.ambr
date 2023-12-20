@@ -1,0 +1,42 @@
+# serializer version: 1
+# name: test_weights_biases_log_matches_snapshot
+  list([
+    dict({
+      'component_0/validate/reconstruction_score/baseline_loss': tensor(0.3800),
+      'component_1/validate/reconstruction_score/baseline_loss': tensor(0.5251),
+      'component_2/validate/reconstruction_score/baseline_loss': tensor(0.4923),
+      'component_3/validate/reconstruction_score/baseline_loss': tensor(0.4598),
+      'component_4/validate/reconstruction_score/baseline_loss': tensor(0.4281),
+      'component_5/validate/reconstruction_score/baseline_loss': tensor(0.4961),
+      'validate/reconstruction_score/baseline_loss': tensor([0.3800, 0.5251, 0.4923, 0.4598, 0.4281, 0.4961]),
+    }),
+    dict({
+      'component_0/validate/reconstruction_score/loss_with_reconstruction': tensor(0.6111),
+      'component_1/validate/reconstruction_score/loss_with_reconstruction': tensor(0.5219),
+      'component_2/validate/reconstruction_score/loss_with_reconstruction': tensor(0.4063),
+      'component_3/validate/reconstruction_score/loss_with_reconstruction': tensor(0.6497),
+      'component_4/validate/reconstruction_score/loss_with_reconstruction': tensor(0.4929),
+      'component_5/validate/reconstruction_score/loss_with_reconstruction': tensor(0.3723),
+      'validate/reconstruction_score/loss_with_reconstruction': tensor([0.6111, 0.5219, 0.4063, 0.6497, 0.4929, 0.3723]),
+    }),
+    dict({
+      'component_0/validate/reconstruction_score/loss_with_zero_ablation': tensor(0.2891),
+      'component_1/validate/reconstruction_score/loss_with_zero_ablation': tensor(0.3879),
+      'component_2/validate/reconstruction_score/loss_with_zero_ablation': tensor(0.5850),
+      'component_3/validate/reconstruction_score/loss_with_zero_ablation': tensor(0.4740),
+      'component_4/validate/reconstruction_score/loss_with_zero_ablation': tensor(0.5452),
+      'component_5/validate/reconstruction_score/loss_with_zero_ablation': tensor(0.3733),
+      'validate/reconstruction_score/loss_with_zero_ablation': tensor([0.2891, 0.3879, 0.5850, 0.4740, 0.5452, 0.3733]),
+    }),
+    dict({
+      'component_0/validate/reconstruction_score': tensor(3.5422),
+      'component_1/validate/reconstruction_score': tensor(0.9767),
+      'component_2/validate/reconstruction_score': tensor(1.9278),
+      'component_3/validate/reconstruction_score': tensor(-12.3338),
+      'component_4/validate/reconstruction_score': tensor(0.4468),
+      'component_5/validate/reconstruction_score': tensor(-0.0081),
+      'validate/reconstruction_score': tensor([ 3.5422e+00,  9.7672e-01,  1.9278e+00, -1.2334e+01,  4.4681e-01,
+          -8.1113e-03]),
+    }),
+  ])
+# ---

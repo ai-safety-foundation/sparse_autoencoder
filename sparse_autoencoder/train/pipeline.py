@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from functools import partial
 from pathlib import Path
 import tempfile
-from typing import final
+from typing import TYPE_CHECKING, final
 from urllib.parse import quote_plus
 
 from jaxtyping import Int, Int64
@@ -21,7 +21,6 @@ from sparse_autoencoder.activation_resampler.abstract_activation_resampler impor
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
-from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
 from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
@@ -33,6 +32,9 @@ from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils import get_model_device
 
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.metrics.abstract_metric import MetricResult
 
 DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(tempfile.gettempdir()) / "sparse_autoencoder"
 
@@ -227,7 +229,7 @@ class Pipeline:
                 reconstructed_activations,
                 component_reduction=LossReductionType.MEAN,
             )
-            metrics.update(loss_metrics)
+            metrics.extend(loss_metrics)
 
             with torch.no_grad():
                 for metric in self.metrics.train_metrics:
@@ -254,7 +256,7 @@ class Pipeline:
                 == 0
             ):
                 wandb.log(
-                    data={**metrics, **loss_metrics},
+                    data=[metric.wandb_log for metric in metrics],
                     step=self.total_activations_trained_on,
                     commit=True,
                 )

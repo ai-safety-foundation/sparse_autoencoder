@@ -26,8 +26,8 @@ class L2ReconstructionLoss(AbstractLoss):
         >>> output_activations = torch.tensor([[1.0, 5], [1.0, 5]])
         >>> unused_activations = torch.zeros_like(input_activations)
         >>> # Outputs both loss and metrics to log
-        >>> loss(input_activations, unused_activations, output_activations)
-        (tensor(5.5000), {'train/loss/l2_reconstruction_loss': 5.5})
+        >>> loss.forward(input_activations, unused_activations, output_activations)
+        tensor([8.5000, 2.5000])
     """
 
     _reduction: LossReductionType

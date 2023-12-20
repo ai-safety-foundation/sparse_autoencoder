@@ -1,5 +1,4 @@
 """Capacity Metrics."""
-from typing import Any
 
 import einops
 from jaxtyping import Float
@@ -88,7 +87,7 @@ class CapacityMetric(AbstractTrainMetric):
         Returns:
             Weights & Biases histogram for logging with `wandb.log`.
         """
-        numpy_capacities: NDArray[np.float_] = capacities.detach().cpu().numpy()
+        numpy_capacities: NDArray[np.float_] = capacities.cpu().numpy()
 
         bins, values = histogram(numpy_capacities, bins=20, range=(0, 1))
         return wandb.Histogram(np_histogram=(bins, values))
@@ -105,7 +104,7 @@ class CapacityMetric(AbstractTrainMetric):
             MetricResult(
                 name="capacities",
                 component_wise_values=histograms,
-                pipeline_location=self.metric_location,
-                component_names=self._component_names,
+                location=self.location,
+                aggregate_approach=None,  # Don't aggregate histograms
             )
         ]

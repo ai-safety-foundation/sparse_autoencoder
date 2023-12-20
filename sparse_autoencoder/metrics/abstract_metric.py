@@ -8,7 +8,6 @@ from typing import Any, TypeAlias, cast, final
 from jaxtyping import Float, Int
 import numpy as np
 from strenum import LowercaseStrEnum, SnakeCaseStrEnum
-import torch
 from torch import Tensor
 from wandb import data_types
 
@@ -29,8 +28,6 @@ class ComponentAggregationApproach(LowercaseStrEnum):
     """Component aggregation method."""
 
     MEAN = auto()
-    MAX = auto()
-    MIN = auto()
     SUM = auto()
     TABLE = auto()
 
@@ -67,10 +64,10 @@ class MetricInputData(ABC):  # noqa: B024
     @final
     @staticmethod
     def add_component_axis_if_missing(
-        input_tensor: Float[Tensor, Axis.names(Axis.ANY, Axis.COMPONENT_OPTIONAL)],
+        input_tensor: Tensor,
         unsqueeze_dim: int = 1,
         dimensions_without_component: int = 1,
-    ) -> Float[Tensor, Axis.names(Axis.ANY, Axis.COMPONENT)]:
+    ) -> Tensor:
         """Add component axis if missing.
 
         Examples:
@@ -78,7 +75,7 @@ class MetricInputData(ABC):  # noqa: B024
 
             >>> import torch
             >>> input = torch.tensor([1.0, 2.0, 3.0])
-            >>> AbstractMetric.add_component_axis_if_missing(input)
+            >>> MetricInputData.add_component_axis_if_missing(input)
             tensor([[1.],
                     [2.],
                     [3.]])
@@ -87,7 +84,7 @@ class MetricInputData(ABC):  # noqa: B024
 
             >>> import torch
             >>> input = torch.tensor([[1.0], [2.0], [3.0]])
-            >>> AbstractMetric.add_component_axis_if_missing(input)
+            >>> MetricInputData.add_component_axis_if_missing(input)
             tensor([[1.],
                     [2.],
                     [3.]])
@@ -115,26 +112,25 @@ class MetricInputData(ABC):  # noqa: B024
 
 
 class MetricResult:
-    """Metric result created by an `AbstractMetric` subclass."""
+    """Metric result."""
 
-    _metric_location: MetricLocation
-    _metric_name: str
-    _metric_postfix: str | None
-    _component_wise_values: Sequence[WandbSupportedLogTypes] | Float[
+    location: MetricLocation
+    name: str
+    postfix: str | None
+    _component_names: list[str]
+    component_wise_values: Sequence[WandbSupportedLogTypes] | Float[
         Tensor, Axis.names(Axis.COMPONENT)
     ] | Int[Tensor, Axis.names(Axis.COMPONENT)]
-    _component_names: list[str]
-    _aggregate_approach: ComponentAggregationApproach | None
+    aggregate_approach: ComponentAggregationApproach | None
     _aggregate_value: Any | None
 
     def __init__(
         self,
-        component_names: list[str] | None,
         component_wise_values: Sequence[WandbSupportedLogTypes]
         | Float[Tensor, Axis.names(Axis.COMPONENT)]
         | Int[Tensor, Axis.names(Axis.COMPONENT)],
         name: str,
-        pipeline_location: MetricLocation,
+        location: MetricLocation,
         aggregate_approach: ComponentAggregationApproach
         | None = ComponentAggregationApproach.TABLE,
         aggregate_value: Any | None = None,  # noqa: ANN401
@@ -143,50 +139,40 @@ class MetricResult:
         """Initialize a metric result.
 
         Args:
-            component_wise_values: Component-wise values.
-            name: Metric name (e.g. `l2_loss`). This will be combined with
-                the component name and metric locations, as well as an optional postfix, to create a
-                Weights and Biases name of the form
-                `component_name/metric_location/metric_name/metric_postfix`.
-            pipeline_location: Metric location.
+            component_wise_values: Values for each component.
+            name: Metric name (e.g. `l2_loss`). This will be combined with the component name and
+                metric locations, as well as an optional postfix, to create a Weights and Biases
+                name of the form `component_name/metric_location/metric_name/metric_postfix`.
+            location: Metric location.
             aggregate_approach: Component aggregation approach.
             aggregate_value: Override the aggregate value across components. For most metric results
                 you can instead just specify the `aggregate_approach` and it will be automatically
                 calculated.
-            component_names: Component names if there are multiple components.
             postfix: Metric name postfix.
-
-        Raises:
-            ValueError: If the number of component names does not match the number of component-wise
-            values.
         """
-        # Validate
-        if component_names is not None and len(component_names) != len(component_wise_values):
-            error_message = (
-                f"Number of component names ({len(component_names)}) does not match the number "
-                f"of component-wise values ({len(component_wise_values)})."
-            )
-            raise ValueError(error_message)
-
-        self._metric_location = pipeline_location
-        self._metric_name = name
-        self._component_wise_values = component_wise_values
-        self._aggregate_approach = aggregate_approach
+        self.location = location
+        self.name = name
+        self.component_wise_values = component_wise_values
+        self.aggregate_approach = aggregate_approach
         self._aggregate_value = aggregate_value
-        self._metric_postfix = postfix
-        self._component_names = component_names or [
-            f"component_{i}" for i in range(len(component_wise_values))
-        ]
+        self.postfix = postfix
+        self._component_names = [f"component_{i}" for i in range(len(component_wise_values))]
 
     @final
     @property
     def n_components(self) -> int:
         """Number of components."""
-        return len(self._component_wise_values)
+        return len(self.component_wise_values)
 
     @final
     @property
-    def aggregate_value(self) -> WandbSupportedLogTypes:  # noqa: PLR0911
+    def aggregate_value(  # noqa: PLR0911
+        self,
+    ) -> (
+        WandbSupportedLogTypes
+        | Float[Tensor, Axis.names(Axis.COMPONENT)]
+        | Int[Tensor, Axis.names(Axis.COMPONENT)]
+    ):
         """Aggregate value across components.
 
         Returns:
@@ -194,29 +180,25 @@ class MetricResult:
             attempts to automatically aggregate the component-wise values).
 
         Raises:
-            ValueError: If the component-wise values cannot be aggregated.
+            ValueError: If the component-wise values cannot be automatically aggregated.
         """
         # Allow overriding
         if self._aggregate_value is not None:
             return self._aggregate_value
 
         if self.n_components == 1:
-            return self._component_wise_values[0]
+            return self.component_wise_values[0]
 
         cannot_aggregate_error_message = "Cannot aggregate component-wise values."
 
         # Automatically aggregate number lists/sequences/tuples/sets
-        if (isinstance(self._component_wise_values, (Sequence, list, tuple, set))) and all(
-            isinstance(x, (int, float)) for x in self._component_wise_values
+        if (isinstance(self.component_wise_values, (Sequence, list, tuple, set))) and all(
+            isinstance(x, (int, float)) for x in self.component_wise_values
         ):
-            values: list = cast(list[float], self._component_wise_values)
-            match self._aggregate_approach:
+            values: list = cast(list[float], self.component_wise_values)
+            match self.aggregate_approach:
                 case ComponentAggregationApproach.MEAN:
                     return sum(values) / len(values)
-                case ComponentAggregationApproach.MAX:
-                    return max(values)
-                case ComponentAggregationApproach.MIN:
-                    return min(values)
                 case ComponentAggregationApproach.SUM:
                     return sum(values)
                 case ComponentAggregationApproach.TABLE:
@@ -226,20 +208,16 @@ class MetricResult:
 
         # Automatically aggregate number tensors
         if (
-            isinstance(self._component_wise_values, Tensor)
-            and self._component_wise_values.shape[0] == self.n_components
+            isinstance(self.component_wise_values, Tensor)
+            and self.component_wise_values.shape[0] == self.n_components
         ):
-            match self._aggregate_approach:
+            match self.aggregate_approach:
                 case ComponentAggregationApproach.MEAN:
-                    return self._component_wise_values.mean(dim=0)
-                case ComponentAggregationApproach.MAX:
-                    return torch.max(self._component_wise_values, dim=-1)  # type: ignore
-                case ComponentAggregationApproach.MIN:
-                    return torch.min(self._component_wise_values, dim=-1)  # type: ignore
+                    return self.component_wise_values.mean(dim=0)
                 case ComponentAggregationApproach.SUM:
-                    return self._component_wise_values.sum(dim=0)
+                    return self.component_wise_values.sum(dim=0)
                 case ComponentAggregationApproach.TABLE:
-                    return self._component_wise_values
+                    return self.component_wise_values
                 case _:
                     raise ValueError(cannot_aggregate_error_message)
 
@@ -250,6 +228,8 @@ class MetricResult:
     def create_wandb_name(self, component_name: str | None = None) -> str:
         """Weights and Biases Metric Name.
 
+        Note Weights and Biases categorises metrics using a forward slash (`/`) in the name string.
+
         Example:
             >>> metric_result = MetricResult(
             ...     location=MetricLocation.VALIDATE,
@@ -259,18 +239,25 @@ class MetricResult:
             >>> metric_result.create_wandb_name()
             'validate/loss'
 
-            >>> metric_result.create_wandb_name(component_name="mlp_1")
-            'mlp_1/validate/loss'
+            >>> metric_result.create_wandb_name(component_name="component_0")
+            'component_0/validate/loss'
+
+        Args:
+            component_name: Component name, if creating a Weights and Biases name for a specific
+                component.
+
+        Returns:
+            Weights and Biases metric name.
         """
         name_parts = []
 
         if component_name is not None:
             name_parts.append(component_name)
 
-        name_parts.extend([self._metric_location.value, self._metric_name])
+        name_parts.extend([self.location.value, self.name])
 
-        if self._metric_postfix is not None:
-            name_parts.append(self._metric_postfix)
+        if self.postfix is not None:
+            name_parts.append(self.postfix)
 
         return "/".join(name_parts)
 
@@ -289,10 +276,11 @@ class MetricResult:
             >>> metric_result = MetricResult(
             ...     location=MetricLocation.VALIDATE,
             ...     name="loss",
-            ...     component_wise_values=[1.0],
+            ...     component_wise_values=[1.5],
             ... )
-            >>> metric_result.wandb_log
-            {'validate/loss': 1.0}
+            >>> for k, v in metric_result.wandb_log.items():
+            ...     print(f"{k}: {v}")
+            validate/loss: 1.5
 
             With multiple components:
 
@@ -300,13 +288,13 @@ class MetricResult:
             ...     location=MetricLocation.VALIDATE,
             ...     name="loss",
             ...     component_wise_values=[1.0, 2.0],
-            ...     component_names=["mlp_1", "mlp_2"]
+            ...     aggregate_approach=ComponentAggregationApproach.MEAN,
             ... )
-            >>> metric_result.wandb_log
-            {'mlp_1/validate/loss': 1.0, 'mlp_2/validate/loss': 2.0, 'validate/loss': 1.5}
-
-        Args:
-            component_names: Component names if there are multiple components.
+            >>> for k, v in metric_result.wandb_log.items():
+            ...     print(f"{k}: {v}")
+            component_0/validate/loss: 1.0
+            component_1/validate/loss: 2.0
+            validate/loss: 1.5
 
         Returns:
             Weights and Biases log data.
@@ -314,12 +302,12 @@ class MetricResult:
         # Create the component wise logs if there is more than one component
         component_wise_logs = {}
         if self.n_components > 1:
-            for component_name, value in zip(self._component_names, self._component_wise_values):
+            for component_name, value in zip(self._component_names, self.component_wise_values):
                 component_wise_logs[self.create_wandb_name(component_name=component_name)] = value
 
         # Create the aggregate log if there is an aggregate value
         aggregate_log = {}
-        if self._aggregate_approach is not None or self._aggregate_value is not None:
+        if self.aggregate_approach is not None or self._aggregate_value is not None:
             aggregate_log = {self.create_wandb_name(): self.aggregate_value}
 
         return {**component_wise_logs, **aggregate_log}
@@ -332,12 +320,11 @@ class MetricResult:
         """Representation."""
         class_name = self.__class__.__name__
         return f"""{class_name}(
-            metric_location={self._metric_location},
-            metric_name={self._metric_name},
-            metric_postfix={self._metric_postfix},
-            component_wise_values={self._component_wise_values},
-            component_names={self._component_names},
-            aggregate_approach={self._aggregate_approach},
+            location={self.location},
+            name={self.name},
+            postfix={self.postfix},
+            component_wise_values={self.component_wise_values},
+            aggregate_approach={self.aggregate_approach},
             aggregate_value={self._aggregate_value},
         )"""
 
@@ -345,22 +332,11 @@ class MetricResult:
 class AbstractMetric(ABC):
     """Abstract metric."""
 
-    _component_names: list[str] | None
-    """Component names."""
-
     @property
     @abstractmethod
-    def metric_location(self) -> MetricLocation:
+    def location(self) -> MetricLocation:
         """Metric location."""
 
     @abstractmethod
     def calculate(self, data) -> list[MetricResult]:  # type: ignore # noqa: ANN001 (type to be narrowed by abstract subclasses)
         """Calculate metrics."""
-
-    def __init__(self, component_names: list[str] | None = None) -> None:
-        """Initialise the metric.
-
-        Args:
-            component_names: Component names if there are multiple components.
-        """
-        self._component_names = component_names

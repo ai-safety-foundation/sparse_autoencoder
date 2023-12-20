@@ -45,7 +45,7 @@ class ModelReconstructionScore(AbstractValidationMetric):
             ... )
             >>> metric = ModelReconstructionScore()
             >>> result = metric.calculate(data)
-            >>> round(result[3]._model_reconstruction_score, 3)
+            >>> round(result[3].aggregate_value.item(), 3)
             0.667
 
         Args:
@@ -78,29 +78,25 @@ class ModelReconstructionScore(AbstractValidationMetric):
         return [
             MetricResult(
                 component_wise_values=validation_baseline_loss,
-                pipeline_location=self.metric_location,
-                component_names=self._component_names,
+                location=self.location,
                 name="reconstruction_score",
                 postfix="baseline_loss",
             ),
             MetricResult(
                 component_wise_values=validation_loss_with_reconstruction,
-                pipeline_location=self.metric_location,
-                component_names=self._component_names,
+                location=self.location,
                 name="reconstruction_score",
                 postfix="loss_with_reconstruction",
             ),
             MetricResult(
                 component_wise_values=validation_loss_with_zero_ablation,
-                pipeline_location=self.metric_location,
-                component_names=self._component_names,
+                location=self.location,
                 name="reconstruction_score",
                 postfix="loss_with_zero_ablation",
             ),
             MetricResult(
                 component_wise_values=model_reconstruction_score,
-                pipeline_location=self.metric_location,
-                component_names=self._component_names,
+                location=self.location,
                 name="reconstruction_score",
             ),
         ]

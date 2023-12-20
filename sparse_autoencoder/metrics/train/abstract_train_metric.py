@@ -47,13 +47,13 @@ class TrainMetricData(MetricInputData):
         """Initialize the train metric data."""
         self.input_activations = self.add_component_axis_if_missing(
             input_activations, dimensions_without_component=2
-        )
+        ).detach()
         self.learned_activations = self.add_component_axis_if_missing(
             learned_activations, dimensions_without_component=2
-        )
+        ).detach()
         self.decoded_activations = self.add_component_axis_if_missing(
             decoded_activations, dimensions_without_component=2
-        )
+        ).detach()
 
 
 class AbstractTrainMetric(AbstractMetric, ABC):
@@ -61,7 +61,7 @@ class AbstractTrainMetric(AbstractMetric, ABC):
 
     @final
     @property
-    def metric_location(self) -> MetricLocation:
+    def location(self) -> MetricLocation:
         """Metric type name."""
         return MetricLocation.TRAIN
 
@@ -75,11 +75,3 @@ class AbstractTrainMetric(AbstractMetric, ABC):
         Returns:
             Dictionary of metrics.
         """
-
-    def __init__(self, component_names: list[str] | None = None) -> None:
-        """Initialise the metric.
-
-        Args:
-            component_names: Component names if there are multiple components.
-        """
-        super().__init__(component_names=component_names)

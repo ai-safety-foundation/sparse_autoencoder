@@ -1,7 +1,6 @@
 """Metrics container."""
 from dataclasses import dataclass, field
 
-from sparse_autoencoder.metrics.generate.abstract_generate_metric import AbstractGenerateMetric
 from sparse_autoencoder.metrics.train.abstract_train_metric import AbstractTrainMetric
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
 from sparse_autoencoder.metrics.train.feature_density import TrainBatchFeatureDensityMetric
@@ -15,11 +14,9 @@ from sparse_autoencoder.metrics.validate.model_reconstruction_score import Model
 class MetricsContainer:
     """Metrics container.
 
-    Stores all metrics used in a pipeline.
+    Stores all metrics used in a pipeline, and allows updating of the component names for all at
+    once.
     """
-
-    generate_metrics: list[AbstractGenerateMetric] = field(default_factory=list)
-    """Metrics for the generate section."""
 
     train_metrics: list[AbstractTrainMetric] = field(default_factory=list)
     """Metrics for the train section."""

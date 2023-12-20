@@ -1,6 +1,7 @@
 """L0 norm sparsity metric."""
-from typing import TYPE_CHECKING, final
+from typing import final
 
+import einops
 from jaxtyping import Float
 import torch
 from torch import Tensor
@@ -10,10 +11,7 @@ from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
     TrainMetricData,
 )
-
-
-if TYPE_CHECKING:
-    from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.tensor_types import Axis
 
 
 @final
@@ -26,23 +24,22 @@ class TrainBatchLearnedActivationsL0(AbstractTrainMetric):
 
     def calculate(self, data: TrainMetricData) -> list[MetricResult]:
         """Create the L0 norm sparsity metric, component wise.."""
-        batch_size = data.learned_activations.size(0)
-
         learned_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)
         ] = data.learned_activations
 
         n_non_zero_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT)
-        ] = torch.count_nonzero(learned_activations, dim=-1)
+        ] = torch.count_nonzero(learned_activations, dim=-1).to(dtype=torch.float)
 
-        batch_average = n_non_zero_activations / batch_size
+        batch_average: Float[Tensor, Axis.COMPONENT] = einops.reduce(
+            n_non_zero_activations, f"{Axis.BATCH} {Axis.COMPONENT} -> {Axis.COMPONENT}", "mean"
+        )
 
         return [
             MetricResult(
-                pipeline_location=self.metric_location,
+                location=self.location,
                 name="learned_activations_l0_norm",
-                component_wise_values=batch_average.tolist(),
-                component_names=self._component_names,
+                component_wise_values=batch_average,
             )
         ]

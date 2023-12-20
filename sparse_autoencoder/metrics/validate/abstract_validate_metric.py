@@ -42,13 +42,13 @@ class ValidationMetricData(MetricInputData):
         ],
     ) -> None:
         """Initialize the validation metric data."""
-        self.source_model_loss = self.add_component_axis_if_missing(source_model_loss)
+        self.source_model_loss = self.add_component_axis_if_missing(source_model_loss).detach()
         self.source_model_loss_with_reconstruction = self.add_component_axis_if_missing(
             source_model_loss_with_reconstruction
-        )
+        ).detach()
         self.source_model_loss_with_zero_ablation = self.add_component_axis_if_missing(
             source_model_loss_with_zero_ablation
-        )
+        ).detach()
 
 
 class AbstractValidationMetric(AbstractMetric, ABC):
@@ -56,18 +56,10 @@ class AbstractValidationMetric(AbstractMetric, ABC):
 
     @final
     @property
-    def metric_location(self) -> MetricLocation:
+    def location(self) -> MetricLocation:
         """Metric type name."""
         return MetricLocation.VALIDATE
 
     @abstractmethod
     def calculate(self, data: ValidationMetricData) -> list[MetricResult]:
         """Calculate any metrics."""
-
-    def __init__(self, component_names: list[str] | None = None) -> None:
-        """Initialise the metric.
-
-        Args:
-            component_names: Component names if there are multiple components.
-        """
-        super().__init__(component_names=component_names)
