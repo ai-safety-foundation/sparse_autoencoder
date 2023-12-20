@@ -281,8 +281,7 @@ class PipelineHyperparameters(NestedParameter):
     """Validation frequency."""
 
     validation_number_activations: Parameter[int] = field(
-        # Default to a single batch of source data prompts
-        default=Parameter(DEFAULT_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE * 16)
+        default=Parameter(DEFAULT_SOURCE_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE * 2)
     )
     """Number of activations to use for validation."""
 
