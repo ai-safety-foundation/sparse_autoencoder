@@ -1,7 +1,12 @@
-"""Abstract metric."""
+"""Abstract metric.
+
+Defines the shared functionality across all types of metrics. Note that for creating your own
+metric, you probably want to extend one of the subclasses such as `TrainMetric` or `ValidateMetric`.
+These subclasses define the interface for metrics that can be implemented at different points in the
+training pipeline.
+"""
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from dataclasses import dataclass
 from enum import auto
 from typing import Any, TypeAlias, cast, final
 
@@ -15,7 +20,11 @@ from sparse_autoencoder.tensor_types import Axis
 
 
 class MetricLocation(SnakeCaseStrEnum):
-    """Metric type name."""
+    """Metric location.
+
+    Metrics can be logged at different stages of the training pipeline. This enum is used to define
+    when the metric was logged.
+    """
 
     GENERATE = auto()
     TRAIN = auto()
@@ -25,14 +34,21 @@ class MetricLocation(SnakeCaseStrEnum):
 
 
 class ComponentAggregationApproach(LowercaseStrEnum):
-    """Component aggregation method."""
+    """Component aggregation method.
+
+    When training multiple SAEs on multiple components (e.g. every MLP layer in a source model), it
+    can be useful to see summary statistics across all components as well. This enum is used to
+    define how the component-wise values should be aggregated.
+    """
 
     MEAN = auto()
+    """Mean of the component-wise values."""
+
     SUM = auto()
+    """Sum of the component-wise values."""
+
     TABLE = auto()
-
-
-DEFAULT_EMPTY_LIST = []
+    """Table of all component-wise values in one place."""
 
 
 WandbSupportedLogTypes: TypeAlias = (
@@ -55,64 +71,16 @@ WandbSupportedLogTypes: TypeAlias = (
     | list["WandbSupportedLogTypes"]
     | np.ndarray
 )
-
-
-@dataclass
-class MetricInputData(ABC):  # noqa: B024
-    """Metric input data."""
-
-    @final
-    @staticmethod
-    def add_component_axis_if_missing(
-        input_tensor: Tensor,
-        unsqueeze_dim: int = 1,
-        dimensions_without_component: int = 1,
-    ) -> Tensor:
-        """Add component axis if missing.
-
-        Examples:
-            If the component axis is missing, add it:
-
-            >>> import torch
-            >>> input = torch.tensor([1.0, 2.0, 3.0])
-            >>> MetricInputData.add_component_axis_if_missing(input)
-            tensor([[1.],
-                    [2.],
-                    [3.]])
-
-            If the component axis is present, do nothing:
-
-            >>> import torch
-            >>> input = torch.tensor([[1.0], [2.0], [3.0]])
-            >>> MetricInputData.add_component_axis_if_missing(input)
-            tensor([[1.],
-                    [2.],
-                    [3.]])
-
-        Args:
-            input_tensor: Tensor with or without a component axis.
-            unsqueeze_dim: The dimension to unsqueeze the component axis.
-            dimensions_without_component: The number of dimensions of the input tensor without a
-                component axis.
-
-        Returns:
-            Tensor with a component axis.
-
-        Raises:
-            ValueError: If the number of dimensions of the input tensor is not supported.
-        """
-        if input_tensor.ndim == dimensions_without_component:
-            return input_tensor.unsqueeze(unsqueeze_dim)
-
-        if input_tensor.ndim == dimensions_without_component + 1:
-            return input_tensor
-
-        error_message = f"Unexpected number of dimensions: {input_tensor.ndim}"
-        raise ValueError(error_message)
+"""All supported component-wise W&B log types."""
 
 
 class MetricResult:
-    """Metric result."""
+    """Metric result.
+
+    Every metric (and loss module) should return a list of metric results (a list so that it can
+    return more than one metric result if needed). Each metric result defines the name of the
+    result, as well as the component-wise values and how they should be aggregated.
+    """
 
     location: MetricLocation
     name: str
@@ -137,6 +105,21 @@ class MetricResult:
         postfix: str | None = None,
     ) -> None:
         """Initialize a metric result.
+
+        Example:
+            >>> metric_result = MetricResult(
+            ...     location=MetricLocation.TRAIN,
+            ...     name="loss",
+            ...     component_wise_values=[1.0, 2.0, 3.0],
+            ...     aggregate_approach=ComponentAggregationApproach.MEAN,
+            ... )
+            >>> for k, v in metric_result.wandb_log.items():
+            ...     print(f"{k}: {v}")
+            component_0/train/loss: 1.0
+            component_1/train/loss: 2.0
+            component_2/train/loss: 3.0
+            train/loss: 2.0
+
 
         Args:
             component_wise_values: Values for each component.

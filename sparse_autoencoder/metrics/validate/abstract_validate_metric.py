@@ -8,15 +8,18 @@ from torch import Tensor
 
 from sparse_autoencoder.metrics.abstract_metric import (
     AbstractMetric,
-    MetricInputData,
     MetricLocation,
     MetricResult,
+)
+from sparse_autoencoder.metrics.utils.add_component_axis_if_missing import (
+    add_component_axis_if_missing,
 )
 from sparse_autoencoder.tensor_types import Axis
 
 
+@final
 @dataclass
-class ValidationMetricData(MetricInputData):
+class ValidationMetricData:
     """Validation metric data.
 
     Dataclass that always has a component axis.
@@ -42,11 +45,11 @@ class ValidationMetricData(MetricInputData):
         ],
     ) -> None:
         """Initialize the validation metric data."""
-        self.source_model_loss = self.add_component_axis_if_missing(source_model_loss).detach()
-        self.source_model_loss_with_reconstruction = self.add_component_axis_if_missing(
+        self.source_model_loss = add_component_axis_if_missing(source_model_loss).detach()
+        self.source_model_loss_with_reconstruction = add_component_axis_if_missing(
             source_model_loss_with_reconstruction
         ).detach()
-        self.source_model_loss_with_zero_ablation = self.add_component_axis_if_missing(
+        self.source_model_loss_with_zero_ablation = add_component_axis_if_missing(
             source_model_loss_with_zero_ablation
         ).detach()
 

@@ -8,15 +8,18 @@ from torch import Tensor
 
 from sparse_autoencoder.metrics.abstract_metric import (
     AbstractMetric,
-    MetricInputData,
     MetricLocation,
     MetricResult,
+)
+from sparse_autoencoder.metrics.utils.add_component_axis_if_missing import (
+    add_component_axis_if_missing,
 )
 from sparse_autoencoder.tensor_types import Axis
 
 
+@final
 @dataclass
-class TrainMetricData(MetricInputData):
+class TrainMetricData:
     """Train metric data."""
 
     input_activations: Float[
@@ -45,13 +48,13 @@ class TrainMetricData(MetricInputData):
         ],
     ) -> None:
         """Initialize the train metric data."""
-        self.input_activations = self.add_component_axis_if_missing(
+        self.input_activations = add_component_axis_if_missing(
             input_activations, dimensions_without_component=2
         ).detach()
-        self.learned_activations = self.add_component_axis_if_missing(
+        self.learned_activations = add_component_axis_if_missing(
             learned_activations, dimensions_without_component=2
         ).detach()
-        self.decoded_activations = self.add_component_axis_if_missing(
+        self.decoded_activations = add_component_axis_if_missing(
             decoded_activations, dimensions_without_component=2
         ).detach()
 
