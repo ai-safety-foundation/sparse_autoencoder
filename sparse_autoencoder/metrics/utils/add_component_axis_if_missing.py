@@ -14,7 +14,7 @@ def add_component_axis_if_missing(
 
         >>> import torch
         >>> input = torch.tensor([1.0, 2.0, 3.0])
-        >>> MetricInputData.add_component_axis_if_missing(input)
+        >>> add_component_axis_if_missing(input)
         tensor([[1.],
                 [2.],
                 [3.]])
@@ -23,7 +23,7 @@ def add_component_axis_if_missing(
 
         >>> import torch
         >>> input = torch.tensor([[1.0], [2.0], [3.0]])
-        >>> MetricInputData.add_component_axis_if_missing(input)
+        >>> add_component_axis_if_missing(input)
         tensor([[1.],
                 [2.],
                 [3.]])

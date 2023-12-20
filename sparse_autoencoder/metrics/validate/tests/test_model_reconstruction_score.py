@@ -89,4 +89,7 @@ def test_weights_biases_log_matches_snapshot(snapshot: SnapshotSession) -> None:
     results = metric.calculate(data)
     weights_biases_logs = [result.wandb_log for result in results]
 
+    assert (
+        len(results[0].component_wise_values) == n_components
+    ), """Should be one histogram per component."""
     assert weights_biases_logs == snapshot

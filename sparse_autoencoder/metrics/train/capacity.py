@@ -4,7 +4,6 @@ import einops
 from jaxtyping import Float
 import numpy as np
 from numpy import histogram
-from numpy.typing import NDArray
 import torch
 from torch import Tensor
 import wandb
@@ -33,21 +32,16 @@ class CapacityMetric(AbstractTrainMetric):
 
     @staticmethod
     def capacities(
-        features: Float[Tensor, Axis.names(Axis.BATCH, Axis.LEARNT_FEATURE)],
-    ) -> Float[Tensor, Axis.BATCH]:
+        features: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)],
+    ) -> Float[Tensor, Axis.names(Axis.COMPONENT, Axis.BATCH)]:
         r"""Calculate capacities.
-
-        $$
-        \text{squared_dot_products} =
-
-        $$
 
         Example:
             >>> import torch
-            >>> orthogonal_features = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])
+            >>> orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])
             >>> orthogonal_caps = CapacityMetric.capacities(orthogonal_features)
             >>> orthogonal_caps
-            tensor([1., 1., 1.])
+            tensor([[1., 1., 1.]])
 
         Args:
             features: A collection of features.
@@ -56,26 +50,31 @@ class CapacityMetric(AbstractTrainMetric):
             A 1D tensor of capacities, where each element is the capacity of the corresponding
             feature.
         """
-        squared_dot_products = (
+        squared_dot_products: Float[Tensor, Axis.names(Axis.BATCH, Axis.BATCH, Axis.COMPONENT)] = (
             einops.einsum(
                 features,
                 features,
-                "batch_1 feat_dim, batch_2 feat_dim \
-                    -> batch_1 batch_2",
+                f"batch_1 {Axis.COMPONENT} {Axis.LEARNT_FEATURE}, \
+                    batch_2 {Axis.COMPONENT} {Axis.LEARNT_FEATURE} \
+                    -> {Axis.COMPONENT} batch_1 batch_2",
             )
             ** 2
         )
 
         sum_of_sq_dot: Float[
-            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT)
+            Tensor, Axis.names(Axis.COMPONENT, Axis.BATCH)
         ] = squared_dot_products.sum(dim=-1)
 
-        return torch.diag(squared_dot_products) / sum_of_sq_dot
+        diagonal: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.BATCH)] = torch.diagonal(
+            squared_dot_products, dim1=1, dim2=2
+        )
+
+        return diagonal / sum_of_sq_dot
 
     @staticmethod
     def wandb_capacities_histogram(
-        capacities: Float[Tensor, Axis.BATCH],
-    ) -> wandb.Histogram:
+        capacities: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.BATCH)],
+    ) -> list[wandb.Histogram]:
         """Create a W&B histogram of the capacities.
 
         This can be logged with Weights & Biases using e.g. `wandb.log({"capacities_histogram":
@@ -87,18 +86,19 @@ class CapacityMetric(AbstractTrainMetric):
         Returns:
             Weights & Biases histogram for logging with `wandb.log`.
         """
-        numpy_capacities: NDArray[np.float_] = capacities.cpu().numpy()
+        np_capacities: Float[
+            np.ndarray, Axis.names(Axis.COMPONENT, Axis.BATCH)
+        ] = capacities.cpu().numpy()
 
-        bins, values = histogram(numpy_capacities, bins=20, range=(0, 1))
-        return wandb.Histogram(np_histogram=(bins, values))
+        np_histograms = [histogram(capacity, bins=20, range=(0, 1)) for capacity in np_capacities]
+
+        return [wandb.Histogram(np_histogram=np_histogram) for np_histogram in np_histograms]
 
     def calculate(self, data: TrainMetricData) -> list[MetricResult]:
         """Calculate the capacities for a training batch."""
-        histograms = []
+        train_batch_capacities = self.capacities(data.learned_activations)
 
-        for component_learned_activation in data.learned_activations:
-            train_batch_capacities = self.capacities(component_learned_activation)
-            histograms.append(self.wandb_capacities_histogram(train_batch_capacities))
+        histograms = self.wandb_capacities_histogram(train_batch_capacities)
 
         return [
             MetricResult(
