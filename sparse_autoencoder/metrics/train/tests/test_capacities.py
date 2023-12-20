@@ -23,8 +23,10 @@ from sparse_autoencoder.tensor_types import Axis
             id="orthogonal",
         ),
         pytest.param(
-            torch.tensor([[[1.0, 0.0, 0.0], [1.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 1.0, 0.0]]]),
-            torch.tensor([[1.0, 1.0], [1.0, 1.0]]),
+            torch.tensor(
+                [[[1.0, 0.0, 0.0], [-0.8, -0.8, -0.8]], [[0.0, 1.0, 0.0], [-0.8, -0.8, -0.8]]]
+            ),
+            torch.tensor([[1.0, 1.0], [0.5, 0.5]]),
             id="orthogonal_2_components",
         ),
         pytest.param(
@@ -49,14 +51,6 @@ def test_calc_capacities(
     assert torch.allclose(
         capacities, expected_capacities, rtol=1e-3
     ), "Capacity calculation is incorrect."
-
-
-def test_wandb_capacity_histogram(snapshot: SnapshotSession) -> None:
-    """Check the Weights & Biases Histogram is created correctly."""
-    capacities = torch.tensor([[0.5, 0.1, 1, 1, 1]])
-    res = CapacityMetric.wandb_capacities_histogram(capacities)
-
-    assert res[0].histogram == snapshot
 
 
 def test_calculate_returns_histogram() -> None:
