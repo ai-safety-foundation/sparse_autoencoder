@@ -223,7 +223,7 @@ def run_training_pipeline(
     pipeline = Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,
-        cache_name=hook_point,
+        cache_names=[hook_point],
         checkpoint_directory=checkpoint_path,
         layer=hyperparameters["source_model"]["hook_layer"],
         loss=loss,

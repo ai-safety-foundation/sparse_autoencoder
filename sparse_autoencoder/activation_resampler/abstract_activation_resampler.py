@@ -61,7 +61,7 @@ class AbstractActivationResampler(ABC):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> ParameterUpdateResults | None:
+    ) -> list[ParameterUpdateResults] | None:
         """Resample dead neurons.
 
         Args:

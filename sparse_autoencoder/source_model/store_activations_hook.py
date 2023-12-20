@@ -16,6 +16,7 @@ def store_activations_hook(
     hook: HookPoint,  # noqa: ARG001
     store: ActivationStore,
     reshape_method: ReshapeActivationsFunction = reshape_to_last_dimension,
+    component_idx: int = 0,
 ) -> Float[Tensor, Axis.names(Axis.ANY)]:
     """Store Activations Hook.
 
@@ -55,6 +56,7 @@ def store_activations_hook(
         hook: The hook point.
         store: The activation store. This should be pre-initialised with `functools.partial`.
         reshape_method: The method to reshape the activations before storing them.
+        component_idx: The component index of the activations to store.
 
     Returns:
         Unmodified activations.
@@ -63,7 +65,7 @@ def store_activations_hook(
         Tensor, Axis.names(Axis.STORE_BATCH, Axis.INPUT_OUTPUT_FEATURE)
     ] = reshape_method(value)
 
-    store.extend(reshaped)
+    store.extend(reshaped, component_idx=component_idx)
 
     # Return the unmodified value
     return value

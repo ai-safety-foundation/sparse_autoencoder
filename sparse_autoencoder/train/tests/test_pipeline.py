@@ -56,7 +56,7 @@ def pipeline_fixture() -> Pipeline:
     return Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,
-        cache_name="blocks.0.hook_mlp_out",
+        cache_names=["blocks.0.hook_mlp_out"],
         layer=0,
         loss=loss,
         optimizer=optimizer,
@@ -158,18 +158,20 @@ class TestUpdateParameters:
         # Update the parameters
         dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
         pipeline_fixture.update_parameters(
-            ParameterUpdateResults(
-                dead_neuron_indices=dead_neuron_indices,
-                dead_encoder_weight_updates=torch.zeros_like(
-                    encoder_weight_before[dead_neuron_indices], dtype=torch.float
-                ),
-                dead_encoder_bias_updates=torch.zeros_like(
-                    encoder_bias_before[dead_neuron_indices], dtype=torch.float
-                ),
-                dead_decoder_weight_updates=torch.zeros_like(
-                    decoder_weight_before[:, dead_neuron_indices], dtype=torch.float
-                ),
-            )
+            [
+                ParameterUpdateResults(
+                    dead_neuron_indices=dead_neuron_indices,
+                    dead_encoder_weight_updates=torch.zeros_like(
+                        encoder_weight_before[dead_neuron_indices], dtype=torch.float
+                    ),
+                    dead_encoder_bias_updates=torch.zeros_like(
+                        encoder_bias_before[dead_neuron_indices], dtype=torch.float
+                    ),
+                    dead_decoder_weight_updates=torch.zeros_like(
+                        decoder_weight_before[:, dead_neuron_indices], dtype=torch.float
+                    ),
+                )
+            ]
         )
 
         # Check the weights and biases have changed for the dead neuron idx only
@@ -219,21 +221,23 @@ class TestUpdateParameters:
         # Update the parameters
         dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
         pipeline_fixture.update_parameters(
-            ParameterUpdateResults(
-                dead_neuron_indices=dead_neuron_indices,
-                dead_encoder_weight_updates=torch.zeros_like(
-                    pipeline_fixture.autoencoder.encoder.weight[dead_neuron_indices],
-                    dtype=torch.float,
-                ),
-                dead_encoder_bias_updates=torch.zeros_like(
-                    pipeline_fixture.autoencoder.encoder.bias[dead_neuron_indices],
-                    dtype=torch.float,
-                ),
-                dead_decoder_weight_updates=torch.zeros_like(
-                    pipeline_fixture.autoencoder.decoder.weight[:, dead_neuron_indices],
-                    dtype=torch.float,
-                ),
-            )
+            [
+                ParameterUpdateResults(
+                    dead_neuron_indices=dead_neuron_indices,
+                    dead_encoder_weight_updates=torch.zeros_like(
+                        pipeline_fixture.autoencoder.encoder.weight[dead_neuron_indices],
+                        dtype=torch.float,
+                    ),
+                    dead_encoder_bias_updates=torch.zeros_like(
+                        pipeline_fixture.autoencoder.encoder.bias[dead_neuron_indices],
+                        dtype=torch.float,
+                    ),
+                    dead_decoder_weight_updates=torch.zeros_like(
+                        pipeline_fixture.autoencoder.decoder.weight[:, dead_neuron_indices],
+                        dtype=torch.float,
+                    ),
+                )
+            ]
         )
 
         # Check the optimizer state has changed

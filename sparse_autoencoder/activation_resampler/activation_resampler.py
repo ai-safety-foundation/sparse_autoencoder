@@ -55,7 +55,7 @@ class ActivationResampler(AbstractActivationResampler):
     _activations_seen_since_last_resample: int = 0
     """Number of activations since we last resampled."""
 
-    _collated_neuron_activity: Float[Tensor, Axis.LEARNT_FEATURE]
+    _collated_neuron_activity: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]
     """Collated neuron activity, over the current data collection window."""
 
     _threshold_is_dead_portion_fires: float
@@ -70,6 +70,9 @@ class ActivationResampler(AbstractActivationResampler):
     Number of vectors used to collate neuron activity, over the current collation window.
     """
 
+    _n_components: int
+    """Number of components."""
+
     _number_times_resampled: int = 0
     """Number of times that resampling has been performed."""
 
@@ -82,6 +85,7 @@ class ActivationResampler(AbstractActivationResampler):
     def __init__(
         self,
         n_learned_features: int,
+        n_components: int = 0,
         resample_interval: int = 200_000_000,
         max_n_resamples: int = 4,
         n_activations_activity_collate: int = 100_000_000,
@@ -94,6 +98,7 @@ class ActivationResampler(AbstractActivationResampler):
 
         Args:
             n_learned_features: Number of learned features
+            n_components: Number of components that the SAE is being trained on.
             resample_interval: Interval in number of autoencoder input activation vectors trained
                 on, before resampling.
             max_n_resamples: Maximum number of resamples to perform throughout the entire pipeline.
@@ -139,17 +144,24 @@ class ActivationResampler(AbstractActivationResampler):
         self.neuron_activity_window_end = resample_interval
         self.neuron_activity_window_start = resample_interval - n_activations_activity_collate
         self._max_n_resamples = max_n_resamples
-        self._collated_neuron_activity = torch.zeros(n_learned_features, dtype=torch.int64)
+        self._collated_neuron_activity = torch.zeros(
+            (n_components, n_learned_features), dtype=torch.int64
+        )
         self._resample_dataset_size = resample_dataset_size
         self._threshold_is_dead_portion_fires = threshold_is_dead_portion_fires
+        self._n_components = n_components
 
     def _get_dead_neuron_indices(
         self,
+        component_idx: int,
     ) -> Int64[Tensor, Axis.LEARNT_FEATURE_IDX]:
         """Identify the indices of neurons that are dead.
 
         Identifies any neurons that have fired less than the threshold portion of the collated
         sample size.
+
+        Args:
+            component_idx: Component index.
 
         Returns:
             A tensor containing the indices of neurons that are dead.
@@ -167,8 +179,12 @@ class ActivationResampler(AbstractActivationResampler):
             self._n_activations_collated_since_last_resample * self._threshold_is_dead_portion_fires
         )
 
+        component_collated_neuron_activity: Float[
+            Tensor, Axis.LEARNT_FEATURE
+        ] = self._collated_neuron_activity[component_idx]
+
         dead_indices = torch.where(
-            self._collated_neuron_activity <= threshold_is_dead_number_fires
+            component_collated_neuron_activity <= threshold_is_dead_number_fires
         )[0]
 
         return dead_indices.to(dtype=torch.int64)
@@ -377,6 +393,7 @@ class ActivationResampler(AbstractActivationResampler):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
+        component_idx: int,
     ) -> ParameterUpdateResults:
         """Resample dead neurons.
 
@@ -385,12 +402,13 @@ class ActivationResampler(AbstractActivationResampler):
             autoencoder: Sparse autoencoder model.
             loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
+            component_idx: Component index
 
         Returns:
             Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
         """
         with torch.no_grad():
-            dead_neuron_indices = self._get_dead_neuron_indices()
+            dead_neuron_indices = self._get_dead_neuron_indices(component_idx=component_idx)
 
             # Compute the loss for the current model on a random subset of inputs and get the
             # activations.
@@ -447,12 +465,12 @@ class ActivationResampler(AbstractActivationResampler):
 
     def step_resampler(
         self,
-        batch_neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
+        batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> ParameterUpdateResults | None:
+    ) -> list[ParameterUpdateResults] | None:
         """Step the resampler, collating neuron activity and resampling if necessary.
 
         Args:
@@ -481,12 +499,16 @@ class ActivationResampler(AbstractActivationResampler):
             # Check if we should resample.
             if self._activations_seen_since_last_resample >= self.neuron_activity_window_end:
                 # Get resampled dictionary vectors
-                resample_res = self.resample_dead_neurons(
-                    activation_store=activation_store,
-                    autoencoder=autoencoder,
-                    loss_fn=loss_fn,
-                    train_batch_size=train_batch_size,
-                )
+                resample_res = [
+                    self.resample_dead_neurons(
+                        activation_store=activation_store,
+                        autoencoder=autoencoder,
+                        loss_fn=loss_fn,
+                        train_batch_size=train_batch_size,
+                        component_idx=component_idx,
+                    )
+                    for component_idx in range(self._n_components)
+                ]
 
                 # Update counters
                 self._activations_seen_since_last_resample = 0
@@ -504,6 +526,7 @@ class ActivationResampler(AbstractActivationResampler):
         """Return a string representation of the activation resampler."""
         return (
             f"ActivationResampler("
+            f"n_components={self._n_components}, "
             f"neuron_activity_window_start={self.neuron_activity_window_end}, "
             f"neuron_activity_window_end={self.neuron_activity_window_end}, "
             f"max_resamples={self._max_n_resamples}, "

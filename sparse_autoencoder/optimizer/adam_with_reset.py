@@ -145,50 +145,12 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
                     max_exp_avg_sq: Tensor = state["max_exp_avg_sq"]
                     max_exp_avg_sq.zero_()
 
-    @staticmethod
-    def zero_fill_multi_dimensional(
-        input_tensor: Tensor,
-        neuron_indices: Int[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)],
-        axis: int,
-    ) -> Tensor:
-        """Multi-dimensional version of torch index fill.
-
-        Args:
-            input_tensor: Input tensor to modify.
-            neuron_indices: The indices of the neurons to reset.
-            axis: Dimension along which to index.
-
-        Returns:
-            The modified input tensor.
-
-        Raises:
-            ValueError: If the neuron indices are not 1D or 2D (if the component dimension is
-                present) tensors.
-        """
-        # Make sure neuron indices are on the same device as the state
-        output_tensor: Tensor = input_tensor.clone()
-        neuron_indices = neuron_indices.to(input_tensor.device)
-
-        match neuron_indices.ndim:
-            case 1:
-                output_tensor.index_fill_(axis, neuron_indices, 0)
-            case 2:
-                for component_idx in range(neuron_indices.shape[0]):
-                    output_tensor[component_idx].index_fill_(axis, neuron_indices, 0)
-            case _:
-                error_message = (
-                    "Neuron indices must be 1D or 2D (if the component dimension is "
-                    "present) tensors."
-                )
-                raise ValueError(error_message)
-
-        return output_tensor
-
     def reset_neurons_state(
         self,
         parameter: Parameter,
-        neuron_indices: Int[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)],
+        neuron_indices: Int[Tensor, Axis.names(Axis.LEARNT_FEATURE_IDX)],
         axis: int,
+        component_idx: int = 0,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.
 
@@ -217,6 +179,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             neuron_indices: The indices of the neurons to reset.
             axis: The axis of the state values to reset (i.e. the input/output features axis, as
                 we're resetting all input/output features for a specific dead neuron).
+            component_idx: The component index of the state values to reset.
         """
         # Get the state of the parameter
         state = self.state[parameter]
@@ -231,17 +194,11 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
 
         # Reset running averages for the specified neurons
         if "exp_avg" in state:
-            state["exp_avg"] = self.zero_fill_multi_dimensional(
-                state["exp_avg"], neuron_indices, axis
-            )
+            state["exp_avg"][component_idx].index_fill_(axis, neuron_indices, 0)
 
         if "exp_avg_sq" in state:
-            state["exp_avg_sq"] = self.zero_fill_multi_dimensional(
-                state["exp_avg_sq"], neuron_indices, axis
-            )
+            state["exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
 
         # If AdamW is used (weight decay fix), also reset the max exp_avg_sq
         if "max_exp_avg_sq" in state:
-            state["max_exp_avg_sq"] = self.zero_fill_multi_dimensional(
-                state["max_exp_avg_sq"], neuron_indices, axis
-            )
+            state["max_exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
