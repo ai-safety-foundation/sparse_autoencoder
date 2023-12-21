@@ -1,5 +1,6 @@
 """Component slice tensor utils."""
-from torch import Parameter, Tensor
+from torch import Tensor
+from torch.nn import Parameter
 
 
 def get_component_slice_tensor(
