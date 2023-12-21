@@ -358,6 +358,7 @@ class ActivationResampler(AbstractActivationResampler):
         neurons times 0.2.
 
         Example:
+            >>> from torch.nn import Parameter
             >>> _seed = torch.manual_seed(0)  # For reproducibility in example
             >>> sampled_input = torch.tensor([[3.0, 4.0]])
             >>> neuron_activity = torch.tensor([3, 0, 5, 0, 1, 3])
