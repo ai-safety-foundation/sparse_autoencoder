@@ -23,7 +23,7 @@ class TensorActivationStore(ActivationStore):
     Create an empty activation dataset:
 
         >>> import torch
-        >>> store = TensorActivationStore(max_items=1000, num_neurons=100, num_components=2)
+        >>> store = TensorActivationStore(max_items=1000, n_neurons=100, n_components=2)
 
     Add a single activation vector to the dataset (for a component):
 
@@ -62,13 +62,13 @@ class TensorActivationStore(ActivationStore):
     max_items: int
     """Maximum Number of Items to Store."""
 
-    _num_components: int
+    _n_components: int
     """Number of components"""
 
     @property
-    def num_components(self) -> int:
+    def n_components(self) -> int:
         """Number of components."""
-        return self._num_components
+        return self._n_components
 
     @property
     def current_activations_stored_per_component(self) -> list[int]:
@@ -78,8 +78,8 @@ class TensorActivationStore(ActivationStore):
     def __init__(
         self,
         max_items: int,
-        num_neurons: int,
-        num_components: int = 1,
+        n_neurons: int,
+        n_components: int = 1,
         device: torch.device | None = None,
     ) -> None:
         """Initialise the Tensor Activation Store.
@@ -87,14 +87,14 @@ class TensorActivationStore(ActivationStore):
         Args:
             max_items: Maximum number of items to store per component (individual activation
                 vectors).
-            num_neurons: Number of neurons in each activation vector.
-            num_components: Number of components to store (i.e. number of source models).
+            n_neurons: Number of neurons in each activation vector.
+            n_components: Number of components to store (i.e. number of source models).
             device: Device to store the activation vectors on.
         """
-        self._num_components = num_components
-        self._items_stored = [0] * num_components
+        self._n_components = n_components
+        self._items_stored = [0] * n_components
         self._max_items = max_items
-        self._data = torch.empty((max_items, num_components, num_neurons), device=device)
+        self._data = torch.empty((max_items, n_components, n_neurons), device=device)
 
     def __len__(self) -> int:
         """Length Dunder Method.
@@ -103,7 +103,7 @@ class TensorActivationStore(ActivationStore):
 
         Example:
             >>> import torch
-            >>> store = TensorActivationStore(max_items=10_000_000, num_neurons=100)
+            >>> store = TensorActivationStore(max_items=10_000_000, n_neurons=100)
             >>> store.append(torch.randn(100))
             >>> store.append(torch.randn(100))
             >>> len(store)
@@ -120,7 +120,7 @@ class TensorActivationStore(ActivationStore):
 
         Example:
             >>> import torch
-            >>> store = TensorActivationStore(max_items=2, num_neurons=100)
+            >>> store = TensorActivationStore(max_items=2, n_neurons=100)
             >>> store.__sizeof__() # Pre-allocated tensor of 2x100
             800
 
@@ -136,7 +136,7 @@ class TensorActivationStore(ActivationStore):
 
         Examples:
             >>> import torch
-            >>> store = TensorActivationStore(max_items=2, num_neurons=5)
+            >>> store = TensorActivationStore(max_items=2, n_neurons=5)
             >>> store.append(torch.zeros(5))
             >>> store.append(torch.ones(5))
             >>> store[1]
@@ -156,7 +156,7 @@ class TensorActivationStore(ActivationStore):
             msg = f"Index {index} out of range (only {len(self)} items stored)"
             raise IndexError(msg)
 
-        if self._num_components == 1:
+        if self._n_components == 1:
             return self._data[index, 0]
         return self._data[index]
 
@@ -168,7 +168,7 @@ class TensorActivationStore(ActivationStore):
         Example:
         >>> import torch
         >>> _seed = torch.manual_seed(42)
-        >>> store = TensorActivationStore(max_items=10, num_neurons=1)
+        >>> store = TensorActivationStore(max_items=10, n_neurons=1)
         >>> store.append(torch.tensor([0.]))
         >>> store.append(torch.tensor([1.]))
         >>> store.append(torch.tensor([2.]))
@@ -189,7 +189,7 @@ class TensorActivationStore(ActivationStore):
 
         Example:
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5, num_components=1)
+        >>> store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
         >>> store.append(torch.zeros(5))
         >>> store.append(torch.ones(5))
         >>> store[1]
@@ -220,7 +220,7 @@ class TensorActivationStore(ActivationStore):
 
         Examples:
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
+        >>> store = TensorActivationStore(max_items=10, n_neurons=5)
         >>> store.extend(torch.zeros(2, 5))
         >>> len(store)
         2
@@ -233,23 +233,23 @@ class TensorActivationStore(ActivationStore):
             IndexError: If there is no space remaining.
         """
         # Check we have space
-        num_activation_tensors: int = batch.shape[0]
-        if self._items_stored[component_idx] + num_activation_tensors > self._max_items:
+        n_activation_tensors: int = batch.shape[0]
+        if self._items_stored[component_idx] + n_activation_tensors > self._max_items:
             raise StoreFullError
 
         self._data[
             self._items_stored[component_idx] : self._items_stored[component_idx]
-            + num_activation_tensors,
+            + n_activation_tensors,
             component_idx,
         ] = batch.to(self._data.device)
-        self._items_stored[component_idx] += num_activation_tensors
+        self._items_stored[component_idx] += n_activation_tensors
 
     def empty(self) -> None:
         """Empty the store.
 
         Example:
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, num_neurons=5)
+        >>> store = TensorActivationStore(max_items=10, n_neurons=5)
         >>> store.extend(torch.zeros(2, 5))
         >>> len(store)
         2

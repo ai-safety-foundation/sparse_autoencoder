@@ -78,7 +78,7 @@ class ActivationResampler(AbstractActivationResampler):
     _n_components: int
     """Number of components."""
 
-    _number_times_resampled: int = 0
+    _n_times_resampled: int = 0
     """Number of times that resampling has been performed."""
 
     neuron_activity_window_end: int
@@ -165,14 +165,14 @@ class ActivationResampler(AbstractActivationResampler):
             raise ValueError(error_message)
 
         # Find any neurons that fire less than the threshold portion of times
-        threshold_is_dead_number_fires: int = int(
+        threshold_is_dead_n_fires: int = int(
             self._n_activations_collated_since_last_resample * self._threshold_is_dead_portion_fires
         )
 
         return [
-            torch.where(
-                self._collated_neuron_activity[component_idx] <= threshold_is_dead_number_fires
-            )[0].to(dtype=torch.int64)
+            torch.where(self._collated_neuron_activity[component_idx] <= threshold_is_dead_n_fires)[
+                0
+            ].to(dtype=torch.int64)
             for component_idx in range(self._n_components)
         ]
 
@@ -210,8 +210,8 @@ class ActivationResampler(AbstractActivationResampler):
                 Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
             ] = []
             dataloader = DataLoader(store, batch_size=train_batch_size)
-            num_inputs = self._resample_dataset_size
-            n_batches_required: int = num_inputs // train_batch_size
+            n_inputs = self._resample_dataset_size
+            n_batches_required: int = n_inputs // train_batch_size
             model_device: torch.device = get_model_device(autoencoder)
 
             for batch_idx, batch in enumerate(iter(dataloader)):
@@ -230,9 +230,9 @@ class ActivationResampler(AbstractActivationResampler):
             input_activations = torch.cat(input_activations_batches).to(model_device)
 
             # Check we generated enough data
-            if len(loss_result) < num_inputs:
+            if len(loss_result) < n_inputs:
                 error_message = (
-                    f"Cannot get {num_inputs} items from the store, "
+                    f"Cannot get {n_inputs} items from the store, "
                     f"as only {len(loss_result)} were available."
                 )
                 raise ValueError(error_message)
@@ -274,7 +274,7 @@ class ActivationResampler(AbstractActivationResampler):
         input_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-        num_samples: list[int],
+        n_samples: list[int],
     ) -> list[Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]]:
         """Sample an input vector based on the provided probabilities.
 
@@ -291,7 +291,7 @@ class ActivationResampler(AbstractActivationResampler):
         Args:
             probabilities: Probabilities for each input.
             input_activations: Input activation vectors.
-            num_samples: Number of samples to take (number of dead neurons).
+            n_samples: Number of samples to take (number of dead neurons).
 
         Returns:
             Sampled input activation vector.
@@ -303,7 +303,7 @@ class ActivationResampler(AbstractActivationResampler):
             Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
         ] = []
 
-        for component_idx, component_n_samples in enumerate(num_samples):
+        for component_idx, component_n_samples in enumerate(n_samples):
             component_probabilities: Float[Tensor, Axis.BATCH] = get_component_slice_tensor(
                 input_tensor=probabilities,
                 n_dim_with_component=2,
@@ -527,7 +527,7 @@ class ActivationResampler(AbstractActivationResampler):
         # Update the counter
         self._activations_seen_since_last_resample += len(activation_store)
 
-        if self._number_times_resampled < self._max_n_resamples:
+        if self._n_times_resampled < self._max_n_resamples:
             # Collate neuron activity, if in the data collection window. For example in the
             # Anthropic Towards Monosemanticity paper, the window started collecting at 100m
             # activations and stopped at 200m (and then repeated this again a few times until the
@@ -550,7 +550,7 @@ class ActivationResampler(AbstractActivationResampler):
                 # Update counters
                 self._activations_seen_since_last_resample = 0
                 self._n_activations_collated_since_last_resample = 0
-                self._number_times_resampled += 1
+                self._n_times_resampled += 1
 
                 # Reset the collated neuron activity
                 self._collated_neuron_activity.zero_()

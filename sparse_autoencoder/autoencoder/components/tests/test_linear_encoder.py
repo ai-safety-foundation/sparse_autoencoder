@@ -43,17 +43,17 @@ def test_extra_repr(encoder: LinearEncoder, snapshot: SnapshotSession) -> None:
     assert snapshot == str(encoder), "Model string representation has changed."
 
 
-@pytest.mark.parametrize("num_components", [None, 1, 3])
+@pytest.mark.parametrize("n_components", [None, 1, 3])
 def test_forward_pass_result_matches_the_snapshot(
-    num_components: int | None, snapshot: SnapshotSession
+    n_components: int | None, snapshot: SnapshotSession
 ) -> None:
     """Test the forward pass of the LinearEncoder."""
     torch.manual_seed(1)
     input_tensor = torch.rand(
-        shape_with_optional_dimensions(BATCH_SIZE, num_components, INPUT_FEATURES)
+        shape_with_optional_dimensions(BATCH_SIZE, n_components, INPUT_FEATURES)
     )
     encoder = LinearEncoder(
-        input_features=INPUT_FEATURES, learnt_features=LEARNT_FEATURES, n_components=num_components
+        input_features=INPUT_FEATURES, learnt_features=LEARNT_FEATURES, n_components=n_components
     )
     output = encoder.forward(input_tensor)
     assert snapshot == output

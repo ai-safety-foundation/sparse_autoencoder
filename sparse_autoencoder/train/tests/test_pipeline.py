@@ -49,6 +49,7 @@ def pipeline_fixture() -> Pipeline:
     optimizer = AdamWithReset(
         params=autoencoder.parameters(),
         named_parameters=autoencoder.named_parameters(),
+        has_components_dim=False,
     )
     source_data = MockDataset(context_size=100)
     activation_resampler = ActivationResampler(n_learned_features=autoencoder.n_learned_features)
@@ -337,7 +338,7 @@ class TestRunPipeline:
             train_batch_size=train_batch_size,
             max_store_size=store_size,
             max_activations=store_size * 5,
-            validation_number_activations=store_size,
+            validation_n_activations=store_size,
             validate_frequency=store_size * (total_loops // validate_expected_calls),
             checkpoint_frequency=store_size * (total_loops // checkpoint_expected_calls - 1),
         )

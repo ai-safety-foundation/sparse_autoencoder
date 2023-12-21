@@ -118,7 +118,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
         repo_id: str,
         commit_message: str = "Upload preprocessed dataset using sparse_autoencoder.",
         max_shard_size: str | None = None,
-        num_shards: int = 64,
+        n_shards: int = 64,
         revision: str = "main",
         *,
         private: bool = False,
@@ -141,9 +141,9 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
         Args:
             repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).
             commit_message: Commit message.
-            max_shard_size: Maximum shard size (e.g. `'500MB'`). Should not be set if `num_shards`
+            max_shard_size: Maximum shard size (e.g. `'500MB'`). Should not be set if `n_shards`
                 is set.
-            num_shards: Number of shards to split the dataset into. A high number is recommended
+            n_shards: Number of shards to split the dataset into. A high number is recommended
                 here to allow for flexible distributed training of SAEs across nodes (where e.g.
                 each node fetches it's own shard).
             revision: Branch to push to.
@@ -163,7 +163,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
             repo_id=repo_id,
             commit_message=commit_message,
             max_shard_size=max_shard_size,
-            num_shards=num_shards,
+            num_shards=n_shards,
             private=private,
             revision=revision,
         )

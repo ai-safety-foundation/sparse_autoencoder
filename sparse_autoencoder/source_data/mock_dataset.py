@@ -34,46 +34,44 @@ class ConsecutiveIntHuggingFaceDataset(IterableDataset):
     _format: Literal["torch", "list"] = "list"
     """Format of the data."""
 
-    def create_data(self, num_items: int, context_size: int) -> Int[Tensor, "items context_size"]:
+    def create_data(self, n_items: int, context_size: int) -> Int[Tensor, "items context_size"]:
         """Create the data.
 
         Args:
-            num_items: The number of items in the dataset.
+            n_items: The number of items in the dataset.
             context_size: The number of tokens in the context window.
 
         Returns:
             The generated data.
         """
-        rows = torch.arange(num_items).unsqueeze(1)
+        rows = torch.arange(n_items).unsqueeze(1)
         columns = torch.arange(context_size).unsqueeze(0)
         return rows + columns
 
-    def __init__(
-        self, context_size: int, vocab_size: int = 50_000, num_items: int = 10_000
-    ) -> None:
+    def __init__(self, context_size: int, vocab_size: int = 50_000, n_items: int = 10_000) -> None:
         """Initialize the mock HF dataset.
 
         Args:
             context_size: The number of tokens in the context window
             vocab_size: The size of the vocabulary to use.
-            num_items: The number of items in the dataset.
+            n_items: The number of items in the dataset.
 
         Raises:
             ValueError: If more items are requested than we can create with the vocab size (given
                 that each item is a consecutive list of integers and unique).
         """
-        self._length = num_items
+        self._length = n_items
 
         # Check we can create the data
-        if num_items + context_size > vocab_size:
+        if n_items + context_size > vocab_size:
             error_message = (
-                f"num_items ({num_items}) + context_size ({context_size}) must be less than "
+                f"n_items ({n_items}) + context_size ({context_size}) must be less than "
                 f"vocab_size ({vocab_size})"
             )
             raise ValueError(error_message)
 
         # Initialise the data
-        self._data = self.create_data(num_items, context_size)
+        self._data = self.create_data(n_items, context_size)
 
     def __iter__(self) -> Iterator:  # type: ignore (HF typing is incorrect)
         """Initialize the iterator.

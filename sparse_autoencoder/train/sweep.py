@@ -127,6 +127,7 @@ def setup_optimizer(
         weight_decay=hyperparameters["optimizer"]["adam_weight_decay"],
         amsgrad=hyperparameters["optimizer"]["amsgrad"],
         fused=hyperparameters["optimizer"]["fused"],
+        has_components_dim=True,
     )
 
 
@@ -219,10 +220,10 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
     """
     cache_layers: list[int] = []
 
-    first_number_in_string_regex = re.compile(r"[0-9]+")
+    first_n_in_string_regex = re.compile(r"[0-9]+")
 
     for cache_name in cache_names:
-        cache_layer = first_number_in_string_regex.findall(cache_name)
+        cache_layer = first_n_in_string_regex.findall(cache_name)
         if len(cache_layer) == 0:
             error_message = f"Could not find a number in the cache name {cache_name}."
             raise ValueError(error_message)
@@ -283,7 +284,7 @@ def run_training_pipeline(
         max_activations=hyperparameters["pipeline"]["max_activations"],
         checkpoint_frequency=hyperparameters["pipeline"]["checkpoint_frequency"],
         validate_frequency=hyperparameters["pipeline"]["validation_frequency"],
-        validation_number_activations=hyperparameters["pipeline"]["validation_number_activations"],
+        validation_n_activations=hyperparameters["pipeline"]["validation_n_activations"],
     )
 
 

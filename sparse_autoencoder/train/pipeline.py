@@ -166,9 +166,9 @@ class Pipeline:
             raise ValueError(error_message)
 
         # Setup the store
-        num_neurons: int = self.autoencoder.n_input_features
+        n_neurons: int = self.autoencoder.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
-        store = TensorActivationStore(store_size, num_neurons)
+        store = TensorActivationStore(store_size, n_neurons)
 
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
@@ -310,14 +310,14 @@ class Pipeline:
                     component_idx=component_idx,
                 )
 
-    def validate_sae(self, validation_number_activations: int) -> None:
+    def validate_sae(self, validation_n_activations: int) -> None:
         """Get validation metrics.
 
         Args:
-            validation_number_activations: Number of activations to use for validation.
+            validation_n_activations: Number of activations to use for validation.
         """
         losses_shape = (
-            validation_number_activations // self.source_data_batch_size,
+            validation_n_activations // self.source_data_batch_size,
             self.n_components,
         )
         source_model_device: torch.device = get_model_device(self.source_model)
@@ -372,7 +372,7 @@ class Pipeline:
                 ] = loss_with_zero_ablation.sum()
                 items_stored += 1
 
-                if items_stored == validation_number_activations // input_ids.numel():
+                if items_stored == validation_n_activations // input_ids.numel():
                     break
 
         # Log
@@ -423,7 +423,7 @@ class Pipeline:
         train_batch_size: int,
         max_store_size: int,
         max_activations: int,
-        validation_number_activations: int = 1024,
+        validation_n_activations: int = 1024,
         validate_frequency: int | None = None,
         checkpoint_frequency: int | None = None,
     ) -> None:
@@ -434,7 +434,7 @@ class Pipeline:
             max_store_size: Maximum size of the activation store.
             max_activations: Maximum total number of activations to train on (the original paper
                 used 8bn, although others have had success with 100m+).
-            validation_number_activations: Number of activations to use for validation.
+            validation_n_activations: Number of activations to use for validation.
             validate_frequency: Frequency at which to get validation metrics.
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
@@ -458,9 +458,9 @@ class Pipeline:
                 activation_store: TensorActivationStore = self.generate_activations(store_size)
 
                 # Update the counters
-                num_activation_vectors_in_store = len(activation_store)
-                last_validated += num_activation_vectors_in_store
-                last_checkpoint += num_activation_vectors_in_store
+                n_activation_vectors_in_store = len(activation_store)
+                last_validated += n_activation_vectors_in_store
+                last_checkpoint += n_activation_vectors_in_store
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
@@ -498,7 +498,7 @@ class Pipeline:
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})
                 if validate_frequency is not None and last_validated >= validate_frequency:
-                    self.validate_sae(validation_number_activations)
+                    self.validate_sae(validation_n_activations)
                     last_validated = 0
 
                 # Checkpoint (if needed)

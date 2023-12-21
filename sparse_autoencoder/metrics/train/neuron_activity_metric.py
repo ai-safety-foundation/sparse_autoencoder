@@ -35,7 +35,7 @@ class NeuronActivityHorizonData:
     this data.
     """
 
-    _horizon_number_activations: int
+    _horizon_n_activations: int
     """Horizon in number of activations."""
 
     _horizon_steps: int
@@ -80,7 +80,7 @@ class NeuronActivityHorizonData:
 
     def _almost_dead(self, threshold: float) -> Int[Tensor, Axis.COMPONENT]:
         """Almost dead count."""
-        threshold_in_activations: float = threshold * self._horizon_number_activations
+        threshold_in_activations: float = threshold * self._horizon_n_activations
 
         almost_dead_bool_mask: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)] = (
             self._neuron_activity < threshold_in_activations
@@ -126,26 +126,26 @@ class NeuronActivityHorizonData:
                 component_wise_values=self._dead_count,
                 location=metric_location,
                 name=name,
-                postfix=f"dead_over_{self._horizon_number_activations}_activations",
+                postfix=f"dead_over_{self._horizon_n_activations}_activations",
             ),
             MetricResult(
                 component_wise_values=self._alive_count,
                 location=metric_location,
                 name=name,
-                postfix=f"alive_over_{self._horizon_number_activations}_activations",
+                postfix=f"alive_over_{self._horizon_n_activations}_activations",
             ),
             MetricResult(
                 component_wise_values=self._activity_histogram,
                 location=metric_location,
                 name=name,
-                postfix=f"activity_histogram_over_{self._horizon_number_activations}_activations",
+                postfix=f"activity_histogram_over_{self._horizon_n_activations}_activations",
                 aggregate_approach=None,  # Don't show aggregate across components
             ),
             MetricResult(
                 component_wise_values=self._log_activity_histogram,
                 location=metric_location,
                 name=name,
-                postfix=f"log_activity_histogram_over_{self._horizon_number_activations}_activations",
+                postfix=f"log_activity_histogram_over_{self._horizon_n_activations}_activations",
                 aggregate_approach=None,  # Don't show aggregate across components
             ),
         ]
@@ -155,7 +155,7 @@ class NeuronActivityHorizonData:
                 component_wise_values=self._almost_dead(threshold),
                 location=metric_location,
                 name=name,
-                postfix=f"almost_dead_{threshold:.1e}_over_{self._horizon_number_activations}_activations",
+                postfix=f"almost_dead_{threshold:.1e}_over_{self._horizon_n_activations}_activations",
             )
             for threshold in self._thresholds
         ]
@@ -165,8 +165,8 @@ class NeuronActivityHorizonData:
     def __init__(
         self,
         approximate_activation_horizon: int,
-        number_components: int,
-        number_learned_features: int,
+        n_components: int,
+        n_learned_features: int,
         thresholds: list[float],
         train_batch_size: int,
     ) -> None:
@@ -174,22 +174,20 @@ class NeuronActivityHorizonData:
 
         Args:
             approximate_activation_horizon: Approximate activation horizon.
-            number_components: Number of components.
-            number_learned_features: Number of learned features.
+            n_components: Number of components.
+            n_learned_features: Number of learned features.
             thresholds: Thresholds for almost dead neurons.
             train_batch_size: Train batch size.
         """
         self._steps_since_last_calculated = 0
-        self._neuron_activity = torch.zeros(
-            (number_components, number_learned_features), dtype=torch.int64
-        )
+        self._neuron_activity = torch.zeros((n_components, n_learned_features), dtype=torch.int64)
         self._thresholds = thresholds
-        self._n_components = number_components
-        self._n_learned_features = number_learned_features
+        self._n_components = n_components
+        self._n_learned_features = n_learned_features
 
         # Get a precise activation_horizon
         self._horizon_steps = approximate_activation_horizon // train_batch_size
-        self._horizon_number_activations = self._horizon_steps * train_batch_size
+        self._horizon_n_activations = self._horizon_steps * train_batch_size
 
     def step(
         self, neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]
@@ -247,8 +245,8 @@ class NeuronActivityMetric(AbstractTrainMetric):
             data: Train metric data.
         """
         train_batch_size = data.learned_activations.shape[0]
-        number_learned_features = data.learned_activations.shape[-1]
-        number_components = data.learned_activations.shape[-2]
+        n_learned_features = data.learned_activations.shape[-1]
+        n_components = data.learned_activations.shape[-2]
 
         for horizon in self._approximate_horizons:
             # Don't add horizons that are smaller than the train batch size
@@ -258,8 +256,8 @@ class NeuronActivityMetric(AbstractTrainMetric):
             self._data.append(
                 NeuronActivityHorizonData(
                     approximate_activation_horizon=horizon,
-                    number_components=number_components,
-                    number_learned_features=number_learned_features,
+                    n_components=n_components,
+                    n_learned_features=n_learned_features,
                     thresholds=self._thresholds,
                     train_batch_size=train_batch_size,
                 )

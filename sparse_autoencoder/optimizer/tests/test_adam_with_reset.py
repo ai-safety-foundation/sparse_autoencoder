@@ -12,7 +12,10 @@ def model_and_optimizer() -> tuple[torch.nn.Module, AdamWithReset]:
     torch.random.manual_seed(0)
     model = SparseAutoencoder(5, 10)
     optimizer = AdamWithReset(
-        model.parameters(), named_parameters=model.named_parameters(), lr=0.0001
+        model.parameters(),
+        named_parameters=model.named_parameters(),
+        lr=0.0001,
+        has_components_dim=False,
     )
 
     # Initialise adam state by doing some steps

@@ -27,14 +27,14 @@ def full_activation_store() -> ActivationStore:
     """Create a dummy activation store, pre-populated with data."""
     store = TensorActivationStore(
         max_items=DEFAULT_N_ACTIVATIONS_STORE,
-        num_components=DEFAULT_N_COMPONENTS,
-        num_neurons=DEFAULT_N_INPUT_FEATURES,
+        n_components=DEFAULT_N_COMPONENTS,
+        n_neurons=DEFAULT_N_INPUT_FEATURES,
     )
     store.fill_with_test_data(
         batch_size=DEFAULT_N_ACTIVATIONS_STORE,
         input_features=DEFAULT_N_INPUT_FEATURES,
-        num_batches=1,
-        num_components=DEFAULT_N_COMPONENTS,
+        n_batches=1,
+        n_components=DEFAULT_N_COMPONENTS,
     )
     return store
 
@@ -197,12 +197,12 @@ class TestSampleInput:
         """Test that ValueError is raised on length miss-match."""
         probabilities = torch.tensor([0.1, 0.2, 0.7])
         input_activations = torch.tensor([[1.0, 2], [3, 4], [5, 6]])
-        num_samples = [4]  # More than the number of input activations
+        n_samples = [4]  # More than the number of input activations
 
         with pytest.raises(
             ValueError, match=r"Cannot sample \d+ inputs from \d+ input activations."
         ):
-            ActivationResampler.sample_input(probabilities, input_activations, num_samples)
+            ActivationResampler.sample_input(probabilities, input_activations, n_samples)
 
 
 class TestRenormalizeAndScale:
@@ -477,8 +477,8 @@ class TestStepResampler:
             activation_store.fill_with_test_data(
                 batch_size=1,
                 input_features=DEFAULT_N_INPUT_FEATURES,
-                num_batches=1,
-                num_components=DEFAULT_N_COMPONENTS,
+                n_batches=1,
+                n_components=DEFAULT_N_COMPONENTS,
             )
 
             updates = resampler.step_resampler(

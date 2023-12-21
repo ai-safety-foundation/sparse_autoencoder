@@ -56,13 +56,13 @@ class DiskActivationStore(ActivationStore):
     _disk_n_activation_vectors_per_component: int | None = None
     """Length of the Store (on disk)."""
 
-    _num_components: int
+    _n_components: int
     """Number of components"""
 
     @property
-    def num_components(self) -> int:
+    def n_components(self) -> int:
         """Number of components."""
-        return self._num_components
+        return self._n_components
 
     @property
     def current_activations_stored_per_component(self) -> list[int]:
@@ -72,21 +72,21 @@ class DiskActivationStore(ActivationStore):
 
     def __init__(
         self,
-        num_neurons: int,
+        n_neurons: int,
         storage_path: Path = DEFAULT_DISK_ACTIVATION_STORE_PATH,
         max_cache_size: int = 10_000,
-        num_components: int = 1,
+        n_components: int = 1,
         *,
         empty_dir: bool = False,
     ):
         """Initialize the Disk Activation Store.
 
         Args:
-            num_neurons: Number of neurons in each activation vector.
+            n_neurons: Number of neurons in each activation vector.
             storage_path: Path to the directory where the activation vectors will be stored.
             max_cache_size: The maximum number of activation vectors (per component) to cache in
                 memory before writing to disk.
-            num_components: Number of components to store (i.e. number of source models).
+            n_components: Number of components to store (i.e. number of source models).
             empty_dir: Whether to empty the directory before writing. Generally you want to set this
                 to `True` as otherwise the directory may contain stale activation vectors from
                 previous runs. However if you are just initialising a pre-created store, set it as
@@ -95,7 +95,7 @@ class DiskActivationStore(ActivationStore):
         super().__init__()
 
         self._max_cache_size = max_cache_size
-        self._num_components = num_components
+        self._n_components = n_components
 
         # Setup the storage directory
         self._storage_path = storage_path
@@ -105,15 +105,15 @@ class DiskActivationStore(ActivationStore):
 
         # Setup the Cache
         self._cache = torch.empty(
-            (max_cache_size, num_components, num_neurons), device=self._cache_device
+            (max_cache_size, n_components, n_neurons), device=self._cache_device
         )
-        self._items_stored = [0] * num_components
+        self._items_stored = [0] * n_components
 
     def _write_to_disk(self) -> None:
         """Write the contents of the cache to disk.
 
         Example:
-            >>> store = DiskActivationStore(max_cache_size=2, empty_dir=True, num_neurons=100)
+            >>> store = DiskActivationStore(max_cache_size=2, empty_dir=True, n_neurons=100)
             >>> store.append(torch.randn(100))
             >>> store._write_to_disk()
             >>> len(store)
@@ -130,7 +130,7 @@ class DiskActivationStore(ActivationStore):
         )
 
         # Empty the cache (note we just need to mark as empty so we can start filling it again)
-        self._items_stored = [0] * self._num_components
+        self._items_stored = [0] * self._n_components
 
     def append(
         self,
@@ -140,7 +140,7 @@ class DiskActivationStore(ActivationStore):
         """Add a Single Item to the Store.
 
         Example:
-        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+        >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
         >>> store.append(torch.randn(100))
         >>> store.append(torch.randn(100)) # Triggers a write of the last item to disk
         >>> len(store)
@@ -166,7 +166,7 @@ class DiskActivationStore(ActivationStore):
         """Add a Batch to the Store.
 
         Example:
-            >>> store = DiskActivationStore(max_cache_size=10, empty_dir=True, num_neurons=100)
+            >>> store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)
             >>> store.extend(torch.randn(10, 100))
             >>> store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk
             >>> len(store)
@@ -179,28 +179,28 @@ class DiskActivationStore(ActivationStore):
         Raises:
             ValueError: If the batch is larger than the cache size.
         """
-        num_activation_tensors: int = batch.shape[0]
+        n_activation_tensors: int = batch.shape[0]
 
         # Check the batch is smaller than the cache size
-        if num_activation_tensors > self._max_cache_size:
+        if n_activation_tensors > self._max_cache_size:
             error_message = (
-                f"Batch size {num_activation_tensors} is larger than the cache size "
+                f"Batch size {n_activation_tensors} is larger than the cache size "
                 f"{self._max_cache_size}."
             )
             raise ValueError(error_message)
 
         # Write to disk first if full (note this also resets items stored)
-        if self._items_stored[component_idx] + num_activation_tensors > self._max_cache_size:
+        if self._items_stored[component_idx] + n_activation_tensors > self._max_cache_size:
             self._write_to_disk()
 
         # Add to cache
         self._cache[
             self._items_stored[component_idx] : self._items_stored[component_idx]
-            + num_activation_tensors,
+            + n_activation_tensors,
             component_idx,
         ] = batch.to(self._cache_device)
 
-        self._items_stored[component_idx] += num_activation_tensors
+        self._items_stored[component_idx] += n_activation_tensors
 
     def finalise(self) -> None:
         """Finalise.
@@ -209,7 +209,7 @@ class DiskActivationStore(ActivationStore):
         all activation vectors to be written to disk.
 
         Example:
-            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
             >>> store.append(torch.randn(100))
             >>> store.finalise()
             >>> len(store)
@@ -230,7 +230,7 @@ class DiskActivationStore(ActivationStore):
         This will delete all .pt files in the top level of the storage directory.
 
         Example:
-            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
             >>> store.append(torch.randn(100))
             >>> store.append(torch.randn(100))
             >>> len(store)
@@ -297,7 +297,7 @@ class DiskActivationStore(ActivationStore):
             if index >= indexes[0] and index <= indexes[1]:
                 activation_vectors = torch.load(filename)
 
-                if self._num_components == 1:
+                if self._n_components == 1:
                     return activation_vectors[index % self._max_cache_size, 0]
                 return activation_vectors[index % self._max_cache_size]
 
@@ -309,7 +309,7 @@ class DiskActivationStore(ActivationStore):
         """Length Dunder Method.
 
         Example:
-            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+            >>> store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
             >>> len(store)
             0
 

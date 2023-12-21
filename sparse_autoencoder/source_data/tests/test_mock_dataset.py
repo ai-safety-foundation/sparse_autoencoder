@@ -16,15 +16,15 @@ class TestConsecutiveIntHuggingFaceDataset:
         Returns:
             ConsecutiveIntHuggingFaceDataset: An instance of the dataset for testing.
         """
-        return ConsecutiveIntHuggingFaceDataset(context_size=10, vocab_size=1000, num_items=100)
+        return ConsecutiveIntHuggingFaceDataset(context_size=10, vocab_size=1000, n_items=100)
 
     def test_dataset_initialization_failure(self) -> None:
         """Test invalid initialization failure of the ConsecutiveIntHuggingFaceDataset."""
         with pytest.raises(
             ValueError,
-            match=r"num_items \(\d+\) \+ context_size \(\d+\) must be less than vocab_size \(\d+\)",
+            match=r"n_items \(\d+\) \+ context_size \(\d+\) must be less than vocab_size \(\d+\)",
         ):
-            ConsecutiveIntHuggingFaceDataset(context_size=40, vocab_size=50, num_items=20)
+            ConsecutiveIntHuggingFaceDataset(context_size=40, vocab_size=50, n_items=20)
 
     def test_dataset_len(self, create_dataset: ConsecutiveIntHuggingFaceDataset) -> None:
         """Test the __len__ method of the dataset.
@@ -52,7 +52,7 @@ class TestConsecutiveIntHuggingFaceDataset:
         Args:
             create_dataset: Fixture to create a test dataset instance.
         """
-        data: Tensor = create_dataset.create_data(num_items=10, context_size=5)
+        data: Tensor = create_dataset.create_data(n_items=10, context_size=5)
         assert data.shape == (10, 5), "Data shape is not as expected."
 
     def test_dataset_iteration(self, create_dataset: ConsecutiveIntHuggingFaceDataset) -> None:

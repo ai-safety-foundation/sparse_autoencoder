@@ -43,7 +43,7 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
             "source_data_batch_size": 12,
             "train_batch_size": 4096,
             "validation_frequency": 314572800,
-            "validation_number_activations": 1024,
+            "validation_n_activations": 1024,
         },
         "random_seed": 49,
         "source_data": {

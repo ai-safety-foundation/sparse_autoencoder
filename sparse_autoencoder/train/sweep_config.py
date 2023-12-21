@@ -276,7 +276,7 @@ class PipelineHyperparameters(NestedParameter):
     )
     """Validation frequency."""
 
-    validation_number_activations: Parameter[int] = field(
+    validation_n_activations: Parameter[int] = field(
         default=Parameter(DEFAULT_SOURCE_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE * 2)
     )
     """Number of activations to use for validation."""
@@ -292,7 +292,7 @@ class PipelineRuntimeHyperparameters(TypedDict):
     max_activations: int
     checkpoint_frequency: int
     validation_frequency: int
-    validation_number_activations: int
+    validation_n_activations: int
 
 
 @dataclass

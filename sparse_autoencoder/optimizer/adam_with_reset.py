@@ -33,6 +33,9 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     The names of the parameters, so that we can find them later when resetting the state.
     """
 
+    _has_components_dim: bool
+    """Whether the parameters have a components dimension."""
+
     def __init__(  # (extending existing implementation)
         self,
         params: params_t,
@@ -48,6 +51,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         differentiable: bool = False,
         fused: bool | None = None,
         named_parameters: Iterator[tuple[str, Parameter]],
+        has_components_dim: bool,
     ) -> None:
         """Initialize the optimizer.
 
@@ -57,10 +61,11 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         Example:
             >>> import torch
             >>> from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-            >>> model = SparseAutoencoder(5, 10, torch.zeros(5))
+            >>> model = SparseAutoencoder(5, 10, n_components=2)
             >>> optimizer = AdamWithReset(
             ...     model.parameters(),
             ...     named_parameters=model.named_parameters(),
+            ...     has_components_dim=True,
             ... )
             >>> optimizer.reset_state_all_parameters()
 
@@ -87,6 +92,8 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             named_parameters: An iterator over the named parameters of the model. This is used to
                 find the parameters when resetting their state. You should set this as
                 `model.named_parameters()`.
+            has_components_dim: If the parameters have a components dimension (i.e. if you are
+                training an SAE on more than one component).
 
         Raises:
             ValueError: If the number of parameter names does not match the number of parameters.
@@ -105,6 +112,8 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             differentiable=differentiable,
             fused=fused,
         )
+
+        self._has_components_dim = has_components_dim
 
         # Store the names of the parameters, so that we can find them later when resetting the
         # state.
@@ -157,10 +166,11 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         Example:
             >>> import torch
             >>> from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-            >>> model = SparseAutoencoder(5, 10, torch.zeros(5))
+            >>> model = SparseAutoencoder(5, 10, n_components=2)
             >>> optimizer = AdamWithReset(
             ...     model.parameters(),
             ...     named_parameters=model.named_parameters(),
+            ...     has_components_dim=True,
             ... )
             >>> # ... train the model and then resample some dead neurons, then do this ...
             >>> dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices
@@ -180,9 +190,27 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             axis: The axis of the state values to reset (i.e. the input/output features axis, as
                 we're resetting all input/output features for a specific dead neuron).
             component_idx: The component index of the state values to reset.
+
+        Raises:
+            ValueError: If the parameter has a components dimension, but has_components_dim is
+                False.
         """
         # Get the state of the parameter
         state = self.state[parameter]
+
+        # If the number of dimensions is 3, we definitely have a components dimension. If 2, we may
+        # do (as the bias has 2 dimensions with components, but the weight has 2 dimensions without
+        # components).
+        definitely_has_components_dimension = 3
+        if (
+            not self._has_components_dim
+            and state["exp_avg"].ndim == definitely_has_components_dimension
+        ):
+            error_message = (
+                "The parameter has a components dimension, but has_components_dim is False. "
+                "This should not happen."
+            )
+            raise ValueError(error_message)
 
         # Check if state is initialized
         if len(state) == 0:
@@ -193,22 +221,21 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             return
 
         # Reset running averages for the specified neurons
-        no_component_n_dimensions: int = 2
         if "exp_avg" in state:
-            if state["exp_avg"].ndim == no_component_n_dimensions:
-                state["exp_avg"].index_fill_(axis, neuron_indices, 0)
-            else:
+            if self._has_components_dim:
                 state["exp_avg"][component_idx].index_fill_(axis, neuron_indices, 0)
+            else:
+                state["exp_avg"].index_fill_(axis, neuron_indices, 0)
 
         if "exp_avg_sq" in state:
-            if state["exp_avg_sq"].ndim == no_component_n_dimensions:
-                state["exp_avg_sq"].index_fill_(axis, neuron_indices, 0)
-            else:
+            if self._has_components_dim:
                 state["exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
+            else:
+                state["exp_avg_sq"].index_fill_(axis, neuron_indices, 0)
 
         # If AdamW is used (weight decay fix), also reset the max exp_avg_sq
         if "max_exp_avg_sq" in state:
-            if state["max_exp_avg_sq"].ndim == no_component_n_dimensions:
-                state["max_exp_avg_sq"].index_fill_(axis, neuron_indices, 0)
-            else:
+            if self._has_components_dim:
                 state["max_exp_avg_sq"][component_idx].index_fill_(axis, neuron_indices, 0)
+            else:
+                state["max_exp_avg_sq"].index_fill_(axis, neuron_indices, 0)
