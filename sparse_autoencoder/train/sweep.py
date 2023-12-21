@@ -209,10 +209,10 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
         0
 
     Args:
-        cache_names (list[str]): The cache names.
+        cache_names: The cache names.
 
     Returns:
-        int: The stop layer.
+        The stop layer.
 
     Raises:
         ValueError: If no number is found in the cache names.

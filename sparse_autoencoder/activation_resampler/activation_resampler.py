@@ -6,7 +6,6 @@ from jaxtyping import Bool, Float, Int64
 from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn import Parameter
 from torch.utils.data import DataLoader
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
