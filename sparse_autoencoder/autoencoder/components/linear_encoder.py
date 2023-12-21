@@ -10,6 +10,7 @@ from torch.nn import Parameter, ReLU, init
 
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 @final
@@ -96,13 +97,16 @@ class LinearEncoder(AbstractEncoder):
         )
         self._learnt_features = learnt_features
         self._input_features = input_features
+        self._n_components = n_components
 
         self._weight = Parameter(
             torch.empty(
-                (learnt_features, input_features),
+                shape_with_optional_dimensions(n_components, learnt_features, input_features),
             )
         )
-        self._bias = Parameter(torch.zeros(learnt_features))
+        self._bias = Parameter(
+            torch.zeros(shape_with_optional_dimensions(n_components, learnt_features))
+        )
         self.activation_function = ReLU()
 
         self.reset_parameters()
@@ -147,4 +151,8 @@ class LinearEncoder(AbstractEncoder):
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""
-        return f"in_features={self._input_features}, out_features={self._learnt_features}"
+        return (
+            f"input_features={self._input_features}, "
+            f"learnt_features={self._learnt_features}, "
+            f"n_components={self._n_components}"
+        )

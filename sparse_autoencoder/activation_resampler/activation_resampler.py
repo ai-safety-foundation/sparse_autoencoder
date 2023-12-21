@@ -350,10 +350,8 @@ class ActivationResampler(AbstractActivationResampler):
     @staticmethod
     def renormalize_and_scale(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
-        neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
-        encoder_weight: Float[
-            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ],
+        neuron_activity: Int64[Tensor, Axis.names(Axis.LEARNT_FEATURE)],
+        encoder_weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
     ) -> Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Renormalize and scale the resampled dictionary vectors.
 
@@ -463,8 +461,8 @@ class ActivationResampler(AbstractActivationResampler):
             )
 
             for component_idx in range(self._n_components):
-                # Renormalize each input vector to have unit L2 norm and set this to be the dictionary
-                # vector for the dead autoencoder neuron.
+                # Renormalize each input vector to have unit L2 norm and set this to be the
+                # dictionary vector for the dead autoencoder neuron.
                 renormalized_input: Float[
                     Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
                 ] = torch.nn.functional.normalize(sampled_input[component_idx], dim=-1)
@@ -474,10 +472,10 @@ class ActivationResampler(AbstractActivationResampler):
                 )
 
                 # For the corresponding encoder vector, renormalize the input vector to equal the
-                # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
-                # encoder bias element to zero.
+                # average norm of the encoder weights for alive neurons times 0.2. Set the
+                # corresponding encoder bias element to zero.
                 encoder_weight: Float[
-                    Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+                    Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
                 ] = get_component_slice_tensor(autoencoder.encoder.weight, 3, 0, component_idx)
 
                 rescaled_sampled_input = self.renormalize_and_scale(

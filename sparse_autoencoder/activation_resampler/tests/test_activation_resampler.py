@@ -278,10 +278,12 @@ class TestResampleDeadNeurons:
         self, full_activation_store: ActivationStore, autoencoder_model: SparseAutoencoder
     ) -> None:
         """Check it doesn't change anything if there are no dead neurons."""
-        neuron_activity = torch.ones((1, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64)
+        neuron_activity = torch.ones(
+            (DEFAULT_N_COMPONENTS, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64
+        )
         resampler = ActivationResampler(
             resample_interval=10,
-            n_components=1,
+            n_components=DEFAULT_N_COMPONENTS,
             n_activations_activity_collate=10,
             n_learned_features=autoencoder_model.n_learned_features,
             resample_dataset_size=100,
@@ -295,7 +297,7 @@ class TestResampleDeadNeurons:
         )
 
         assert updates is not None, "Should have updated"
-        print(updates)
+
         assert updates[0].dead_neuron_indices.numel() == 0, "Should not have any dead neurons"
         assert (
             updates[0].dead_decoder_weight_updates.numel() == 0
@@ -305,27 +307,18 @@ class TestResampleDeadNeurons:
         ), "Should not have any dead neurons"
         assert updates[0].dead_encoder_bias_updates.numel() == 0, "Should not have any dead neurons"
 
-    def test_updates_a_dead_neuron_parameters(
+    def test_updates_dead_neuron_parameters(
         self,
+        autoencoder_model: SparseAutoencoder,
+        full_activation_store: ActivationStore,
     ) -> None:
         """Check it updates a dead neuron's parameters."""
-        neuron_activity = torch.ones((2, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64)
-
-        print("in-out-features", DEFAULT_N_INPUT_FEATURES)
-
-        autoencoder_model = SparseAutoencoder(
-            n_input_features=DEFAULT_N_INPUT_FEATURES,
-            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
-            n_components=2,
+        neuron_activity = torch.ones(
+            (DEFAULT_N_COMPONENTS, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64
         )
-
-        full_activation_store = TensorActivationStore(
-            100, DEFAULT_N_INPUT_FEATURES, num_components=2
-        )
-        full_activation_store.fill_with_test_data(1, 100, 2, DEFAULT_N_INPUT_FEATURES)
 
         # Dead neurons as (component_idx, neuron_idx)
-        dead_neurons: list[tuple[int, int]] = [(0, 2), (1, 3)]
+        dead_neurons: list[tuple[int, int]] = [(0, 1), (1, 2)]
         for component_idx, neuron_idx in dead_neurons:
             neuron_activity[component_idx, neuron_idx] = 0
 
@@ -334,7 +327,7 @@ class TestResampleDeadNeurons:
         resampler = ActivationResampler(
             resample_interval=10,
             n_activations_activity_collate=10,
-            n_components=2,
+            n_components=DEFAULT_N_COMPONENTS,
             n_learned_features=autoencoder_model.n_learned_features,
             resample_dataset_size=100,
         )
@@ -348,35 +341,35 @@ class TestResampleDeadNeurons:
         assert parameter_updates is not None, "Should have updated"
 
         # Check the updated ones have changed
-        # for component_idx, neuron_idx in dead_neurons:
-        #     # Decoder
-        #     decoder_weights = current_parameters["_decoder._weight"]
-        #     current_dead_neuron_weights = decoder_weights[component_idx, neuron_idx]
-        #     updated_dead_decoder_weights = parameter_updates[
-        #         component_idx
-        #     ].dead_encoder_weight_updates.squeeze()
-        #     assert not torch.equal(
-        #         current_dead_neuron_weights, updated_dead_decoder_weights
-        #     ), "Dead decoder weights should have changed."
+        for component_idx, neuron_idx in dead_neurons:
+            # Decoder
+            decoder_weights = current_parameters["_decoder._weight"]
+            current_dead_neuron_weights = decoder_weights[component_idx, neuron_idx]
+            updated_dead_decoder_weights = parameter_updates[
+                component_idx
+            ].dead_encoder_weight_updates.squeeze()
+            assert not torch.equal(
+                current_dead_neuron_weights, updated_dead_decoder_weights
+            ), "Dead decoder weights should have changed."
 
-        #     # Encoder
-        #     current_dead_encoder_weights = current_parameters["_encoder._weight"][
-        #         component_idx, neuron_idx
-        #     ]
-        #     updated_dead_encoder_weights = parameter_updates[
-        #         component_idx
-        #     ].dead_encoder_weight_updates.squeeze()
-        #     assert not torch.equal(
-        #         current_dead_encoder_weights, updated_dead_encoder_weights
-        #     ), "Dead encoder weights should have changed."
+            # Encoder
+            current_dead_encoder_weights = current_parameters["_encoder._weight"][
+                component_idx, neuron_idx
+            ]
+            updated_dead_encoder_weights = parameter_updates[
+                component_idx
+            ].dead_encoder_weight_updates.squeeze()
+            assert not torch.equal(
+                current_dead_encoder_weights, updated_dead_encoder_weights
+            ), "Dead encoder weights should have changed."
 
-        #     current_dead_encoder_bias = current_parameters["_encoder._bias"][
-        #         component_idx, neuron_idx
-        #     ]
-        #     updated_dead_encoder_bias = parameter_updates[component_idx].dead_encoder_bias_updates
-        #     assert not torch.equal(
-        #         current_dead_encoder_bias, updated_dead_encoder_bias
-        #     ), "Dead encoder bias should have changed."
+            current_dead_encoder_bias = current_parameters["_encoder._bias"][
+                component_idx, neuron_idx
+            ]
+            updated_dead_encoder_bias = parameter_updates[component_idx].dead_encoder_bias_updates
+            assert not torch.equal(
+                current_dead_encoder_bias, updated_dead_encoder_bias
+            ), "Dead encoder bias should have changed."
 
 
 class TestStepResampler:
@@ -453,20 +446,30 @@ class TestStepResampler:
     ) -> None:
         """Check if max_updates, resample_interval and n_steps_collate are respected."""
         # Create neuron activity to log (with one dead neuron)
-        neuron_activity_batch_size_1 = torch.ones(DEFAULT_N_LEARNED_FEATURES, dtype=torch.int64)
-        neuron_activity_batch_size_1[2] = 0
+        neuron_activity_batch_size_1 = torch.ones(
+            (DEFAULT_N_COMPONENTS, DEFAULT_N_LEARNED_FEATURES), dtype=torch.int64
+        )
+        neuron_activity_batch_size_1[0][2] = 0
 
         resampler = ActivationResampler(
-            n_learned_features=autoencoder_model.n_learned_features,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_interval=resample_interval,
             max_n_resamples=max_n_resamples,
             n_activations_activity_collate=1,
+            n_components=DEFAULT_N_COMPONENTS,
             resample_dataset_size=1,
         )
 
         for activation_seen_count in range(1, total_activations_seen + 1):
-            activation_store = TensorActivationStore(1, DEFAULT_N_INPUT_FEATURES)
-            activation_store.append(torch.ones(DEFAULT_N_INPUT_FEATURES))
+            activation_store = TensorActivationStore(
+                1, DEFAULT_N_INPUT_FEATURES, DEFAULT_N_COMPONENTS
+            )
+            activation_store.fill_with_test_data(
+                batch_size=1,
+                input_features=DEFAULT_N_INPUT_FEATURES,
+                num_batches=1,
+                num_components=DEFAULT_N_COMPONENTS,
+            )
 
             updates = resampler.step_resampler(
                 batch_neuron_activity=neuron_activity_batch_size_1,

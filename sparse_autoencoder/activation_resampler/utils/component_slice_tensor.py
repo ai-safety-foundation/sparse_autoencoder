@@ -1,14 +1,13 @@
 """Component slice tensor utils."""
 from torch import Tensor
-from torch.nn import Parameter
 
 
 def get_component_slice_tensor(
-    input_tensor: Tensor | Parameter,
+    input_tensor: Tensor,
     n_dim_with_component: int,
     component_dim: int,
     component_idx: int,
-) -> Tensor | Parameter:
+) -> Tensor:
     """Get a slice of a tensor for a specific component.
 
     Examples:
