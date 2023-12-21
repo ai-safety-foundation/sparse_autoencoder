@@ -123,9 +123,7 @@ class AbstractDecoder(Module, ABC):
 
                 self.weight[:, dictionary_vector_indices] = updated_weights
             else:
-                self.weight[
-                    component_idx, :, dictionary_vector_indices[component_idx]
-                ] = updated_weights[component_idx]
+                self.weight[component_idx, :, dictionary_vector_indices] = updated_weights
 
     @abstractmethod
     def constrain_weights_unit_norm(self) -> None:

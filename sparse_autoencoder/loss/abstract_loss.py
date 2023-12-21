@@ -119,7 +119,7 @@ class AbstractLoss(Module, ABC):
         ],
         batch_reduction: LossReductionType = LossReductionType.MEAN,
         component_reduction: LossReductionType = LossReductionType.NONE,
-    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], list[MetricResult]]:
+    ) -> tuple[Float[Tensor, Axis.COMPONENT] | Float[Tensor, Axis.SINGLE_ITEM], list[MetricResult]]:
         """Scalar loss (reduced across the batch and component axis) with logging.
 
         Args:
@@ -134,7 +134,9 @@ class AbstractLoss(Module, ABC):
         Returns:
             Tuple of the batch scalar loss and a dict of any properties to log.
         """
-        children_loss_scalars: list[Float[Tensor, Axis.COMPONENT_OPTIONAL]] = []
+        children_loss_scalars: list[
+            Float[Tensor, Axis.COMPONENT] | Float[Tensor, Axis.SINGLE_ITEM]
+        ] = []
         metrics: list[MetricResult] = []
 
         # If the loss module has children (e.g. it is a reducer):

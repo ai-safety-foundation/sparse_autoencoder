@@ -16,7 +16,7 @@
         tokenizers=">=0.15.0"
         torch=">=2.1.1"
         transformers=">=4.35.2"
-        wandb=">=0.15.12"
+        wandb=">=0.16.1"
         zstandard=">=0.22.0"    # Required for downloading datasets such as The Pile
 
     [tool.poetry.group]

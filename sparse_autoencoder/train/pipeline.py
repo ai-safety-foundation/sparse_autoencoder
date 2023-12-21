@@ -158,7 +158,7 @@ class Pipeline:
         if store_size <= 0:
             error_message = f"Store size must be positive, got {store_size}"
             raise ValueError(error_message)
-        if store_size % self.source_data_batch_size != 0:
+        if store_size % (self.source_data_batch_size * self.source_dataset.context_size) != 0:
             error_message = (
                 f"Store size must be divisible by the batch size ({self.source_data_batch_size}), "
                 f"got {store_size}"
@@ -168,7 +168,7 @@ class Pipeline:
         # Setup the store
         n_neurons: int = self.autoencoder.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
-        store = TensorActivationStore(store_size, n_neurons)
+        store = TensorActivationStore(store_size, n_neurons, n_components=self.n_components)
 
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
@@ -323,19 +323,21 @@ class Pipeline:
         source_model_device: torch.device = get_model_device(self.source_model)
 
         # Create the metric data stores
-        losses: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)] = torch.tensor(
+        losses: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)] = torch.empty(
             losses_shape, device=source_model_device
         )
         losses_with_reconstruction: Float[
             Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
-        ] = torch.tensor(losses_shape, device=source_model_device)
+        ] = torch.empty(losses_shape, device=source_model_device)
         losses_with_zero_ablation: Float[
             Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
-        ] = torch.tensor(losses_shape, device=source_model_device)
+        ] = torch.empty(losses_shape, device=source_model_device)
 
-        items_stored: int = 0
-        for batch in self.source_data:
-            for component_idx, cache_name in enumerate(self.cache_names):
+        for component_idx, cache_name in enumerate(self.cache_names):
+            for batch_idx, batch in enumerate(self.source_data):
+                if batch_idx == losses.shape[0]:
+                    break
+
                 input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
                     "input_ids"
                 ].to(source_model_device)
@@ -343,7 +345,9 @@ class Pipeline:
                 # Run a forward pass with and without the replaced activations
                 self.source_model.remove_all_hook_fns()
                 replacement_hook = partial(
-                    replace_activations_hook, sparse_autoencoder=self.autoencoder
+                    replace_activations_hook,
+                    sparse_autoencoder=self.autoencoder,
+                    component_idx=component_idx,
                 )
 
                 loss = self.source_model.forward(input_ids, return_type="loss")
@@ -363,17 +367,11 @@ class Pipeline:
                     fwd_hooks=[(cache_name, zero_ablate_hook)],
                 )
 
-                losses[items_stored, component_idx] = loss.sum()
+                losses[batch_idx, component_idx] = loss.sum()
                 losses_with_reconstruction[
-                    items_stored, component_idx
+                    batch_idx, component_idx
                 ] = loss_with_reconstruction.sum()
-                losses_with_zero_ablation[
-                    items_stored, component_idx
-                ] = loss_with_zero_ablation.sum()
-                items_stored += 1
-
-                if items_stored == validation_n_activations // input_ids.numel():
-                    break
+                losses_with_zero_ablation[batch_idx, component_idx] = loss_with_zero_ablation.sum()
 
         # Log
         validation_data = ValidationMetricData(
