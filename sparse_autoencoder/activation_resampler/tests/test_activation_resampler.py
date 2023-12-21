@@ -378,21 +378,29 @@ class TestStepResampler:
     @pytest.mark.parametrize(
         ("neuron_activity", "threshold", "expected_indices"),
         [
-            (torch.tensor([1, 0, 3, 9, 0]), 0.0, torch.tensor([1, 4], dtype=torch.int64)),
             (
-                torch.tensor([1, 2, 3, 4, 5]),
+                torch.tensor([[1, 0, 3, 9, 0], [1, 1, 3, 9, 1]]),
                 0.0,
-                torch.tensor([], dtype=torch.int64),
+                [torch.tensor([1, 4], dtype=torch.int64), torch.tensor([], dtype=torch.int64)],
             ),
-            (torch.tensor([1, 0, 3, 9, 0]), 0.1, torch.tensor([0, 1, 4], dtype=torch.int64)),
-            (torch.tensor([1, 2, 3, 4, 5]), 0.1, torch.tensor([0], dtype=torch.int64)),
+            (
+                torch.tensor([[1, 2, 3, 4, 5]] * 2),
+                0.0,
+                [torch.tensor([], dtype=torch.int64)] * 2,
+            ),
+            (
+                torch.tensor([[1, 0, 3, 9, 0]] * 2),
+                0.1,
+                [torch.tensor([0, 1, 4], dtype=torch.int64)] * 2,
+            ),
+            (torch.tensor([[1, 2, 3, 4, 5]] * 2), 0.1, [torch.tensor([0], dtype=torch.int64)] * 2),
         ],
     )
     def test_gets_dead_neuron_indices(
         self,
-        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
+        neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         threshold: float,
-        expected_indices: Tensor,
+        expected_indices: list[Tensor],
         full_activation_store: ActivationStore,
         autoencoder_model: SparseAutoencoder,
         loss_fn: LossReducer,
@@ -400,6 +408,7 @@ class TestStepResampler:
         """Test the dead neuron indices match manually created examples."""
         resampler = ActivationResampler(
             n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+            n_components=DEFAULT_N_COMPONENTS,
             resample_interval=1,
             n_activations_activity_collate=1,
             resample_dataset_size=1,
@@ -414,9 +423,10 @@ class TestStepResampler:
         )
         assert res is not None
 
-        assert torch.allclose(
-            res[0].dead_neuron_indices, expected_indices
-        ), f"Expected {expected_indices}, got {res[0].dead_neuron_indices}"
+        for component_result, expected_component_indices in zip(res, expected_indices):
+            assert torch.allclose(
+                component_result.dead_neuron_indices, expected_component_indices
+            ), f"Expected {expected_indices}, got {res[0].dead_neuron_indices}"
 
     @pytest.mark.parametrize(
         (
