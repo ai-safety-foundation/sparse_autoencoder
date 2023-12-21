@@ -1,16 +1,16 @@
 # serializer version: 1
 # name: test_setup_activation_resampler
-  'ActivationResampler(neuron_activity_window_start=200000000, neuron_activity_window_end=200000000, max_resamples=4, resample_dataset_size=819200, dead_neuron_threshold=0.0)'
+  'ActivationResampler(n_components=1, neuron_activity_window_start=200000000, neuron_activity_window_end=200000000, max_resamples=4, resample_dataset_size=819200, dead_neuron_threshold=0.0)'
 # ---
 # name: test_setup_autoencoder
   '''
   SparseAutoencoder(
     (_pre_encoder_bias): TiedBias(position=pre_encoder)
     (_encoder): LinearEncoder(
-      in_features=512, out_features=2048
+      input_features=512, learnt_features=2048, n_components=None
       (activation_function): ReLU()
     )
-    (_decoder): UnitNormDecoder(in_features=2048, out_features=512)
+    (_decoder): UnitNormDecoder(learnt_features=2048, decoded_features=512, n_components=None)
     (_post_decoder_bias): TiedBias(position=post_decoder)
   )
   '''
