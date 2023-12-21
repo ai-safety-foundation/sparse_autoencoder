@@ -17,6 +17,7 @@
         transformers=">=4.35.2"
         wandb=">=0.15.12"
         zstandard=">=0.22.0"    # Required for downloading datasets such as The Pile
+    pydantic = "^2.5.2"
 
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
