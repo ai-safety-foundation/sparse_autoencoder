@@ -10,12 +10,13 @@
     [tool.poetry.dependencies]
         datasets=">=2.15.0"
         einops=">=0.6"
+        pydantic="^2.5.2"
         python=">=3.10, <3.12"
         strenum=">=0.4.15"
         tokenizers=">=0.15.0"
         torch=">=2.1.1"
         transformers=">=4.35.2"
-        wandb=">=0.15.12"
+        wandb=">=0.16.1"
         zstandard=">=0.22.0"    # Required for downloading datasets such as The Pile
 
     [tool.poetry.group]
@@ -127,8 +128,11 @@
         addopts=[
             "--doctest-modules",
             "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
-            "-W ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
             "-s",
+        ]
+        filterwarnings=[
+            "ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
+            "ignore::pydantic.warnings.PydanticDeprecatedSince20",
         ]
 
 [tool.ruff]

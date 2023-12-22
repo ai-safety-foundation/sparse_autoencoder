@@ -101,6 +101,7 @@ class AbstractEncoder(Module, ABC):
             Tensor,
             Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX, Axis.INPUT_OUTPUT_FEATURE),
         ],
+        component_idx: int | None = None,
     ) -> None:
         """Update encoder dictionary vectors.
 
@@ -109,18 +110,25 @@ class AbstractEncoder(Module, ABC):
         Args:
             dictionary_vector_indices: Indices of the dictionary vectors to update.
             updated_dictionary_weights: Updated weights for just these dictionary vectors.
+            component_idx: Component index to update.
+
+        Raises:
+            ValueError: If there are multiple components and `component_idx` is not specified.
         """
         if dictionary_vector_indices.numel() == 0:
             return
 
         with torch.no_grad():
-            if self._n_components is None:
+            if component_idx is None:
+                if self._n_components is not None:
+                    error_message = "component_idx must be specified when n_components is not None"
+                    raise ValueError(error_message)
+
                 self.weight[dictionary_vector_indices] = updated_dictionary_weights
             else:
-                for component_idx in range(self._n_components):
-                    self.weight[
-                        component_idx, dictionary_vector_indices[component_idx]
-                    ] = updated_dictionary_weights[component_idx]
+                self.weight[
+                    component_idx, dictionary_vector_indices[component_idx]
+                ] = updated_dictionary_weights[component_idx]
 
     @final
     def update_bias(
@@ -131,19 +139,27 @@ class AbstractEncoder(Module, ABC):
         updated_bias_features: Float[
             Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
         ],
+        component_idx: int | None = None,
     ) -> None:
         """Update encoder bias.
 
         Args:
             update_parameter_indices: Indices of the bias features to update.
             updated_bias_features: Updated bias features for just these indices.
+            component_idx: Component index to update.
+
+        Raises:
+            ValueError: If there are multiple components and `component_idx` is not specified.
         """
         if update_parameter_indices.numel() == 0:
             return
 
         with torch.no_grad():
-            if self._n_components is None:
+            if component_idx is None:
+                if self._n_components is not None:
+                    error_message = "component_idx must be specified when n_components is not None"
+                    raise ValueError(error_message)
+
                 self.bias[update_parameter_indices] = updated_bias_features
             else:
-                for component_idx in range(self._n_components):
-                    self.bias[component_idx, update_parameter_indices] = updated_bias_features
+                self.bias[component_idx, update_parameter_indices] = updated_bias_features

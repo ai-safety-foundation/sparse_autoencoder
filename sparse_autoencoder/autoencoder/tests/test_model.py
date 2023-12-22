@@ -4,6 +4,7 @@ import pytest
 from syrupy.session import SnapshotSession
 import torch
 from torch import Tensor
+from torch.nn import Parameter
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.tensor_types import Axis
@@ -68,17 +69,26 @@ def test_forward_pass_same_without_components_and_1_component() -> None:
     input_activations: Float[
         Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)
     ] = torch.randn(batch_size, n_input_features)
+
     input_single_component: Float[
         Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
     ] = input_activations.unsqueeze(1)
 
     # Create the models
-    torch.manual_seed(1)
     model_without_components = SparseAutoencoder(
         n_input_features, n_learned_features, n_components=None
     )
-    torch.manual_seed(1)
+
     model_with_1_component = SparseAutoencoder(n_input_features, n_learned_features, n_components=1)
+    model_with_1_component.encoder._weight = Parameter(  # type: ignore  # noqa: SLF001
+        model_without_components.encoder.weight.unsqueeze(0)
+    )
+    model_with_1_component.decoder._weight = Parameter(  # type: ignore  # noqa: SLF001
+        model_without_components.decoder.weight.unsqueeze(0)
+    )
+    model_with_1_component.encoder._bias = Parameter(  # type: ignore  # noqa: SLF001
+        model_without_components.encoder.bias.unsqueeze(0)
+    )
 
     # Forward pass
     output_without_components = model_without_components.forward(input_activations)

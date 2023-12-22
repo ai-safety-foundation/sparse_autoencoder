@@ -254,4 +254,8 @@ class UnitNormDecoder(AbstractDecoder):
 
     def extra_repr(self) -> str:
         """String extra representation of the module."""
-        return f"in_features={self._learnt_features}, out_features={self._decoded_features}"
+        return (
+            f"learnt_features={self._learnt_features}, "
+            f"decoded_features={self._decoded_features}, "
+            f"n_components={self._n_components}"
+        )

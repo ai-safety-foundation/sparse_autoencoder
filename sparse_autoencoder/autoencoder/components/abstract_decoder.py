@@ -97,6 +97,7 @@ class AbstractDecoder(Module, ABC):
             Tensor,
             Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE_IDX),
         ],
+        component_idx: int | None = None,
     ) -> None:
         """Update decoder dictionary vectors.
 
@@ -106,18 +107,23 @@ class AbstractDecoder(Module, ABC):
         Args:
             dictionary_vector_indices: Indices of the dictionary vectors to update.
             updated_weights: Updated weights for just these dictionary vectors.
+            component_idx: Component index to update.
+
+        Raises:
+            ValueError: If `component_idx` is not specified when `n_components` is not None.
         """
         if dictionary_vector_indices.numel() == 0:
             return
 
         with torch.no_grad():
-            if self._n_components is None:
+            if component_idx is None:
+                if self._n_components is not None:
+                    error_message = "component_idx must be specified when n_components is not None"
+                    raise ValueError(error_message)
+
                 self.weight[:, dictionary_vector_indices] = updated_weights
             else:
-                for component_idx in range(self._n_components):
-                    self.weight[
-                        component_idx, :, dictionary_vector_indices[component_idx]
-                    ] = updated_weights[component_idx]
+                self.weight[component_idx, :, dictionary_vector_indices] = updated_weights
 
     @abstractmethod
     def constrain_weights_unit_norm(self) -> None:

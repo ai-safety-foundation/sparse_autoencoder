@@ -13,7 +13,7 @@ from sparse_autoencoder.tensor_types import Axis
 
 def test_hook_stores_activations() -> None:
     """Test that the hook stores activations correctly."""
-    store = TensorActivationStore(max_items=100, num_neurons=256)
+    store = TensorActivationStore(max_items=100, n_neurons=256)
 
     model = HookedTransformer.from_pretrained("tiny-stories-1M")
 
@@ -27,9 +27,9 @@ def test_hook_stores_activations() -> None:
     )
     logits = model.forward(tokens, stop_at_layer=2)  # type: ignore
 
-    number_of_tokens = tokens.numel()
+    n_of_tokens = tokens.numel()
     mlp_size: int = model.cfg.d_mlp  # type: ignore
 
-    assert len(store) == number_of_tokens
+    assert len(store) == n_of_tokens
     assert store[0].shape[0] == mlp_size
     assert torch.is_tensor(logits)  # Check the forward pass completed

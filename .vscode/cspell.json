@@ -80,6 +80,7 @@
         "polysemanticity",
         "precommit",
         "pretokenized",
+        "pydantic",
         "pyproject",
         "pyright",
         "pytest",

@@ -6,7 +6,7 @@ import tempfile
 from typing import TYPE_CHECKING, final
 from urllib.parse import quote_plus
 
-from jaxtyping import Int, Int64
+from jaxtyping import Float, Int, Int64
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
@@ -52,11 +52,11 @@ class Pipeline:
     autoencoder: SparseAutoencoder
     """Sparse autoencoder to train."""
 
-    cache_name: str
-    """Name of the cache to use in the source model (hook point)."""
+    cache_names: list[str]
+    """Names of the cache hook points to use in the source model."""
 
     layer: int
-    """Layer to get activations from with the source model."""
+    """Layer to stope the source model at (if we don't need activations after this layer)."""
 
     log_frequency: int
     """Frequency at which to log metrics (in steps)."""
@@ -85,12 +85,17 @@ class Pipeline:
     total_activations_trained_on: int = 0
     """Total number of activations trained on state."""
 
+    @property
+    def n_components(self) -> int:
+        """Number of source model components the SAE is trained on."""
+        return len(self.cache_names)
+
     @final
     def __init__(
         self,
         activation_resampler: AbstractActivationResampler | None,
         autoencoder: SparseAutoencoder,
-        cache_name: str,
+        cache_names: list[str],
         layer: int,
         loss: AbstractLoss,
         optimizer: AbstractOptimizerWithReset,
@@ -107,8 +112,9 @@ class Pipeline:
         Args:
             activation_resampler: Activation resampler to use.
             autoencoder: Sparse autoencoder to train.
-            cache_name: Name of the cache to use in the source model (hook point).
-            layer: Layer to get activations from with the source model.
+            cache_names: Names of the cache hook points to use in the source model.
+            layer: Layer to stope the source model at (if we don't need activations after this
+                layer).
             loss: Loss function to use.
             optimizer: Optimizer to use.
             source_dataset: Source dataset to get data from.
@@ -121,7 +127,7 @@ class Pipeline:
         """
         self.activation_resampler = activation_resampler
         self.autoencoder = autoencoder
-        self.cache_name = cache_name
+        self.cache_names = cache_names
         self.checkpoint_directory = checkpoint_directory
         self.layer = layer
         self.log_frequency = log_frequency
@@ -152,7 +158,7 @@ class Pipeline:
         if store_size <= 0:
             error_message = f"Store size must be positive, got {store_size}"
             raise ValueError(error_message)
-        if store_size % self.source_data_batch_size != 0:
+        if store_size % (self.source_data_batch_size * self.source_dataset.context_size) != 0:
             error_message = (
                 f"Store size must be divisible by the batch size ({self.source_data_batch_size}), "
                 f"got {store_size}"
@@ -160,15 +166,16 @@ class Pipeline:
             raise ValueError(error_message)
 
         # Setup the store
-        num_neurons: int = self.autoencoder.n_input_features
+        n_neurons: int = self.autoencoder.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
-        store = TensorActivationStore(store_size, num_neurons)
+        store = TensorActivationStore(store_size, n_neurons, n_components=self.n_components)
 
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
         self.source_model.remove_all_hook_fns()
-        hook = partial(store_activations_hook, store=store)
-        self.source_model.add_hook(self.cache_name, hook)
+        for component_idx, cache_name in enumerate(self.cache_names):
+            hook = partial(store_activations_hook, store=store, component_idx=component_idx)
+            self.source_model.add_hook(cache_name, hook)
 
         # Loop through the dataloader until the store reaches the desired size
         with torch.no_grad():
@@ -190,7 +197,7 @@ class Pipeline:
 
     def train_autoencoder(
         self, activation_store: TensorActivationStore, train_batch_size: int
-    ) -> Int64[Tensor, Axis.LEARNT_FEATURE]:
+    ) -> Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
         """Train the sparse autoencoder.
 
         Args:
@@ -198,7 +205,7 @@ class Pipeline:
             train_batch_size: Train batch size.
 
         Returns:
-            Number of times each neuron fired.
+            Number of times each neuron fired, for each component.
         """
         autoencoder_device: torch.device = get_model_device(self.autoencoder)
 
@@ -207,8 +214,12 @@ class Pipeline:
             batch_size=train_batch_size,
         )
 
-        learned_activations_fired_count: Int64[Tensor, Axis.LEARNT_FEATURE] = torch.zeros(
-            self.autoencoder.n_learned_features, dtype=torch.int64, device=autoencoder_device
+        learned_activations_fired_count: Int64[
+            Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ] = torch.zeros(
+            (self.n_components, self.autoencoder.n_learned_features),
+            dtype=torch.int64,
+            device=autoencoder_device,
         )
 
         for store_batch in activations_dataloader:
@@ -266,85 +277,107 @@ class Pipeline:
 
         return learned_activations_fired_count
 
-    def update_parameters(self, parameter_updates: ParameterUpdateResults) -> None:
+    def update_parameters(self, parameter_updates: list[ParameterUpdateResults]) -> None:
         """Update the parameters of the model from the results of the resampler.
 
         Args:
             parameter_updates: Parameter updates from the resampler.
         """
-        # Update the weights and biases
-        self.autoencoder.encoder.update_dictionary_vectors(
-            parameter_updates.dead_neuron_indices,
-            parameter_updates.dead_encoder_weight_updates,
-        )
-        self.autoencoder.encoder.update_bias(
-            parameter_updates.dead_neuron_indices,
-            parameter_updates.dead_encoder_bias_updates,
-        )
-        self.autoencoder.decoder.update_dictionary_vectors(
-            parameter_updates.dead_neuron_indices,
-            parameter_updates.dead_decoder_weight_updates,
-        )
-
-        # Reset the optimizer
-        for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
-            self.optimizer.reset_neurons_state(
-                parameter=parameter,
-                neuron_indices=parameter_updates.dead_neuron_indices,
-                axis=axis,
+        for component_idx, component_parameter_update in enumerate(parameter_updates):
+            # Update the weights and biases
+            self.autoencoder.encoder.update_dictionary_vectors(
+                component_parameter_update.dead_neuron_indices,
+                component_parameter_update.dead_encoder_weight_updates,
+                component_idx=component_idx,
+            )
+            self.autoencoder.encoder.update_bias(
+                component_parameter_update.dead_neuron_indices,
+                component_parameter_update.dead_encoder_bias_updates,
+                component_idx=component_idx,
+            )
+            self.autoencoder.decoder.update_dictionary_vectors(
+                component_parameter_update.dead_neuron_indices,
+                component_parameter_update.dead_decoder_weight_updates,
+                component_idx=component_idx,
             )
 
-    def validate_sae(self, validation_number_activations: int) -> None:
+            # Reset the optimizer
+            for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
+                self.optimizer.reset_neurons_state(
+                    parameter=parameter,
+                    neuron_indices=component_parameter_update.dead_neuron_indices,
+                    axis=axis,
+                    component_idx=component_idx,
+                )
+
+    def validate_sae(self, validation_n_activations: int) -> None:
         """Get validation metrics.
 
         Args:
-            validation_number_activations: Number of activations to use for validation.
+            validation_n_activations: Number of activations to use for validation.
         """
-        losses: list[float] = []
-        losses_with_reconstruction: list[float] = []
-        losses_with_zero_ablation: list[float] = []
+        losses_shape = (
+            validation_n_activations // self.source_data_batch_size,
+            self.n_components,
+        )
         source_model_device: torch.device = get_model_device(self.source_model)
 
-        for batch in self.source_data:
-            input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
-                "input_ids"
-            ].to(source_model_device)
+        # Create the metric data stores
+        losses: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)] = torch.empty(
+            losses_shape, device=source_model_device
+        )
+        losses_with_reconstruction: Float[
+            Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
+        ] = torch.empty(losses_shape, device=source_model_device)
+        losses_with_zero_ablation: Float[
+            Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
+        ] = torch.empty(losses_shape, device=source_model_device)
 
-            # Run a forward pass with and without the replaced activations
-            self.source_model.remove_all_hook_fns()
-            replacement_hook = partial(
-                replace_activations_hook, sparse_autoencoder=self.autoencoder
-            )
+        for component_idx, cache_name in enumerate(self.cache_names):
+            for batch_idx, batch in enumerate(self.source_data):
+                if batch_idx == losses.shape[0]:
+                    break
 
-            loss = self.source_model.forward(input_ids, return_type="loss")
-            loss_with_reconstruction = self.source_model.run_with_hooks(
-                input_ids,
-                return_type="loss",
-                fwd_hooks=[
-                    (
-                        self.cache_name,
-                        replacement_hook,
-                    )
-                ],
-            )
-            loss_with_zero_ablation = self.source_model.run_with_hooks(
-                input_ids,
-                return_type="loss",
-                fwd_hooks=[(self.cache_name, zero_ablate_hook)],
-            )
+                input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
+                    "input_ids"
+                ].to(source_model_device)
 
-            losses.append(loss.sum().item())
-            losses_with_reconstruction.append(loss_with_reconstruction.sum().item())
-            losses_with_zero_ablation.append(loss_with_zero_ablation.sum().item())
+                # Run a forward pass with and without the replaced activations
+                self.source_model.remove_all_hook_fns()
+                replacement_hook = partial(
+                    replace_activations_hook,
+                    sparse_autoencoder=self.autoencoder,
+                    component_idx=component_idx,
+                )
 
-            if len(losses) >= validation_number_activations // input_ids.numel():
-                break
+                loss = self.source_model.forward(input_ids, return_type="loss")
+                loss_with_reconstruction = self.source_model.run_with_hooks(
+                    input_ids,
+                    return_type="loss",
+                    fwd_hooks=[
+                        (
+                            cache_name,
+                            replacement_hook,
+                        )
+                    ],
+                )
+                loss_with_zero_ablation = self.source_model.run_with_hooks(
+                    input_ids,
+                    return_type="loss",
+                    fwd_hooks=[(cache_name, zero_ablate_hook)],
+                )
+
+                losses[batch_idx, component_idx] = loss.sum()
+                losses_with_reconstruction[
+                    batch_idx, component_idx
+                ] = loss_with_reconstruction.sum()
+                losses_with_zero_ablation[batch_idx, component_idx] = loss_with_zero_ablation.sum()
 
         # Log
         validation_data = ValidationMetricData(
-            source_model_loss=torch.tensor(losses),
-            source_model_loss_with_reconstruction=torch.tensor(losses_with_reconstruction),
-            source_model_loss_with_zero_ablation=torch.tensor(losses_with_zero_ablation),
+            source_model_loss=losses,
+            source_model_loss_with_reconstruction=losses_with_reconstruction,
+            source_model_loss_with_zero_ablation=losses_with_zero_ablation,
         )
         for metric in self.metrics.validation_metrics:
             log = {}
@@ -388,7 +421,7 @@ class Pipeline:
         train_batch_size: int,
         max_store_size: int,
         max_activations: int,
-        validation_number_activations: int = 1024,
+        validation_n_activations: int = 1024,
         validate_frequency: int | None = None,
         checkpoint_frequency: int | None = None,
     ) -> None:
@@ -399,7 +432,7 @@ class Pipeline:
             max_store_size: Maximum size of the activation store.
             max_activations: Maximum total number of activations to train on (the original paper
                 used 8bn, although others have had success with 100m+).
-            validation_number_activations: Number of activations to use for validation.
+            validation_n_activations: Number of activations to use for validation.
             validate_frequency: Frequency at which to get validation metrics.
             checkpoint_frequency: Frequency at which to save a checkpoint.
         """
@@ -423,9 +456,9 @@ class Pipeline:
                 activation_store: TensorActivationStore = self.generate_activations(store_size)
 
                 # Update the counters
-                num_activation_vectors_in_store = len(activation_store)
-                last_validated += num_activation_vectors_in_store
-                last_checkpoint += num_activation_vectors_in_store
+                n_activation_vectors_in_store = len(activation_store)
+                last_validated += n_activation_vectors_in_store
+                last_checkpoint += n_activation_vectors_in_store
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
@@ -449,9 +482,10 @@ class Pipeline:
                         if wandb.run is not None:
                             wandb.log(
                                 {
-                                    "resample/dead_neurons": len(
-                                        parameter_updates.dead_neuron_indices
-                                    )
+                                    "resample/dead_neurons": [
+                                        len(update.dead_neuron_indices)
+                                        for update in parameter_updates
+                                    ]
                                 },
                                 commit=False,
                             )
@@ -462,7 +496,7 @@ class Pipeline:
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})
                 if validate_frequency is not None and last_validated >= validate_frequency:
-                    self.validate_sae(validation_number_activations)
+                    self.validate_sae(validation_n_activations)
                     last_validated = 0
 
                 # Checkpoint (if needed)

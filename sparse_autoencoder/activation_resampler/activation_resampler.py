@@ -1,14 +1,19 @@
 """Activation resampler."""
+from typing import Annotated
+
 from einops import rearrange
 from jaxtyping import Bool, Float, Int64
+from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn import Parameter
 from torch.utils.data import DataLoader
 
 from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
     AbstractActivationResampler,
     ParameterUpdateResults,
+)
+from sparse_autoencoder.activation_resampler.utils.component_slice_tensor import (
+    get_component_slice_tensor,
 )
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
@@ -55,7 +60,7 @@ class ActivationResampler(AbstractActivationResampler):
     _activations_seen_since_last_resample: int = 0
     """Number of activations since we last resampled."""
 
-    _collated_neuron_activity: Float[Tensor, Axis.LEARNT_FEATURE]
+    _collated_neuron_activity: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]
     """Collated neuron activity, over the current data collection window."""
 
     _threshold_is_dead_portion_fires: float
@@ -70,7 +75,10 @@ class ActivationResampler(AbstractActivationResampler):
     Number of vectors used to collate neuron activity, over the current collation window.
     """
 
-    _number_times_resampled: int = 0
+    _n_components: int
+    """Number of components."""
+
+    _n_times_resampled: int = 0
     """Number of times that resampling has been performed."""
 
     neuron_activity_window_end: int
@@ -79,14 +87,16 @@ class ActivationResampler(AbstractActivationResampler):
     neuron_activity_window_start: int
     """Start of the window for collecting neuron activity."""
 
+    @validate_call
     def __init__(
         self,
-        n_learned_features: int,
-        resample_interval: int = 200_000_000,
-        max_n_resamples: int = 4,
-        n_activations_activity_collate: int = 100_000_000,
-        resample_dataset_size: int = 819_200,
-        threshold_is_dead_portion_fires: float = 0.0,
+        n_learned_features: PositiveInt,
+        n_components: NonNegativeInt = 1,
+        resample_interval: PositiveInt = 200_000_000,
+        max_n_resamples: NonNegativeInt = 4,
+        n_activations_activity_collate: PositiveInt = 100_000_000,
+        resample_dataset_size: PositiveInt = 819_200,
+        threshold_is_dead_portion_fires: Annotated[float, Field(strict=True, ge=0, le=1)] = 0.0,
     ) -> None:
         r"""Initialize the activation resampler.
 
@@ -94,6 +104,7 @@ class ActivationResampler(AbstractActivationResampler):
 
         Args:
             n_learned_features: Number of learned features
+            n_components: Number of components that the SAE is being trained on.
             resample_interval: Interval in number of autoencoder input activation vectors trained
                 on, before resampling.
             max_n_resamples: Maximum number of resamples to perform throughout the entire pipeline.
@@ -109,50 +120,41 @@ class ActivationResampler(AbstractActivationResampler):
         Raises:
             ValueError: If any of the arguments are invalid (e.g. negative integers).
         """
-        if n_activations_activity_collate <= 0:
-            error_message = "Number of steps to collate must be greater than 0."
-            raise ValueError(error_message)
-
         if n_activations_activity_collate > resample_interval:
             error_message = (
                 "Number of steps to collate must be less than or equal to the resample interval."
             )
             raise ValueError(error_message)
 
-        if threshold_is_dead_portion_fires < 0 or threshold_is_dead_portion_fires > 1:
-            error_message = (
-                "Threshold portion of times that a dead neuron fires, must be between 0 and 1."
-            )
-            raise ValueError(error_message)
-
-        if max_n_resamples < 0:
-            error_message = (
-                "Maximum number of resamples must be greater than 0. For unlimited, use inf."
-            )
-            raise ValueError(error_message)
-
-        if resample_dataset_size < 0:
-            error_message = "Resample dataset size must be greater than 0."
-            raise ValueError(error_message)
-
         super().__init__()
         self.neuron_activity_window_end = resample_interval
         self.neuron_activity_window_start = resample_interval - n_activations_activity_collate
         self._max_n_resamples = max_n_resamples
-        self._collated_neuron_activity = torch.zeros(n_learned_features, dtype=torch.int64)
+        self._collated_neuron_activity = torch.zeros(
+            (n_components, n_learned_features), dtype=torch.int64
+        )
         self._resample_dataset_size = resample_dataset_size
         self._threshold_is_dead_portion_fires = threshold_is_dead_portion_fires
+        self._n_components = n_components
 
     def _get_dead_neuron_indices(
         self,
-    ) -> Int64[Tensor, Axis.LEARNT_FEATURE_IDX]:
+    ) -> list[Int64[Tensor, Axis.names(Axis.LEARNT_FEATURE_IDX)]]:
         """Identify the indices of neurons that are dead.
 
         Identifies any neurons that have fired less than the threshold portion of the collated
         sample size.
 
+        Example:
+            >>> resampler = ActivationResampler(n_learned_features=6, n_components=2)
+            >>> resampler._collated_neuron_activity = torch.tensor(
+            ...     [[1, 1, 0, 0, 1, 1], [1, 1, 1, 1, 1, 0]]
+            ... )
+            >>> resampler._get_dead_neuron_indices()
+            [tensor([2, 3]), tensor([5])]
+
         Returns:
-            A tensor containing the indices of neurons that are dead.
+            List of dead neuron indices for each component.
 
         Raises:
             ValueError: If no neuron activity has been collated yet.
@@ -163,15 +165,16 @@ class ActivationResampler(AbstractActivationResampler):
             raise ValueError(error_message)
 
         # Find any neurons that fire less than the threshold portion of times
-        threshold_is_dead_number_fires: int = int(
+        threshold_is_dead_n_fires: int = int(
             self._n_activations_collated_since_last_resample * self._threshold_is_dead_portion_fires
         )
 
-        dead_indices = torch.where(
-            self._collated_neuron_activity <= threshold_is_dead_number_fires
-        )[0]
-
-        return dead_indices.to(dtype=torch.int64)
+        return [
+            torch.where(self._collated_neuron_activity[component_idx] <= threshold_is_dead_n_fires)[
+                0
+            ].to(dtype=torch.int64)
+            for component_idx in range(self._n_components)
+        ]
 
     def compute_loss_and_get_activations(
         self,
@@ -180,13 +183,14 @@ class ActivationResampler(AbstractActivationResampler):
         loss_fn: AbstractLoss,
         train_batch_size: int,
     ) -> tuple[
-        Float[Tensor, Axis.BATCH], Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
     ]:
         """Compute the loss on a random subset of inputs.
 
         Motivation:
-            Helps find input vectors that have high loss, so that we can resample dead neurons in a
-            way that improves performance on these specific input vectors.
+            Helps find input vectors that have high SAE loss, so that we can resample dead neurons
+            in a way that improves performance on these specific input vectors.
 
         Args:
             store: Activation store.
@@ -206,8 +210,8 @@ class ActivationResampler(AbstractActivationResampler):
                 Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
             ] = []
             dataloader = DataLoader(store, batch_size=train_batch_size)
-            num_inputs = self._resample_dataset_size
-            n_batches_required: int = num_inputs // train_batch_size
+            n_inputs = self._resample_dataset_size
+            n_batches_required: int = n_inputs // train_batch_size
             model_device: torch.device = get_model_device(autoencoder)
 
             for batch_idx, batch in enumerate(iter(dataloader)):
@@ -226,9 +230,9 @@ class ActivationResampler(AbstractActivationResampler):
             input_activations = torch.cat(input_activations_batches).to(model_device)
 
             # Check we generated enough data
-            if len(loss_result) < num_inputs:
+            if len(loss_result) < n_inputs:
                 error_message = (
-                    f"Cannot get {num_inputs} items from the store, "
+                    f"Cannot get {n_inputs} items from the store, "
                     f"as only {len(loss_result)} were available."
                 )
                 raise ValueError(error_message)
@@ -236,16 +240,24 @@ class ActivationResampler(AbstractActivationResampler):
             return loss_result, input_activations
 
     @staticmethod
-    def assign_sampling_probabilities(loss: Float[Tensor, Axis.BATCH]) -> Float[Tensor, Axis.BATCH]:
+    def assign_sampling_probabilities(
+        loss: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
         """Assign the sampling probabilities for each input activations vector.
 
         Assign each input vector a probability of being picked that is proportional to the square of
         the autoencoder's loss on that input.
 
-        Example:
+        Examples:
             >>> loss = torch.tensor([1.0, 2.0, 3.0])
-            >>> ActivationResampler.assign_sampling_probabilities(loss).round(decimals=1)
-            tensor([0.1000, 0.3000, 0.6000])
+            >>> ActivationResampler.assign_sampling_probabilities(loss).round(decimals=2)
+            tensor([0.0700, 0.2900, 0.6400])
+
+            >>> loss = torch.tensor([[1.0, 2], [2, 4], [3, 6]])
+            >>> ActivationResampler.assign_sampling_probabilities(loss).round(decimals=2)
+            tensor([[0.0700, 0.0700],
+                    [0.2900, 0.2900],
+                    [0.6400, 0.6400]])
 
         Args:
             loss: Loss per item.
@@ -254,30 +266,32 @@ class ActivationResampler(AbstractActivationResampler):
             A tensor of probabilities for each item.
         """
         square_loss = loss.pow(2)
-        return square_loss / square_loss.sum()
+        return square_loss / square_loss.sum(0)
 
     @staticmethod
     def sample_input(
-        probabilities: Float[Tensor, Axis.BATCH],
-        input_activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        num_samples: int,
-    ) -> Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
+        probabilities: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
+        input_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        n_samples: list[int],
+    ) -> list[Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]]:
         """Sample an input vector based on the provided probabilities.
 
         Example:
-            >>> probabilities = torch.tensor([0.1, 0.2, 0.7])
-            >>> input_activations = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+            >>> probabilities = torch.tensor([[0.1], [0.2], [0.7]])
+            >>> input_activations = torch.tensor([[[1.0, 2.0]], [[3.0, 4.0]], [[5.0, 6.0]]])
             >>> _seed = torch.manual_seed(0)  # For reproducibility in example
             >>> sampled_input = ActivationResampler.sample_input(
-            ...     probabilities, input_activations, 2
+            ...     probabilities, input_activations, [2]
             ... )
-            >>> sampled_input.tolist()
+            >>> sampled_input[0].tolist()
             [[5.0, 6.0], [3.0, 4.0]]
 
         Args:
             probabilities: Probabilities for each input.
             input_activations: Input activation vectors.
-            num_samples: Number of samples to take (number of dead neurons).
+            n_samples: Number of samples to take (number of dead neurons).
 
         Returns:
             Sampled input activation vector.
@@ -285,32 +299,58 @@ class ActivationResampler(AbstractActivationResampler):
         Raises:
             ValueError: If the number of samples is greater than the number of input activations.
         """
-        if num_samples > len(input_activations):
-            exception_message = (
-                f"Cannot sample {num_samples} inputs from "
-                f"{len(input_activations)} input activations."
+        sampled_inputs: list[
+            Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+        ] = []
+
+        for component_idx, component_n_samples in enumerate(n_samples):
+            component_probabilities: Float[Tensor, Axis.BATCH] = get_component_slice_tensor(
+                input_tensor=probabilities,
+                n_dim_with_component=2,
+                component_dim=1,
+                component_idx=component_idx,
             )
-            raise ValueError(exception_message)
 
-        if num_samples == 0:
-            return torch.empty(
-                (0, input_activations.shape[-1]),
-                dtype=input_activations.dtype,
-                device=input_activations.device,
-            ).to(input_activations.device)
+            component_input_activations: Float[
+                Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)
+            ] = get_component_slice_tensor(
+                input_tensor=input_activations,
+                n_dim_with_component=3,
+                component_dim=1,
+                component_idx=component_idx,
+            )
 
-        sample_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX] = torch.multinomial(
-            probabilities, num_samples=num_samples
-        )
-        return input_activations[sample_indices, :]
+            if component_n_samples > len(component_input_activations):
+                exception_message = (
+                    f"Cannot sample {component_n_samples} inputs from "
+                    f"{len(component_input_activations)} input activations."
+                )
+                raise ValueError(exception_message)
+
+            # Handle the 0 dead neurons case
+            if component_n_samples == 0:
+                sampled_inputs.append(
+                    torch.empty(
+                        (0, component_input_activations.shape[-1]),
+                        dtype=component_input_activations.dtype,
+                        device=component_input_activations.device,
+                    )
+                )
+                continue
+
+            # Handle the 1+ dead neuron case
+            component_sample_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX] = torch.multinomial(
+                component_probabilities, num_samples=component_n_samples
+            )
+            sampled_inputs.append(component_input_activations[component_sample_indices, :])
+
+        return sampled_inputs
 
     @staticmethod
     def renormalize_and_scale(
         sampled_input: Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
-        neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
-        encoder_weight: Float[
-            Parameter, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-        ],
+        neuron_activity: Int64[Tensor, Axis.names(Axis.LEARNT_FEATURE)],
+        encoder_weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)],
     ) -> Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]:
         """Renormalize and scale the resampled dictionary vectors.
 
@@ -318,6 +358,7 @@ class ActivationResampler(AbstractActivationResampler):
         neurons times 0.2.
 
         Example:
+            >>> from torch.nn import Parameter
             >>> _seed = torch.manual_seed(0)  # For reproducibility in example
             >>> sampled_input = torch.tensor([[3.0, 4.0]])
             >>> neuron_activity = torch.tensor([3, 0, 5, 0, 1, 3])
@@ -377,7 +418,7 @@ class ActivationResampler(AbstractActivationResampler):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> ParameterUpdateResults:
+    ) -> list[ParameterUpdateResults]:
         """Resample dead neurons.
 
         Args:
@@ -387,10 +428,15 @@ class ActivationResampler(AbstractActivationResampler):
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
-            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
+            For each component that the SAE is being trained on, the indices of dead neurons and the
+            updates for the encoder and decoder weights and biases.
         """
+        parameter_update_results: list[ParameterUpdateResults] = []
+
         with torch.no_grad():
-            dead_neuron_indices = self._get_dead_neuron_indices()
+            dead_neuron_indices: list[
+                Int64[Tensor, Axis.names(Axis.LEARNT_FEATURE_IDX)]
+            ] = self._get_dead_neuron_indices()
 
             # Compute the loss for the current model on a random subset of inputs and get the
             # activations.
@@ -403,56 +449,68 @@ class ActivationResampler(AbstractActivationResampler):
 
             # Assign each input vector a probability of being picked that is proportional to the
             # square of the autoencoder's loss on that input.
-            sample_probabilities: Float[Tensor, Axis.BATCH] = self.assign_sampling_probabilities(
-                loss
-            )
+            sample_probabilities: Float[
+                Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
+            ] = self.assign_sampling_probabilities(loss)
 
             # For each dead neuron sample an input according to these probabilities.
-            sampled_input: Float[
-                Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-            ] = self.sample_input(sample_probabilities, input_activations, len(dead_neuron_indices))
-
-            # Renormalize each input vector to have unit L2 norm and set this to be the dictionary
-            # vector for the dead autoencoder neuron.
-            renormalized_input: Float[
-                Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-            ] = torch.nn.functional.normalize(sampled_input, dim=-1)
-            dead_decoder_weight_updates = rearrange(
-                renormalized_input, "dead_neuron input_feature -> input_feature dead_neuron"
+            sampled_input: list[
+                Float[Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
+            ] = self.sample_input(
+                sample_probabilities, input_activations, [len(dead) for dead in dead_neuron_indices]
             )
 
-            # For the corresponding encoder vector, renormalize the input vector to equal the
-            # average norm of the encoder weights for alive neurons times 0.2. Set the corresponding
-            # encoder bias element to zero.
-            encoder_weight: Float[
-                Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
-            ] = autoencoder.encoder.weight
-            rescaled_sampled_input = self.renormalize_and_scale(
-                sampled_input=sampled_input,
-                neuron_activity=self._collated_neuron_activity,
-                encoder_weight=encoder_weight,
-            )
-            dead_encoder_bias_updates = torch.zeros_like(
-                dead_neuron_indices,
-                dtype=dead_decoder_weight_updates.dtype,
-                device=dead_decoder_weight_updates.device,
-            )
+            for component_idx in range(self._n_components):
+                # Renormalize each input vector to have unit L2 norm and set this to be the
+                # dictionary vector for the dead autoencoder neuron.
+                renormalized_input: Float[
+                    Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+                ] = torch.nn.functional.normalize(sampled_input[component_idx], dim=-1)
 
-            return ParameterUpdateResults(
-                dead_neuron_indices=dead_neuron_indices,
-                dead_encoder_weight_updates=rescaled_sampled_input,
-                dead_encoder_bias_updates=dead_encoder_bias_updates,
-                dead_decoder_weight_updates=dead_decoder_weight_updates,
-            )
+                dead_decoder_weight_updates = rearrange(
+                    renormalized_input, "dead_neuron input_feature -> input_feature dead_neuron"
+                )
+
+                # For the corresponding encoder vector, renormalize the input vector to equal the
+                # average norm of the encoder weights for alive neurons times 0.2. Set the
+                # corresponding encoder bias element to zero.
+                encoder_weight: Float[
+                    Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+                ] = get_component_slice_tensor(autoencoder.encoder.weight, 3, 0, component_idx)
+
+                rescaled_sampled_input = self.renormalize_and_scale(
+                    sampled_input=sampled_input[component_idx],
+                    neuron_activity=self._collated_neuron_activity[component_idx],
+                    encoder_weight=encoder_weight,
+                )
+
+                dead_encoder_bias_updates = torch.zeros_like(
+                    dead_neuron_indices[component_idx],
+                    dtype=dead_decoder_weight_updates.dtype,
+                    device=dead_decoder_weight_updates.device,
+                )
+
+                parameter_update_results.append(
+                    ParameterUpdateResults(
+                        dead_neuron_indices=dead_neuron_indices[component_idx],
+                        dead_encoder_weight_updates=rescaled_sampled_input,
+                        dead_encoder_bias_updates=dead_encoder_bias_updates,
+                        dead_decoder_weight_updates=dead_decoder_weight_updates,
+                    )
+                )
+
+            return parameter_update_results
 
     def step_resampler(
         self,
-        batch_neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE],
+        batch_neuron_activity: Int64[
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
         activation_store: ActivationStore,
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> ParameterUpdateResults | None:
+    ) -> list[ParameterUpdateResults] | None:
         """Step the resampler, collating neuron activity and resampling if necessary.
 
         Args:
@@ -463,12 +521,13 @@ class ActivationResampler(AbstractActivationResampler):
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
-            Parameter update results if resampled, else None.
+            Parameter update results (for each component that the SAE is being trained on) if
+            resampling is due. Otherwise None.
         """
         # Update the counter
         self._activations_seen_since_last_resample += len(activation_store)
 
-        if self._number_times_resampled < self._max_n_resamples:
+        if self._n_times_resampled < self._max_n_resamples:
             # Collate neuron activity, if in the data collection window. For example in the
             # Anthropic Towards Monosemanticity paper, the window started collecting at 100m
             # activations and stopped at 200m (and then repeated this again a few times until the
@@ -491,7 +550,7 @@ class ActivationResampler(AbstractActivationResampler):
                 # Update counters
                 self._activations_seen_since_last_resample = 0
                 self._n_activations_collated_since_last_resample = 0
-                self._number_times_resampled += 1
+                self._n_times_resampled += 1
 
                 # Reset the collated neuron activity
                 self._collated_neuron_activity.zero_()
@@ -504,6 +563,7 @@ class ActivationResampler(AbstractActivationResampler):
         """Return a string representation of the activation resampler."""
         return (
             f"ActivationResampler("
+            f"n_components={self._n_components}, "
             f"neuron_activity_window_start={self.neuron_activity_window_end}, "
             f"neuron_activity_window_end={self.neuron_activity_window_end}, "
             f"max_resamples={self._max_n_resamples}, "

@@ -12,7 +12,10 @@ def model_and_optimizer() -> tuple[torch.nn.Module, AdamWithReset]:
     torch.random.manual_seed(0)
     model = SparseAutoencoder(5, 10)
     optimizer = AdamWithReset(
-        model.parameters(), named_parameters=model.named_parameters(), lr=0.0001
+        model.parameters(),
+        named_parameters=model.named_parameters(),
+        lr=0.0001,
+        has_components_dim=False,
     )
 
     # Initialise adam state by doing some steps
@@ -57,46 +60,6 @@ def test_reset_state_all_parameters(
                     # Check all state values are reset to zero
                     state = parameter_state[state_name]
                     assert torch.all(state == 0)
-
-
-def test_zero_fill_multi_dimensional_same_index_fill_2d(
-    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset],
-) -> None:
-    """Test zero_fill_multi_dimensional is the same as using index fill for 2d tensors."""
-    _model, optimizer = model_and_optimizer
-    weights_tensor = torch.rand((10, 5))
-    indices = torch.tensor([1, 2, 3])
-    axis = 0
-
-    comparison = weights_tensor.index_fill(axis, indices, 0)
-    res = optimizer.zero_fill_multi_dimensional(weights_tensor, indices, axis)
-
-    assert torch.all(res == comparison)
-
-
-@pytest.mark.parametrize(
-    ("weights_dimensions", "indices", "axis"),
-    [
-        ((10, 5), torch.tensor([1, 2, 3]), 0),
-    ],
-)
-def test_zero_fill_multi_dimensional(
-    model_and_optimizer: tuple[torch.nn.Module, AdamWithReset],
-    weights_dimensions: tuple[int],
-    indices: torch.Tensor,
-    axis: int,
-) -> None:
-    """Test zero_fill_multi_dimensional."""
-    _model, optimizer = model_and_optimizer
-
-    res = optimizer.zero_fill_multi_dimensional(torch.rand(weights_dimensions), indices, axis)
-
-    for row in range(weights_dimensions[axis]):
-        for col in range(weights_dimensions[1 - axis]):
-            if row in indices:
-                assert res[row, col] == 0
-            else:
-                assert res[row, col] != 0
 
 
 def test_reset_neurons_state(model_and_optimizer: tuple[torch.nn.Module, AdamWithReset]) -> None:

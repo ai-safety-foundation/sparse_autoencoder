@@ -43,7 +43,7 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
             "source_data_batch_size": 12,
             "train_batch_size": 4096,
             "validation_frequency": 314572800,
-            "validation_number_activations": 1024,
+            "validation_n_activations": 1024,
         },
         "random_seed": 49,
         "source_data": {
@@ -58,8 +58,7 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
         "source_model": {
             "dtype": "float32",
             "hook_dimension": 512,
-            "hook_layer": 0,
-            "hook_site": "mlp_out",
+            "cache_names": ["mlp_out"],
             "name": "gelu-2l",
         },
     }

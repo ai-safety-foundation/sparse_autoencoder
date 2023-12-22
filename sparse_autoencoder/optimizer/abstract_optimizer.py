@@ -35,6 +35,7 @@ class AbstractOptimizerWithReset(Optimizer, ABC):
         parameter: Parameter,
         neuron_indices: Int64[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)],
         axis: int,
+        component_idx: int,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.
 
@@ -42,6 +43,7 @@ class AbstractOptimizerWithReset(Optimizer, ABC):
             parameter: The parameter to reset, e.g. `encoder.Linear.weight`, `encoder.Linear.bias`,
             neuron_indices: The indices of the neurons to reset.
             axis: The axis of the parameter to reset.
+            component_idx: The component index of the state values to reset.
 
         Raises:
             ValueError: If the parameter name is not found.

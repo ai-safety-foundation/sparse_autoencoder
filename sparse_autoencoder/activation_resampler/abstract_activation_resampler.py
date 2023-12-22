@@ -61,7 +61,7 @@ class AbstractActivationResampler(ABC):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> ParameterUpdateResults | None:
+    ) -> list[ParameterUpdateResults] | None:
         """Resample dead neurons.
 
         Args:
@@ -72,5 +72,6 @@ class AbstractActivationResampler(ABC):
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
-            Indices of dead neurons, and the updates for the encoder and decoder weights and biases.
+            For each component that the SAE is being trained on, the indices of dead neurons and the
+            updates for the encoder and decoder weights and biases.
         """

@@ -36,20 +36,20 @@ class TestNeuronActivityHorizonData:
     """Test the NeuronActivityHorizonData class."""
 
     @pytest.mark.parametrize(
-        ("number_components"),
+        ("n_components"),
         [
             pytest.param(1, id="1 component"),
             pytest.param(2, id="2 components"),
         ],
     )
-    def test_initialisation(self, number_components: int) -> None:
+    def test_initialisation(self, n_components: int) -> None:
         """Test it initialises without errors."""
         NeuronActivityHorizonData(
             approximate_activation_horizon=5,
             train_batch_size=2,
-            number_learned_features=10,
+            n_learned_features=10,
             thresholds=[0.5],
-            number_components=number_components,
+            n_components=n_components,
         )
 
     def test_step_calculates_when_at_horizon(
@@ -62,9 +62,9 @@ class TestNeuronActivityHorizonData:
         threshold_data_store = NeuronActivityHorizonData(
             approximate_activation_horizon=int(horizon_in_steps * train_batch_size),
             train_batch_size=train_batch_size,
-            number_learned_features=4,
+            n_learned_features=4,
             thresholds=[0.5],
-            number_components=1,
+            n_components=1,
         )
 
         for step in range(1, 10):
@@ -81,9 +81,9 @@ class TestNeuronActivityHorizonData:
         threshold_data_store = NeuronActivityHorizonData(
             approximate_activation_horizon=30,
             train_batch_size=30,
-            number_learned_features=5,
+            n_learned_features=5,
             thresholds=[0.5],
-            number_components=1,
+            n_components=1,
         )
 
         data = torch.tensor([[0, 30, 4, 1, 0]])

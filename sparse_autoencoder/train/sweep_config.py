@@ -226,11 +226,8 @@ class SourceModelHyperparameters(NestedParameter):
     name: Parameter[str]
     """Source model name."""
 
-    hook_site: Parameter[str]
+    cache_names: Parameter[list[str]]
     """Source model hook site."""
-
-    hook_layer: Parameter[int]
-    """Source model hook point layer."""
 
     hook_dimension: Parameter[int]
     """Source model hook point dimension."""
@@ -243,8 +240,7 @@ class SourceModelRuntimeHyperparameters(TypedDict):
     """Source model runtime hyperparameters."""
 
     name: str
-    hook_site: str
-    hook_layer: int
+    cache_names: list[str]
     hook_dimension: int
     dtype: str
 
@@ -280,7 +276,7 @@ class PipelineHyperparameters(NestedParameter):
     )
     """Validation frequency."""
 
-    validation_number_activations: Parameter[int] = field(
+    validation_n_activations: Parameter[int] = field(
         default=Parameter(DEFAULT_SOURCE_BATCH_SIZE * DEFAULT_SOURCE_CONTEXT_SIZE * 2)
     )
     """Number of activations to use for validation."""
@@ -296,7 +292,7 @@ class PipelineRuntimeHyperparameters(TypedDict):
     max_activations: int
     checkpoint_frequency: int
     validation_frequency: int
-    validation_number_activations: int
+    validation_n_activations: int
 
 
 @dataclass

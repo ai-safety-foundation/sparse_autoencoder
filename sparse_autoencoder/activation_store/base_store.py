@@ -33,7 +33,7 @@ class ActivationStore(
     ...        raise NotImplementedError
     ...
     ...     @property
-    ...     def num_components(self):
+    ...     def n_components(self):
     ...         raise NotImplementedError
     ...
     ...     def __init__(self):
@@ -83,7 +83,7 @@ class ActivationStore(
 
     @property
     @abstractmethod
-    def num_components(self) -> int:
+    def n_components(self) -> int:
         """Number of components."""
 
     @property
@@ -107,9 +107,9 @@ class ActivationStore(
     @final
     def fill_with_test_data(
         self,
-        num_batches: int = 16,
+        n_batches: int = 1,
         batch_size: int = 16,
-        num_components: int = 1,
+        n_components: int = 1,
         input_features: int = 256,
     ) -> None:
         """Fill the store with test data.
@@ -122,21 +122,19 @@ class ActivationStore(
 
         Example:
             >>> from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-            >>> store = TensorActivationStore(max_items=16*16, num_neurons=256)
-            >>> store.fill_with_test_data()
+            >>> store = TensorActivationStore(max_items=100, n_neurons=256)
+            >>> store.fill_with_test_data(batch_size=100)
             >>> len(store)
-            256
-            >>> store[0].shape
-            torch.Size([256])
+            100
 
         Args:
-            num_batches: Number of batches to fill the store with.
+            n_batches: Number of batches to fill the store with.
             batch_size: Number of items per batch.
-            num_components: Number of source model components the SAE is trained on.
+            n_components: Number of source model components the SAE is trained on.
             input_features: Number of input features per item.
         """
-        for _ in range(num_batches):
-            for component_idx in range(num_components):
+        for _ in range(n_batches):
+            for component_idx in range(n_components):
                 sample = torch.rand(batch_size, input_features)
                 self.extend(sample, component_idx)
 

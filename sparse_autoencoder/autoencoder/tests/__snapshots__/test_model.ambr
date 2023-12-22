@@ -4,10 +4,10 @@
   SparseAutoencoder(
     (_pre_encoder_bias): TiedBias(position=pre_encoder)
     (_encoder): LinearEncoder(
-      in_features=3, out_features=6
+      input_features=3, learnt_features=6, n_components=None
       (activation_function): ReLU()
     )
-    (_decoder): UnitNormDecoder(in_features=6, out_features=3)
+    (_decoder): UnitNormDecoder(learnt_features=6, decoded_features=3, n_components=None)
     (_post_decoder_bias): TiedBias(position=post_decoder)
   )
   '''
