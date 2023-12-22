@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -600,9 +674,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.num_components" class="md-nav__link">
+  <a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.n_components" class="md-nav__link">
     <span class="md-ellipsis">
-      num_components
+      n_components
     </span>
   </a>
   
@@ -2411,9 +2485,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.num_components" class="md-nav__link">
+  <a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.n_components" class="md-nav__link">
     <span class="md-ellipsis">
-      num_components
+      n_components
     </span>
   </a>
   
@@ -2585,7 +2659,7 @@ class MyActivationStore(ActivationStore):
 ...        raise NotImplementedError
 ...
 ...     @property
-...     def num_components(self):
+...     def n_components(self):
 ...         raise NotImplementedError
 ...
 ...     def <strong>init</strong>(self):
@@ -2742,9 +2816,7 @@ print(len(store))
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ActivationStore</span><span class="p">(</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ActivationStore</span><span class="p">(</span>
     <span class="n">Dataset</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]],</span> <span class="n">ABC</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Activation Store Abstract Class.</span>
@@ -2766,7 +2838,7 @@ print(len(store))
 <span class="sd">    ...        raise NotImplementedError</span>
 <span class="sd">    ...</span>
 <span class="sd">    ...     @property</span>
-<span class="sd">    ...     def num_components(self):</span>
+<span class="sd">    ...     def n_components(self):</span>
 <span class="sd">    ...         raise NotImplementedError</span>
 <span class="sd">    ...</span>
 <span class="sd">    ...     def __init__(self):</span>
@@ -2816,7 +2888,7 @@ print(len(store))
 
     <span class="nd">@property</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">num_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">n_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of components.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -2840,9 +2912,9 @@ print(len(store))
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">fill_with_test_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">num_batches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">n_batches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-        <span class="n">num_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">input_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill the store with test data.</span>
@@ -2855,21 +2927,19 @@ print(len(store))
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=16*16, num_neurons=256)</span>
-<span class="sd">            &gt;&gt;&gt; store.fill_with_test_data()</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=100, n_neurons=256)</span>
+<span class="sd">            &gt;&gt;&gt; store.fill_with_test_data(batch_size=100)</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            256</span>
-<span class="sd">            &gt;&gt;&gt; store[0].shape</span>
-<span class="sd">            torch.Size([256])</span>
+<span class="sd">            100</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            num_batches: Number of batches to fill the store with.</span>
+<span class="sd">            n_batches: Number of batches to fill the store with.</span>
 <span class="sd">            batch_size: Number of items per batch.</span>
-<span class="sd">            num_components: Number of source model components the SAE is trained on.</span>
+<span class="sd">            n_components: Number of source model components the SAE is trained on.</span>
 <span class="sd">            input_features: Number of input features per item.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_batches</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_components</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_components</span><span class="p">):</span>
                 <span class="n">sample</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_features</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2913,15 +2983,15 @@ print(len(store))
 
 
 
-<h3 id="sparse_autoencoder.activation_store.base_store.ActivationStore.num_components" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">num_components</span><span class="p">:</span> <span class="nb">int</span></code>
+<h3 id="sparse_autoencoder.activation_store.base_store.ActivationStore.n_components" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
-<a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.num_components" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.n_components" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
@@ -3125,7 +3195,7 @@ print(len(store))
 
 
 <h3 id="sparse_autoencoder.activation_store.base_store.ActivationStore.fill_with_test_data" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">fill_with_test_data</span><span class="p">(</span><span class="n">num_batches</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_features</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">fill_with_test_data</span><span class="p">(</span><span class="n">n_batches</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_features</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.activation_store.base_store.ActivationStore.fill_with_test_data" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3146,12 +3216,10 @@ requires inspecting the data itself.</p>
 <blockquote>
 <blockquote>
 <p>from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-store = TensorActivationStore(max_items=16*16, num_neurons=256)
-store.fill_with_test_data()
+store = TensorActivationStore(max_items=100, n_neurons=256)
+store.fill_with_test_data(batch_size=100)
 len(store)
-256
-store[0].shape
-torch.Size([256])</p>
+100</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -3170,7 +3238,7 @@ torch.Size([256])</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>num_batches</code></td>
+          <td><code>n_batches</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3180,7 +3248,7 @@ torch.Size([256])</p>
             </div>
           </td>
           <td>
-                <code>16</code>
+                <code>1</code>
           </td>
         </tr>
         <tr>
@@ -3198,7 +3266,7 @@ torch.Size([256])</p>
           </td>
         </tr>
         <tr>
-          <td><code>num_components</code></td>
+          <td><code>n_components</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3262,14 +3330,12 @@ torch.Size([256])</p>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">fill_with_test_data</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">num_batches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">n_batches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-    <span class="n">num_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">input_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill the store with test data.</span>
@@ -3282,21 +3348,19 @@ torch.Size([256])</p>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=16*16, num_neurons=256)</span>
-<span class="sd">        &gt;&gt;&gt; store.fill_with_test_data()</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=100, n_neurons=256)</span>
+<span class="sd">        &gt;&gt;&gt; store.fill_with_test_data(batch_size=100)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        256</span>
-<span class="sd">        &gt;&gt;&gt; store[0].shape</span>
-<span class="sd">        torch.Size([256])</span>
+<span class="sd">        100</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        num_batches: Number of batches to fill the store with.</span>
+<span class="sd">        n_batches: Number of batches to fill the store with.</span>
 <span class="sd">        batch_size: Number of items per batch.</span>
-<span class="sd">        num_components: Number of source model components the SAE is trained on.</span>
+<span class="sd">        n_components: Number of source model components the SAE is trained on.</span>
 <span class="sd">        input_features: Number of input features per item.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_batches</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_components</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_components</span><span class="p">):</span>
             <span class="n">sample</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_features</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3361,16 +3425,16 @@ torch.Size([256])</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/activation_store/base_store.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">StoreFullError</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">):</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">StoreFullError</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when the activation store is full.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Activation store is full&quot;</span><span class="p">):</span>
@@ -3443,13 +3507,13 @@ torch.Size([256])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/base_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Activation store is full&quot;</span><span class="p">):</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Activation store is full&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the exception.</span>
 
 <span class="sd">    Args:</span>

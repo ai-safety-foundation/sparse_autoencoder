@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1160,6 +1234,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      ALL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.MEAN" class="md-nav__link">
     <span class="md-ellipsis">
       MEAN
@@ -1172,15 +1255,6 @@
   <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.SUM" class="md-nav__link">
     <span class="md-ellipsis">
       SUM
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.TABLE" class="md-nav__link">
-    <span class="md-ellipsis">
-      TABLE
     </span>
   </a>
   
@@ -2495,6 +2569,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      ALL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.MEAN" class="md-nav__link">
     <span class="md-ellipsis">
       MEAN
@@ -2507,15 +2590,6 @@
   <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.SUM" class="md-nav__link">
     <span class="md-ellipsis">
       SUM
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.TABLE" class="md-nav__link">
-    <span class="md-ellipsis">
-      TABLE
     </span>
   </a>
   
@@ -2698,17 +2772,17 @@ training pipeline.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract metric.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -2779,9 +2853,9 @@ training pipeline.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>  <span class="c1"># type: ignore # noqa: ANN001 (type to be narrowed by abstract subclasses)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate metrics.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -2851,8 +2925,8 @@ define how the component-wise values should be aggregated.</p>
     <span class="n">SUM</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sum of the component-wise values.&quot;&quot;&quot;</span>
 
-    <span class="n">TABLE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Table of all component-wise values in one place.&quot;&quot;&quot;</span>
+    <span class="n">ALL</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log all values (e.g. as a list or tensor).&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2865,6 +2939,29 @@ define how the component-wise values should be aggregated.</p>
 
 
 
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">ALL</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Log all values (e.g. as a list or tensor).</p>
+  </div>
+
+</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -2908,29 +3005,6 @@ define how the component-wise values should be aggregated.</p>
   <div class="doc doc-contents ">
   
       <p>Sum of the component-wise values.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.TABLE" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">TABLE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.TABLE" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Table of all component-wise values in one place.</p>
   </div>
 
 </div>
@@ -3271,7 +3345,27 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="normal">309</span>
 <span class="normal">310</span>
 <span class="normal">311</span>
-<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MetricResult</span><span class="p">:</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MetricResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metric result.</span>
 
 <span class="sd">    Every metric (and loss module) should return a list of metric results (a list so that it can</span>
@@ -3296,8 +3390,7 @@ result, as well as the component-wise values and how they should be aggregated.<
         <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)],</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span><span class="p">,</span>
-        <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span>
-        <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">TABLE</span><span class="p">,</span>
+        <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
         <span class="n">aggregate_value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
         <span class="n">postfix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3315,7 +3408,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="sd">            component_0/train/loss: 1.0</span>
 <span class="sd">            component_1/train/loss: 2.0</span>
 <span class="sd">            component_2/train/loss: 3.0</span>
-<span class="sd">            train/loss: 2.0</span>
+<span class="sd">            train/loss/component_mean: 2.0</span>
 
 
 <span class="sd">        Args:</span>
@@ -3381,7 +3474,7 @@ result, as well as the component-wise values and how they should be aggregated.<
                     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
                 <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
                     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-                <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">TABLE</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">values</span>
                 <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">cannot_aggregate_error_message</span><span class="p">)</span>
@@ -3396,7 +3489,7 @@ result, as well as the component-wise values and how they should be aggregated.<
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                 <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">TABLE</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span>
                 <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">cannot_aggregate_error_message</span><span class="p">)</span>
@@ -3405,7 +3498,11 @@ result, as well as the component-wise values and how they should be aggregated.<
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">cannot_aggregate_error_message</span><span class="p">)</span>
 
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">create_wandb_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create_wandb_name</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">aggregation_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Weights and Biases Metric Name.</span>
 
 <span class="sd">        Note Weights and Biases categorises metrics using a forward slash (`/`) in the name string.</span>
@@ -3415,6 +3512,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="sd">            ...     location=MetricLocation.VALIDATE,</span>
 <span class="sd">            ...     name=&quot;loss&quot;,</span>
 <span class="sd">            ...     component_wise_values=[1.0, 2.0, 3.0],</span>
+<span class="sd">            ...     aggregate_approach=ComponentAggregationApproach.MEAN,</span>
 <span class="sd">            ... )</span>
 <span class="sd">            &gt;&gt;&gt; metric_result.create_wandb_name()</span>
 <span class="sd">            &#39;validate/loss&#39;</span>
@@ -3425,19 +3523,31 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="sd">        Args:</span>
 <span class="sd">            component_name: Component name, if creating a Weights and Biases name for a specific</span>
 <span class="sd">                component.</span>
+<span class="sd">            aggregation_approach: Component aggregation approach, if creating an aggregate metric.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Weights and Biases metric name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Add the name parts in order</span>
         <span class="n">name_parts</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="c1"># Component name (e.g. `component_0` if set)</span>
         <span class="k">if</span> <span class="n">component_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component_name</span><span class="p">)</span>
 
+        <span class="c1"># Always include location (e.g. `train`) and the core metric name (e.g. neuron_activity).</span>
         <span class="n">name_parts</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
 
+        <span class="c1"># Postfix (e.g. `almost_dead_1e-3`)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">postfix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">postfix</span><span class="p">)</span>
+
+        <span class="c1"># Aggregation approach (e.g. `component_mean`) if set and not ALL</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">aggregation_approach</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">aggregation_approach</span> <span class="o">!=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span>
+        <span class="p">):</span>
+            <span class="n">name_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;component_</span><span class="si">{</span><span class="n">aggregation_approach</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_parts</span><span class="p">)</span>
 
@@ -3474,7 +3584,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="sd">            ...     print(f&quot;{k}: {v}&quot;)</span>
 <span class="sd">            component_0/validate/loss: 1.0</span>
 <span class="sd">            component_1/validate/loss: 2.0</span>
-<span class="sd">            validate/loss: 1.5</span>
+<span class="sd">            validate/loss/component_mean: 1.5</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Weights and Biases log data.</span>
@@ -3488,7 +3598,11 @@ result, as well as the component-wise values and how they should be aggregated.<
         <span class="c1"># Create the aggregate log if there is an aggregate value</span>
         <span class="n">aggregate_log</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_approach</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aggregate_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">aggregate_log</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">create_wandb_name</span><span class="p">():</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_value</span><span class="p">}</span>
+            <span class="n">aggregate_log</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_wandb_name</span><span class="p">(</span>
+                    <span class="n">aggregation_approach</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregate_approach</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_value</span>
+            <span class="p">}</span>
 
         <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">component_wise_logs</span><span class="p">,</span> <span class="o">**</span><span class="n">aggregate_log</span><span class="p">}</span>
 
@@ -3667,7 +3781,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">component_0/validate/loss: 1.0</span>
 <span class="go">component_1/validate/loss: 2.0</span>
-<span class="go">validate/loss: 1.5</span>
+<span class="go">validate/loss/component_mean: 1.5</span>
 </code></pre></div>
 
 
@@ -3706,7 +3820,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 
 
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">component_wise_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">aggregate_approach</span><span class="o">=</span><span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">TABLE</span><span class="p">,</span> <span class="n">aggregate_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postfix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">component_wise_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">aggregate_approach</span><span class="o">=</span><span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span> <span class="n">aggregate_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postfix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3731,7 +3845,7 @@ for k, v in metric_result.wandb_log.items():
 component_0/train/loss: 1.0
 component_1/train/loss: 2.0
 component_2/train/loss: 3.0
-train/loss: 2.0</p>
+train/loss/component_mean: 2.0</p>
 </blockquote>
 </blockquote>
 </blockquote>
@@ -3804,7 +3918,7 @@ name of the form <code>component_name/metric_location/metric_name/metric_postfix
             </div>
           </td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.TABLE" href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.TABLE">TABLE</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL">ALL</a></code>
           </td>
         </tr>
         <tr>
@@ -3888,16 +4002,14 @@ calculated.</p>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">component_wise_values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">WandbSupportedLogTypes</span><span class="p">]</span>
     <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span>
     <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)],</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span><span class="p">,</span>
-    <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span>
-    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">TABLE</span><span class="p">,</span>
+    <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
     <span class="n">aggregate_value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="n">postfix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3915,7 +4027,7 @@ calculated.</p>
 <span class="sd">        component_0/train/loss: 1.0</span>
 <span class="sd">        component_1/train/loss: 2.0</span>
 <span class="sd">        component_2/train/loss: 3.0</span>
-<span class="sd">        train/loss: 2.0</span>
+<span class="sd">        train/loss/component_mean: 2.0</span>
 
 
 <span class="sd">    Args:</span>
@@ -3961,17 +4073,17 @@ calculated.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation.&quot;&quot;&quot;</span>
     <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">(</span>
@@ -4006,9 +4118,9 @@ calculated.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String representation.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_log</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4024,7 +4136,7 @@ calculated.</p>
 
 
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.create_wandb_name" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">create_wandb_name</span><span class="p">(</span><span class="n">component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">create_wandb_name</span><span class="p">(</span><span class="n">component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aggregation_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.create_wandb_name" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4043,6 +4155,7 @@ calculated.</p>
 ...     location=MetricLocation.VALIDATE,
 ...     name="loss",
 ...     component_wise_values=[1.0, 2.0, 3.0],
+...     aggregate_approach=ComponentAggregationApproach.MEAN,
 ... )
 metric_result.create_wandb_name()
 'validate/loss'</p>
@@ -4080,6 +4193,20 @@ component.</p>
                 <code>None</code>
           </td>
         </tr>
+        <tr>
+          <td><code>aggregation_approach</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach" href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach">ComponentAggregationApproach</a> | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Component aggregation approach, if creating an aggregate metric.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -4109,7 +4236,8 @@ component.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
+<span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span>
@@ -4144,8 +4272,28 @@ component.</p>
 <span class="normal">242</span>
 <span class="normal">243</span>
 <span class="normal">244</span>
-<span class="normal">245</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">def</span> <span class="nf">create_wandb_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">def</span> <span class="nf">create_wandb_name</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aggregation_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Weights and Biases Metric Name.</span>
 
 <span class="sd">    Note Weights and Biases categorises metrics using a forward slash (`/`) in the name string.</span>
@@ -4155,6 +4303,7 @@ component.</p>
 <span class="sd">        ...     location=MetricLocation.VALIDATE,</span>
 <span class="sd">        ...     name=&quot;loss&quot;,</span>
 <span class="sd">        ...     component_wise_values=[1.0, 2.0, 3.0],</span>
+<span class="sd">        ...     aggregate_approach=ComponentAggregationApproach.MEAN,</span>
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; metric_result.create_wandb_name()</span>
 <span class="sd">        &#39;validate/loss&#39;</span>
@@ -4165,19 +4314,31 @@ component.</p>
 <span class="sd">    Args:</span>
 <span class="sd">        component_name: Component name, if creating a Weights and Biases name for a specific</span>
 <span class="sd">            component.</span>
+<span class="sd">        aggregation_approach: Component aggregation approach, if creating an aggregate metric.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Weights and Biases metric name.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Add the name parts in order</span>
     <span class="n">name_parts</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="c1"># Component name (e.g. `component_0` if set)</span>
     <span class="k">if</span> <span class="n">component_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">name_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component_name</span><span class="p">)</span>
 
+    <span class="c1"># Always include location (e.g. `train`) and the core metric name (e.g. neuron_activity).</span>
     <span class="n">name_parts</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
 
+    <span class="c1"># Postfix (e.g. `almost_dead_1e-3`)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">postfix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">name_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">postfix</span><span class="p">)</span>
+
+    <span class="c1"># Aggregation approach (e.g. `component_mean`) if set and not ALL</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">aggregation_approach</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">aggregation_approach</span> <span class="o">!=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span>
+    <span class="p">):</span>
+        <span class="n">name_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;component_</span><span class="si">{</span><span class="n">aggregation_approach</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_parts</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2765,9 +2839,7 @@ this data.</p>
 <span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuronActivityHorizonData</span><span class="p">:</span>
+<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuronActivityHorizonData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuron activity data for a specific horizon (number of activations seen).</span>
 
 <span class="sd">    For each time horizon we store some data (e.g. the number of times each neuron fired inside this</span>
@@ -2775,7 +2847,7 @@ this data.</p>
 <span class="sd">    this data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_horizon_number_activations</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_horizon_n_activations</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Horizon in number of activations.&quot;&quot;&quot;</span>
 
     <span class="n">_horizon_steps</span><span class="p">:</span> <span class="nb">int</span>
@@ -2820,7 +2892,7 @@ this data.</p>
 
     <span class="k">def</span> <span class="nf">_almost_dead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Almost dead count.&quot;&quot;&quot;</span>
-        <span class="n">threshold_in_activations</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span>
+        <span class="n">threshold_in_activations</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span>
 
         <span class="n">almost_dead_bool_mask</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_neuron_activity</span> <span class="o">&lt;</span> <span class="n">threshold_in_activations</span>
@@ -2866,26 +2938,26 @@ this data.</p>
                 <span class="n">component_wise_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dead_count</span><span class="p">,</span>
                 <span class="n">location</span><span class="o">=</span><span class="n">metric_location</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;dead_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;dead_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">MetricResult</span><span class="p">(</span>
                 <span class="n">component_wise_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_alive_count</span><span class="p">,</span>
                 <span class="n">location</span><span class="o">=</span><span class="n">metric_location</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;alive_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;alive_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">MetricResult</span><span class="p">(</span>
                 <span class="n">component_wise_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_activity_histogram</span><span class="p">,</span>
                 <span class="n">location</span><span class="o">=</span><span class="n">metric_location</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;activity_histogram_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;activity_histogram_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
                 <span class="n">aggregate_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Don&#39;t show aggregate across components</span>
             <span class="p">),</span>
             <span class="n">MetricResult</span><span class="p">(</span>
                 <span class="n">component_wise_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_activity_histogram</span><span class="p">,</span>
                 <span class="n">location</span><span class="o">=</span><span class="n">metric_location</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;log_activity_histogram_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;log_activity_histogram_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
                 <span class="n">aggregate_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Don&#39;t show aggregate across components</span>
             <span class="p">),</span>
         <span class="p">]</span>
@@ -2895,7 +2967,7 @@ this data.</p>
                 <span class="n">component_wise_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_almost_dead</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
                 <span class="n">location</span><span class="o">=</span><span class="n">metric_location</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;almost_dead_</span><span class="si">{</span><span class="n">threshold</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;almost_dead_</span><span class="si">{</span><span class="n">threshold</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">_over_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span><span class="si">}</span><span class="s2">_activations&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span>
         <span class="p">]</span>
@@ -2905,8 +2977,8 @@ this data.</p>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">approximate_activation_horizon</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">number_components</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">number_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">thresholds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2914,22 +2986,20 @@ this data.</p>
 
 <span class="sd">        Args:</span>
 <span class="sd">            approximate_activation_horizon: Approximate activation horizon.</span>
-<span class="sd">            number_components: Number of components.</span>
-<span class="sd">            number_learned_features: Number of learned features.</span>
+<span class="sd">            n_components: Number of components.</span>
+<span class="sd">            n_learned_features: Number of learned features.</span>
 <span class="sd">            thresholds: Thresholds for almost dead neurons.</span>
 <span class="sd">            train_batch_size: Train batch size.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_steps_since_last_calculated</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">number_components</span><span class="p">,</span> <span class="n">number_learned_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span> <span class="o">=</span> <span class="n">thresholds</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">number_components</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n_learned_features</span> <span class="o">=</span> <span class="n">number_learned_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_learned_features</span> <span class="o">=</span> <span class="n">n_learned_features</span>
 
         <span class="c1"># Get a precise activation_horizon</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_steps</span> <span class="o">=</span> <span class="n">approximate_activation_horizon</span> <span class="o">//</span> <span class="n">train_batch_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_steps</span> <span class="o">*</span> <span class="n">train_batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_steps</span> <span class="o">*</span> <span class="n">train_batch_size</span>
 
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
@@ -2996,7 +3066,7 @@ this data.</p>
 
 
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">approximate_activation_horizon</span><span class="p">,</span> <span class="n">number_components</span><span class="p">,</span> <span class="n">number_learned_features</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">approximate_activation_horizon</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3033,7 +3103,7 @@ this data.</p>
           </td>
         </tr>
         <tr>
-          <td><code>number_components</code></td>
+          <td><code>n_components</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3047,7 +3117,7 @@ this data.</p>
           </td>
         </tr>
         <tr>
-          <td><code>number_learned_features</code></td>
+          <td><code>n_learned_features</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3118,13 +3188,11 @@ this data.</p>
 <span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">190</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">approximate_activation_horizon</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">number_components</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">number_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">thresholds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3132,22 +3200,20 @@ this data.</p>
 
 <span class="sd">    Args:</span>
 <span class="sd">        approximate_activation_horizon: Approximate activation horizon.</span>
-<span class="sd">        number_components: Number of components.</span>
-<span class="sd">        number_learned_features: Number of learned features.</span>
+<span class="sd">        n_components: Number of components.</span>
+<span class="sd">        n_learned_features: Number of learned features.</span>
 <span class="sd">        thresholds: Thresholds for almost dead neurons.</span>
 <span class="sd">        train_batch_size: Train batch size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_steps_since_last_calculated</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">number_components</span><span class="p">,</span> <span class="n">number_learned_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
-    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_neuron_activity</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span> <span class="o">=</span> <span class="n">thresholds</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">number_components</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_n_learned_features</span> <span class="o">=</span> <span class="n">number_learned_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_n_learned_features</span> <span class="o">=</span> <span class="n">n_learned_features</span>
 
     <span class="c1"># Get a precise activation_horizon</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_steps</span> <span class="o">=</span> <span class="n">approximate_activation_horizon</span> <span class="o">//</span> <span class="n">train_batch_size</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_number_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_steps</span> <span class="o">*</span> <span class="n">train_batch_size</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_n_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizon_steps</span> <span class="o">*</span> <span class="n">train_batch_size</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3226,7 +3292,9 @@ this data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/neuron_activity_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span>
@@ -3244,9 +3312,7 @@ this data.</p>
 <span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Step the neuron activity horizon data.</span>
@@ -3302,7 +3368,9 @@ this data.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/train/neuron_activity_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
@@ -3374,9 +3442,7 @@ this data.</p>
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuronActivityMetric</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuronActivityMetric</span><span class="p">(</span><span class="n">AbstractTrainMetric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuron activity metric.&quot;&quot;&quot;</span>
 
     <span class="n">_approximate_horizons</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
@@ -3409,8 +3475,8 @@ this data.</p>
 <span class="sd">            data: Train metric data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">train_batch_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">number_learned_features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">number_components</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">n_learned_features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">n_components</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_approximate_horizons</span><span class="p">:</span>
             <span class="c1"># Don&#39;t add horizons that are smaller than the train batch size</span>
@@ -3420,8 +3486,8 @@ this data.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="n">NeuronActivityHorizonData</span><span class="p">(</span>
                     <span class="n">approximate_activation_horizon</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span>
-                    <span class="n">number_components</span><span class="o">=</span><span class="n">number_components</span><span class="p">,</span>
-                    <span class="n">number_learned_features</span><span class="o">=</span><span class="n">number_learned_features</span><span class="p">,</span>
+                    <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
+                    <span class="n">n_learned_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
                     <span class="n">thresholds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span><span class="p">,</span>
                     <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">,</span>
                 <span class="p">)</span>
@@ -3529,7 +3595,9 @@ this data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/neuron_activity_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">225</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
 <span class="normal">228</span>
@@ -3543,9 +3611,7 @@ this data.</p>
 <span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">approximate_horizons</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_HORIZONS</span><span class="p">,</span>
     <span class="n">thresholds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_THRESHOLDS</span><span class="p">,</span>
@@ -3640,7 +3706,9 @@ this data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/neuron_activity_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">270</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
 <span class="normal">273</span>
@@ -3659,9 +3727,7 @@ this data.</p>
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the neuron activity metrics.</span>
 
 <span class="sd">    Args:</span>
@@ -3737,7 +3803,9 @@ this data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/train/neuron_activity_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
@@ -3760,17 +3828,15 @@ this data.</p>
 <span class="normal">263</span>
 <span class="normal">264</span>
 <span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialise_horizons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">266</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialise_horizons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrainMetricData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the horizon data structures.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data: Train metric data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">train_batch_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">number_learned_features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">number_components</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">n_learned_features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n_components</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">horizon</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_approximate_horizons</span><span class="p">:</span>
         <span class="c1"># Don&#39;t add horizons that are smaller than the train batch size</span>
@@ -3780,8 +3846,8 @@ this data.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">NeuronActivityHorizonData</span><span class="p">(</span>
                 <span class="n">approximate_activation_horizon</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span>
-                <span class="n">number_components</span><span class="o">=</span><span class="n">number_components</span><span class="p">,</span>
-                <span class="n">number_learned_features</span><span class="o">=</span><span class="n">number_learned_features</span><span class="p">,</span>
+                <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
+                <span class="n">n_learned_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
                 <span class="n">thresholds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_thresholds</span><span class="p">,</span>
                 <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">,</span>
             <span class="p">)</span>

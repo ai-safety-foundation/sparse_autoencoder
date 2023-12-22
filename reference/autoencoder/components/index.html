@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2833,7 +2907,13 @@
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractDecoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractDecoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract Decoder Module.</span>
 
 <span class="sd">    Typically includes just a :attr:`weight` parameter.</span>
@@ -2920,6 +3000,7 @@
             <span class="n">Tensor</span><span class="p">,</span>
             <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">),</span>
         <span class="p">],</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update decoder dictionary vectors.</span>
 
@@ -2929,18 +3010,23 @@
 <span class="sd">        Args:</span>
 <span class="sd">            dictionary_vector_indices: Indices of the dictionary vectors to update.</span>
 <span class="sd">            updated_weights: Updated weights for just these dictionary vectors.</span>
+<span class="sd">            component_idx: Component index to update.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If `component_idx` is not specified when `n_components` is not None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dictionary_vector_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;component_idx must be specified when n_components is not None&quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[:,</span> <span class="n">dictionary_vector_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_weights</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span>
-                        <span class="n">component_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">dictionary_vector_indices</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-                    <span class="p">]</span> <span class="o">=</span> <span class="n">updated_weights</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="n">component_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">dictionary_vector_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_weights</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">constrain_weights_unit_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3181,9 +3267,9 @@ representing a single basis element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_decoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">constrain_weights_unit_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Constrain the weights to have unit norm.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3339,7 +3425,7 @@ representing a single basis element in the learned activation space.</p>
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.AbstractDecoder.update_dictionary_vectors" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">update_dictionary_vectors</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="n">updated_weights</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">update_dictionary_vectors</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="n">updated_weights</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.autoencoder.components.AbstractDecoder.update_dictionary_vectors" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3391,6 +3477,44 @@ this is used when resampling neurons (dictionary vectors) that have died.</p>
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Component index to update.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If <code>component_idx</code> is not specified when <code>n_components</code> is not None.</p>
+            </div>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -3426,7 +3550,13 @@ this is used when resampling neurons (dictionary vectors) that have died.</p>
 <span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
-<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">update_dictionary_vectors</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dictionary_vector_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
@@ -3436,6 +3566,7 @@ this is used when resampling neurons (dictionary vectors) that have died.</p>
         <span class="n">Tensor</span><span class="p">,</span>
         <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">),</span>
     <span class="p">],</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update decoder dictionary vectors.</span>
 
@@ -3445,18 +3576,23 @@ this is used when resampling neurons (dictionary vectors) that have died.</p>
 <span class="sd">    Args:</span>
 <span class="sd">        dictionary_vector_indices: Indices of the dictionary vectors to update.</span>
 <span class="sd">        updated_weights: Updated weights for just these dictionary vectors.</span>
+<span class="sd">        component_idx: Component index to update.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If `component_idx` is not specified when `n_components` is not None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dictionary_vector_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
 
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;component_idx must be specified when n_components is not None&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[:,</span> <span class="n">dictionary_vector_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_weights</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span>
-                    <span class="n">component_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">dictionary_vector_indices</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">updated_weights</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="n">component_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="n">dictionary_vector_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_weights</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3630,7 +3766,23 @@ function.</p>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractEncoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractEncoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract encoder module.</span>
 
 <span class="sd">    Typically includes :attr:`weights` and :attr:`bias` parameters, as well as an activation</span>
@@ -3721,6 +3873,7 @@ function.</p>
             <span class="n">Tensor</span><span class="p">,</span>
             <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">),</span>
         <span class="p">],</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update encoder dictionary vectors.</span>
 
@@ -3729,18 +3882,25 @@ function.</p>
 <span class="sd">        Args:</span>
 <span class="sd">            dictionary_vector_indices: Indices of the dictionary vectors to update.</span>
 <span class="sd">            updated_dictionary_weights: Updated weights for just these dictionary vectors.</span>
+<span class="sd">            component_idx: Component index to update.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If there are multiple components and `component_idx` is not specified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dictionary_vector_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;component_idx must be specified when n_components is not None&quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="n">dictionary_vector_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_dictionary_weights</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span>
-                        <span class="n">component_idx</span><span class="p">,</span> <span class="n">dictionary_vector_indices</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-                    <span class="p">]</span> <span class="o">=</span> <span class="n">updated_dictionary_weights</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span>
+                    <span class="n">component_idx</span><span class="p">,</span> <span class="n">dictionary_vector_indices</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">updated_dictionary_weights</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
 
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">update_bias</span><span class="p">(</span>
@@ -3751,22 +3911,30 @@ function.</p>
         <span class="n">updated_bias_features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
             <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)</span>
         <span class="p">],</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update encoder bias.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            update_parameter_indices: Indices of the bias features to update.</span>
 <span class="sd">            updated_bias_features: Updated bias features for just these indices.</span>
+<span class="sd">            component_idx: Component index to update.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If there are multiple components and `component_idx` is not specified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">update_parameter_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;component_idx must be specified when n_components is not None&quot;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">[</span><span class="n">update_parameter_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_bias_features</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">[</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">update_parameter_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_bias_features</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">[</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">update_parameter_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_bias_features</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -4122,7 +4290,7 @@ representing a single basis element in the learned activation space.</p>
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.AbstractEncoder.update_bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">update_bias</span><span class="p">(</span><span class="n">update_parameter_indices</span><span class="p">,</span> <span class="n">updated_bias_features</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">update_bias</span><span class="p">(</span><span class="n">update_parameter_indices</span><span class="p">,</span> <span class="n">updated_bias_features</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.autoencoder.components.AbstractEncoder.update_bias" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4172,20 +4340,50 @@ representing a single basis element in the learned activation space.</p>
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Component index to update.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If there are multiple components and <code>component_idx</code> is not specified.</p>
+            </div>
+          </td>
+        </tr>
     </tbody>
   </table>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
@@ -4201,7 +4399,23 @@ representing a single basis element in the learned activation space.</p>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">update_bias</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">update_parameter_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
@@ -4210,22 +4424,30 @@ representing a single basis element in the learned activation space.</p>
     <span class="n">updated_bias_features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)</span>
     <span class="p">],</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update encoder bias.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        update_parameter_indices: Indices of the bias features to update.</span>
 <span class="sd">        updated_bias_features: Updated bias features for just these indices.</span>
+<span class="sd">        component_idx: Component index to update.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If there are multiple components and `component_idx` is not specified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">update_parameter_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
 
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;component_idx must be specified when n_components is not None&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">[</span><span class="n">update_parameter_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_bias_features</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">[</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">update_parameter_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_bias_features</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">[</span><span class="n">component_idx</span><span class="p">,</span> <span class="n">update_parameter_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_bias_features</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -4239,7 +4461,7 @@ representing a single basis element in the learned activation space.</p>
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.AbstractEncoder.update_dictionary_vectors" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">update_dictionary_vectors</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="n">updated_dictionary_weights</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">update_dictionary_vectors</span><span class="p">(</span><span class="n">dictionary_vector_indices</span><span class="p">,</span> <span class="n">updated_dictionary_weights</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.autoencoder.components.AbstractEncoder.update_dictionary_vectors" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4290,6 +4512,44 @@ representing a single basis element in the learned activation space.</p>
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Component index to update.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If there are multiple components and <code>component_idx</code> is not specified.</p>
+            </div>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -4324,7 +4584,15 @@ representing a single basis element in the learned activation space.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">update_dictionary_vectors</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dictionary_vector_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
@@ -4334,6 +4602,7 @@ representing a single basis element in the learned activation space.</p>
         <span class="n">Tensor</span><span class="p">,</span>
         <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">),</span>
     <span class="p">],</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update encoder dictionary vectors.</span>
 
@@ -4342,18 +4611,25 @@ representing a single basis element in the learned activation space.</p>
 <span class="sd">    Args:</span>
 <span class="sd">        dictionary_vector_indices: Indices of the dictionary vectors to update.</span>
 <span class="sd">        updated_dictionary_weights: Updated weights for just these dictionary vectors.</span>
+<span class="sd">        component_idx: Component index to update.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If there are multiple components and `component_idx` is not specified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dictionary_vector_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
 
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;component_idx must be specified when n_components is not None&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="n">dictionary_vector_indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_dictionary_weights</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span>
-                    <span class="n">component_idx</span><span class="p">,</span> <span class="n">dictionary_vector_indices</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">updated_dictionary_weights</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span>
+                <span class="n">component_idx</span><span class="p">,</span> <span class="n">dictionary_vector_indices</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">updated_dictionary_weights</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -4636,8 +4912,7 @@ used as the encoder in a sparse autoencoder (excluding any outer tied bias).</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/components/linear_encoder.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
-<span class="normal"> 16</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
 <span class="normal"> 19</span>
@@ -4771,7 +5046,15 @@ used as the encoder in a sparse autoencoder (excluding any outer tied bias).</p>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">LinearEncoder</span><span class="p">(</span><span class="n">AbstractEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Linear encoder layer.</span>
 
@@ -4855,13 +5138,16 @@ used as the encoder in a sparse autoencoder (excluding any outer tied bias).</p>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_features</span> <span class="o">=</span> <span class="n">input_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">learnt_features</span><span class="p">,</span> <span class="n">input_features</span><span class="p">),</span>
+                <span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">,</span> <span class="n">input_features</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">learnt_features</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">))</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation_function</span> <span class="o">=</span> <span class="n">ReLU</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
@@ -4906,7 +5192,11 @@ used as the encoder in a sparse autoencoder (excluding any outer tied bias).</p>
 
     <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;input_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;learnt_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;n_components=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -5124,8 +5414,7 @@ element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/linear_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
-<span class="normal"> 80</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
@@ -5153,7 +5442,11 @@ element in the learned activation space.</p>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
-<span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">learnt_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -5173,13 +5466,16 @@ element in the learned activation space.</p>
     <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span> <span class="o">=</span> <span class="n">learnt_features</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_input_features</span> <span class="o">=</span> <span class="n">input_features</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">learnt_features</span><span class="p">,</span> <span class="n">input_features</span><span class="p">),</span>
+            <span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">,</span> <span class="n">input_features</span><span class="p">),</span>
         <span class="p">)</span>
     <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">learnt_features</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape_with_optional_dimensions</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">learnt_features</span><span class="p">))</span>
+    <span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">activation_function</span> <span class="o">=</span> <span class="n">ReLU</span><span class="p">()</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
@@ -5207,11 +5503,19 @@ element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/linear_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;input_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;learnt_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;n_components=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -5290,11 +5594,7 @@ element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/linear_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
@@ -5315,7 +5615,11 @@ element in the learned activation space.</p>
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -5365,16 +5669,16 @@ element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/linear_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize or reset the parameters.&quot;&quot;&quot;</span>
     <span class="c1"># Assumes we are using ReLU activation function (for e.g. leaky ReLU, the `a` parameter and</span>
     <span class="c1"># `nonlinerity` must be changed.</span>
@@ -6206,7 +6510,11 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">UnitNormDecoder</span><span class="p">(</span><span class="n">AbstractDecoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Constrained unit norm linear decoder layer.</span>
 
@@ -6448,7 +6756,11 @@ loss](<a href="https://transformer-circuits.pub/2023/monosemantic-features/index
 
     <span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;learnt_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;decoded_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;n_components=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -6829,9 +7141,17 @@ column_norms.round(decimals=3).tolist()
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/unit_norm_decoder.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String extra representation of the module.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;in_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, out_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;learnt_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_learnt_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;decoded_features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decoded_features</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;n_components=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1641,15 +1715,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.zero_fill_multi_dimensional" class="md-nav__link">
-    <span class="md-ellipsis">
-      zero_fill_multi_dimensional()
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2425,15 +2490,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.zero_fill_multi_dimensional" class="md-nav__link">
-    <span class="md-ellipsis">
-      zero_fill_multi_dimensional()
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2727,13 +2783,7 @@ will be incorrect if the parameters are changed.</p>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">AdamWithReset</span><span class="p">(</span><span class="n">Adam</span><span class="p">,</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Optimizer with a reset method.</span>
 
@@ -2751,6 +2801,9 @@ will be incorrect if the parameters are changed.</p>
 <span class="sd">    The names of the parameters, so that we can find them later when resetting the state.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_has_components_dim</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether the parameters have a components dimension.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>  <span class="c1"># (extending existing implementation)</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">params</span><span class="p">:</span> <span class="n">params_t</span><span class="p">,</span>
@@ -2766,6 +2819,7 @@ will be incorrect if the parameters are changed.</p>
         <span class="n">differentiable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">fused</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">named_parameters</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]],</span>
+        <span class="n">has_components_dim</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the optimizer.</span>
 
@@ -2775,10 +2829,11 @@ will be incorrect if the parameters are changed.</p>
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
 <span class="sd">            &gt;&gt;&gt; from sparse_autoencoder.autoencoder.model import SparseAutoencoder</span>
-<span class="sd">            &gt;&gt;&gt; model = SparseAutoencoder(5, 10, torch.zeros(5))</span>
+<span class="sd">            &gt;&gt;&gt; model = SparseAutoencoder(5, 10, n_components=2)</span>
 <span class="sd">            &gt;&gt;&gt; optimizer = AdamWithReset(</span>
 <span class="sd">            ...     model.parameters(),</span>
 <span class="sd">            ...     named_parameters=model.named_parameters(),</span>
+<span class="sd">            ...     has_components_dim=True,</span>
 <span class="sd">            ... )</span>
 <span class="sd">            &gt;&gt;&gt; optimizer.reset_state_all_parameters()</span>
 
@@ -2805,6 +2860,8 @@ will be incorrect if the parameters are changed.</p>
 <span class="sd">            named_parameters: An iterator over the named parameters of the model. This is used to</span>
 <span class="sd">                find the parameters when resetting their state. You should set this as</span>
 <span class="sd">                `model.named_parameters()`.</span>
+<span class="sd">            has_components_dim: If the parameters have a components dimension (i.e. if you are</span>
+<span class="sd">                training an SAE on more than one component).</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If the number of parameter names does not match the number of parameters.</span>
@@ -2823,6 +2880,8 @@ will be incorrect if the parameters are changed.</p>
             <span class="n">differentiable</span><span class="o">=</span><span class="n">differentiable</span><span class="p">,</span>
             <span class="n">fused</span><span class="o">=</span><span class="n">fused</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span> <span class="o">=</span> <span class="n">has_components_dim</span>
 
         <span class="c1"># Store the names of the parameters, so that we can find them later when resetting the</span>
         <span class="c1"># state.</span>
@@ -2863,60 +2922,23 @@ will be incorrect if the parameters are changed.</p>
                     <span class="n">max_exp_avg_sq</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span>
                     <span class="n">max_exp_avg_sq</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">zero_fill_multi_dimensional</span><span class="p">(</span>
-        <span class="n">input_tensor</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
-        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
-        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Multi-dimensional version of torch index fill.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            input_tensor: Input tensor to modify.</span>
-<span class="sd">            neuron_indices: The indices of the neurons to reset.</span>
-<span class="sd">            axis: Dimension along which to index.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The modified input tensor.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the neuron indices are not 1D or 2D (if the component dimension is</span>
-<span class="sd">                present) tensors.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Make sure neuron indices are on the same device as the state</span>
-        <span class="n">output_tensor</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-        <span class="n">neuron_indices</span> <span class="o">=</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-
-        <span class="k">match</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
-            <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">output_tensor</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">neuron_indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-                    <span class="n">output_tensor</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s2">&quot;Neuron indices must be 1D or 2D (if the component dimension is &quot;</span>
-                    <span class="s2">&quot;present) tensors.&quot;</span>
-                <span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">output_tensor</span>
-
     <span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
-        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
+        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
         <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
 <span class="sd">            &gt;&gt;&gt; from sparse_autoencoder.autoencoder.model import SparseAutoencoder</span>
-<span class="sd">            &gt;&gt;&gt; model = SparseAutoencoder(5, 10, torch.zeros(5))</span>
+<span class="sd">            &gt;&gt;&gt; model = SparseAutoencoder(5, 10, n_components=2)</span>
 <span class="sd">            &gt;&gt;&gt; optimizer = AdamWithReset(</span>
 <span class="sd">            ...     model.parameters(),</span>
 <span class="sd">            ...     named_parameters=model.named_parameters(),</span>
+<span class="sd">            ...     has_components_dim=True,</span>
 <span class="sd">            ... )</span>
 <span class="sd">            &gt;&gt;&gt; # ... train the model and then resample some dead neurons, then do this ...</span>
 <span class="sd">            &gt;&gt;&gt; dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices</span>
@@ -2935,9 +2957,28 @@ will be incorrect if the parameters are changed.</p>
 <span class="sd">            neuron_indices: The indices of the neurons to reset.</span>
 <span class="sd">            axis: The axis of the state values to reset (i.e. the input/output features axis, as</span>
 <span class="sd">                we&#39;re resetting all input/output features for a specific dead neuron).</span>
+<span class="sd">            component_idx: The component index of the state values to reset.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the parameter has a components dimension, but has_components_dim is</span>
+<span class="sd">                False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get the state of the parameter</span>
         <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+
+        <span class="c1"># If the number of dimensions is 3, we definitely have a components dimension. If 2, we may</span>
+        <span class="c1"># do (as the bias has 2 dimensions with components, but the weight has 2 dimensions without</span>
+        <span class="c1"># components).</span>
+        <span class="n">definitely_has_components_dimension</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span>
+            <span class="ow">and</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="n">definitely_has_components_dimension</span>
+        <span class="p">):</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;The parameter has a components dimension, but has_components_dim is False. &quot;</span>
+                <span class="s2">&quot;This should not happen.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
         <span class="c1"># Check if state is initialized</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -2949,20 +2990,23 @@ will be incorrect if the parameters are changed.</p>
 
         <span class="c1"># Reset running averages for the specified neurons</span>
         <span class="k">if</span> <span class="s2">&quot;exp_avg&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span>
-                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">],</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span>
-                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">],</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># If AdamW is used (weight decay fix), also reset the max exp_avg_sq</span>
         <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span>
-                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">],</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -3008,7 +3052,7 @@ will be incorrect if the parameters are changed.</p>
 
 
 <h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">amsgrad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">capturable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">differentiable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fused</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">named_parameters</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">amsgrad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">capturable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">differentiable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fused</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">named_parameters</span><span class="p">,</span> <span class="n">has_components_dim</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3028,10 +3072,11 @@ will be incorrect if the parameters are changed.</p>
 <blockquote>
 <p>import torch
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-model = SparseAutoencoder(5, 10, torch.zeros(5))
+model = SparseAutoencoder(5, 10, n_components=2)
 optimizer = AdamWithReset(
 ...     model.parameters(),
 ...     named_parameters=model.named_parameters(),
+...     has_components_dim=True,
 ... )
 optimizer.reset_state_all_parameters()</p>
 </blockquote>
@@ -3229,6 +3274,21 @@ find the parameters when resetting their state. You should set this as
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>has_components_dim</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If the parameters have a components dimension (i.e. if you are
+training an SAE on more than one component).</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -3258,10 +3318,7 @@ find the parameters when resetting their state. You should set this as
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/optimizer/adam_with_reset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 39</span>
 <span class="normal"> 40</span>
 <span class="normal"> 41</span>
 <span class="normal"> 42</span>
@@ -3341,7 +3398,16 @@ find the parameters when resetting their state. You should set this as
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>  <span class="c1"># (extending existing implementation)</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>  <span class="c1"># (extending existing implementation)</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">params_t</span><span class="p">,</span>
     <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
@@ -3356,6 +3422,7 @@ find the parameters when resetting their state. You should set this as
     <span class="n">differentiable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">fused</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">named_parameters</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]],</span>
+    <span class="n">has_components_dim</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the optimizer.</span>
 
@@ -3365,10 +3432,11 @@ find the parameters when resetting their state. You should set this as
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; from sparse_autoencoder.autoencoder.model import SparseAutoencoder</span>
-<span class="sd">        &gt;&gt;&gt; model = SparseAutoencoder(5, 10, torch.zeros(5))</span>
+<span class="sd">        &gt;&gt;&gt; model = SparseAutoencoder(5, 10, n_components=2)</span>
 <span class="sd">        &gt;&gt;&gt; optimizer = AdamWithReset(</span>
 <span class="sd">        ...     model.parameters(),</span>
 <span class="sd">        ...     named_parameters=model.named_parameters(),</span>
+<span class="sd">        ...     has_components_dim=True,</span>
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; optimizer.reset_state_all_parameters()</span>
 
@@ -3395,6 +3463,8 @@ find the parameters when resetting their state. You should set this as
 <span class="sd">        named_parameters: An iterator over the named parameters of the model. This is used to</span>
 <span class="sd">            find the parameters when resetting their state. You should set this as</span>
 <span class="sd">            `model.named_parameters()`.</span>
+<span class="sd">        has_components_dim: If the parameters have a components dimension (i.e. if you are</span>
+<span class="sd">            training an SAE on more than one component).</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If the number of parameter names does not match the number of parameters.</span>
@@ -3413,6 +3483,8 @@ find the parameters when resetting their state. You should set this as
         <span class="n">differentiable</span><span class="o">=</span><span class="n">differentiable</span><span class="p">,</span>
         <span class="n">fused</span><span class="o">=</span><span class="n">fused</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span> <span class="o">=</span> <span class="n">has_components_dim</span>
 
     <span class="c1"># Store the names of the parameters, so that we can find them later when resetting the</span>
     <span class="c1"># state.</span>
@@ -3438,7 +3510,7 @@ find the parameters when resetting their state. You should set this as
 
 
 <h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3454,10 +3526,11 @@ find the parameters when resetting their state. You should set this as
 <blockquote>
 <p>import torch
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-model = SparseAutoencoder(5, 10, torch.zeros(5))
+model = SparseAutoencoder(5, 10, n_components=2)
 optimizer = AdamWithReset(
 ...     model.parameters(),
 ...     named_parameters=model.named_parameters(),
+...     has_components_dim=True,
 ... )</p>
 <h4 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state--train-the-model-and-then-resample-some-dead-neurons-then-do-this">... train the model and then resample some dead neurons, then do this ...<a class="headerlink" href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state--train-the-model-and-then-resample-some-dead-neurons-then-do-this" title="Permanent link">¤</a></h4>
 <p>dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices</p>
@@ -3504,7 +3577,7 @@ implementation  include <code>tied_bias</code>, <code>_encoder._weight</code>, <
         <tr>
           <td><code>neuron_indices</code></td>
           <td>
-                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</a>)]</code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3530,12 +3603,81 @@ we're resetting all input/output features for a specific dead neuron).</p>
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The component index of the state values to reset.</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If the parameter has a components dimension, but has_components_dim is
+False.</p>
+            </div>
+          </td>
+        </tr>
     </tbody>
   </table>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/optimizer/adam_with_reset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
@@ -3589,27 +3731,23 @@ we're resetting all input/output features for a specific dead neuron).</p>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
-    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
+    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
     <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; from sparse_autoencoder.autoencoder.model import SparseAutoencoder</span>
-<span class="sd">        &gt;&gt;&gt; model = SparseAutoencoder(5, 10, torch.zeros(5))</span>
+<span class="sd">        &gt;&gt;&gt; model = SparseAutoencoder(5, 10, n_components=2)</span>
 <span class="sd">        &gt;&gt;&gt; optimizer = AdamWithReset(</span>
 <span class="sd">        ...     model.parameters(),</span>
 <span class="sd">        ...     named_parameters=model.named_parameters(),</span>
+<span class="sd">        ...     has_components_dim=True,</span>
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; # ... train the model and then resample some dead neurons, then do this ...</span>
 <span class="sd">        &gt;&gt;&gt; dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices</span>
@@ -3628,9 +3766,28 @@ we're resetting all input/output features for a specific dead neuron).</p>
 <span class="sd">        neuron_indices: The indices of the neurons to reset.</span>
 <span class="sd">        axis: The axis of the state values to reset (i.e. the input/output features axis, as</span>
 <span class="sd">            we&#39;re resetting all input/output features for a specific dead neuron).</span>
+<span class="sd">        component_idx: The component index of the state values to reset.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the parameter has a components dimension, but has_components_dim is</span>
+<span class="sd">            False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the state of the parameter</span>
     <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+
+    <span class="c1"># If the number of dimensions is 3, we definitely have a components dimension. If 2, we may</span>
+    <span class="c1"># do (as the bias has 2 dimensions with components, but the weight has 2 dimensions without</span>
+    <span class="c1"># components).</span>
+    <span class="n">definitely_has_components_dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span>
+        <span class="ow">and</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="n">definitely_has_components_dimension</span>
+    <span class="p">):</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The parameter has a components dimension, but has_components_dim is False. &quot;</span>
+            <span class="s2">&quot;This should not happen.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
     <span class="c1"># Check if state is initialized</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -3642,20 +3799,23 @@ we're resetting all input/output features for a specific dead neuron).</p>
 
     <span class="c1"># Reset running averages for the specified neurons</span>
     <span class="k">if</span> <span class="s2">&quot;exp_avg&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span>
-            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">],</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s2">&quot;exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span>
-            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">],</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># If AdamW is used (weight decay fix), also reset the max exp_avg_sq</span>
     <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span>
-            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">],</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3682,16 +3842,7 @@ squares of gradients.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/optimizer/adam_with_reset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
@@ -3707,7 +3858,16 @@ squares of gradients.</p>
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_state_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_state_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for all parameters.</span>
 
 <span class="sd">    Iterates over all parameters and resets both the running averages of the gradients and the</span>
@@ -3733,216 +3893,6 @@ squares of gradients.</p>
             <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
                 <span class="n">max_exp_avg_sq</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span>
                 <span class="n">max_exp_avg_sq</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.zero_fill_multi_dimensional" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">zero_fill_multi_dimensional</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.zero_fill_multi_dimensional" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Multi-dimensional version of torch index fill.</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>input_tensor</code></td>
-          <td>
-                <code><span title="torch.Tensor">Tensor</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Input tensor to modify.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>neuron_indices</code></td>
-          <td>
-                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</a>)]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The indices of the neurons to reset.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>axis</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Dimension along which to index.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="torch.Tensor">Tensor</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The modified input tensor.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>ValueError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the neuron indices are not 1D or 2D (if the component dimension is
-present) tensors.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/optimizer/adam_with_reset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">zero_fill_multi_dimensional</span><span class="p">(</span>
-    <span class="n">input_tensor</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
-    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
-    <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multi-dimensional version of torch index fill.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        input_tensor: Input tensor to modify.</span>
-<span class="sd">        neuron_indices: The indices of the neurons to reset.</span>
-<span class="sd">        axis: Dimension along which to index.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The modified input tensor.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If the neuron indices are not 1D or 2D (if the component dimension is</span>
-<span class="sd">            present) tensors.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Make sure neuron indices are on the same device as the state</span>
-    <span class="n">output_tensor</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-    <span class="n">neuron_indices</span> <span class="o">=</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-
-    <span class="k">match</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
-        <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">output_tensor</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">component_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">neuron_indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-                <span class="n">output_tensor</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Neuron indices must be 1D or 2D (if the component dimension is &quot;</span>
-                <span class="s2">&quot;present) tensors.&quot;</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">output_tensor</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2657,7 +2731,9 @@
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
-<span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractLoss</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractLoss</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract loss interface.</span>
 
 <span class="sd">    Interface for implementing batch itemwise loss functions.</span>
@@ -2754,7 +2830,7 @@
         <span class="p">],</span>
         <span class="n">batch_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
         <span class="n">component_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scalar loss (reduced across the batch and component axis) with logging.</span>
 
 <span class="sd">        Args:</span>
@@ -2769,7 +2845,9 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of the batch scalar loss and a dict of any properties to log.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">children_loss_scalars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">children_loss_scalars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
+            <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># If the loss module has children (e.g. it is a reducer):</span>
@@ -2977,9 +3055,7 @@ make the loss independent of the batch size.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
@@ -3006,7 +3082,9 @@ make the loss independent of the batch size.</p>
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
-<span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -3609,7 +3687,7 @@ to make the loss independent of the batch size.</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>], list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="../../metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]]</code>
+                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>] | <span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM">SINGLE_ITEM</a>], list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="../../metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3695,7 +3773,9 @@ to make the loss independent of the batch size.</p>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
-<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scalar_loss_with_log</span><span class="p">(</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scalar_loss_with_log</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -3708,7 +3788,7 @@ to make the loss independent of the batch size.</p>
     <span class="p">],</span>
     <span class="n">batch_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
     <span class="n">component_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scalar loss (reduced across the batch and component axis) with logging.</span>
 
 <span class="sd">    Args:</span>
@@ -3723,7 +3803,9 @@ to make the loss independent of the batch size.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        Tuple of the batch scalar loss and a dict of any properties to log.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">children_loss_scalars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">children_loss_scalars</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># If the loss module has children (e.g. it is a reducer):</span>

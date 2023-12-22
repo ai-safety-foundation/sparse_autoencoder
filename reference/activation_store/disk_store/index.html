@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -621,9 +695,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.num_components" class="md-nav__link">
+  <a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.n_components" class="md-nav__link">
     <span class="md-ellipsis">
-      num_components
+      n_components
     </span>
   </a>
   
@@ -2405,9 +2479,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.num_components" class="md-nav__link">
+  <a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.n_components" class="md-nav__link">
     <span class="md-ellipsis">
-      num_components
+      n_components
     </span>
   </a>
   
@@ -2916,13 +2990,13 @@ after the last batch has been added to the store.</p>
     <span class="n">_disk_n_activation_vectors_per_component</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Length of the Store (on disk).&quot;&quot;&quot;</span>
 
-    <span class="n">_num_components</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_n_components</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of components&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">n_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of components.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_activations_stored_per_component</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
@@ -2932,21 +3006,21 @@ after the last batch has been added to the store.</p>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_neurons</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">storage_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span>
         <span class="n">max_cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
-        <span class="n">num_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">empty_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Disk Activation Store.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            num_neurons: Number of neurons in each activation vector.</span>
+<span class="sd">            n_neurons: Number of neurons in each activation vector.</span>
 <span class="sd">            storage_path: Path to the directory where the activation vectors will be stored.</span>
 <span class="sd">            max_cache_size: The maximum number of activation vectors (per component) to cache in</span>
 <span class="sd">                memory before writing to disk.</span>
-<span class="sd">            num_components: Number of components to store (i.e. number of source models).</span>
+<span class="sd">            n_components: Number of components to store (i.e. number of source models).</span>
 <span class="sd">            empty_dir: Whether to empty the directory before writing. Generally you want to set this</span>
 <span class="sd">                to `True` as otherwise the directory may contain stale activation vectors from</span>
 <span class="sd">                previous runs. However if you are just initialising a pre-created store, set it as</span>
@@ -2955,7 +3029,7 @@ after the last batch has been added to the store.</p>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span> <span class="o">=</span> <span class="n">max_cache_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">=</span> <span class="n">num_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
 
         <span class="c1"># Setup the storage directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">=</span> <span class="n">storage_path</span>
@@ -2965,15 +3039,15 @@ after the last batch has been added to the store.</p>
 
         <span class="c1"># Setup the Cache</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">max_cache_size</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">num_neurons</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span>
+            <span class="p">(</span><span class="n">max_cache_size</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_components</span>
 
     <span class="k">def</span> <span class="nf">_write_to_disk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the contents of the cache to disk.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=2, empty_dir=True, num_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=2, empty_dir=True, n_neurons=100)</span>
 <span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">            &gt;&gt;&gt; store._write_to_disk()</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
@@ -2990,7 +3064,7 @@ after the last batch has been added to the store.</p>
         <span class="p">)</span>
 
         <span class="c1"># Empty the cache (note we just need to mark as empty so we can start filling it again)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span>
 
     <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3000,7 +3074,7 @@ after the last batch has been added to the store.</p>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100)) # Triggers a write of the last item to disk</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
@@ -3026,7 +3100,7 @@ after the last batch has been added to the store.</p>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True, num_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)</span>
 <span class="sd">            &gt;&gt;&gt; store.extend(torch.randn(10, 100))</span>
 <span class="sd">            &gt;&gt;&gt; store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
@@ -3039,28 +3113,28 @@ after the last batch has been added to the store.</p>
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If the batch is larger than the cache size.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">num_activation_tensors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_activation_tensors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Check the batch is smaller than the cache size</span>
-        <span class="k">if</span> <span class="n">num_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">num_activation_tensors</span><span class="si">}</span><span class="s2"> is larger than the cache size &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">n_activation_tensors</span><span class="si">}</span><span class="s2"> is larger than the cache size &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
         <span class="c1"># Write to disk first if full (note this also resets items stored)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">num_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
 
         <span class="c1"># Add to cache</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-            <span class="o">+</span> <span class="n">num_activation_tensors</span><span class="p">,</span>
+            <span class="o">+</span> <span class="n">n_activation_tensors</span><span class="p">,</span>
             <span class="n">component_idx</span><span class="p">,</span>
         <span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">num_activation_tensors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_activation_tensors</span>
 
     <span class="k">def</span> <span class="nf">finalise</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Finalise.</span>
@@ -3069,7 +3143,7 @@ after the last batch has been added to the store.</p>
 <span class="sd">        all activation vectors to be written to disk.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">            &gt;&gt;&gt; store.finalise()</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
@@ -3090,7 +3164,7 @@ after the last batch has been added to the store.</p>
 <span class="sd">        This will delete all .pt files in the top level of the storage directory.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
@@ -3157,7 +3231,7 @@ after the last batch has been added to the store.</p>
             <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">activation_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
                 <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">]</span>
 
@@ -3169,7 +3243,7 @@ after the last batch has been added to the store.</p>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
 <span class="sd">            0</span>
 
@@ -3231,14 +3305,14 @@ after the last batch has been added to the store.</p>
 
 
 
-<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.num_components" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">num_components</span><span class="p">:</span> <span class="nb">int</span></code>
+<h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.n_components" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
-<a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.num_components" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.n_components" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
@@ -3438,7 +3512,7 @@ after the last batch has been added to the store.</p>
         <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">activation_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">]</span>
 
@@ -3458,7 +3532,7 @@ after the last batch has been added to the store.</p>
 
 
 <h3 id="sparse_autoencoder.activation_store.disk_store.DiskActivationStore.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">num_neurons</span><span class="p">,</span> <span class="n">storage_path</span><span class="o">=</span><span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span> <span class="n">max_cache_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">num_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">empty_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n_neurons</span><span class="p">,</span> <span class="n">storage_path</span><span class="o">=</span><span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span> <span class="n">max_cache_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">empty_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.activation_store.disk_store.DiskActivationStore.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3481,7 +3555,7 @@ after the last batch has been added to the store.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>num_neurons</code></td>
+          <td><code>n_neurons</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3524,7 +3598,7 @@ memory before writing to disk.</p>
           </td>
         </tr>
         <tr>
-          <td><code>num_components</code></td>
+          <td><code>n_components</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3598,21 +3672,21 @@ False.</p>
 <span class="normal">109</span>
 <span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_neurons</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">storage_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span>
     <span class="n">max_cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
-    <span class="n">num_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">empty_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Disk Activation Store.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        num_neurons: Number of neurons in each activation vector.</span>
+<span class="sd">        n_neurons: Number of neurons in each activation vector.</span>
 <span class="sd">        storage_path: Path to the directory where the activation vectors will be stored.</span>
 <span class="sd">        max_cache_size: The maximum number of activation vectors (per component) to cache in</span>
 <span class="sd">            memory before writing to disk.</span>
-<span class="sd">        num_components: Number of components to store (i.e. number of source models).</span>
+<span class="sd">        n_components: Number of components to store (i.e. number of source models).</span>
 <span class="sd">        empty_dir: Whether to empty the directory before writing. Generally you want to set this</span>
 <span class="sd">            to `True` as otherwise the directory may contain stale activation vectors from</span>
 <span class="sd">            previous runs. However if you are just initialising a pre-created store, set it as</span>
@@ -3621,7 +3695,7 @@ False.</p>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span> <span class="o">=</span> <span class="n">max_cache_size</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">=</span> <span class="n">num_components</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
 
     <span class="c1"># Setup the storage directory</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">=</span> <span class="n">storage_path</span>
@@ -3631,9 +3705,9 @@ False.</p>
 
     <span class="c1"># Setup the Cache</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">max_cache_size</span><span class="p">,</span> <span class="n">num_components</span><span class="p">,</span> <span class="n">num_neurons</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span>
+        <span class="p">(</span><span class="n">max_cache_size</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span>
     <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_components</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_components</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3661,7 +3735,7 @@ False.</p>
   <blockquote>
 <blockquote>
 <blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
 len(store)
 0</p>
 </blockquote>
@@ -3719,7 +3793,7 @@ len(store)
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        0</span>
 
@@ -3762,7 +3836,7 @@ len(store)
 <blockquote>
 <blockquote>
 <blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
 store.append(torch.randn(100))
 store.append(torch.randn(100)) # Triggers a write of the last item to disk
 len(store)
@@ -3849,7 +3923,7 @@ len(store)
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100)) # Triggers a write of the last item to disk</span>
 <span class="sd">    &gt;&gt;&gt; len(store)</span>
@@ -3895,7 +3969,7 @@ This will delete all .pt files in the top level of the storage directory.</p>
   <blockquote>
 <blockquote>
 <blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
 store.append(torch.randn(100))
 store.append(torch.randn(100))
 len(store)
@@ -3935,7 +4009,7 @@ len(store)
 <span class="sd">    This will delete all .pt files in the top level of the storage directory.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
@@ -3975,7 +4049,7 @@ len(store)
   <blockquote>
 <blockquote>
 <blockquote>
-<p>store = DiskActivationStore(max_cache_size=10, empty_dir=True, num_neurons=100)
+<p>store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)
 store.extend(torch.randn(10, 100))
 store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk
 len(store)
@@ -4104,7 +4178,7 @@ len(store)
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True, num_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)</span>
 <span class="sd">        &gt;&gt;&gt; store.extend(torch.randn(10, 100))</span>
 <span class="sd">        &gt;&gt;&gt; store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
@@ -4117,28 +4191,28 @@ len(store)
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If the batch is larger than the cache size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_activation_tensors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_activation_tensors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># Check the batch is smaller than the cache size</span>
-    <span class="k">if</span> <span class="n">num_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
         <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">num_activation_tensors</span><span class="si">}</span><span class="s2"> is larger than the cache size &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">n_activation_tensors</span><span class="si">}</span><span class="s2"> is larger than the cache size &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
     <span class="c1"># Write to disk first if full (note this also resets items stored)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">num_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
 
     <span class="c1"># Add to cache</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-        <span class="o">+</span> <span class="n">num_activation_tensors</span><span class="p">,</span>
+        <span class="o">+</span> <span class="n">n_activation_tensors</span><span class="p">,</span>
         <span class="n">component_idx</span><span class="p">,</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">num_activation_tensors</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_activation_tensors</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -4168,7 +4242,7 @@ all activation vectors to be written to disk.</p>
   <blockquote>
 <blockquote>
 <blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)
+<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
 store.append(torch.randn(100))
 store.finalise()
 len(store)
@@ -4200,7 +4274,7 @@ len(store)
 <span class="sd">    all activation vectors to be written to disk.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, num_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
 <span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
 <span class="sd">        &gt;&gt;&gt; store.finalise()</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>

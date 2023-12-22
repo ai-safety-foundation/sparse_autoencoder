@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2431,7 +2505,9 @@ user. This is so that the optimizer can find the parameters to reset.</p>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractOptimizerWithReset</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractOptimizerWithReset</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract optimizer with reset.</span>
 
 <span class="sd">    When implementing this interface, we recommend adding a `named_parameters` argument to the</span>
@@ -2453,6 +2529,7 @@ user. This is so that the optimizer can find the parameters to reset.</p>
         <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
         <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
         <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
 
@@ -2460,6 +2537,7 @@ user. This is so that the optimizer can find the parameters to reset.</p>
 <span class="sd">            parameter: The parameter to reset, e.g. `encoder.Linear.weight`, `encoder.Linear.bias`,</span>
 <span class="sd">            neuron_indices: The indices of the neurons to reset.</span>
 <span class="sd">            axis: The axis of the parameter to reset.</span>
+<span class="sd">            component_idx: The component index of the state values to reset.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If the parameter name is not found.</span>
@@ -2486,7 +2564,7 @@ user. This is so that the optimizer can find the parameters to reset.</p>
 
 
 <h3 id="sparse_autoencoder.optimizer.abstract_optimizer.AbstractOptimizerWithReset.reset_neurons_state" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -2554,6 +2632,20 @@ user. This is so that the optimizer can find the parameters to reset.</p>
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The component index of the state values to reset.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -2599,12 +2691,15 @@ user. This is so that the optimizer can find the parameters to reset.</p>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
     <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
     <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
 
@@ -2612,6 +2707,7 @@ user. This is so that the optimizer can find the parameters to reset.</p>
 <span class="sd">        parameter: The parameter to reset, e.g. `encoder.Linear.weight`, `encoder.Linear.bias`,</span>
 <span class="sd">        neuron_indices: The indices of the neurons to reset.</span>
 <span class="sd">        axis: The axis of the parameter to reset.</span>
+<span class="sd">        component_idx: The component index of the state values to reset.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If the parameter name is not found.</span>

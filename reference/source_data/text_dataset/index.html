@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2732,7 +2806,7 @@
         <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">commit_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Upload preprocessed dataset using sparse_autoencoder.&quot;</span><span class="p">,</span>
         <span class="n">max_shard_size</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">num_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="n">n_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
         <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">private</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2755,9 +2829,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).</span>
 <span class="sd">            commit_message: Commit message.</span>
-<span class="sd">            max_shard_size: Maximum shard size (e.g. `&#39;500MB&#39;`). Should not be set if `num_shards`</span>
+<span class="sd">            max_shard_size: Maximum shard size (e.g. `&#39;500MB&#39;`). Should not be set if `n_shards`</span>
 <span class="sd">                is set.</span>
-<span class="sd">            num_shards: Number of shards to split the dataset into. A high number is recommended</span>
+<span class="sd">            n_shards: Number of shards to split the dataset into. A high number is recommended</span>
 <span class="sd">                here to allow for flexible distributed training of SAEs across nodes (where e.g.</span>
 <span class="sd">                each node fetches it&#39;s own shard).</span>
 <span class="sd">            revision: Branch to push to.</span>
@@ -2777,7 +2851,7 @@
             <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
             <span class="n">commit_message</span><span class="o">=</span><span class="n">commit_message</span><span class="p">,</span>
             <span class="n">max_shard_size</span><span class="o">=</span><span class="n">max_shard_size</span><span class="p">,</span>
-            <span class="n">num_shards</span><span class="o">=</span><span class="n">num_shards</span><span class="p">,</span>
+            <span class="n">num_shards</span><span class="o">=</span><span class="n">n_shards</span><span class="p">,</span>
             <span class="n">private</span><span class="o">=</span><span class="n">private</span><span class="p">,</span>
             <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
         <span class="p">)</span>
@@ -3244,7 +3318,7 @@ a context size of 250.</p>
 
 
 <h3 id="sparse_autoencoder.source_data.text_dataset.TextDataset.push_to_hugging_face_hub" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">push_to_hugging_face_hub</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">commit_message</span><span class="o">=</span><span class="s1">&#39;Upload preprocessed dataset using sparse_autoencoder.&#39;</span><span class="p">,</span> <span class="n">max_shard_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_shards</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">push_to_hugging_face_hub</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">commit_message</span><span class="o">=</span><span class="s1">&#39;Upload preprocessed dataset using sparse_autoencoder.&#39;</span><span class="p">,</span> <span class="n">max_shard_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_shards</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.push_to_hugging_face_hub" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3317,7 +3391,7 @@ initializing the dataset).</p>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Maximum shard size (e.g. <code>'500MB'</code>). Should not be set if <code>num_shards</code>
+              <p>Maximum shard size (e.g. <code>'500MB'</code>). Should not be set if <code>n_shards</code>
 is set.</p>
             </div>
           </td>
@@ -3326,7 +3400,7 @@ is set.</p>
           </td>
         </tr>
         <tr>
-          <td><code>num_shards</code></td>
+          <td><code>n_shards</code></td>
           <td>
                 <code>int</code>
           </td>
@@ -3456,7 +3530,7 @@ each node fetches it's own shard).</p>
     <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">commit_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Upload preprocessed dataset using sparse_autoencoder.&quot;</span><span class="p">,</span>
     <span class="n">max_shard_size</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">num_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">n_shards</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
     <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">private</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -3479,9 +3553,9 @@ each node fetches it's own shard).</p>
 <span class="sd">    Args:</span>
 <span class="sd">        repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).</span>
 <span class="sd">        commit_message: Commit message.</span>
-<span class="sd">        max_shard_size: Maximum shard size (e.g. `&#39;500MB&#39;`). Should not be set if `num_shards`</span>
+<span class="sd">        max_shard_size: Maximum shard size (e.g. `&#39;500MB&#39;`). Should not be set if `n_shards`</span>
 <span class="sd">            is set.</span>
-<span class="sd">        num_shards: Number of shards to split the dataset into. A high number is recommended</span>
+<span class="sd">        n_shards: Number of shards to split the dataset into. A high number is recommended</span>
 <span class="sd">            here to allow for flexible distributed training of SAEs across nodes (where e.g.</span>
 <span class="sd">            each node fetches it&#39;s own shard).</span>
 <span class="sd">        revision: Branch to push to.</span>
@@ -3501,7 +3575,7 @@ each node fetches it's own shard).</p>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
         <span class="n">commit_message</span><span class="o">=</span><span class="n">commit_message</span><span class="p">,</span>
         <span class="n">max_shard_size</span><span class="o">=</span><span class="n">max_shard_size</span><span class="p">,</span>
-        <span class="n">num_shards</span><span class="o">=</span><span class="n">num_shards</span><span class="p">,</span>
+        <span class="n">num_shards</span><span class="o">=</span><span class="n">n_shards</span><span class="p">,</span>
         <span class="n">private</span><span class="o">=</span><span class="n">private</span><span class="p">,</span>
         <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
     <span class="p">)</span>

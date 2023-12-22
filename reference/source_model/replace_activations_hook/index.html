@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2335,7 +2409,7 @@
 
 
 <h2 id="sparse_autoencoder.source_model.replace_activations_hook.replace_activations_hook" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">replace_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">sparse_autoencoder</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">replace_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">sparse_autoencoder</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.source_model.replace_activations_hook.replace_activations_hook" class="headerlink" title="Permanent link">¤</a></h2>
 
@@ -2400,6 +2474,21 @@
               <em>required</em>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The component index to replace the activations with, if just replacing
+activations for a single component. Requires the model to have a component axis.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -2421,6 +2510,30 @@
           <td>
             <div class="doc-md-description">
               <p>Replaced activations.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>RuntimeError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If <code>component_idx</code> is specified, but the model does not have a component</p>
             </div>
           </td>
         </tr>
@@ -2455,10 +2568,42 @@
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">replace_activations_hook</span><span class="p">(</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">replace_activations_hook</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
     <span class="n">hook</span><span class="p">:</span> <span class="n">HookPoint</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
     <span class="n">sparse_autoencoder</span><span class="p">:</span> <span class="n">AbstractAutoencoder</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace activations hook.</span>
 
@@ -2467,15 +2612,45 @@
 <span class="sd">        hook: The hook point.</span>
 <span class="sd">        sparse_autoencoder: The sparse autoencoder. This should be pre-initialised with</span>
 <span class="sd">            `functools.partial`.</span>
+<span class="sd">        component_idx: The component index to replace the activations with, if just replacing</span>
+<span class="sd">            activations for a single component. Requires the model to have a component axis.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Replaced activations.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        RuntimeError: If `component_idx` is specified, but the model does not have a component</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Squash to just have a &quot;*items&quot; and a &quot;batch&quot; dimension</span>
     <span class="n">original_shape</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span>
+
     <span class="n">squashed_value</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
         <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sparse_autoencoder</span><span class="o">.</span><span class="n">n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Cannot replace for a specific component, if the model does not have a &quot;</span>
+                <span class="s2">&quot;component axis.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+        <span class="c1"># The approach here is to run a forward pass with dummy values for all components other than</span>
+        <span class="c1"># the one we want to replace. This is done by expanding the inputs to the SAE for a specific</span>
+        <span class="c1"># component across all components. We then simply discard the activations for all other</span>
+        <span class="c1"># components.</span>
+        <span class="n">expanded_shape</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">squashed_value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">sparse_autoencoder</span><span class="o">.</span><span class="n">n_components</span><span class="p">,</span>
+            <span class="n">squashed_value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">]</span>
+        <span class="n">expanded</span> <span class="o">=</span> <span class="n">squashed_value</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="o">*</span><span class="n">expanded_shape</span><span class="p">)</span>
+
+        <span class="n">_learned_activations</span><span class="p">,</span> <span class="n">output_activations</span> <span class="o">=</span> <span class="n">sparse_autoencoder</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">expanded</span><span class="p">)</span>
+        <span class="n">component_output_activations</span> <span class="o">=</span> <span class="n">output_activations</span><span class="p">[:,</span> <span class="n">component_idx</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">component_output_activations</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">*</span><span class="n">original_shape</span><span class="p">)</span>
 
     <span class="c1"># Get the output activations from a forward pass of the SAE</span>
     <span class="n">_learned_activations</span><span class="p">,</span> <span class="n">output_activations</span> <span class="o">=</span> <span class="n">sparse_autoencoder</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">squashed_value</span><span class="p">)</span>

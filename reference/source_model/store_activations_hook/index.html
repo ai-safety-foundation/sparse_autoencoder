@@ -464,6 +464,80 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1_3" id="__nav_5_1_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    component_slice_tensor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2335,7 +2409,7 @@
 
 
 <h2 id="sparse_autoencoder.source_model.store_activations_hook.store_activations_hook" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">store_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">store</span><span class="p">,</span> <span class="n">reshape_method</span><span class="o">=</span><span class="n">reshape_to_last_dimension</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">store_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">store</span><span class="p">,</span> <span class="n">reshape_method</span><span class="o">=</span><span class="n">reshape_to_last_dimension</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.source_model.store_activations_hook.store_activations_hook" class="headerlink" title="Permanent link">¤</a></h2>
 
@@ -2354,7 +2428,7 @@
 <p>from functools import partial
 from transformer_lens import HookedTransformer
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-store = TensorActivationStore(max_items=1000, num_neurons=64)
+store = TensorActivationStore(max_items=1000, n_neurons=64)
 model = HookedTransformer.from_pretrained("tiny-stories-1M")
 Loaded pretrained model tiny-stories-1M into HookedTransformer</p>
 </blockquote>
@@ -2457,6 +2531,20 @@ len(store)
                 <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_model.reshape_activations.reshape_to_last_dimension" href="../reshape_activations/#sparse_autoencoder.source_model.reshape_activations.reshape_to_last_dimension">reshape_to_last_dimension</a></code>
           </td>
         </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The component index of the activations to store.</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -2541,11 +2629,14 @@ len(store)
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
-<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">store_activations_hook</span><span class="p">(</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">store_activations_hook</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)],</span>
     <span class="n">hook</span><span class="p">:</span> <span class="n">HookPoint</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
     <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
     <span class="n">reshape_method</span><span class="p">:</span> <span class="n">ReshapeActivationsFunction</span> <span class="o">=</span> <span class="n">reshape_to_last_dimension</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Store Activations Hook.</span>
 
@@ -2557,7 +2648,7 @@ len(store)
 <span class="sd">        &gt;&gt;&gt; from functools import partial</span>
 <span class="sd">        &gt;&gt;&gt; from transformer_lens import HookedTransformer</span>
 <span class="sd">        &gt;&gt;&gt; from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=1000, num_neurons=64)</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=1000, n_neurons=64)</span>
 <span class="sd">        &gt;&gt;&gt; model = HookedTransformer.from_pretrained(&quot;tiny-stories-1M&quot;)</span>
 <span class="sd">        Loaded pretrained model tiny-stories-1M into HookedTransformer</span>
 
@@ -2585,6 +2676,7 @@ len(store)
 <span class="sd">        hook: The hook point.</span>
 <span class="sd">        store: The activation store. This should be pre-initialised with `functools.partial`.</span>
 <span class="sd">        reshape_method: The method to reshape the activations before storing them.</span>
+<span class="sd">        component_idx: The component index of the activations to store.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Unmodified activations.</span>
@@ -2593,7 +2685,7 @@ len(store)
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">STORE_BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">reshape_method</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="n">store</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">reshaped</span><span class="p">)</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">reshaped</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="n">component_idx</span><span class="p">)</span>
 
     <span class="c1"># Return the unmodified value</span>
     <span class="k">return</span> <span class="n">value</span>
