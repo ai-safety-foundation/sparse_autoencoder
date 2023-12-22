@@ -47,8 +47,8 @@ class ComponentAggregationApproach(LowercaseStrEnum):
     SUM = auto()
     """Sum of the component-wise values."""
 
-    TABLE = auto()
-    """Table of all component-wise values in one place."""
+    ALL = auto()
+    """Log all values (e.g. as a list or tensor)."""
 
 
 WandbSupportedLogTypes: TypeAlias = (
@@ -99,8 +99,7 @@ class MetricResult:
         | Int[Tensor, Axis.names(Axis.COMPONENT)],
         name: str,
         location: MetricLocation,
-        aggregate_approach: ComponentAggregationApproach
-        | None = ComponentAggregationApproach.TABLE,
+        aggregate_approach: ComponentAggregationApproach | None = ComponentAggregationApproach.ALL,
         aggregate_value: Any | None = None,  # noqa: ANN401
         postfix: str | None = None,
     ) -> None:
@@ -118,7 +117,7 @@ class MetricResult:
             component_0/train/loss: 1.0
             component_1/train/loss: 2.0
             component_2/train/loss: 3.0
-            train/loss: 2.0
+            train/loss/component_mean: 2.0
 
 
         Args:
@@ -184,7 +183,7 @@ class MetricResult:
                     return sum(values) / len(values)
                 case ComponentAggregationApproach.SUM:
                     return sum(values)
-                case ComponentAggregationApproach.TABLE:
+                case ComponentAggregationApproach.ALL:
                     return values
                 case _:
                     raise ValueError(cannot_aggregate_error_message)
@@ -199,7 +198,7 @@ class MetricResult:
                     return self.component_wise_values.mean(dim=0)
                 case ComponentAggregationApproach.SUM:
                     return self.component_wise_values.sum(dim=0)
-                case ComponentAggregationApproach.TABLE:
+                case ComponentAggregationApproach.ALL:
                     return self.component_wise_values
                 case _:
                     raise ValueError(cannot_aggregate_error_message)
@@ -208,7 +207,11 @@ class MetricResult:
         raise ValueError(cannot_aggregate_error_message)
 
     @final
-    def create_wandb_name(self, component_name: str | None = None) -> str:
+    def create_wandb_name(
+        self,
+        component_name: str | None = None,
+        aggregation_approach: ComponentAggregationApproach | None = None,
+    ) -> str:
         """Weights and Biases Metric Name.
 
         Note Weights and Biases categorises metrics using a forward slash (`/`) in the name string.
@@ -218,6 +221,7 @@ class MetricResult:
             ...     location=MetricLocation.VALIDATE,
             ...     name="loss",
             ...     component_wise_values=[1.0, 2.0, 3.0],
+            ...     aggregate_approach=ComponentAggregationApproach.MEAN,
             ... )
             >>> metric_result.create_wandb_name()
             'validate/loss'
@@ -228,19 +232,31 @@ class MetricResult:
         Args:
             component_name: Component name, if creating a Weights and Biases name for a specific
                 component.
+            aggregation_approach: Component aggregation approach, if creating an aggregate metric.
 
         Returns:
             Weights and Biases metric name.
         """
+        # Add the name parts in order
         name_parts = []
 
+        # Component name (e.g. `component_0` if set)
         if component_name is not None:
             name_parts.append(component_name)
 
+        # Always include location (e.g. `train`) and the core metric name (e.g. neuron_activity).
         name_parts.extend([self.location.value, self.name])
 
+        # Postfix (e.g. `almost_dead_1e-3`)
         if self.postfix is not None:
             name_parts.append(self.postfix)
+
+        # Aggregation approach (e.g. `component_mean`) if set and not ALL
+        if (
+            aggregation_approach is not None
+            and aggregation_approach != ComponentAggregationApproach.ALL
+        ):
+            name_parts.append(f"component_{aggregation_approach.value.lower()}")
 
         return "/".join(name_parts)
 
@@ -277,7 +293,7 @@ class MetricResult:
             ...     print(f"{k}: {v}")
             component_0/validate/loss: 1.0
             component_1/validate/loss: 2.0
-            validate/loss: 1.5
+            validate/loss/component_mean: 1.5
 
         Returns:
             Weights and Biases log data.
@@ -291,7 +307,11 @@ class MetricResult:
         # Create the aggregate log if there is an aggregate value
         aggregate_log = {}
         if self.aggregate_approach is not None or self._aggregate_value is not None:
-            aggregate_log = {self.create_wandb_name(): self.aggregate_value}
+            aggregate_log = {
+                self.create_wandb_name(
+                    aggregation_approach=self.aggregate_approach if self.n_components > 1 else None
+                ): self.aggregate_value
+            }
 
         return {**component_wise_logs, **aggregate_log}
 
