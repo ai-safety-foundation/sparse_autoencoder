@@ -174,7 +174,7 @@ class SourceDataHyperparameters(NestedParameter):
     context_size: Parameter[int] = field(default=Parameter(DEFAULT_SOURCE_CONTEXT_SIZE))
     """Context size."""
 
-    dataset_column_name: Parameter[str] | None = field(default=None)
+    dataset_column_name: Parameter[str] | None = field(default=Parameter(value="input_ids"))
     """Dataset column name."""
 
     dataset_dir: Parameter[str] | None = field(default=None)
@@ -214,7 +214,7 @@ class SourceDataRuntimeHyperparameters(TypedDict):
     """Source data runtime hyperparameters."""
 
     context_size: int
-    dataset_column_name: str | None
+    dataset_column_name: str
     dataset_dir: str | None
     dataset_files: list[str] | None
     dataset_path: str
