@@ -2884,7 +2884,13 @@ generation of the activations dataset.</p>
 <span class="normal">231</span>
 <span class="normal">232</span>
 <span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract source dataset.</span>
 
 <span class="sd">    Source dataset that is used to generate the activations dataset (by running forward passes of</span>
@@ -2908,6 +2914,9 @@ generation of the activations dataset.</p>
 <span class="sd">    Warning:</span>
 <span class="sd">        Hugging Face `Dataset` objects are confusingly not the same as PyTorch `Dataset` objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_dataset_column_name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset column name for the prompts.&quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
@@ -2950,6 +2959,7 @@ generation of the activations dataset.</p>
         <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dataset_column_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;input_ids&quot;</span><span class="p">,</span>
         <span class="n">n_processes_preprocessing</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -2975,6 +2985,7 @@ generation of the activations dataset.</p>
 <span class="sd">                tokenized prompts once the preprocessing function has been applied.</span>
 <span class="sd">            dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
 <span class="sd">            dataset_files: Path(s) to source data file(s).</span>
+<span class="sd">            dataset_column_name: The column name for the prompts.</span>
 <span class="sd">            n_processes_preprocessing: The number of processes to use for preprocessing.</span>
 <span class="sd">            preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.</span>
 <span class="sd">                tokenizing prompts).</span>
@@ -2984,6 +2995,7 @@ generation of the activations dataset.</p>
 <span class="sd">            TypeError: If the loaded dataset is not a Hugging Face `Dataset` or `IterableDataset`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_size</span> <span class="o">=</span> <span class="n">context_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_column_name</span> <span class="o">=</span> <span class="n">dataset_column_name</span>
 
         <span class="c1"># Load the dataset</span>
         <span class="n">should_stream</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">pre_download</span>
@@ -3143,7 +3155,7 @@ a context size of 250.</p>
 
 
 <h3 id="sparse_autoencoder.source_data.abstract_dataset.SourceDataset.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">dataset_split</span><span class="p">,</span> <span class="n">context_size</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_processes_preprocessing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">dataset_split</span><span class="p">,</span> <span class="n">context_size</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_column_name</span><span class="o">=</span><span class="s1">&#39;input_ids&#39;</span><span class="p">,</span> <span class="n">n_processes_preprocessing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -3264,6 +3276,20 @@ tokenized prompts once the preprocessing function has been applied.</p>
           </td>
         </tr>
         <tr>
+          <td><code>dataset_column_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The column name for the prompts.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;input_ids&#39;</code>
+          </td>
+        </tr>
+        <tr>
           <td><code>n_processes_preprocessing</code></td>
           <td>
                 <code>int | None</code>
@@ -3335,10 +3361,7 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
 <span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
@@ -3428,7 +3451,13 @@ tokenizing prompts).</p>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span>
-<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3437,6 +3466,7 @@ tokenizing prompts).</p>
     <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dataset_column_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;input_ids&quot;</span><span class="p">,</span>
     <span class="n">n_processes_preprocessing</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -3462,6 +3492,7 @@ tokenizing prompts).</p>
 <span class="sd">            tokenized prompts once the preprocessing function has been applied.</span>
 <span class="sd">        dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
 <span class="sd">        dataset_files: Path(s) to source data file(s).</span>
+<span class="sd">        dataset_column_name: The column name for the prompts.</span>
 <span class="sd">        n_processes_preprocessing: The number of processes to use for preprocessing.</span>
 <span class="sd">        preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.</span>
 <span class="sd">            tokenizing prompts).</span>
@@ -3471,6 +3502,7 @@ tokenizing prompts).</p>
 <span class="sd">        TypeError: If the loaded dataset is not a Hugging Face `Dataset` or `IterableDataset`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">context_size</span> <span class="o">=</span> <span class="n">context_size</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_column_name</span> <span class="o">=</span> <span class="n">dataset_column_name</span>
 
     <span class="c1"># Load the dataset</span>
     <span class="n">should_stream</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">pre_download</span>
@@ -3547,13 +3579,13 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate Dunder Method.</span>
 
@@ -3585,13 +3617,13 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Next Dunder Method.</span>
 
@@ -3676,13 +3708,7 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
@@ -3694,7 +3720,13 @@ tokenizing prompts).</p>
 <span class="normal">231</span>
 <span class="normal">232</span>
 <span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a PyTorch DataLoader.</span>
 
@@ -3823,10 +3855,7 @@ a context size of 250.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
@@ -3853,7 +3882,10 @@ a context size of 250.</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_batch</span><span class="p">:</span> <span class="n">HuggingFaceDatasetItem</span><span class="p">,</span>

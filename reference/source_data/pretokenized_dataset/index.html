@@ -1762,15 +1762,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="md-nav__link">
-    <span class="md-ellipsis">
-      PreTokenizedDataBatch
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="md-nav__link">
     <span class="md-ellipsis">
       PreTokenizedDataset
@@ -2388,15 +2379,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="md-nav__link">
-    <span class="md-ellipsis">
-      PreTokenizedDataBatch
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="md-nav__link">
     <span class="md-ellipsis">
       PreTokenizedDataset
@@ -2481,68 +2463,6 @@
 
 
 
-<h2 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="doc doc-heading">
-          <code>PreTokenizedDataBatch</code>
-
-
-<a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
-
-  
-      <p>General Pre-Tokenized Dataset Item.</p>
-<p>Structure depends on the specific dataset from Hugging Face.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PreTokenizedDataBatch</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;General Pre-Tokenized Dataset Item.</span>
-
-<span class="sd">    Structure depends on the specific dataset from Hugging Face.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
-        <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-    <span class="p">]</span>  <span class="c1"># This assumes that the dataset structure is similar to the original Neel Nanda dataset.</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
 <h2 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset" class="doc doc-heading">
           <code>PreTokenizedDataset</code>
 
@@ -2552,7 +2472,7 @@
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch">PreTokenizedDataBatch</a>]</code></p>
+            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a>[dict]</code></p>
 
   
       <p>General Pre-Tokenized Dataset from Hugging Face.</p>
@@ -2560,7 +2480,18 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 31</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
 <span class="normal"> 32</span>
 <span class="normal"> 33</span>
 <span class="normal"> 34</span>
@@ -2632,16 +2563,8 @@
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">class</span> <span class="nc">PreTokenizedDataset</span><span class="p">(</span><span class="n">SourceDataset</span><span class="p">[</span><span class="n">PreTokenizedDataBatch</span><span class="p">]):</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">class</span> <span class="nc">PreTokenizedDataset</span><span class="p">(</span><span class="n">SourceDataset</span><span class="p">[</span><span class="nb">dict</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;General Pre-Tokenized Dataset from Hugging Face.</span>
 
 <span class="sd">    Can be used for various datasets available on Hugging Face.</span>
@@ -2649,7 +2572,7 @@
 
     <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">source_batch</span><span class="p">:</span> <span class="n">PreTokenizedDataBatch</span><span class="p">,</span>
+        <span class="n">source_batch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
@@ -2664,7 +2587,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Tokenized prompts.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tokenized_prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span>
+        <span class="n">tokenized_prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_column_name</span><span class="p">]</span>
 
         <span class="c1"># Chunk each tokenized prompt into blocks of context_size,</span>
         <span class="c1"># discarding the last block if too small.</span>
@@ -2687,6 +2610,7 @@
         <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+        <span class="n">dataset_column_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;input_ids&quot;</span><span class="p">,</span>
         <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">pre_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2707,6 +2631,7 @@
 <span class="sd">            dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
 <span class="sd">            dataset_files: Path(s) to source data file(s).</span>
 <span class="sd">            dataset_split: Dataset split (e.g. `train`).</span>
+<span class="sd">            dataset_column_name: The column name for the tokenized prompts.</span>
 <span class="sd">            preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.</span>
 <span class="sd">                tokenizing prompts).</span>
 <span class="sd">            pre_download: Whether to pre-download the whole dataset.</span>
@@ -2718,6 +2643,7 @@
             <span class="n">dataset_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
             <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
             <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
+            <span class="n">dataset_column_name</span><span class="o">=</span><span class="n">dataset_column_name</span><span class="p">,</span>
             <span class="n">pre_download</span><span class="o">=</span><span class="n">pre_download</span><span class="p">,</span>
             <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
         <span class="p">)</span>
@@ -2743,7 +2669,7 @@
 
 
 <h3 id="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">dataset_column_name</span><span class="o">=</span><span class="s1">&#39;input_ids&#39;</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -2857,6 +2783,20 @@ tokenized prompts once the preprocessing function has been applied.</p>
           </td>
         </tr>
         <tr>
+          <td><code>dataset_column_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The column name for the tokenized prompts.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;input_ids&#39;</code>
+          </td>
+        </tr>
+        <tr>
           <td><code>preprocess_batch_size</code></td>
           <td>
                 <code>int</code>
@@ -2890,7 +2830,18 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 70</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
 <span class="normal"> 71</span>
 <span class="normal"> 72</span>
 <span class="normal"> 73</span>
@@ -2923,15 +2874,7 @@ tokenizing prompts).</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
@@ -2939,6 +2882,7 @@ tokenizing prompts).</p>
     <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+    <span class="n">dataset_column_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;input_ids&quot;</span><span class="p">,</span>
     <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">pre_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2959,6 +2903,7 @@ tokenizing prompts).</p>
 <span class="sd">        dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
 <span class="sd">        dataset_files: Path(s) to source data file(s).</span>
 <span class="sd">        dataset_split: Dataset split (e.g. `train`).</span>
+<span class="sd">        dataset_column_name: The column name for the tokenized prompts.</span>
 <span class="sd">        preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.</span>
 <span class="sd">            tokenizing prompts).</span>
 <span class="sd">        pre_download: Whether to pre-download the whole dataset.</span>
@@ -2970,6 +2915,7 @@ tokenizing prompts).</p>
         <span class="n">dataset_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
         <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
         <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
+        <span class="n">dataset_column_name</span><span class="o">=</span><span class="n">dataset_column_name</span><span class="p">,</span>
         <span class="n">pre_download</span><span class="o">=</span><span class="n">pre_download</span><span class="p">,</span>
         <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
     <span class="p">)</span>
@@ -3012,7 +2958,7 @@ tokenizing prompts).</p>
         <tr>
           <td><code>source_batch</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch" href="#sparse_autoencoder.source_data.pretokenized_dataset.PreTokenizedDataBatch">PreTokenizedDataBatch</a></code>
+                <code>dict</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3066,7 +3012,18 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/pretokenized_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
@@ -3085,20 +3042,9 @@ tokenizing prompts).</p>
 <span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">source_batch</span><span class="p">:</span> <span class="n">PreTokenizedDataBatch</span><span class="p">,</span>
+    <span class="n">source_batch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
@@ -3113,7 +3059,7 @@ tokenizing prompts).</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        Tokenized prompts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tokenized_prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span>
+    <span class="n">tokenized_prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_column_name</span><span class="p">]</span>
 
     <span class="c1"># Chunk each tokenized prompt into blocks of context_size,</span>
     <span class="c1"># discarding the last block if too small.</span>
