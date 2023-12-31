@@ -12,24 +12,13 @@ PreTokenizedDataset should work with any of the following tokenized datasets:
 
 """
 from collections.abc import Mapping, Sequence
-from typing import TypedDict, final
+from typing import final
 
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
 
 
-class PreTokenizedDataBatch(TypedDict):
-    """General Pre-Tokenized Dataset Item.
-
-    Structure depends on the specific dataset from Hugging Face.
-    """
-
-    tokens: list[
-        list[int]
-    ]  # This assumes that the dataset structure is similar to the original Neel Nanda dataset.
-
-
 @final
-class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
+class PreTokenizedDataset(SourceDataset[dict]):
     """General Pre-Tokenized Dataset from Hugging Face.
 
     Can be used for various datasets available on Hugging Face.
@@ -37,7 +26,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
 
     def preprocess(
         self,
-        source_batch: PreTokenizedDataBatch,
+        source_batch: dict,
         *,
         context_size: int,
     ) -> TokenizedPrompts:
@@ -52,7 +41,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         Returns:
             Tokenized prompts.
         """
-        tokenized_prompts: list[list[int]] = source_batch["tokens"]
+        tokenized_prompts: list[list[int]] = source_batch[self._dataset_column_name]
 
         # Chunk each tokenized prompt into blocks of context_size,
         # discarding the last block if too small.
@@ -75,6 +64,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_split: str = "train",
+        dataset_column_name: str = "input_ids",
         preprocess_batch_size: int = 1000,
         *,
         pre_download: bool = False,
@@ -95,6 +85,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
             dataset_dir: Defining the `data_dir` of the dataset configuration.
             dataset_files: Path(s) to source data file(s).
             dataset_split: Dataset split (e.g. `train`).
+            dataset_column_name: The column name for the tokenized prompts.
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
             pre_download: Whether to pre-download the whole dataset.
@@ -106,6 +97,7 @@ class PreTokenizedDataset(SourceDataset[PreTokenizedDataBatch]):
             dataset_files=dataset_files,
             dataset_path=dataset_path,
             dataset_split=dataset_split,
+            dataset_column_name=dataset_column_name,
             pre_download=pre_download,
             preprocess_batch_size=preprocess_batch_size,
         )

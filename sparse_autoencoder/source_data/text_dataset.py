@@ -72,6 +72,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_split: str = "train",
+        dataset_column_name: str = "input_ids",
         n_processes_preprocessing: int | None = None,
         preprocess_batch_size: int = 1000,
         *,
@@ -95,6 +96,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
             dataset_dir: Defining the `data_dir` of the dataset configuration.
             dataset_files: Path(s) to source data file(s).
             dataset_split: Dataset split (e.g., 'train').
+            dataset_column_name: The column name for the prompts.
             n_processes_preprocessing: Number of processes to use for preprocessing.
             preprocess_batch_size: Batch size for preprocessing (tokenizing prompts).
             pre_download: Whether to pre-download the whole dataset.
@@ -108,6 +110,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
             dataset_files=dataset_files,
             dataset_path=dataset_path,
             dataset_split=dataset_split,
+            dataset_column_name=dataset_column_name,
             n_processes_preprocessing=n_processes_preprocessing,
             pre_download=pre_download,
             preprocess_batch_size=preprocess_batch_size,
