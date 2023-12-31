@@ -2,7 +2,7 @@
 import pytest
 
 
-TEST_DATASET = "NeelNanda/c4-tokenized-2b"
+TEST_DATASET = "alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2"
 
 
 # Mock class for PreTokenizedDataset
@@ -39,6 +39,7 @@ class MockPreTokenizedDataset:
         return mock_data
 
 
+@pytest.mark.integration_test()
 @pytest.mark.parametrize("context_size", [50, 250])
 def test_tokenized_prompts_correct_size(context_size: int) -> None:
     """Test that the tokenized prompts have the correct context size."""
