@@ -5,12 +5,13 @@ from jaxtyping import Int
 import torch
 from torch import Tensor
 from transformer_lens import HookedTransformer
-
+import pytest
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.tensor_types import Axis
 
 
+@pytest.mark.integration_test
 def test_hook_stores_activations() -> None:
     """Test that the hook stores activations correctly."""
     store = TensorActivationStore(max_items=100, n_neurons=256)

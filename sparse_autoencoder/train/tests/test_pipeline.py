@@ -69,6 +69,7 @@ def pipeline_fixture() -> Pipeline:
 class TestGenerateActivations:
     """Test the generate_activations method."""
 
+    @pytest.mark.integration_test
     def test_generates_store(self, pipeline_fixture: Pipeline) -> None:
         """Test that generate_activations generates a store."""
         store_size: int = 1000
@@ -78,6 +79,7 @@ class TestGenerateActivations:
         ), "Store must be a TensorActivationStore instance"
         assert len(store) == store_size, "Store size should match the specified size"
 
+    @pytest.mark.integration_test
     def test_store_has_unique_items(self, pipeline_fixture: Pipeline) -> None:
         """Test that each item from the store iterable is unique."""
         store_size: int = 1000
@@ -93,6 +95,7 @@ class TestGenerateActivations:
 
         assert len(unique_activations) >= expected_min_length, "Store items should be unique"
 
+    @pytest.mark.integration_test
     def test_two_runs_generate_different_activations(self, pipeline_fixture: Pipeline) -> None:
         """Test that two runs of generate_activations generate different activations."""
         store_size: int = 1000
@@ -108,6 +111,7 @@ class TestGenerateActivations:
 class TestTrainAutoencoder:
     """Test the train_autoencoder method."""
 
+    @pytest.mark.integration_test
     def test_learned_activations_fired_count(self, pipeline_fixture: Pipeline) -> None:
         """Test that the learned activations fired count is updated correctly."""
         store_size: int = 1000
@@ -122,6 +126,7 @@ class TestTrainAutoencoder:
 
         assert fired_count.sum().item() > 0, "Some neurons should have fired."
 
+    @pytest.mark.integration_test
     def test_learns_with_backwards_pass(self, pipeline_fixture: Pipeline) -> None:
         """Test that the autoencoder learns with a backwards pass."""
         store_size: int = 1000
@@ -144,6 +149,7 @@ class TestTrainAutoencoder:
 class TestUpdateParameters:
     """Test the update_parameters method."""
 
+    @pytest.mark.integration_test
     def test_weights_biases_changed(self, pipeline_fixture: Pipeline) -> None:
         """Test that the weights and biases have changed after training."""
         store_size: int = 1000
@@ -209,6 +215,7 @@ class TestUpdateParameters:
             pipeline_fixture.autoencoder.decoder.weight[0, :, ~dead_neuron_indices],
         ), "Decoder weights should not have changed after training."
 
+    @pytest.mark.integration_test
     def test_optimizer_state_changed(self, pipeline_fixture: Pipeline) -> None:
         """Test that the optimizer state has changed after training."""
         store_size: int = 1000
@@ -268,6 +275,7 @@ class TestUpdateParameters:
 class TestValidateSAE:
     """Test the validate_sae method."""
 
+    @pytest.mark.integration_test
     def test_validation_loss_calculated(self, pipeline_fixture: Pipeline) -> None:
         """Test that the validation loss numbers are calculated."""
 
@@ -308,11 +316,13 @@ class TestValidateSAE:
 class TestSaveCheckpoint:
     """Test the save_checkpoint method."""
 
+    @pytest.mark.integration_test
     def test_saves_locally(self, pipeline_fixture: Pipeline) -> None:
         """Test that the save_checkpoint method saves the checkpoint locally."""
         saved_checkpoint: Path = pipeline_fixture.save_checkpoint()
         assert saved_checkpoint.exists(), "Checkpoint file should exist."
 
+    @pytest.mark.integration_test
     def test_saves_final(self, pipeline_fixture: Pipeline) -> None:
         """Test that the save_checkpoint method saves the final checkpoint."""
         saved_checkpoint: Path = pipeline_fixture.save_checkpoint(is_final=True)
@@ -324,6 +334,7 @@ class TestSaveCheckpoint:
 class TestRunPipeline:
     """Test the run_pipeline method."""
 
+    @pytest.mark.integration_test
     def test_run_pipeline_calls_all_methods(self, pipeline_fixture: Pipeline) -> None:
         """Test that the run_pipeline method calls all the other methods."""
         pipeline_fixture.validate_sae = MagicMock(spec=Pipeline.validate_sae)  # type: ignore
