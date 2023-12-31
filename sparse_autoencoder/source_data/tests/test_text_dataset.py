@@ -5,7 +5,7 @@ from transformers import PreTrainedTokenizerFast
 from sparse_autoencoder.source_data.text_dataset import TextDataset
 
 
-@pytest.mark.integration_test
+@pytest.mark.integration_test()
 @pytest.mark.parametrize("context_size", [50, 250])
 def test_tokenized_prompts_correct_size(context_size: int) -> None:
     """Test that the tokenized prompts have the correct context size."""
@@ -25,7 +25,8 @@ def test_tokenized_prompts_correct_size(context_size: int) -> None:
         for token in item["input_ids"]:
             assert isinstance(token, int)
 
-@pytest.mark.integration_test
+
+@pytest.mark.integration_test()
 def test_dataloader_correct_size_items() -> None:
     """Test the dataloader returns the correct number & sized items."""
     batch_size = 10
