@@ -48,12 +48,13 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
         "random_seed": 49,
         "source_data": {
             "context_size": 128,
+            "dataset_column_name": "input_ids",
             "dataset_dir": None,
             "dataset_files": None,
             "dataset_path": "NeelNanda/c4-code-tokenized-2b",
+            "pre_download": False,
             "pre_tokenized": True,
             "tokenizer_name": None,
-            "pre_download": False,
         },
         "source_model": {
             "dtype": "float32",

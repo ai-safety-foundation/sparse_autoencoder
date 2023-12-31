@@ -70,6 +70,9 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         Hugging Face `Dataset` objects are confusingly not the same as PyTorch `Dataset` objects.
     """
 
+    _dataset_column_name: str
+    """Dataset column name for the prompts."""
+
     @abstractmethod
     def preprocess(
         self,
@@ -111,6 +114,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         buffer_size: int = 1000,
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
+        dataset_column_name: str = "input_ids",
         n_processes_preprocessing: int | None = None,
         preprocess_batch_size: int = 1000,
         *,
@@ -136,6 +140,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
                 tokenized prompts once the preprocessing function has been applied.
             dataset_dir: Defining the `data_dir` of the dataset configuration.
             dataset_files: Path(s) to source data file(s).
+            dataset_column_name: The column name for the prompts.
             n_processes_preprocessing: The number of processes to use for preprocessing.
             preprocess_batch_size: The batch size to use just for preprocessing the dataset (e.g.
                 tokenizing prompts).
@@ -145,6 +150,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             TypeError: If the loaded dataset is not a Hugging Face `Dataset` or `IterableDataset`.
         """
         self.context_size = context_size
+        self._dataset_column_name = dataset_column_name
 
         # Load the dataset
         should_stream = not pre_download
