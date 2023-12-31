@@ -2,6 +2,7 @@
 from functools import partial
 
 from jaxtyping import Int
+import pytest
 import torch
 from torch import Tensor
 from transformer_lens import HookedTransformer
@@ -11,6 +12,7 @@ from sparse_autoencoder.source_model.replace_activations_hook import replace_act
 from sparse_autoencoder.tensor_types import Axis
 
 
+@pytest.mark.integration_test()
 def test_hook_replaces_activations() -> None:
     """Test that the hook replaces activations."""
     torch.random.manual_seed(0)
@@ -36,6 +38,7 @@ def test_hook_replaces_activations() -> None:
     assert torch.all(torch.gt(loss_with_hook, loss_without_hook))
 
 
+@pytest.mark.integration_test()
 def test_hook_replaces_activations_2_components() -> None:
     """Test that the hook replaces activations."""
     torch.random.manual_seed(0)

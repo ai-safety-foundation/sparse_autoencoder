@@ -73,6 +73,9 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
     _dataset_column_name: str
     """Dataset column name for the prompts."""
 
+    _dataset_column_name: str
+    """Dataset column name for the prompts."""
+
     @abstractmethod
     def preprocess(
         self,

@@ -17,7 +17,6 @@ from typing import final
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
 
 
-
 @final
 class PreTokenizedDataset(SourceDataset[dict]):
     """General Pre-Tokenized Dataset from Hugging Face.

@@ -161,6 +161,7 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
             dataset_dir=dataset_dir,
             dataset_files=dataset_files,
             dataset_path=hyperparameters["source_data"]["dataset_path"],
+            dataset_column_name=hyperparameters["source_data"]["dataset_column_name"],
             pre_download=hyperparameters["source_data"]["pre_download"],
         )
 
@@ -175,6 +176,7 @@ def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
 
     return TextDataset(
         context_size=hyperparameters["source_data"]["context_size"],
+        dataset_column_name=hyperparameters["source_data"]["dataset_column_name"],
         dataset_dir=dataset_dir,
         dataset_files=dataset_files,
         dataset_path=hyperparameters["source_data"]["dataset_path"],

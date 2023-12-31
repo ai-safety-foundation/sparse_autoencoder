@@ -53,7 +53,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
 
         # Chunk each tokenized prompt into blocks of context_size, discarding incomplete blocks.
         context_size_prompts = []
-        for encoding in list(tokenized_prompts["input_ids"]):  # type: ignore
+        for encoding in list(tokenized_prompts[self._dataset_column_name]):  # type: ignore
             chunks = [
                 encoding[i : i + context_size]
                 for i in range(0, len(encoding), context_size)
