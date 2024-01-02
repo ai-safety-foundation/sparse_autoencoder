@@ -12,6 +12,7 @@ from sparse_autoencoder.autoencoder.abstract_autoencoder import ResetOptimizerPa
 from sparse_autoencoder.autoencoder.components.abstract_encoder import (
     AbstractEncoder,
 )
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 
 

@@ -9,7 +9,7 @@ from torch import Tensor
 from sparse_autoencoder.loss.abstract_loss import (
     AbstractLoss,
     LossReductionType,
-    LossResultWithLogMetrics,
+    LossResultWithMetrics,
 )
 from sparse_autoencoder.metrics.abstract_metric import MetricLocation, MetricResult
 from sparse_autoencoder.tensor_types import Axis
@@ -147,7 +147,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         ],
         batch_reduction: LossReductionType = LossReductionType.MEAN,
         component_reduction: LossReductionType = LossReductionType.NONE,
-    ) -> LossResultWithLogMetrics:
+    ) -> LossResultWithMetrics:
         """Scalar L1 loss (reduced across the batch and component axis) with logging.
 
         Args:
@@ -209,7 +209,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
             case LossReductionType.NONE:
                 pass
 
-        return LossResultWithLogMetrics(loss=batch_scalar_loss_penalty, log_metrics=metrics)
+        return LossResultWithMetrics(loss=batch_scalar_loss_penalty, loss_metrics=metrics)
 
     def extra_repr(self) -> str:
         """Extra representation string."""

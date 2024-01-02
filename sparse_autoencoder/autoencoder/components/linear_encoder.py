@@ -11,6 +11,7 @@ from torch.nn import Parameter, ReLU, init
 
 from sparse_autoencoder.autoencoder.abstract_autoencoder import ResetOptimizerParameterDetails
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 

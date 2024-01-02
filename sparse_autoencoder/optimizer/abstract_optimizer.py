@@ -1,6 +1,5 @@
 """Abstract optimizer with reset."""
 from abc import ABC, abstractmethod
-from typing import TypeAlias
 
 from jaxtyping import Int64
 from torch import Tensor

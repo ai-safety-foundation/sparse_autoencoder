@@ -4,11 +4,12 @@ from typing import NamedTuple
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Module, Parameter
+from torch.nn import Module
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -22,20 +23,6 @@ class AutoencoderForwardPassResult(NamedTuple):
     decoded_activations: Float[
         Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
     ]
-
-
-class ResetOptimizerParameterDetails(NamedTuple):
-    """Reset Optimizer Parameter Details.
-
-    Details of a parameter that should be reset in the optimizer, when resetting
-    it's corresponding dictionary vectors.
-    """
-
-    parameter: Parameter
-    """Parameter to reset."""
-
-    axis: int
-    """Axis of the parameter to reset."""
 
 
 class AbstractAutoencoder(Module, ABC):

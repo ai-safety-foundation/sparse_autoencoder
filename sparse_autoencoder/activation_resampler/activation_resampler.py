@@ -191,10 +191,7 @@ class ActivationResampler(AbstractActivationResampler):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
-    ]:
+    ) -> LossInputActivationsTuple:
         """Compute the loss on a random subset of inputs.
 
         Motivation:
@@ -449,7 +446,7 @@ class ActivationResampler(AbstractActivationResampler):
 
             # Compute the loss for the current model on a random subset of inputs and get the
             # activations.
-            loss, input_activations = self.compute_loss_and_get_activations(
+            loss_per_item, input_activations = self.compute_loss_and_get_activations(
                 store=activation_store,
                 autoencoder=autoencoder,
                 loss_fn=loss_fn,
@@ -460,7 +457,7 @@ class ActivationResampler(AbstractActivationResampler):
             # square of the autoencoder's loss on that input.
             sample_probabilities: Float[
                 Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
-            ] = self.assign_sampling_probabilities(loss)
+            ] = self.assign_sampling_probabilities(loss_per_item)
 
             # For each dead neuron sample an input according to these probabilities.
             sampled_input: list[

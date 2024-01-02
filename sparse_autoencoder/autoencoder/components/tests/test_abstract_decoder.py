@@ -10,6 +10,7 @@ from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.abstract_autoencoder import ResetOptimizerParameterDetails
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 
 

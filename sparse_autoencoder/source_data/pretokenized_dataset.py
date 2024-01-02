@@ -25,7 +25,7 @@ class PreTokenizedDataset(SourceDataset[dict]):
 
     Can be used for various datasets available on Hugging Face.
     """
-    
+
     def preprocess(
         self,
         source_batch: dict,

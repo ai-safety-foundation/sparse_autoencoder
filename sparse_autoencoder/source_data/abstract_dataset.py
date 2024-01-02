@@ -70,7 +70,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
     Warning:
         Hugging Face `Dataset` objects are confusingly not the same as PyTorch `Dataset` objects.
     """
-    
+
     _dataset_column_name: str
     """Dataset column name for the prompts."""
 
