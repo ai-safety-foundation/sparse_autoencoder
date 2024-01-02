@@ -1,6 +1,6 @@
 """Abstract loss."""
 from abc import ABC, abstractmethod
-from typing import final
+from typing import NamedTuple, final
 
 from jaxtyping import Float
 from strenum import LowercaseStrEnum
@@ -20,6 +20,14 @@ class LossReductionType(LowercaseStrEnum):
     SUM = "sum"
 
     NONE = "none"
+
+
+class LossResultWithLogMetrics(NamedTuple):
+    """Loss result with any metrics to log."""
+
+    loss: Float[Tensor, Axis.COMPONENT] | Float[Tensor, Axis.SINGLE_ITEM]
+
+    log_metrics: list[MetricResult]
 
 
 class AbstractLoss(Module, ABC):
@@ -119,7 +127,7 @@ class AbstractLoss(Module, ABC):
         ],
         batch_reduction: LossReductionType = LossReductionType.MEAN,
         component_reduction: LossReductionType = LossReductionType.NONE,
-    ) -> tuple[Float[Tensor, Axis.COMPONENT] | Float[Tensor, Axis.SINGLE_ITEM], list[MetricResult]]:
+    ) -> LossResultWithLogMetrics:
         """Scalar loss (reduced across the batch and component axis) with logging.
 
         Args:
@@ -181,7 +189,7 @@ class AbstractLoss(Module, ABC):
             case LossReductionType.NONE:
                 pass
 
-        return current_module_loss, metrics
+        return LossResultWithLogMetrics(loss=current_module_loss, log_metrics=metrics)
 
     @final
     def __call__(
@@ -196,7 +204,7 @@ class AbstractLoss(Module, ABC):
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
         reduction: LossReductionType = LossReductionType.MEAN,
-    ) -> tuple[Float[Tensor, Axis.SINGLE_ITEM], list[MetricResult]]:
+    ) -> LossResultWithLogMetrics:
         """Batch scalar loss.
 
         Args:

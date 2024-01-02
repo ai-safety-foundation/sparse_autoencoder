@@ -1,14 +1,28 @@
 """Learned activations L1 (absolute error) loss."""
-from typing import final
+from typing import NamedTuple, final
 
 from jaxtyping import Float
 from pydantic import PositiveFloat, validate_call
 import torch
 from torch import Tensor
 
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
+from sparse_autoencoder.loss.abstract_loss import (
+    AbstractLoss,
+    LossReductionType,
+    LossResultWithLogMetrics,
+)
 from sparse_autoencoder.metrics.abstract_metric import MetricLocation, MetricResult
 from sparse_autoencoder.tensor_types import Axis
+
+
+class _L1LossAndPenalty(NamedTuple):
+    """L1 loss result and loss penalty."""
+
+    itemwise_absolute_loss: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    """Itemwise absolute loss."""
+
+    itemwise_absolute_loss_penalty: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    """Itemwise absolute loss multiplied by the l1 coefficient."""
 
 
 @final
@@ -64,10 +78,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         decoded_activations: Float[  # noqa: ARG002s
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-    ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
-    ]:
+    ) -> _L1LossAndPenalty:
         """Learned activations L1 (absolute error) loss.
 
         Args:
@@ -82,15 +93,18 @@ class LearnedActivationsL1Loss(AbstractLoss):
         """
         # Absolute loss is the summed absolute value of the learned activations (i.e. over the
         # learned feature axis).
-        absolute_loss: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)] = torch.abs(
-            learned_activations
-        ).sum(dim=-1)
+        itemwise_absolute_loss: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
+        ] = torch.abs(learned_activations).sum(dim=-1)
 
-        absolute_loss_penalty: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)] = (
-            absolute_loss * self.l1_coefficient
+        itemwise_absolute_loss_penalty: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
+        ] = itemwise_absolute_loss * self.l1_coefficient
+
+        return _L1LossAndPenalty(
+            itemwise_absolute_loss=itemwise_absolute_loss,
+            itemwise_absolute_loss_penalty=itemwise_absolute_loss_penalty,
         )
-
-        return absolute_loss, absolute_loss_penalty
 
     def forward(
         self,
@@ -115,7 +129,9 @@ class LearnedActivationsL1Loss(AbstractLoss):
         Returns:
             Loss per batch item.
         """
-        return self._l1_loss(source_activations, learned_activations, decoded_activations)[1]
+        return self._l1_loss(
+            source_activations, learned_activations, decoded_activations
+        ).itemwise_absolute_loss_penalty
 
     # Override to add both the loss and the penalty to the log
     def scalar_loss_with_log(
@@ -131,7 +147,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
         ],
         batch_reduction: LossReductionType = LossReductionType.MEAN,
         component_reduction: LossReductionType = LossReductionType.NONE,
-    ) -> tuple[Float[Tensor, Axis.COMPONENT_OPTIONAL], list[MetricResult]]:
+    ) -> LossResultWithLogMetrics:
         """Scalar L1 loss (reduced across the batch and component axis) with logging.
 
         Args:
@@ -150,17 +166,17 @@ class LearnedActivationsL1Loss(AbstractLoss):
         Raises:
             ValueError: If batch_reduction is LossReductionType.NONE.
         """
-        absolute_loss, absolute_loss_penalty = self._l1_loss(
+        itemwise_absolute_loss, itemwise_absolute_loss_penalty = self._l1_loss(
             source_activations, learned_activations, decoded_activations
         )
 
         match batch_reduction:
             case LossReductionType.MEAN:
-                batch_scalar_loss = absolute_loss.mean(0)
-                batch_scalar_loss_penalty = absolute_loss_penalty.mean(0)
+                batch_scalar_loss = itemwise_absolute_loss.mean(0)
+                batch_scalar_loss_penalty = itemwise_absolute_loss_penalty.mean(0)
             case LossReductionType.SUM:
-                batch_scalar_loss = absolute_loss.sum(0)
-                batch_scalar_loss_penalty = absolute_loss_penalty.sum(0)
+                batch_scalar_loss = itemwise_absolute_loss.sum(0)
+                batch_scalar_loss_penalty = itemwise_absolute_loss_penalty.sum(0)
             case LossReductionType.NONE:
                 error_message = "Batch reduction type NONE not supported."
                 raise ValueError(error_message)
@@ -193,7 +209,7 @@ class LearnedActivationsL1Loss(AbstractLoss):
             case LossReductionType.NONE:
                 pass
 
-        return batch_scalar_loss_penalty, metrics
+        return LossResultWithLogMetrics(loss=batch_scalar_loss_penalty, log_metrics=metrics)
 
     def extra_repr(self) -> str:
         """Extra representation string."""

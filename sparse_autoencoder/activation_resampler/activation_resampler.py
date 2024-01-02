@@ -1,5 +1,5 @@
 """Activation resampler."""
-from typing import Annotated
+from typing import Annotated, NamedTuple
 
 from einops import rearrange
 from jaxtyping import Bool, Float, Int64
@@ -20,6 +20,15 @@ from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils import get_model_device
+
+
+class LossInputActivationsTuple(NamedTuple):
+    """Loss and corresponding input activations tuple."""
+
+    loss_per_item: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    input_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ]
 
 
 class ActivationResampler(AbstractActivationResampler):
@@ -226,18 +235,18 @@ class ActivationResampler(AbstractActivationResampler):
                 if batch_idx >= n_batches_required:
                     break
 
-            loss_result = torch.cat(loss_batches).to(model_device)
+            loss_per_item = torch.cat(loss_batches).to(model_device)
             input_activations = torch.cat(input_activations_batches).to(model_device)
 
             # Check we generated enough data
-            if len(loss_result) < n_inputs:
+            if len(loss_per_item) < n_inputs:
                 error_message = (
                     f"Cannot get {n_inputs} items from the store, "
-                    f"as only {len(loss_result)} were available."
+                    f"as only {len(loss_per_item)} were available."
                 )
                 raise ValueError(error_message)
 
-            return loss_result, input_activations
+            return LossInputActivationsTuple(loss_per_item, input_activations)
 
     @staticmethod
     def assign_sampling_probabilities(

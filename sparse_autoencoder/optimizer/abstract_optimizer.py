@@ -10,9 +10,6 @@ from torch.optim import Optimizer
 from sparse_autoencoder.tensor_types import Axis
 
 
-ParameterAxis: TypeAlias = tuple[Parameter, int]
-
-
 class AbstractOptimizerWithReset(Optimizer, ABC):
     """Abstract optimizer with reset.
 

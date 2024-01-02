@@ -8,6 +8,7 @@ import torch
 from torch import Tensor
 from torch.nn import Parameter, init
 
+from sparse_autoencoder.autoencoder.abstract_autoencoder import ResetOptimizerParameterDetails
 from sparse_autoencoder.autoencoder.components.abstract_encoder import (
     AbstractEncoder,
 )
@@ -50,9 +51,12 @@ class MockEncoder(AbstractEncoder):
         self._weight: Parameter = init.kaiming_normal_(self._weight)  # type: ignore
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details."""
-        return [(self.weight, 0), (self.bias, 0)]
+        return [
+            ResetOptimizerParameterDetails(parameter=self.weight, axis=0),
+            ResetOptimizerParameterDetails(parameter=self.bias, axis=0),
+        ]
 
 
 @pytest.fixture()
