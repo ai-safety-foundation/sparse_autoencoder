@@ -156,11 +156,11 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
         match batch_reduction:
             case LossReductionType.MEAN:
-                batch_scalar_loss = absolute_loss.mean(0).squeeze()
-                batch_scalar_loss_penalty = absolute_loss_penalty.mean(0).squeeze()
+                batch_scalar_loss = absolute_loss.mean(0)
+                batch_scalar_loss_penalty = absolute_loss_penalty.mean(0)
             case LossReductionType.SUM:
-                batch_scalar_loss = absolute_loss.sum(0).squeeze()
-                batch_scalar_loss_penalty = absolute_loss_penalty.sum(0).squeeze()
+                batch_scalar_loss = absolute_loss.sum(0)
+                batch_scalar_loss_penalty = absolute_loss_penalty.sum(0)
             case LossReductionType.NONE:
                 error_message = "Batch reduction type NONE not supported."
                 raise ValueError(error_message)

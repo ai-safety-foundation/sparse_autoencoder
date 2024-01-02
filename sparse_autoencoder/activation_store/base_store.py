@@ -66,7 +66,7 @@ class ActivationStore(
     def append(
         self,
         item: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int = 0,
+        component_idx: int,
     ) -> Future | None:
         """Add a Single Item to the Store."""
 
@@ -74,7 +74,7 @@ class ActivationStore(
     def extend(
         self,
         batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int = 0,
+        component_idx: int,
     ) -> Future | None:
         """Add a Batch to the Store."""
 
@@ -98,8 +98,8 @@ class ActivationStore(
 
     @abstractmethod
     def __getitem__(
-        self, index: int
-    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
+        self, index: tuple[int, ...] | slice | int
+    ) -> Float[Tensor, Axis.names(Axis.ANY)]:
         """Get an Item from the Store."""
 
     def shuffle(self) -> None:
@@ -124,7 +124,7 @@ class ActivationStore(
 
         Example:
             >>> from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-            >>> store = TensorActivationStore(max_items=100, n_neurons=256)
+            >>> store = TensorActivationStore(max_items=100, n_neurons=256, n_components=1)
             >>> store.fill_with_test_data(batch_size=100)
             >>> len(store)
             100

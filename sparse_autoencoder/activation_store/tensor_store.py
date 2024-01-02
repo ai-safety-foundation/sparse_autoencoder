@@ -81,7 +81,7 @@ class TensorActivationStore(ActivationStore):
         self,
         max_items: PositiveInt,
         n_neurons: PositiveInt,
-        n_components: PositiveInt = 1,
+        n_components: PositiveInt,
         device: torch.device | None = None,
     ) -> None:
         """Initialise the Tensor Activation Store.
@@ -105,9 +105,9 @@ class TensorActivationStore(ActivationStore):
 
         Example:
             >>> import torch
-            >>> store = TensorActivationStore(max_items=10_000_000, n_neurons=100)
-            >>> store.append(torch.randn(100))
-            >>> store.append(torch.randn(100))
+            >>> store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)
+            >>> store.append(torch.randn(100), component_idx=0)
+            >>> store.append(torch.randn(100), component_idx=0)
             >>> len(store)
             2
 
@@ -122,7 +122,7 @@ class TensorActivationStore(ActivationStore):
 
         Example:
             >>> import torch
-            >>> store = TensorActivationStore(max_items=2, n_neurons=100)
+            >>> store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)
             >>> store.__sizeof__() # Pre-allocated tensor of 2x100
             800
 
@@ -132,16 +132,16 @@ class TensorActivationStore(ActivationStore):
         return self._data.element_size() * self._data.nelement()
 
     def __getitem__(
-        self, index: int
-    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
+        self, index: tuple[int, ...] | slice | int
+    ) -> Float[Tensor, Axis.names(Axis.ANY)]:
         """Get Item Dunder Method.
 
         Examples:
             >>> import torch
-            >>> store = TensorActivationStore(max_items=2, n_neurons=5)
-            >>> store.append(torch.zeros(5))
-            >>> store.append(torch.ones(5))
-            >>> store[1]
+            >>> store = TensorActivationStore(max_items=2, n_neurons=5, n_components=1)
+            >>> store.append(torch.zeros(5), component_idx=0)
+            >>> store.append(torch.ones(5), component_idx=0)
+            >>> store[1, 0]
             tensor([1., 1., 1., 1., 1.])
 
         Args:
@@ -149,17 +149,7 @@ class TensorActivationStore(ActivationStore):
 
         Returns:
             The activation store item at the given index.
-
-        Raises:
-            IndexError: If the index is out of range.
         """
-        # Check in range
-        if index >= len(self):
-            msg = f"Index {index} out of range (only {len(self)} items stored)"
-            raise IndexError(msg)
-
-        if self._n_components == 1:
-            return self._data[index, 0]
         return self._data[index]
 
     def shuffle(self) -> None:
@@ -170,12 +160,12 @@ class TensorActivationStore(ActivationStore):
         Example:
         >>> import torch
         >>> _seed = torch.manual_seed(42)
-        >>> store = TensorActivationStore(max_items=10, n_neurons=1)
-        >>> store.append(torch.tensor([0.]))
-        >>> store.append(torch.tensor([1.]))
-        >>> store.append(torch.tensor([2.]))
+        >>> store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)
+        >>> store.append(torch.tensor([0.]), component_idx=0)
+        >>> store.append(torch.tensor([1.]), component_idx=0)
+        >>> store.append(torch.tensor([2.]), component_idx=0)
         >>> store.shuffle()
-        >>> [store[i].item() for i in range(3)]
+        >>> [store[i, 0].item() for i in range(3)]
         [0.0, 2.0, 1.0]
         """
         # Generate a permutation of the indices for the active data
@@ -184,17 +174,15 @@ class TensorActivationStore(ActivationStore):
         # Use this permutation to shuffle the active data in-place
         self._data[: len(self)] = self._data[perm]
 
-    def append(
-        self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE], component_idx: int = 0
-    ) -> None:
+    def append(self, item: Float[Tensor, Axis.INPUT_OUTPUT_FEATURE], component_idx: int) -> None:
         """Add a single item to the store.
 
         Example:
         >>> import torch
         >>> store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
-        >>> store.append(torch.zeros(5))
-        >>> store.append(torch.ones(5))
-        >>> store[1]
+        >>> store.append(torch.zeros(5), component_idx=0)
+        >>> store.append(torch.ones(5), component_idx=0)
+        >>> store[1, 0]
         tensor([1., 1., 1., 1., 1.])
 
         Args:
@@ -216,14 +204,14 @@ class TensorActivationStore(ActivationStore):
     def extend(
         self,
         batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int = 0,
+        component_idx: int,
     ) -> None:
         """Add a batch to the store.
 
         Examples:
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, n_neurons=5)
-        >>> store.extend(torch.zeros(2, 5))
+        >>> store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
+        >>> store.extend(torch.zeros(2, 5), component_idx=0)
         >>> len(store)
         2
 
@@ -251,8 +239,8 @@ class TensorActivationStore(ActivationStore):
 
         Example:
         >>> import torch
-        >>> store = TensorActivationStore(max_items=10, n_neurons=5)
-        >>> store.extend(torch.zeros(2, 5))
+        >>> store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
+        >>> store.extend(torch.zeros(2, 5), component_idx=0)
         >>> len(store)
         2
         >>> store.empty()
