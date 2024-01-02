@@ -5,6 +5,7 @@ from typing import Any, Generic, TypedDict, TypeVar, final
 
 from datasets import Dataset, IterableDataset, load_dataset
 from jaxtyping import Int
+from pydantic import PositiveInt, validate_call
 from torch import Tensor
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset as TorchDataset
@@ -109,17 +110,18 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         """
 
     @abstractmethod
+    @validate_call
     def __init__(
         self,
         dataset_path: str,
         dataset_split: str,
-        context_size: int,
-        buffer_size: int = 1000,
+        context_size: PositiveInt,
+        buffer_size: PositiveInt = 1000,
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_column_name: str = "input_ids",
-        n_processes_preprocessing: int | None = None,
-        preprocess_batch_size: int = 1000,
+        n_processes_preprocessing: PositiveInt | None = None,
+        preprocess_batch_size: PositiveInt = 1000,
         *,
         pre_download: bool = False,
     ):

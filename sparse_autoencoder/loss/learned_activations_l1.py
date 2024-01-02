@@ -2,6 +2,7 @@
 from typing import final
 
 from jaxtyping import Float
+from pydantic import PositiveFloat, validate_call
 import torch
 from torch import Tensor
 
@@ -37,8 +38,9 @@ class LearnedActivationsL1Loss(AbstractLoss):
         """
         return "learned_activations_l1_loss_penalty"
 
+    @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
-        self, l1_coefficient: float | Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
+        self, l1_coefficient: PositiveFloat | Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
     ) -> None:
         """Initialize the absolute error loss.
 
@@ -154,11 +156,11 @@ class LearnedActivationsL1Loss(AbstractLoss):
 
         match batch_reduction:
             case LossReductionType.MEAN:
-                batch_scalar_loss = absolute_loss.mean(0).squeeze()
-                batch_scalar_loss_penalty = absolute_loss_penalty.mean(0).squeeze()
+                batch_scalar_loss = absolute_loss.mean(0)
+                batch_scalar_loss_penalty = absolute_loss_penalty.mean(0)
             case LossReductionType.SUM:
-                batch_scalar_loss = absolute_loss.sum(0).squeeze()
-                batch_scalar_loss_penalty = absolute_loss_penalty.sum(0).squeeze()
+                batch_scalar_loss = absolute_loss.sum(0)
+                batch_scalar_loss_penalty = absolute_loss_penalty.sum(0)
             case LossReductionType.NONE:
                 error_message = "Batch reduction type NONE not supported."
                 raise ValueError(error_message)

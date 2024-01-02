@@ -4,6 +4,7 @@ from concurrent.futures import Future
 from typing import final
 
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.utils.data import Dataset
@@ -65,7 +66,7 @@ class ActivationStore(
     def append(
         self,
         item: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int = 0,
+        component_idx: int,
     ) -> Future | None:
         """Add a Single Item to the Store."""
 
@@ -73,7 +74,7 @@ class ActivationStore(
     def extend(
         self,
         batch: Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)],
-        component_idx: int = 0,
+        component_idx: int,
     ) -> Future | None:
         """Add a Batch to the Store."""
 
@@ -97,20 +98,21 @@ class ActivationStore(
 
     @abstractmethod
     def __getitem__(
-        self, index: int
-    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
+        self, index: tuple[int, ...] | slice | int
+    ) -> Float[Tensor, Axis.names(Axis.ANY)]:
         """Get an Item from the Store."""
 
     def shuffle(self) -> None:
         """Optional shuffle method."""
 
     @final
+    @validate_call
     def fill_with_test_data(
         self,
-        n_batches: int = 1,
-        batch_size: int = 16,
-        n_components: int = 1,
-        input_features: int = 256,
+        n_batches: PositiveInt = 1,
+        batch_size: PositiveInt = 16,
+        n_components: PositiveInt = 1,
+        input_features: PositiveInt = 256,
     ) -> None:
         """Fill the store with test data.
 
@@ -122,7 +124,7 @@ class ActivationStore(
 
         Example:
             >>> from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-            >>> store = TensorActivationStore(max_items=100, n_neurons=256)
+            >>> store = TensorActivationStore(max_items=100, n_neurons=256, n_components=1)
             >>> store.fill_with_test_data(batch_size=100)
             >>> len(store)
             100

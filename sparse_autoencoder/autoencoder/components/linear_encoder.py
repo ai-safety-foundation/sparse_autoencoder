@@ -4,6 +4,7 @@ from typing import final
 
 import einops
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.nn import Parameter, ReLU, init
@@ -77,11 +78,12 @@ class LinearEncoder(AbstractEncoder):
     activation_function: ReLU
     """Activation function."""
 
+    @validate_call
     def __init__(
         self,
-        input_features: int,
-        learnt_features: int,
-        n_components: int | None,
+        input_features: PositiveInt,
+        learnt_features: PositiveInt,
+        n_components: PositiveInt | None,
     ):
         """Initialize the linear encoder layer.
 

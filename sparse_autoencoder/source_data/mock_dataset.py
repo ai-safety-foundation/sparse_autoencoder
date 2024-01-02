@@ -7,6 +7,7 @@ from typing import Literal, final
 
 from datasets import IterableDataset
 from jaxtyping import Int
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from transformers import PreTrainedTokenizerFast
@@ -139,11 +140,12 @@ class MockDataset(SourceDataset[TokenizedPrompts]):
         # Nothing to do here
         return source_batch
 
+    @validate_call
     def __init__(
         self,
-        context_size: int = 250,
-        buffer_size: int = 1000,  # noqa: ARG002
-        preprocess_batch_size: int = 1000,  # noqa: ARG002
+        context_size: PositiveInt = 250,
+        buffer_size: PositiveInt = 1000,  # noqa: ARG002
+        preprocess_batch_size: PositiveInt = 1000,  # noqa: ARG002
         dataset_path: str = "dummy",  # noqa: ARG002
         dataset_split: str = "train",  # noqa: ARG002
     ):

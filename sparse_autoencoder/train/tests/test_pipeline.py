@@ -37,7 +37,7 @@ def pipeline_fixture() -> Pipeline:
     device = torch.device("cpu")
     src_model = HookedTransformer.from_pretrained("tiny-stories-1M", device=device)
     autoencoder = SparseAutoencoder(
-        src_model.cfg.d_model, src_model.cfg.d_model * 2, n_components=2
+        src_model.cfg.d_model, int(src_model.cfg.d_model * 2), n_components=2
     )
     loss = LossReducer(
         LearnedActivationsL1Loss(
@@ -83,10 +83,11 @@ class TestGenerateActivations:
     def test_store_has_unique_items(self, pipeline_fixture: Pipeline) -> None:
         """Test that each item from the store iterable is unique."""
         store_size: int = 1000
-        store = pipeline_fixture.generate_activations(store_size)
+        store = pipeline_fixture.generate_activations(store_size // 2)
+        store2 = pipeline_fixture.generate_activations(store_size // 2)
 
         # Get the number of unique activations generated
-        activations = list(iter(store))
+        activations = list(iter(store)) + list(iter(store2))
         activations_tensor = torch.stack(activations)
         unique_activations = activations_tensor.unique(dim=0)
 
@@ -357,7 +358,7 @@ class TestRunPipeline:
             max_activations=store_size * 5,
             validation_n_activations=store_size,
             validate_frequency=store_size * (total_loops // validate_expected_calls),
-            checkpoint_frequency=store_size * (total_loops // checkpoint_expected_calls - 1),
+            checkpoint_frequency=store_size,
         )
 
         # Check the number of calls

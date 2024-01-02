@@ -28,7 +28,7 @@ def store_activations_hook(
         >>> from functools import partial
         >>> from transformer_lens import HookedTransformer
         >>> from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-        >>> store = TensorActivationStore(max_items=1000, n_neurons=64)
+        >>> store = TensorActivationStore(max_items=1000, n_neurons=64, n_components=1)
         >>> model = HookedTransformer.from_pretrained("tiny-stories-1M")
         Loaded pretrained model tiny-stories-1M into HookedTransformer
 
