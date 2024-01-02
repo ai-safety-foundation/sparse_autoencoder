@@ -165,8 +165,10 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             data_files=dataset_files,
         )
 
-        # Setup preprocessing
-        existing_columns: list[str] = list(next(iter(dataset)).keys())
+        # Setup preprocessing (we remove all columns except for input ids)
+        remove_columns: list[str] = list(next(iter(dataset)).keys())
+        if "input_ids" in remove_columns:
+            remove_columns.remove("input_ids")
 
         if pre_download:
             if not isinstance(dataset, Dataset):
@@ -182,7 +184,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
                 batched=True,
                 batch_size=preprocess_batch_size,
                 fn_kwargs={"context_size": context_size},
-                remove_columns=existing_columns,
+                remove_columns=remove_columns,
                 num_proc=n_processes_preprocessing,
             )
             self.dataset = mapped_dataset.shuffle()
@@ -202,7 +204,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
                 batched=True,
                 batch_size=preprocess_batch_size,
                 fn_kwargs={"context_size": context_size},
-                remove_columns=existing_columns,
+                remove_columns=remove_columns,
             )
             self.dataset = mapped_dataset.shuffle(buffer_size=buffer_size)  # type: ignore
 
