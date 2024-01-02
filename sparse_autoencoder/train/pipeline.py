@@ -352,28 +352,31 @@ class Pipeline:
                     component_idx=component_idx,
                 )
 
-                loss = self.source_model.forward(input_ids, return_type="loss")
-                loss_with_reconstruction = self.source_model.run_with_hooks(
-                    input_ids,
-                    return_type="loss",
-                    fwd_hooks=[
-                        (
-                            cache_name,
-                            replacement_hook,
-                        )
-                    ],
-                )
-                loss_with_zero_ablation = self.source_model.run_with_hooks(
-                    input_ids,
-                    return_type="loss",
-                    fwd_hooks=[(cache_name, zero_ablate_hook)],
-                )
+                with torch.no_grad():
+                    loss = self.source_model.forward(input_ids, return_type="loss")
+                    loss_with_reconstruction = self.source_model.run_with_hooks(
+                        input_ids,
+                        return_type="loss",
+                        fwd_hooks=[
+                            (
+                                cache_name,
+                                replacement_hook,
+                            )
+                        ],
+                    )
+                    loss_with_zero_ablation = self.source_model.run_with_hooks(
+                        input_ids,
+                        return_type="loss",
+                        fwd_hooks=[(cache_name, zero_ablate_hook)],
+                    )
 
-                losses[batch_idx, component_idx] = loss.sum()
-                losses_with_reconstruction[
-                    batch_idx, component_idx
-                ] = loss_with_reconstruction.sum()
-                losses_with_zero_ablation[batch_idx, component_idx] = loss_with_zero_ablation.sum()
+                    losses[batch_idx, component_idx] = loss.sum()
+                    losses_with_reconstruction[
+                        batch_idx, component_idx
+                    ] = loss_with_reconstruction.sum()
+                    losses_with_zero_ablation[
+                        batch_idx, component_idx
+                    ] = loss_with_zero_ablation.sum()
 
         # Log
         validation_data = ValidationMetricData(
