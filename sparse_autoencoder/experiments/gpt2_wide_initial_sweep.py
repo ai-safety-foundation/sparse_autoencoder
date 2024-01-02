@@ -25,10 +25,10 @@ def main() -> None:
     sweep_config = SweepConfig(
         parameters=Hyperparameters(
             loss=LossHyperparameters(
-                l1_coefficient=Parameter(min=5e-4, max=1e-2),
+                l1_coefficient=Parameter(values=[5e-4, 1e-3, 5e-3, 1e-2]),
             ),
             optimizer=OptimizerHyperparameters(
-                lr=Parameter(min=1e-4, max=1e-3),
+                lr=Parameter(values=[1e-4, 1e-3]),
             ),
             source_model=SourceModelHyperparameters(
                 name=Parameter("gpt2"),
@@ -55,7 +55,7 @@ def main() -> None:
                 max_n_resamples=Parameter(4),
             ),
         ),
-        method=Method.RANDOM,
+        method=Method.GRID,
     )
 
     sweep(sweep_config=sweep_config)
