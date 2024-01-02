@@ -40,8 +40,19 @@ class PreTokenizedDataset(SourceDataset[dict]):
 
         Returns:
             Tokenized prompts.
+
+        Raises:
+            ValueError: If the context size is larger than the tokenized prompt size.
         """
         tokenized_prompts: list[list[int]] = source_batch[self._dataset_column_name]
+
+        # Check the context size is not too large
+        if context_size > len(tokenized_prompts[0]):
+            error_message = (
+                f"The context size ({context_size}) is larger than the "
+                f"tokenized prompt size ({len(tokenized_prompts[0])})."
+            )
+            raise ValueError(error_message)
 
         # Chunk each tokenized prompt into blocks of context_size,
         # discarding the last block if too small.
