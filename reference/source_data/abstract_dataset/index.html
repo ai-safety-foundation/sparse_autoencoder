@@ -2890,7 +2890,9 @@ generation of the activations dataset.</p>
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
-<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract source dataset.</span>
 
 <span class="sd">    Source dataset that is used to generate the activations dataset (by running forward passes of</span>
@@ -3007,8 +3009,10 @@ generation of the activations dataset.</p>
             <span class="n">data_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Setup preprocessing</span>
-        <span class="n">existing_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="c1"># Setup preprocessing (we remove all columns except for input ids)</span>
+        <span class="n">remove_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s2">&quot;input_ids&quot;</span> <span class="ow">in</span> <span class="n">remove_columns</span><span class="p">:</span>
+            <span class="n">remove_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;input_ids&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">pre_download</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
@@ -3024,7 +3028,7 @@ generation of the activations dataset.</p>
                 <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
                 <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
-                <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+                <span class="n">remove_columns</span><span class="o">=</span><span class="n">remove_columns</span><span class="p">,</span>
                 <span class="n">num_proc</span><span class="o">=</span><span class="n">n_processes_preprocessing</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
@@ -3044,7 +3048,7 @@ generation of the activations dataset.</p>
                 <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
                 <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
-                <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+                <span class="n">remove_columns</span><span class="o">=</span><span class="n">remove_columns</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
@@ -3457,7 +3461,9 @@ tokenizing prompts).</p>
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
-<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3514,8 +3520,10 @@ tokenizing prompts).</p>
         <span class="n">data_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Setup preprocessing</span>
-    <span class="n">existing_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="c1"># Setup preprocessing (we remove all columns except for input ids)</span>
+    <span class="n">remove_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="s2">&quot;input_ids&quot;</span> <span class="ow">in</span> <span class="n">remove_columns</span><span class="p">:</span>
+        <span class="n">remove_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;input_ids&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">pre_download</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
@@ -3531,7 +3539,7 @@ tokenizing prompts).</p>
             <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
             <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
-            <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+            <span class="n">remove_columns</span><span class="o">=</span><span class="n">remove_columns</span><span class="p">,</span>
             <span class="n">num_proc</span><span class="o">=</span><span class="n">n_processes_preprocessing</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
@@ -3551,7 +3559,7 @@ tokenizing prompts).</p>
             <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
             <span class="n">fn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;context_size&quot;</span><span class="p">:</span> <span class="n">context_size</span><span class="p">},</span>
-            <span class="n">remove_columns</span><span class="o">=</span><span class="n">existing_columns</span><span class="p">,</span>
+            <span class="n">remove_columns</span><span class="o">=</span><span class="n">remove_columns</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">mapped_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 </code></pre></div></td></tr></table></div>
@@ -3579,13 +3587,13 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
 <span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
-<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate Dunder Method.</span>
 
@@ -3617,13 +3625,13 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
-<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Next Dunder Method.</span>
 
@@ -3708,9 +3716,7 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
@@ -3726,7 +3732,9 @@ tokenizing prompts).</p>
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
-<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a PyTorch DataLoader.</span>
 
