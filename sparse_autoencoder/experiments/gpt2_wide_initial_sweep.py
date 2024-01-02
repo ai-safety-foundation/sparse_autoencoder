@@ -1,4 +1,4 @@
-"""Initial sweep."""
+"""Run an initial sweep on GPT 2 Small's first layer."""
 import os
 
 from sparse_autoencoder import (
@@ -33,7 +33,7 @@ def main() -> None:
             source_model=SourceModelHyperparameters(
                 name=Parameter("gpt2"),
                 cache_names=Parameter(["blocks.0.hook_mlp_out"]),
-                hook_dimension=Parameter(1600),
+                hook_dimension=Parameter(768),
             ),
             source_data=SourceDataHyperparameters(
                 dataset_path=Parameter("alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2"),
@@ -42,17 +42,17 @@ def main() -> None:
             ),
             autoencoder=AutoencoderHyperparameters(expansion_factor=Parameter(values=[2, 4, 8])),
             pipeline=PipelineHyperparameters(
-                max_activations=Parameter(100_000_000),
-                checkpoint_frequency=Parameter(25_000_000),
-                validation_frequency=Parameter(25_000_000),
+                max_activations=Parameter(1_000_000_000),
+                checkpoint_frequency=Parameter(100_000_000),
+                validation_frequency=Parameter(100_000_000),
             ),
             activation_resampler=ActivationResamplerHyperparameters(
-                resample_interval=Parameter(50_000_000),
-                n_activations_activity_collate=Parameter(25_000_000),
+                resample_interval=Parameter(200_000_000),
+                n_activations_activity_collate=Parameter(100_000_000),
                 threshold_is_dead_portion_fires=Parameter(
                     1e-6,
                 ),
-                max_n_resamples=Parameter(1),
+                max_n_resamples=Parameter(4),
             ),
         ),
         method=Method.RANDOM,
