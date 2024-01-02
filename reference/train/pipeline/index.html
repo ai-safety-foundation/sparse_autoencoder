@@ -619,27 +619,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/disk_store/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    disk_store
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
@@ -3342,7 +3321,10 @@
 <span class="normal">552</span>
 <span class="normal">553</span>
 <span class="normal">554</span>
-<span class="normal">555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -3654,28 +3636,31 @@
                     <span class="n">component_idx</span><span class="o">=</span><span class="n">component_idx</span><span class="p">,</span>
                 <span class="p">)</span>
 
-                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
-                <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                    <span class="n">input_ids</span><span class="p">,</span>
-                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
-                        <span class="p">(</span>
-                            <span class="n">cache_name</span><span class="p">,</span>
-                            <span class="n">replacement_hook</span><span class="p">,</span>
-                        <span class="p">)</span>
-                    <span class="p">],</span>
-                <span class="p">)</span>
-                <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                    <span class="n">input_ids</span><span class="p">,</span>
-                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
-                <span class="p">)</span>
+                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+                    <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                        <span class="n">input_ids</span><span class="p">,</span>
+                        <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                        <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
+                            <span class="p">(</span>
+                                <span class="n">cache_name</span><span class="p">,</span>
+                                <span class="n">replacement_hook</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                        <span class="n">input_ids</span><span class="p">,</span>
+                        <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                        <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
+                    <span class="p">)</span>
 
-                <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-                <span class="n">losses_with_reconstruction</span><span class="p">[</span>
-                    <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-                <span class="n">losses_with_zero_ablation</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="n">losses_with_reconstruction</span><span class="p">[</span>
+                        <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="n">losses_with_zero_ablation</span><span class="p">[</span>
+                        <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
         <span class="c1"># Log</span>
         <span class="n">validation_data</span> <span class="o">=</span> <span class="n">ValidationMetricData</span><span class="p">(</span>
@@ -4825,10 +4810,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
-<span class="normal">424</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">424</span>
 <span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span>
@@ -4919,7 +4901,10 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">512</span>
 <span class="normal">513</span>
 <span class="normal">514</span>
-<span class="normal">515</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -5092,10 +5077,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">394</span>
 <span class="normal">395</span>
 <span class="normal">396</span>
 <span class="normal">397</span>
@@ -5120,7 +5102,10 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">416</span>
 <span class="normal">417</span>
 <span class="normal">418</span>
-<span class="normal">419</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.</span>
 
@@ -5278,10 +5263,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">517</span>
-<span class="normal">518</span>
-<span class="normal">519</span>
-<span class="normal">520</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">520</span>
 <span class="normal">521</span>
 <span class="normal">522</span>
 <span class="normal">523</span>
@@ -5316,7 +5298,10 @@ different data.</p>
 <span class="normal">552</span>
 <span class="normal">553</span>
 <span class="normal">554</span>
-<span class="normal">555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">stateful_dataloader_iterable</span><span class="p">(</span>
     <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
@@ -5856,7 +5841,10 @@ different data.</p>
 <span class="normal">386</span>
 <span class="normal">387</span>
 <span class="normal">388</span>
-<span class="normal">389</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_n_activations</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 
@@ -5897,28 +5885,31 @@ different data.</p>
                 <span class="n">component_idx</span><span class="o">=</span><span class="n">component_idx</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
-            <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
-                    <span class="p">(</span>
-                        <span class="n">cache_name</span><span class="p">,</span>
-                        <span class="n">replacement_hook</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="p">],</span>
-            <span class="p">)</span>
-            <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
-            <span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+                <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                    <span class="n">input_ids</span><span class="p">,</span>
+                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
+                        <span class="p">(</span>
+                            <span class="n">cache_name</span><span class="p">,</span>
+                            <span class="n">replacement_hook</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">],</span>
+                <span class="p">)</span>
+                <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                    <span class="n">input_ids</span><span class="p">,</span>
+                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
+                <span class="p">)</span>
 
-            <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="n">losses_with_reconstruction</span><span class="p">[</span>
-                <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="n">losses_with_zero_ablation</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses_with_reconstruction</span><span class="p">[</span>
+                    <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses_with_zero_ablation</span><span class="p">[</span>
+                    <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
     <span class="c1"># Log</span>
     <span class="n">validation_data</span> <span class="o">=</span> <span class="n">ValidationMetricData</span><span class="p">(</span>

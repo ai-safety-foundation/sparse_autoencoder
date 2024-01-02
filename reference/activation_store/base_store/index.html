@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../disk_store/">
+        <link rel="next" href="../tensor_store/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -778,27 +778,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../disk_store/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    disk_store
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -2871,7 +2850,7 @@ print(len(store))
     <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.&quot;&quot;&quot;</span>
 
@@ -2879,7 +2858,7 @@ print(len(store))
     <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.&quot;&quot;&quot;</span>
 
@@ -2903,8 +2882,8 @@ print(len(store))
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an Item from the Store.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2929,7 +2908,7 @@ print(len(store))
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=100, n_neurons=256)</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=100, n_neurons=256, n_components=1)</span>
 <span class="sd">            &gt;&gt;&gt; store.fill_with_test_data(batch_size=100)</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
 <span class="sd">            100</span>
@@ -3033,8 +3012,8 @@ print(len(store))
 <span class="normal">102</span>
 <span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get an Item from the Store.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -3082,7 +3061,7 @@ print(len(store))
 
 
 <h3 id="sparse_autoencoder.activation_store.base_store.ActivationStore.append" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -3107,7 +3086,7 @@ print(len(store))
 <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3156,7 +3135,7 @@ print(len(store))
 
 
 <h3 id="sparse_autoencoder.activation_store.base_store.ActivationStore.extend" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -3181,7 +3160,7 @@ print(len(store))
 <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Future</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3218,7 +3197,7 @@ requires inspecting the data itself.</p>
 <blockquote>
 <blockquote>
 <p>from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-store = TensorActivationStore(max_items=100, n_neurons=256)
+store = TensorActivationStore(max_items=100, n_neurons=256, n_components=1)
 store.fill_with_test_data(batch_size=100)
 len(store)
 100</p>
@@ -3352,7 +3331,7 @@ len(store)
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=100, n_neurons=256)</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=100, n_neurons=256, n_components=1)</span>
 <span class="sd">        &gt;&gt;&gt; store.fill_with_test_data(batch_size=100)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        100</span>

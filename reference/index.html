@@ -613,27 +613,6 @@
   
   
     <li class="md-nav__item">
-      <a href="activation_store/disk_store/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    disk_store
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="activation_store/tensor_store/" class="md-nav__link">
         
   
@@ -2626,120 +2605,6 @@
   <a href="#sparse_autoencoder.ControllerType.LOCAL" class="md-nav__link">
     <span class="md-ellipsis">
       LOCAL
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore" class="md-nav__link">
-    <span class="md-ellipsis">
-      DiskActivationStore
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="DiskActivationStore">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.current_activations_stored_per_component" class="md-nav__link">
-    <span class="md-ellipsis">
-      current_activations_stored_per_component
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.n_components" class="md-nav__link">
-    <span class="md-ellipsis">
-      n_components
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.__del__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __del__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.__getitem__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __getitem__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __init__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.__len__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __len__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.append" class="md-nav__link">
-    <span class="md-ellipsis">
-      append()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.empty" class="md-nav__link">
-    <span class="md-ellipsis">
-      empty()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.extend" class="md-nav__link">
-    <span class="md-ellipsis">
-      extend()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.finalise" class="md-nav__link">
-    <span class="md-ellipsis">
-      finalise()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.DiskActivationStore.get_store_tensor_indices_from_filename" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_store_tensor_indices_from_filename()
     </span>
   </a>
   
@@ -10083,1864 +9948,6 @@ services.</p>
 
 
 
-<h2 id="sparse_autoencoder.DiskActivationStore" class="doc doc-heading">
-          <code>DiskActivationStore</code>
-
-
-<a href="#sparse_autoencoder.DiskActivationStore" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_store.base_store.ActivationStore" href="activation_store/base_store/#sparse_autoencoder.activation_store.base_store.ActivationStore">ActivationStore</a></code></p>
-
-  
-      <p>Disk Activation Store.</p>
-<p>Stores activation vectors on disk (hard-drive). Makes use of a queue (buffer) to store up
-activation vectors and then write them to the disk in batches.</p>
-<p>Multiprocess safe (supports writing from multiple GPU workers).</p>
-<p>Warning:
-Unless you want to keep and use existing .pt files in the storage directory when initialized,
-set <code>empty_dir</code> to <code>True</code>.</p>
-<p>Note also that :meth:<code>close</code> must be called to ensure all activation vectors are written to disk
-after the last batch has been added to the store.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DiskActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Disk Activation Store.</span>
-
-<span class="sd">    Stores activation vectors on disk (hard-drive). Makes use of a queue (buffer) to store up</span>
-<span class="sd">    activation vectors and then write them to the disk in batches.</span>
-
-<span class="sd">    Multiprocess safe (supports writing from multiple GPU workers).</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">    Unless you want to keep and use existing .pt files in the storage directory when initialized,</span>
-<span class="sd">    set `empty_dir` to `True`.</span>
-
-<span class="sd">    Note also that :meth:`close` must be called to ensure all activation vectors are written to disk</span>
-<span class="sd">    after the last batch has been added to the store.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">_storage_path</span><span class="p">:</span> <span class="n">Path</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the Directory where the Activation Vectors are Stored.&quot;&quot;&quot;</span>
-
-    <span class="n">_cache</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ITEMS</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache for Activation Vectors.</span>
-
-<span class="sd">    Activation vectors are buffered in memory until the cache is full, at which point they are</span>
-<span class="sd">    written to disk.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">_cache_device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache device.&quot;&quot;&quot;</span>
-
-    <span class="n">_items_stored</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of items stored.&quot;&quot;&quot;</span>
-
-    <span class="n">_max_cache_size</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum Number of Activation Vectors to cache in Memory.&quot;&quot;&quot;</span>
-
-    <span class="n">_disk_n_activation_vectors_per_component</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Length of the Store (on disk).&quot;&quot;&quot;</span>
-
-    <span class="n">_n_components</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of components&quot;&quot;&quot;</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">n_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of components.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">current_activations_stored_per_component</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current activations stored per component.&quot;&quot;&quot;</span>
-        <span class="n">disk_items_stored</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">cache_items</span> <span class="o">+</span> <span class="n">disk_items_stored</span> <span class="k">for</span> <span class="n">cache_items</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">]</span>
-
-    <span class="nd">@validate_call</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">n_neurons</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
-        <span class="n">storage_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span>
-        <span class="n">max_cache_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
-        <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">empty_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Disk Activation Store.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            n_neurons: Number of neurons in each activation vector.</span>
-<span class="sd">            storage_path: Path to the directory where the activation vectors will be stored.</span>
-<span class="sd">            max_cache_size: The maximum number of activation vectors (per component) to cache in</span>
-<span class="sd">                memory before writing to disk.</span>
-<span class="sd">            n_components: Number of components to store (i.e. number of source models).</span>
-<span class="sd">            empty_dir: Whether to empty the directory before writing. Generally you want to set this</span>
-<span class="sd">                to `True` as otherwise the directory may contain stale activation vectors from</span>
-<span class="sd">                previous runs. However if you are just initialising a pre-created store, set it as</span>
-<span class="sd">                False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span> <span class="o">=</span> <span class="n">max_cache_size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
-
-        <span class="c1"># Setup the storage directory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">=</span> <span class="n">storage_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">empty_dir</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
-
-        <span class="c1"># Setup the Cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">max_cache_size</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_components</span>
-
-    <span class="k">def</span> <span class="nf">_write_to_disk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the contents of the cache to disk.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=2, empty_dir=True, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">            &gt;&gt;&gt; store._write_to_disk()</span>
-<span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            1</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Save to disk</span>
-        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[:</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">)]</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">)</span><span class="si">}</span><span class="s2">.pt&quot;</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span>
-
-        <span class="c1"># Update the number of items stored</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="ow">or</span> <span class="mi">0</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Empty the cache (note we just need to mark as empty so we can start filling it again)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span>
-
-    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100)) # Triggers a write of the last item to disk</span>
-<span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        1</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            item: Activation vector to add to the store.</span>
-<span class="sd">            component_idx: The component index to append the item to.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Write to disk first if full (note this also resets items stored)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
-
-        <span class="c1"># Add to cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-
-    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; store.extend(torch.randn(10, 100))</span>
-<span class="sd">            &gt;&gt;&gt; store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk</span>
-<span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            10</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            batch: Batch of activation vectors to add to the store.</span>
-<span class="sd">            component_idx: The component index to append the item to.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the batch is larger than the cache size.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">n_activation_tensors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="c1"># Check the batch is smaller than the cache size</span>
-        <span class="k">if</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">n_activation_tensors</span><span class="si">}</span><span class="s2"> is larger than the cache size &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="si">}</span><span class="s2">.&quot;</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-        <span class="c1"># Write to disk first if full (note this also resets items stored)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
-
-        <span class="c1"># Add to cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-            <span class="o">+</span> <span class="n">n_activation_tensors</span><span class="p">,</span>
-            <span class="n">component_idx</span><span class="p">,</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_activation_tensors</span>
-
-    <span class="k">def</span> <span class="nf">finalise</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finalise.</span>
-
-<span class="sd">        This should be called after the last batch has been added to the store. It will wait for</span>
-<span class="sd">        all activation vectors to be written to disk.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">            &gt;&gt;&gt; store.finalise()</span>
-<span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            1</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_all_filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a List of All Activation Vector Filenames.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.pt&quot;</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty the Store.</span>
-
-<span class="sd">        Warning:</span>
-<span class="sd">        This will delete all .pt files in the top level of the storage directory.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            1</span>
-
-<span class="sd">            &gt;&gt;&gt; store.empty()</span>
-<span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            0</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
-            <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the start and end indices from a filename.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; filename = Path(&quot;0-100.pt&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; DiskActivationStore.get_store_tensor_indices_from_filename(filename)</span>
-<span class="sd">            (0, 100)</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            filename: Filename to extract the indices from.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The start and end index of the filename.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If the filename does not contain two numeric values.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">numbers</span> <span class="o">=</span> <span class="n">NUMBERS_FROM_FILENAME_COMPILED_REGEX</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
-        <span class="n">numbers_expected</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">!=</span> <span class="n">numbers_expected</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Filename </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> does not contain two numeric values.&quot;</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
-
-<span class="sd">        Warning:</span>
-<span class="sd">            This is very inefficient and should only be used for testing. For training, consider</span>
-<span class="sd">                using a DataLoader that iterates over the disk store directory.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            index: The index of the tensor to fetch.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The activation store item at the given index.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            IndexError: If the index is out of range.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Find the file containing the activation vector</span>
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
-            <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-            <span class="c1"># Load if the index is in the range of the file</span>
-            <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">activation_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-                <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">]</span>
-
-        <span class="c1"># If still not found</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> out of range.&quot;</span>
-        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; len(store)</span>
-<span class="sd">            0</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The number of activation vectors in the dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Calculate the length if not cached</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">max_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-
-            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
-                <span class="n">filename_end_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_size</span><span class="p">,</span> <span class="n">filename_end_idx</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="n">max_size</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span>
-
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete Dunder Method.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">finalise</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.current_activations_stored_per_component" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">current_activations_stored_per_component</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.DiskActivationStore.current_activations_stored_per_component" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Current activations stored per component.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.n_components" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.DiskActivationStore.n_components" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Number of components.</p>
-  </div>
-
-</div>
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.__del__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__del__</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.__del__" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Delete Dunder Method.</p>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete Dunder Method.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">finalise</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.__getitem__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.__getitem__" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Get Item Dunder Method.</p>
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>This is very inefficient and should only be used for testing. For training, consider
-    using a DataLoader that iterates over the disk store directory.</p>
-</details>
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>index</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The index of the tensor to fetch.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The activation store item at the given index.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>IndexError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the index is out of range.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        This is very inefficient and should only be used for testing. For training, consider</span>
-<span class="sd">            using a DataLoader that iterates over the disk store directory.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        index: The index of the tensor to fetch.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The activation store item at the given index.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        IndexError: If the index is out of range.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Find the file containing the activation vector</span>
-    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
-        <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-        <span class="c1"># Load if the index is in the range of the file</span>
-        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">indexes</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">activation_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">activation_vectors</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">]</span>
-
-    <span class="c1"># If still not found</span>
-    <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> out of range.&quot;</span>
-    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">n_neurons</span><span class="p">,</span> <span class="n">storage_path</span><span class="o">=</span><span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span> <span class="n">max_cache_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">empty_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.__init__" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Initialize the Disk Activation Store.</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>n_neurons</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Number of neurons in each activation vector.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>storage_path</code></td>
-          <td>
-                <code><span title="pathlib.Path">Path</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Path to the directory where the activation vectors will be stored.</p>
-            </div>
-          </td>
-          <td>
-                <code><span title="sparse_autoencoder.activation_store.disk_store.DEFAULT_DISK_ACTIVATION_STORE_PATH">DEFAULT_DISK_ACTIVATION_STORE_PATH</span></code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>max_cache_size</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The maximum number of activation vectors (per component) to cache in
-memory before writing to disk.</p>
-            </div>
-          </td>
-          <td>
-                <code>10000</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>n_components</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Number of components to store (i.e. number of source models).</p>
-            </div>
-          </td>
-          <td>
-                <code>1</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>empty_dir</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to empty the directory before writing. Generally you want to set this
-to <code>True</code> as otherwise the directory may contain stale activation vectors from
-previous runs. However if you are just initialising a pre-created store, set it as
-False.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
-<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">n_neurons</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
-    <span class="n">storage_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_DISK_ACTIVATION_STORE_PATH</span><span class="p">,</span>
-    <span class="n">max_cache_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">10_000</span><span class="p">,</span>
-    <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">empty_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Disk Activation Store.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        n_neurons: Number of neurons in each activation vector.</span>
-<span class="sd">        storage_path: Path to the directory where the activation vectors will be stored.</span>
-<span class="sd">        max_cache_size: The maximum number of activation vectors (per component) to cache in</span>
-<span class="sd">            memory before writing to disk.</span>
-<span class="sd">        n_components: Number of components to store (i.e. number of source models).</span>
-<span class="sd">        empty_dir: Whether to empty the directory before writing. Generally you want to set this</span>
-<span class="sd">            to `True` as otherwise the directory may contain stale activation vectors from</span>
-<span class="sd">            previous runs. However if you are just initialising a pre-created store, set it as</span>
-<span class="sd">            False.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span> <span class="o">=</span> <span class="n">max_cache_size</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">=</span> <span class="n">n_components</span>
-
-    <span class="c1"># Setup the storage directory</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span> <span class="o">=</span> <span class="n">storage_path</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_storage_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">empty_dir</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
-
-    <span class="c1"># Setup the Cache</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">max_cache_size</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span>
-    <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_components</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.__len__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.__len__" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Length Dunder Method.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
-len(store)
-0</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The number of activation vectors in the dataset.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Length Dunder Method.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        0</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The number of activation vectors in the dataset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Calculate the length if not cached</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">max_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
-            <span class="n">filename_end_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_size</span><span class="p">,</span> <span class="n">filename_end_idx</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="n">max_size</span>
-
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.append" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.append" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Add a Single Item to the Store.</p>
-<p>Example:</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
-store.append(torch.randn(100))
-store.append(torch.randn(100)) # Triggers a write of the last item to disk
-len(store)
-1</p>
-</blockquote>
-</blockquote>
-</blockquote>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>item</code></td>
-          <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Activation vector to add to the store.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>component_idx</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The component index to append the item to.</p>
-            </div>
-          </td>
-          <td>
-                <code>0</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Single Item to the Store.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">    &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.randn(100)) # Triggers a write of the last item to disk</span>
-<span class="sd">    &gt;&gt;&gt; len(store)</span>
-<span class="sd">    1</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        item: Activation vector to add to the store.</span>
-<span class="sd">        component_idx: The component index to append the item to.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Write to disk first if full (note this also resets items stored)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
-
-    <span class="c1"># Add to cache</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.empty" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">empty</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.empty" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Empty the Store.</p>
-<p>Warning:
-This will delete all .pt files in the top level of the storage directory.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
-store.append(torch.randn(100))
-store.append(torch.randn(100))
-len(store)
-1</p>
-<p>store.empty()
-len(store)
-0</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty the Store.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">    This will delete all .pt files in the top level of the storage directory.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        1</span>
-
-<span class="sd">        &gt;&gt;&gt; store.empty()</span>
-<span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_filenames</span><span class="p">:</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_disk_n_activation_vectors_per_component</span> <span class="o">=</span> <span class="mi">0</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.extend" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.extend" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Add a Batch to the Store.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)
-store.extend(torch.randn(10, 100))
-store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk
-len(store)
-10</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>batch</code></td>
-          <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Batch of activation vectors to add to the store.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>component_idx</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The component index to append the item to.</p>
-            </div>
-          </td>
-          <td>
-                <code>0</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>ValueError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the batch is larger than the cache size.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a Batch to the Store.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=10, empty_dir=True, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; store.extend(torch.randn(10, 100))</span>
-<span class="sd">        &gt;&gt;&gt; store.extend(torch.randn(10, 100)) # Triggers a write of the last items to disk</span>
-<span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        10</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        batch: Batch of activation vectors to add to the store.</span>
-<span class="sd">        component_idx: The component index to append the item to.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If the batch is larger than the cache size.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n_activation_tensors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># Check the batch is smaller than the cache size</span>
-    <span class="k">if</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">n_activation_tensors</span><span class="si">}</span><span class="s2"> is larger than the cache size &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-    <span class="c1"># Write to disk first if full (note this also resets items stored)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">n_activation_tensors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cache_size</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
-
-    <span class="c1"># Add to cache</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span>
-        <span class="o">+</span> <span class="n">n_activation_tensors</span><span class="p">,</span>
-        <span class="n">component_idx</span><span class="p">,</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_device</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">[</span><span class="n">component_idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_activation_tensors</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.finalise" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">finalise</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.DiskActivationStore.finalise" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Finalise.</p>
-<p>This should be called after the last batch has been added to the store. It will wait for
-all activation vectors to be written to disk.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)
-store.append(torch.randn(100))
-store.finalise()
-len(store)
-1</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">finalise</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finalise.</span>
-
-<span class="sd">    This should be called after the last batch has been added to the store. It will wait for</span>
-<span class="sd">    all activation vectors to be written to disk.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; store = DiskActivationStore(max_cache_size=1, empty_dir=True, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">        &gt;&gt;&gt; store.finalise()</span>
-<span class="sd">        &gt;&gt;&gt; len(store)</span>
-<span class="sd">        1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_stored</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_to_disk</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.DiskActivationStore.get_store_tensor_indices_from_filename" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.DiskActivationStore.get_store_tensor_indices_from_filename" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Get the start and end indices from a filename.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>filename = Path("0-100.pt")
-DiskActivationStore.get_store_tensor_indices_from_filename(filename)
-(0, 100)</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>filename</code></td>
-          <td>
-                <code><span title="pathlib.Path">Path</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filename to extract the indices from.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>tuple[int, int]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The start and end index of the filename.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>ValueError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the filename does not contain two numeric values.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/activation_store/disk_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">get_store_tensor_indices_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the start and end indices from a filename.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; filename = Path(&quot;0-100.pt&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; DiskActivationStore.get_store_tensor_indices_from_filename(filename)</span>
-<span class="sd">        (0, 100)</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        filename: Filename to extract the indices from.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The start and end index of the filename.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If the filename does not contain two numeric values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">numbers</span> <span class="o">=</span> <span class="n">NUMBERS_FROM_FILENAME_COMPILED_REGEX</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
-    <span class="n">numbers_expected</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">!=</span> <span class="n">numbers_expected</span><span class="p">:</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Filename </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> does not contain two numeric values.&quot;</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
 <h2 id="sparse_autoencoder.Distribution" class="doc doc-heading">
           <code>Distribution</code>
 
@@ -14201,11 +12208,11 @@ tensor(0.5000)</p>
 
         <span class="k">match</span> <span class="n">batch_reduction</span><span class="p">:</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
-                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
-                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
                 <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Batch reduction type NONE not supported.&quot;</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
@@ -14876,11 +12883,11 @@ to make the loss independent of the batch size.</p>
 
     <span class="k">match</span> <span class="n">batch_reduction</span><span class="p">:</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
-            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
-            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Batch reduction type NONE not supported.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
@@ -17806,7 +15813,10 @@ set.</p>
 <span class="normal">552</span>
 <span class="normal">553</span>
 <span class="normal">554</span>
-<span class="normal">555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -18118,28 +16128,31 @@ set.</p>
                     <span class="n">component_idx</span><span class="o">=</span><span class="n">component_idx</span><span class="p">,</span>
                 <span class="p">)</span>
 
-                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
-                <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                    <span class="n">input_ids</span><span class="p">,</span>
-                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
-                        <span class="p">(</span>
-                            <span class="n">cache_name</span><span class="p">,</span>
-                            <span class="n">replacement_hook</span><span class="p">,</span>
-                        <span class="p">)</span>
-                    <span class="p">],</span>
-                <span class="p">)</span>
-                <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                    <span class="n">input_ids</span><span class="p">,</span>
-                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
-                <span class="p">)</span>
+                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+                    <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                        <span class="n">input_ids</span><span class="p">,</span>
+                        <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                        <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
+                            <span class="p">(</span>
+                                <span class="n">cache_name</span><span class="p">,</span>
+                                <span class="n">replacement_hook</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                        <span class="n">input_ids</span><span class="p">,</span>
+                        <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                        <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
+                    <span class="p">)</span>
 
-                <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-                <span class="n">losses_with_reconstruction</span><span class="p">[</span>
-                    <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-                <span class="n">losses_with_zero_ablation</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="n">losses_with_reconstruction</span><span class="p">[</span>
+                        <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="n">losses_with_zero_ablation</span><span class="p">[</span>
+                        <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
         <span class="c1"># Log</span>
         <span class="n">validation_data</span> <span class="o">=</span> <span class="n">ValidationMetricData</span><span class="p">(</span>
@@ -19289,10 +17302,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
-<span class="normal">424</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">424</span>
 <span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span>
@@ -19383,7 +17393,10 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">512</span>
 <span class="normal">513</span>
 <span class="normal">514</span>
-<span class="normal">515</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -19556,10 +17569,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">394</span>
 <span class="normal">395</span>
 <span class="normal">396</span>
 <span class="normal">397</span>
@@ -19584,7 +17594,10 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">416</span>
 <span class="normal">417</span>
 <span class="normal">418</span>
-<span class="normal">419</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.</span>
 
@@ -19742,10 +17755,7 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">517</span>
-<span class="normal">518</span>
-<span class="normal">519</span>
-<span class="normal">520</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">520</span>
 <span class="normal">521</span>
 <span class="normal">522</span>
 <span class="normal">523</span>
@@ -19780,7 +17790,10 @@ different data.</p>
 <span class="normal">552</span>
 <span class="normal">553</span>
 <span class="normal">554</span>
-<span class="normal">555</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">stateful_dataloader_iterable</span><span class="p">(</span>
     <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
@@ -20320,7 +18333,10 @@ different data.</p>
 <span class="normal">386</span>
 <span class="normal">387</span>
 <span class="normal">388</span>
-<span class="normal">389</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_n_activations</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 
@@ -20361,28 +18377,31 @@ different data.</p>
                 <span class="n">component_idx</span><span class="o">=</span><span class="n">component_idx</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
-            <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
-                    <span class="p">(</span>
-                        <span class="n">cache_name</span><span class="p">,</span>
-                        <span class="n">replacement_hook</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="p">],</span>
-            <span class="p">)</span>
-            <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
-                <span class="n">input_ids</span><span class="p">,</span>
-                <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
-                <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
-            <span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+                <span class="n">loss_with_reconstruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                    <span class="n">input_ids</span><span class="p">,</span>
+                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[</span>
+                        <span class="p">(</span>
+                            <span class="n">cache_name</span><span class="p">,</span>
+                            <span class="n">replacement_hook</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">],</span>
+                <span class="p">)</span>
+                <span class="n">loss_with_zero_ablation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">run_with_hooks</span><span class="p">(</span>
+                    <span class="n">input_ids</span><span class="p">,</span>
+                    <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+                    <span class="n">fwd_hooks</span><span class="o">=</span><span class="p">[(</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">zero_ablate_hook</span><span class="p">)],</span>
+                <span class="p">)</span>
 
-            <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="n">losses_with_reconstruction</span><span class="p">[</span>
-                <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
-            <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="n">losses_with_zero_ablation</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses_with_reconstruction</span><span class="p">[</span>
+                    <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_reconstruction</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">losses_with_zero_ablation</span><span class="p">[</span>
+                    <span class="n">batch_idx</span><span class="p">,</span> <span class="n">component_idx</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">loss_with_zero_ablation</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
     <span class="c1"># Log</span>
     <span class="n">validation_data</span> <span class="o">=</span> <span class="n">ValidationMetricData</span><span class="p">(</span>
@@ -23336,19 +21355,7 @@ torch.Size([2, 2, 100])
 <span class="normal">248</span>
 <span class="normal">249</span>
 <span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TensorActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
+<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TensorActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tensor Activation Store.</span>
 
 <span class="sd">    Stores tensors in a (large) tensor of shape (item, neuron). Requires the number of activation</span>
@@ -23418,7 +21425,7 @@ torch.Size([2, 2, 100])
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">max_items</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
         <span class="n">n_neurons</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
-        <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the Tensor Activation Store.</span>
@@ -23442,9 +21449,9 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
 <span class="sd">            2</span>
 
@@ -23459,7 +21466,7 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)</span>
 <span class="sd">            &gt;&gt;&gt; store.__sizeof__() # Pre-allocated tensor of 2x100</span>
 <span class="sd">            800</span>
 
@@ -23469,16 +21476,16 @@ torch.Size([2, 2, 100])
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">            &gt;&gt;&gt; store[1]</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5, n_components=1)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">            &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">            tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">        Args:</span>
@@ -23486,17 +21493,7 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The activation store item at the given index.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            IndexError: If the index is out of range.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check in range</span>
-        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> out of range (only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> items stored)&quot;</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -23507,12 +21504,12 @@ torch.Size([2, 2, 100])
 <span class="sd">        Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; _seed = torch.manual_seed(42)</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([0.]))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([1.]))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([2.]))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([0.]), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([1.]), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([2.]), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; store.shuffle()</span>
-<span class="sd">        &gt;&gt;&gt; [store[i].item() for i in range(3)]</span>
+<span class="sd">        &gt;&gt;&gt; [store[i, 0].item() for i in range(3)]</span>
 <span class="sd">        [0.0, 2.0, 1.0]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Generate a permutation of the indices for the active data</span>
@@ -23521,17 +21518,15 @@ torch.Size([2, 2, 100])
         <span class="c1"># Use this permutation to shuffle the active data in-place</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a single item to the store.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">        &gt;&gt;&gt; store[1]</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">        tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">        Args:</span>
@@ -23553,14 +21548,14 @@ torch.Size([2, 2, 100])
     <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a batch to the store.</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        2</span>
 
@@ -23588,8 +21583,8 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        2</span>
 <span class="sd">        &gt;&gt;&gt; store.empty()</span>
@@ -23699,10 +21694,10 @@ torch.Size([2, 2, 100])
 
 <p><strong>Examples:</strong></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">TensorActivationStore</span><span class="p">(</span><span class="n">max_items</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">TensorActivationStore</span><span class="p">(</span><span class="n">max_items</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="go">tensor([1., 1., 1., 1., 1.])</span>
 </code></pre></div>
 
@@ -23722,7 +21717,7 @@ torch.Size([2, 2, 100])
         <tr>
           <td><code>index</code></td>
           <td>
-                <code>int</code>
+                <code>tuple[int, ...] | slice | int</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -23749,35 +21744,11 @@ torch.Size([2, 2, 100])
     <tbody>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.ANY" href="tensor_types/#sparse_autoencoder.tensor_types.Axis.ANY">ANY</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>The activation store item at the given index.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>IndexError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the index is out of range.</p>
             </div>
           </td>
         </tr>
@@ -23805,27 +21776,17 @@ torch.Size([2, 2, 100])
 <span class="normal">150</span>
 <span class="normal">151</span>
 <span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">        &gt;&gt;&gt; store[1]</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">        tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">    Args:</span>
@@ -23833,17 +21794,7 @@ torch.Size([2, 2, 100])
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The activation store item at the given index.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        IndexError: If the index is out of range.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Check in range</span>
-    <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> out of range (only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> items stored)&quot;</span>
-        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -23858,7 +21809,7 @@ torch.Size([2, 2, 100])
 
 
 <h3 id="sparse_autoencoder.TensorActivationStore.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">max_items</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">max_items</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.TensorActivationStore.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -23920,7 +21871,7 @@ vectors).</p>
             </div>
           </td>
           <td>
-                <code>1</code>
+              <em>required</em>
           </td>
         </tr>
         <tr>
@@ -23967,7 +21918,7 @@ vectors).</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">max_items</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
     <span class="n">n_neurons</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
-    <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the Tensor Activation Store.</span>
@@ -24012,9 +21963,9 @@ vectors).</p>
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=10_000_000, n_neurons=100)
-store.append(torch.randn(100))
-store.append(torch.randn(100))
+store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)
+store.append(torch.randn(100), component_idx=0)
+store.append(torch.randn(100), component_idx=0)
 len(store)
 2</p>
 </blockquote>
@@ -24071,9 +22022,9 @@ len(store)
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        2</span>
 
@@ -24110,7 +22061,7 @@ len(store)
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=2, n_neurons=100)
+store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)
 store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 800</p>
 </blockquote>
@@ -24160,7 +22111,7 @@ store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)</span>
 <span class="sd">        &gt;&gt;&gt; store.__sizeof__() # Pre-allocated tensor of 2x100</span>
 <span class="sd">        800</span>
 
@@ -24181,7 +22132,7 @@ store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 
 
 <h3 id="sparse_autoencoder.TensorActivationStore.append" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.TensorActivationStore.append" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -24195,9 +22146,9 @@ store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 <blockquote>
 <p>import torch
 store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
-store.append(torch.zeros(5))
-store.append(torch.ones(5))
-store[1]
+store.append(torch.zeros(5), component_idx=0)
+store.append(torch.ones(5), component_idx=0)
+store[1, 0]
 tensor([1., 1., 1., 1., 1.])</p>
 </blockquote>
 </blockquote>
@@ -24241,7 +22192,7 @@ tensor([1., 1., 1., 1., 1.])</p>
             </div>
           </td>
           <td>
-                <code>0</code>
+              <em>required</em>
           </td>
         </tr>
     </tbody>
@@ -24273,7 +22224,17 @@ tensor([1., 1., 1., 1., 1.])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
@@ -24288,29 +22249,15 @@ tensor([1., 1., 1., 1., 1.])</p>
 <span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a single item to the store.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 <span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">    &gt;&gt;&gt; store[1]</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">    tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">    Args:</span>
@@ -24354,8 +22301,8 @@ tensor([1., 1., 1., 1., 1.])</p>
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=10, n_neurons=5)
-store.extend(torch.zeros(2, 5))
+store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
+store.extend(torch.zeros(2, 5), component_idx=0)
 len(store)
 2
 store.empty()
@@ -24367,27 +22314,27 @@ len(store)
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
 <span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty the store.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">    &gt;&gt;&gt; len(store)</span>
 <span class="sd">    2</span>
 <span class="sd">    &gt;&gt;&gt; store.empty()</span>
@@ -24409,7 +22356,7 @@ len(store)
 
 
 <h3 id="sparse_autoencoder.TensorActivationStore.extend" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.TensorActivationStore.extend" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -24422,8 +22369,8 @@ len(store)
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=10, n_neurons=5)
-store.extend(torch.zeros(2, 5))
+store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
+store.extend(torch.zeros(2, 5), component_idx=0)
 len(store)
 2</p>
 </blockquote>
@@ -24468,7 +22415,7 @@ len(store)
             </div>
           </td>
           <td>
-                <code>0</code>
+              <em>required</em>
           </td>
         </tr>
     </tbody>
@@ -24500,7 +22447,19 @@ len(store)
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
@@ -24519,29 +22478,17 @@ len(store)
 <span class="normal">232</span>
 <span class="normal">233</span>
 <span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
+<span class="normal">235</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a batch to the store.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">    &gt;&gt;&gt; len(store)</span>
 <span class="sd">    2</span>
 
@@ -24591,12 +22538,12 @@ len(store)
 <blockquote>
 <p>import torch
 _seed = torch.manual_seed(42)
-store = TensorActivationStore(max_items=10, n_neurons=1)
-store.append(torch.tensor([0.]))
-store.append(torch.tensor([1.]))
-store.append(torch.tensor([2.]))
+store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)
+store.append(torch.tensor([0.]), component_idx=0)
+store.append(torch.tensor([1.]), component_idx=0)
+store.append(torch.tensor([2.]), component_idx=0)
 store.shuffle()
-[store[i].item() for i in range(3)]
+[store[i, 0].item() for i in range(3)]
 [0.0, 2.0, 1.0]</p>
 </blockquote>
 </blockquote>
@@ -24604,7 +22551,17 @@ store.shuffle()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
@@ -24614,17 +22571,7 @@ store.shuffle()
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shuffle the Data In-Place.</span>
 
 <span class="sd">    This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.</span>
@@ -24632,12 +22579,12 @@ store.shuffle()
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 <span class="sd">    &gt;&gt;&gt; _seed = torch.manual_seed(42)</span>
-<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1)</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([0.]))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([1.]))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([2.]))</span>
+<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([0.]), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([1.]), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([2.]), component_idx=0)</span>
 <span class="sd">    &gt;&gt;&gt; store.shuffle()</span>
-<span class="sd">    &gt;&gt;&gt; [store[i].item() for i in range(3)]</span>
+<span class="sd">    &gt;&gt;&gt; [store[i, 0].item() for i in range(3)]</span>
 <span class="sd">    [0.0, 2.0, 1.0]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Generate a permutation of the indices for the active data</span>

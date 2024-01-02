@@ -619,27 +619,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/disk_store/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    disk_store
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
@@ -2908,11 +2887,11 @@ tensor(0.5000)</p>
 
         <span class="k">match</span> <span class="n">batch_reduction</span><span class="p">:</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
-                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
-                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
                 <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Batch reduction type NONE not supported.&quot;</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
@@ -3583,11 +3562,11 @@ to make the loss independent of the batch size.</p>
 
     <span class="k">match</span> <span class="n">batch_reduction</span><span class="p">:</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
-            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
-            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">batch_scalar_loss</span> <span class="o">=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">batch_scalar_loss_penalty</span> <span class="o">=</span> <span class="n">absolute_loss_penalty</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Batch reduction type NONE not supported.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>

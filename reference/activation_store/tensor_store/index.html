@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../disk_store/">
+        <link rel="prev" href="../base_store/">
       
       
         <link rel="next" href="../../autoencoder/">
@@ -605,27 +605,6 @@
   
   <span class="md-ellipsis">
     base_store
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../disk_store/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    disk_store
   </span>
   
 
@@ -2901,19 +2880,7 @@ torch.Size([2, 2, 100])
 <span class="normal">248</span>
 <span class="normal">249</span>
 <span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TensorActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
+<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TensorActivationStore</span><span class="p">(</span><span class="n">ActivationStore</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tensor Activation Store.</span>
 
 <span class="sd">    Stores tensors in a (large) tensor of shape (item, neuron). Requires the number of activation</span>
@@ -2983,7 +2950,7 @@ torch.Size([2, 2, 100])
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">max_items</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
         <span class="n">n_neurons</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
-        <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the Tensor Activation Store.</span>
@@ -3007,9 +2974,9 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
 <span class="sd">            &gt;&gt;&gt; len(store)</span>
 <span class="sd">            2</span>
 
@@ -3024,7 +2991,7 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100)</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)</span>
 <span class="sd">            &gt;&gt;&gt; store.__sizeof__() # Pre-allocated tensor of 2x100</span>
 <span class="sd">            800</span>
 
@@ -3034,16 +3001,16 @@ torch.Size([2, 2, 100])
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5)</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">            &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">            &gt;&gt;&gt; store[1]</span>
+<span class="sd">            &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5, n_components=1)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">            &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">            &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">            tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">        Args:</span>
@@ -3051,17 +3018,7 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The activation store item at the given index.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            IndexError: If the index is out of range.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check in range</span>
-        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> out of range (only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> items stored)&quot;</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3072,12 +3029,12 @@ torch.Size([2, 2, 100])
 <span class="sd">        Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; _seed = torch.manual_seed(42)</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([0.]))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([1.]))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([2.]))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([0.]), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([1.]), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.tensor([2.]), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; store.shuffle()</span>
-<span class="sd">        &gt;&gt;&gt; [store[i].item() for i in range(3)]</span>
+<span class="sd">        &gt;&gt;&gt; [store[i, 0].item() for i in range(3)]</span>
 <span class="sd">        [0.0, 2.0, 1.0]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Generate a permutation of the indices for the active data</span>
@@ -3086,17 +3043,15 @@ torch.Size([2, 2, 100])
         <span class="c1"># Use this permutation to shuffle the active data in-place</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a single item to the store.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
 <span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">        &gt;&gt;&gt; store[1]</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">        tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">        Args:</span>
@@ -3118,14 +3073,14 @@ torch.Size([2, 2, 100])
     <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a batch to the store.</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        2</span>
 
@@ -3153,8 +3108,8 @@ torch.Size([2, 2, 100])
 
 <span class="sd">        Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        2</span>
 <span class="sd">        &gt;&gt;&gt; store.empty()</span>
@@ -3264,10 +3219,10 @@ torch.Size([2, 2, 100])
 
 <p><strong>Examples:</strong></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">TensorActivationStore</span><span class="p">(</span><span class="n">max_items</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">TensorActivationStore</span><span class="p">(</span><span class="n">max_items</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="go">tensor([1., 1., 1., 1., 1.])</span>
 </code></pre></div>
 
@@ -3287,7 +3242,7 @@ torch.Size([2, 2, 100])
         <tr>
           <td><code>index</code></td>
           <td>
-                <code>int</code>
+                <code>tuple[int, ...] | slice | int</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3314,35 +3269,11 @@ torch.Size([2, 2, 100])
     <tbody>
         <tr>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.ANY" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.ANY">ANY</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>The activation store item at the given index.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>IndexError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the index is out of range.</p>
             </div>
           </td>
         </tr>
@@ -3370,27 +3301,17 @@ torch.Size([2, 2, 100])
 <span class="normal">150</span>
 <span class="normal">151</span>
 <span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]:</span>
+<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">ANY</span><span class="p">)]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get Item Dunder Method.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">        &gt;&gt;&gt; store[1]</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=5, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">        tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">    Args:</span>
@@ -3398,17 +3319,7 @@ torch.Size([2, 2, 100])
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The activation store item at the given index.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        IndexError: If the index is out of range.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Check in range</span>
-    <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> out of range (only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> items stored)&quot;</span>
-        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_components</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -3423,7 +3334,7 @@ torch.Size([2, 2, 100])
 
 
 <h3 id="sparse_autoencoder.activation_store.tensor_store.TensorActivationStore.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">max_items</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">max_items</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.activation_store.tensor_store.TensorActivationStore.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3485,7 +3396,7 @@ vectors).</p>
             </div>
           </td>
           <td>
-                <code>1</code>
+              <em>required</em>
           </td>
         </tr>
         <tr>
@@ -3532,7 +3443,7 @@ vectors).</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">max_items</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
     <span class="n">n_neurons</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
-    <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the Tensor Activation Store.</span>
@@ -3577,9 +3488,9 @@ vectors).</p>
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=10_000_000, n_neurons=100)
-store.append(torch.randn(100))
-store.append(torch.randn(100))
+store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)
+store.append(torch.randn(100), component_idx=0)
+store.append(torch.randn(100), component_idx=0)
 len(store)
 2</p>
 </blockquote>
@@ -3636,9 +3547,9 @@ len(store)
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100)</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
-<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100))</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=10_000_000, n_neurons=100, n_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
+<span class="sd">        &gt;&gt;&gt; store.append(torch.randn(100), component_idx=0)</span>
 <span class="sd">        &gt;&gt;&gt; len(store)</span>
 <span class="sd">        2</span>
 
@@ -3675,7 +3586,7 @@ len(store)
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=2, n_neurons=100)
+store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)
 store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 800</p>
 </blockquote>
@@ -3725,7 +3636,7 @@ store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100)</span>
+<span class="sd">        &gt;&gt;&gt; store = TensorActivationStore(max_items=2, n_neurons=100, n_components=1)</span>
 <span class="sd">        &gt;&gt;&gt; store.__sizeof__() # Pre-allocated tensor of 2x100</span>
 <span class="sd">        800</span>
 
@@ -3746,7 +3657,7 @@ store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 
 
 <h3 id="sparse_autoencoder.activation_store.tensor_store.TensorActivationStore.append" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.activation_store.tensor_store.TensorActivationStore.append" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3760,9 +3671,9 @@ store.<strong>sizeof</strong>() # Pre-allocated tensor of 2x100
 <blockquote>
 <p>import torch
 store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
-store.append(torch.zeros(5))
-store.append(torch.ones(5))
-store[1]
+store.append(torch.zeros(5), component_idx=0)
+store.append(torch.ones(5), component_idx=0)
+store[1, 0]
 tensor([1., 1., 1., 1., 1.])</p>
 </blockquote>
 </blockquote>
@@ -3806,7 +3717,7 @@ tensor([1., 1., 1., 1., 1.])</p>
             </div>
           </td>
           <td>
-                <code>0</code>
+              <em>required</em>
           </td>
         </tr>
     </tbody>
@@ -3838,7 +3749,17 @@ tensor([1., 1., 1., 1., 1.])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
@@ -3853,29 +3774,15 @@ tensor([1., 1., 1., 1., 1.])</p>
 <span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">],</span> <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a single item to the store.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 <span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.zeros(5))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.ones(5))</span>
-<span class="sd">    &gt;&gt;&gt; store[1]</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.zeros(5), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.ones(5), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store[1, 0]</span>
 <span class="sd">    tensor([1., 1., 1., 1., 1.])</span>
 
 <span class="sd">    Args:</span>
@@ -3919,8 +3826,8 @@ tensor([1., 1., 1., 1., 1.])</p>
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=10, n_neurons=5)
-store.extend(torch.zeros(2, 5))
+store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
+store.extend(torch.zeros(2, 5), component_idx=0)
 len(store)
 2
 store.empty()
@@ -3932,27 +3839,27 @@ len(store)
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
 <span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty the store.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">    &gt;&gt;&gt; len(store)</span>
 <span class="sd">    2</span>
 <span class="sd">    &gt;&gt;&gt; store.empty()</span>
@@ -3974,7 +3881,7 @@ len(store)
 
 
 <h3 id="sparse_autoencoder.activation_store.tensor_store.TensorActivationStore.extend" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.activation_store.tensor_store.TensorActivationStore.extend" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3987,8 +3894,8 @@ len(store)
 <blockquote>
 <blockquote>
 <p>import torch
-store = TensorActivationStore(max_items=10, n_neurons=5)
-store.extend(torch.zeros(2, 5))
+store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)
+store.extend(torch.zeros(2, 5), component_idx=0)
 len(store)
 2</p>
 </blockquote>
@@ -4033,7 +3940,7 @@ len(store)
             </div>
           </td>
           <td>
-                <code>0</code>
+              <em>required</em>
           </td>
         </tr>
     </tbody>
@@ -4065,7 +3972,19 @@ len(store)
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
@@ -4084,29 +4003,17 @@ len(store)
 <span class="normal">232</span>
 <span class="normal">233</span>
 <span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
+<span class="normal">235</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a batch to the store.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5)</span>
-<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5))</span>
+<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=5, n_components=1)</span>
+<span class="sd">    &gt;&gt;&gt; store.extend(torch.zeros(2, 5), component_idx=0)</span>
 <span class="sd">    &gt;&gt;&gt; len(store)</span>
 <span class="sd">    2</span>
 
@@ -4156,12 +4063,12 @@ len(store)
 <blockquote>
 <p>import torch
 _seed = torch.manual_seed(42)
-store = TensorActivationStore(max_items=10, n_neurons=1)
-store.append(torch.tensor([0.]))
-store.append(torch.tensor([1.]))
-store.append(torch.tensor([2.]))
+store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)
+store.append(torch.tensor([0.]), component_idx=0)
+store.append(torch.tensor([1.]), component_idx=0)
+store.append(torch.tensor([2.]), component_idx=0)
 store.shuffle()
-[store[i].item() for i in range(3)]
+[store[i, 0].item() for i in range(3)]
 [0.0, 2.0, 1.0]</p>
 </blockquote>
 </blockquote>
@@ -4169,7 +4076,17 @@ store.shuffle()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_store/tensor_store.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
@@ -4179,17 +4096,7 @@ store.shuffle()
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shuffle the Data In-Place.</span>
 
 <span class="sd">    This is much faster than using the shuffle argument on `torch.utils.data.DataLoader`.</span>
@@ -4197,12 +4104,12 @@ store.shuffle()
 <span class="sd">    Example:</span>
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 <span class="sd">    &gt;&gt;&gt; _seed = torch.manual_seed(42)</span>
-<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1)</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([0.]))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([1.]))</span>
-<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([2.]))</span>
+<span class="sd">    &gt;&gt;&gt; store = TensorActivationStore(max_items=10, n_neurons=1, n_components=1)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([0.]), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([1.]), component_idx=0)</span>
+<span class="sd">    &gt;&gt;&gt; store.append(torch.tensor([2.]), component_idx=0)</span>
 <span class="sd">    &gt;&gt;&gt; store.shuffle()</span>
-<span class="sd">    &gt;&gt;&gt; [store[i].item() for i in range(3)]</span>
+<span class="sd">    &gt;&gt;&gt; [store[i, 0].item() for i in range(3)]</span>
 <span class="sd">    [0.0, 2.0, 1.0]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Generate a permutation of the indices for the active data</span>
