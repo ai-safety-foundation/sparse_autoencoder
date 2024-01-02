@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, final
 from urllib.parse import quote_plus
 
 from jaxtyping import Float, Int, Int64
+from pydantic import NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
@@ -91,21 +92,22 @@ class Pipeline:
         return len(self.cache_names)
 
     @final
+    @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
         self,
         activation_resampler: AbstractActivationResampler | None,
         autoencoder: SparseAutoencoder,
         cache_names: list[str],
-        layer: int,
+        layer: NonNegativeInt,
         loss: AbstractLoss,
         optimizer: AbstractOptimizerWithReset,
         source_dataset: SourceDataset,
         source_model: HookedTransformer,
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
-        log_frequency: int = 100,
+        log_frequency: PositiveInt = 100,
         metrics: MetricsContainer = default_metrics,
-        source_data_batch_size: int = 12,
+        source_data_batch_size: PositiveInt = 12,
     ) -> None:
         """Initialize the pipeline.
 
@@ -142,7 +144,8 @@ class Pipeline:
         source_dataloader = source_dataset.get_dataloader(source_data_batch_size)
         self.source_data = self.stateful_dataloader_iterable(source_dataloader)
 
-    def generate_activations(self, store_size: int) -> TensorActivationStore:
+    @validate_call
+    def generate_activations(self, store_size: PositiveInt) -> TensorActivationStore:
         """Generate activations.
 
         Args:
@@ -152,12 +155,9 @@ class Pipeline:
             Activation store for the train section.
 
         Raises:
-            ValueError: If the store size is not positive or is not divisible by the batch size.
+            ValueError: If the store size is not divisible by the batch size.
         """
-        # Check the store size is positive and divisible by the batch size
-        if store_size <= 0:
-            error_message = f"Store size must be positive, got {store_size}"
-            raise ValueError(error_message)
+        # Check the store size is divisible by the batch size
         if store_size % (self.source_data_batch_size * self.source_dataset.context_size) != 0:
             error_message = (
                 f"Store size must be divisible by the batch size ({self.source_data_batch_size}), "
@@ -195,8 +195,9 @@ class Pipeline:
 
         return store
 
+    @validate_call(config={"arbitrary_types_allowed": True})
     def train_autoencoder(
-        self, activation_store: TensorActivationStore, train_batch_size: int
+        self, activation_store: TensorActivationStore, train_batch_size: PositiveInt
     ) -> Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
         """Train the sparse autoencoder.
 
@@ -310,7 +311,8 @@ class Pipeline:
                     component_idx=component_idx,
                 )
 
-    def validate_sae(self, validation_n_activations: int) -> None:
+    @validate_call
+    def validate_sae(self, validation_n_activations: PositiveInt) -> None:
         """Get validation metrics.
 
         Args:
@@ -416,14 +418,15 @@ class Pipeline:
 
         return file_path
 
+    @validate_call
     def run_pipeline(
         self,
-        train_batch_size: int,
-        max_store_size: int,
-        max_activations: int,
-        validation_n_activations: int = 1024,
-        validate_frequency: int | None = None,
-        checkpoint_frequency: int | None = None,
+        train_batch_size: PositiveInt,
+        max_store_size: PositiveInt,
+        max_activations: PositiveInt,
+        validation_n_activations: PositiveInt = 1024,
+        validate_frequency: PositiveInt | None = None,
+        checkpoint_frequency: PositiveInt | None = None,
     ) -> None:
         """Run the full training pipeline.
 

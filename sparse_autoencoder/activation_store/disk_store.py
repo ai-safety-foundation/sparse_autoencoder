@@ -4,6 +4,7 @@ import re
 import tempfile
 
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 
@@ -70,12 +71,13 @@ class DiskActivationStore(ActivationStore):
         disk_items_stored = len(self)
         return [cache_items + disk_items_stored for cache_items in self._items_stored]
 
+    @validate_call
     def __init__(
         self,
-        n_neurons: int,
+        n_neurons: PositiveInt,
         storage_path: Path = DEFAULT_DISK_ACTIVATION_STORE_PATH,
-        max_cache_size: int = 10_000,
-        n_components: int = 1,
+        max_cache_size: PositiveInt = 10_000,
+        n_components: PositiveInt = 1,
         *,
         empty_dir: bool = False,
     ):

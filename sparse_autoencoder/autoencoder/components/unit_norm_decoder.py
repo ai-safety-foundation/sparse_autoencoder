@@ -3,6 +3,7 @@ from typing import final
 
 import einops
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.nn import Parameter, init
@@ -76,11 +77,12 @@ class UnitNormDecoder(AbstractDecoder):
         """
         return [(self.weight, -1)]
 
+    @validate_call
     def __init__(
         self,
-        learnt_features: int,
-        decoded_features: int,
-        n_components: int | None,
+        learnt_features: PositiveInt,
+        decoded_features: PositiveInt,
+        n_components: PositiveInt | None,
         *,
         enable_gradient_hook: bool = True,
     ) -> None:

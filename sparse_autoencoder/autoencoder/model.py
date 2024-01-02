@@ -3,6 +3,7 @@
 from typing import final
 
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.nn.parameter import Parameter
@@ -72,15 +73,16 @@ class SparseAutoencoder(AbstractAutoencoder):
         """Post-decoder bias."""
         return self._post_decoder_bias
 
+    @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
         self,
-        n_input_features: int,
-        n_learned_features: int,
+        n_input_features: PositiveInt,
+        n_learned_features: PositiveInt,
         geometric_median_dataset: Float[
             Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ]
         | None = None,
-        n_components: int | None = None,
+        n_components: PositiveInt | None = None,
     ) -> None:
         """Initialize the Sparse Autoencoder Model.
 

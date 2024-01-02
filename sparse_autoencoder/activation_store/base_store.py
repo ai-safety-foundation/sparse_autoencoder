@@ -4,6 +4,7 @@ from concurrent.futures import Future
 from typing import final
 
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.utils.data import Dataset
@@ -105,12 +106,13 @@ class ActivationStore(
         """Optional shuffle method."""
 
     @final
+    @validate_call
     def fill_with_test_data(
         self,
-        n_batches: int = 1,
-        batch_size: int = 16,
-        n_components: int = 1,
-        input_features: int = 256,
+        n_batches: PositiveInt = 1,
+        batch_size: PositiveInt = 16,
+        n_components: PositiveInt = 1,
+        input_features: PositiveInt = 256,
     ) -> None:
         """Fill the store with test data.
 

@@ -84,6 +84,7 @@ def setup_autoencoder(
     return SparseAutoencoder(
         n_input_features=autoencoder_input_dim,
         n_learned_features=autoencoder_input_dim * expansion_factor,
+        n_components=len(hyperparameters["source_model"]["cache_names"]),
     ).to(device)
 
 
