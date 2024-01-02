@@ -9,6 +9,7 @@ from collections.abc import Mapping, Sequence
 from typing import TypedDict, final
 
 from datasets import IterableDataset
+from pydantic import PositiveInt, validate_call
 from transformers import PreTrainedTokenizerBase
 
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
@@ -63,18 +64,19 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
 
         return {"input_ids": context_size_prompts}
 
+    @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
         self,
         dataset_path: str,
         tokenizer: PreTrainedTokenizerBase,
-        buffer_size: int = 1000,
-        context_size: int = 256,
+        buffer_size: PositiveInt = 1000,
+        context_size: PositiveInt = 256,
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_split: str = "train",
         dataset_column_name: str = "input_ids",
-        n_processes_preprocessing: int | None = None,
-        preprocess_batch_size: int = 1000,
+        n_processes_preprocessing: PositiveInt | None = None,
+        preprocess_batch_size: PositiveInt = 1000,
         *,
         pre_download: bool = False,
     ):
@@ -116,12 +118,13 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
             preprocess_batch_size=preprocess_batch_size,
         )
 
+    @validate_call
     def push_to_hugging_face_hub(
         self,
         repo_id: str,
         commit_message: str = "Upload preprocessed dataset using sparse_autoencoder.",
         max_shard_size: str | None = None,
-        n_shards: int = 64,
+        n_shards: PositiveInt = 64,
         revision: str = "main",
         *,
         private: bool = False,

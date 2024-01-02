@@ -1,5 +1,6 @@
 """Tensor Activation Store."""
 from jaxtyping import Float
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 
@@ -75,11 +76,12 @@ class TensorActivationStore(ActivationStore):
         """Number of activations stored per component."""
         return self._items_stored
 
+    @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
         self,
-        max_items: int,
-        n_neurons: int,
-        n_components: int = 1,
+        max_items: PositiveInt,
+        n_neurons: PositiveInt,
+        n_components: PositiveInt = 1,
         device: torch.device | None = None,
     ) -> None:
         """Initialise the Tensor Activation Store.

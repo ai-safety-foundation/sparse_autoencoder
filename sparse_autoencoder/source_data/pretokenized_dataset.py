@@ -14,6 +14,8 @@ PreTokenizedDataset should work with any of the following tokenized datasets:
 from collections.abc import Mapping, Sequence
 from typing import final
 
+from pydantic import PositiveInt, validate_call
+
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TokenizedPrompts
 
 
@@ -67,16 +69,17 @@ class PreTokenizedDataset(SourceDataset[dict]):
 
         return {"input_ids": context_size_prompts}
 
+    @validate_call
     def __init__(
         self,
         dataset_path: str,
-        context_size: int = 256,
-        buffer_size: int = 1000,
+        context_size: PositiveInt = 256,
+        buffer_size: PositiveInt = 1000,
         dataset_dir: str | None = None,
         dataset_files: str | Sequence[str] | Mapping[str, str | Sequence[str]] | None = None,
         dataset_split: str = "train",
         dataset_column_name: str = "input_ids",
-        preprocess_batch_size: int = 1000,
+        preprocess_batch_size: PositiveInt = 1000,
         *,
         pre_download: bool = False,
     ):

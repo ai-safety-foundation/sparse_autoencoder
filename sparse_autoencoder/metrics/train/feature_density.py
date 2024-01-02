@@ -3,6 +3,7 @@ import einops
 from jaxtyping import Float
 import numpy as np
 from numpy import histogram
+from pydantic import NonNegativeFloat, validate_call
 import torch
 from torch import Tensor
 import wandb
@@ -32,9 +33,10 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
 
     threshold: float
 
+    @validate_call
     def __init__(
         self,
-        threshold: float = 0.0,
+        threshold: NonNegativeFloat = 0.0,
     ) -> None:
         """Initialise the train batch feature density metric.
 

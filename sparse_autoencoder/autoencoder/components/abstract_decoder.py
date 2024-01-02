@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from typing import final
 
 from jaxtyping import Float, Int64
+from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.nn import Module, Parameter
@@ -24,11 +25,12 @@ class AbstractDecoder(Module, ABC):
 
     _n_components: int | None
 
+    @validate_call
     def __init__(
         self,
-        learnt_features: int,
-        decoded_features: int,
-        n_components: int | None,
+        learnt_features: PositiveInt,
+        decoded_features: PositiveInt,
+        n_components: PositiveInt | None,
     ) -> None:
         """Initialise the decoder.
 
