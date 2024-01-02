@@ -1,51 +1,17 @@
 """Tests for General Pre-Tokenized Dataset."""
 import pytest
 
+from sparse_autoencoder.source_data.pretokenized_dataset import PreTokenizedDataset
+
 
 TEST_DATASET = "alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2"
 
 
-# Mock class for PreTokenizedDataset
-class MockPreTokenizedDataset:
-    """Mock class for PreTokenizedDataset used in testing.
-
-    Attributes:
-        dataset_path: Path to the dataset.
-        context_size: The context size of the tokenized prompts.
-        dataset: The mock dataset.
-    """
-
-    def __init__(self, dataset_path: str, context_size: int) -> None:
-        """Initializes the mock PreTokenizedDataset with a dataset path and context size.
-
-        Args:
-            dataset_path: Path to the dataset.
-            context_size: The context size of the tokenized prompts.
-        """
-        self.dataset_path = dataset_path
-        self.context_size = context_size
-        self.dataset = self._generate_mock_data()
-
-    def _generate_mock_data(self) -> list[dict]:
-        """Generates mock data for testing.
-
-        Returns:
-            list[dict]: A list of dictionaries representing mock data items.
-        """
-        mock_data = []
-        for _ in range(10):
-            item = {"input_ids": list(range(self.context_size))}
-            mock_data.append(item)
-        return mock_data
-
-
 @pytest.mark.integration_test()
-@pytest.mark.parametrize("context_size", [50, 250])
+@pytest.mark.parametrize("context_size", [128, 256])
 def test_tokenized_prompts_correct_size(context_size: int) -> None:
     """Test that the tokenized prompts have the correct context size."""
-    # Use an appropriate tokenizer and dataset path
-
-    data = MockPreTokenizedDataset(dataset_path=TEST_DATASET, context_size=context_size)
+    data = PreTokenizedDataset(dataset_path=TEST_DATASET, context_size=context_size)
 
     # Check the first k items
     iterable = iter(data.dataset)
@@ -56,3 +22,11 @@ def test_tokenized_prompts_correct_size(context_size: int) -> None:
         # Check the tokens are integers
         for token in item["input_ids"]:
             assert isinstance(token, int)
+
+
+@pytest.mark.integration_test()
+def test_fails_context_size_too_large() -> None:
+    """Test that it fails if the context size is set as larger than the source dataset on HF."""
+    data = PreTokenizedDataset(dataset_path=TEST_DATASET, context_size=512)
+    with pytest.raises(ValueError, match=r"larger than the tokenized prompt size"):
+        next(iter(data))
