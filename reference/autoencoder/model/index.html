@@ -761,69 +761,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/abstract_decoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_decoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../components/abstract_encoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_encoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../components/abstract_outer_bias/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_outer_bias
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../components/linear_encoder/" class="md-nav__link">
         
   
@@ -1032,6 +969,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.reset_optimizer_parameter_details" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_optimizer_parameter_details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.tied_bias" class="md-nav__link">
     <span class="md-ellipsis">
       tied_bias
@@ -1062,6 +1008,15 @@
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.initialize_tied_parameters" class="md-nav__link">
     <span class="md-ellipsis">
       initialize_tied_parameters()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.post_backwards_hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      post_backwards_hook()
     </span>
   </a>
   
@@ -2560,6 +2515,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.reset_optimizer_parameter_details" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_optimizer_parameter_details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.tied_bias" class="md-nav__link">
     <span class="md-ellipsis">
       tied_bias
@@ -2590,6 +2554,15 @@
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.initialize_tied_parameters" class="md-nav__link">
     <span class="md-ellipsis">
       initialize_tied_parameters()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.post_backwards_hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      post_backwards_hook()
     </span>
   </a>
   
@@ -2668,8 +2641,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
-<span class="normal"> 23</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 23</span>
 <span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
@@ -2817,7 +2789,15 @@
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">SparseAutoencoder</span><span class="p">(</span><span class="n">AbstractAutoencoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Autoencoder Model.&quot;&quot;&quot;</span>
 
@@ -2846,33 +2826,17 @@
     <span class="n">n_learned_features</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of Learned Features.&quot;&quot;&quot;</span>
 
-    <span class="n">_pre_encoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span>
+    <span class="n">pre_encoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pre-Encoder Bias.&quot;&quot;&quot;</span>
 
-    <span class="n">_encoder</span><span class="p">:</span> <span class="n">LinearEncoder</span>
+    <span class="n">encoder</span><span class="p">:</span> <span class="n">LinearEncoder</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encoder.&quot;&quot;&quot;</span>
 
-    <span class="n">_decoder</span><span class="p">:</span> <span class="n">UnitNormDecoder</span>
+    <span class="n">decoder</span><span class="p">:</span> <span class="n">UnitNormDecoder</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decoder.&quot;&quot;&quot;</span>
 
-    <span class="n">_post_decoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pre_encoder_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TiedBias</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pre-encoder bias.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinearEncoder</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encoder.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnitNormDecoder</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decoder.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">post_decoder_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TiedBias</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-decoder bias.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span>
+    <span class="n">post_decoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Post-Decoder Bias.&quot;&quot;&quot;</span>
 
     <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -2919,21 +2883,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
 
         <span class="c1"># Initialize the components</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_encoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span>
             <span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
             <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
             <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span>
             <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
             <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
             <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_decoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2949,10 +2913,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple of learned activations and decoded activations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">learned_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
-        <span class="n">decoded_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_encoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">learned_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+        <span class="n">decoded_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_decoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">AutoencoderForwardPassResult</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">)</span>
 
@@ -2967,6 +2931,29 @@
         <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;reset_parameters&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
                 <span class="n">module</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reset_optimizer_parameter_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResetOptimizerParameterDetails</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset optimizer parameter details.</span>
+
+<span class="sd">        Details of the parameters that should be reset in the optimizer, when resetting</span>
+<span class="sd">        dictionary vectors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to</span>
+<span class="sd">            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">reset_optimizer_parameter_details</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">reset_optimizer_parameter_details</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">post_backwards_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hook to be called after each learning step.</span>
+
+<span class="sd">        This can be used to e.g. constrain weights to unit norm.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">constrain_weights_unit_norm</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2986,10 +2973,10 @@
 
 
 <h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.decoder" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">decoder</span><span class="p">:</span> <span class="n">UnitNormDecoder</span></code>
+          <code class="highlight language-python"><span class="n">decoder</span><span class="p">:</span> <span class="n">UnitNormDecoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span><span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.decoder" class="headerlink" title="Permanent link">¤</a></h3>
@@ -3008,10 +2995,10 @@
 
 
 <h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.encoder" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">encoder</span><span class="p">:</span> <span class="n">LinearEncoder</span></code>
+          <code class="highlight language-python"><span class="n">encoder</span><span class="p">:</span> <span class="n">LinearEncoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span><span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span> <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.encoder" class="headerlink" title="Permanent link">¤</a></h3>
@@ -3119,10 +3106,10 @@
 
 
 <h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.post_decoder_bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">post_decoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span></code>
+          <code class="highlight language-python"><span class="n">post_decoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.post_decoder_bias" class="headerlink" title="Permanent link">¤</a></h3>
@@ -3130,7 +3117,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Post-decoder bias.</p>
+      <p>Post-Decoder Bias.</p>
   </div>
 
 </div>
@@ -3141,10 +3128,10 @@
 
 
 <h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.pre_encoder_bias" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">pre_encoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span></code>
+          <code class="highlight language-python"><span class="n">pre_encoder_bias</span><span class="p">:</span> <span class="n">TiedBias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.pre_encoder_bias" class="headerlink" title="Permanent link">¤</a></h3>
@@ -3152,7 +3139,65 @@
 
   <div class="doc doc-contents ">
   
-      <p>Pre-encoder bias.</p>
+      <p>Pre-Encoder Bias.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.reset_optimizer_parameter_details" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">reset_optimizer_parameter_details</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResetOptimizerParameterDetails</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.reset_optimizer_parameter_details" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reset optimizer parameter details.</p>
+<p>Details of the parameters that should be reset in the optimizer, when resetting
+dictionary vectors.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" href="../types/#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails">ResetOptimizerParameterDetails</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of tuples of the form <code>(parameter, axis)</code>, where <code>parameter</code> is the parameter to</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" href="../types/#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails">ResetOptimizerParameterDetails</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>reset (e.g. encoder.weight), and <code>axis</code> is the axis of the parameter to reset.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
   </div>
 
 </div>
@@ -3277,7 +3322,22 @@ model won't contain a component axis in any of the parameters).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
@@ -3321,22 +3381,7 @@ model won't contain a component axis in any of the parameters).</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">n_input_features</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -3381,21 +3426,21 @@ model won't contain a component axis in any of the parameters).</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
 
     <span class="c1"># Initialize the components</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pre_encoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">PRE_ENCODER</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">LinearEncoder</span><span class="p">(</span>
         <span class="n">input_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
         <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
         <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">UnitNormDecoder</span><span class="p">(</span>
         <span class="n">learnt_features</span><span class="o">=</span><span class="n">n_learned_features</span><span class="p">,</span>
         <span class="n">decoded_features</span><span class="o">=</span><span class="n">n_input_features</span><span class="p">,</span>
         <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">post_decoder_bias</span> <span class="o">=</span> <span class="n">TiedBias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="p">,</span> <span class="n">TiedBiasPosition</span><span class="o">.</span><span class="n">POST_DECODER</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3474,26 +3519,26 @@ model won't contain a component axis in any of the parameters).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -3507,10 +3552,10 @@ model won't contain a component axis in any of the parameters).</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        Tuple of learned activations and decoded activations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_encoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">learned_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decoder</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
-    <span class="n">decoded_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_decoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_encoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">learned_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+    <span class="n">decoded_activations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_decoder_bias</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">AutoencoderForwardPassResult</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3537,13 +3582,49 @@ model won't contain a component axis in any of the parameters).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the tied parameters.&quot;&quot;&quot;</span>
     <span class="c1"># The tied bias is initialised as the geometric median of the dataset</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.post_backwards_hook" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">post_backwards_hook</span><span class="p">()</span></code>
+
+<a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.post_backwards_hook" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Hook to be called after each learning step.</p>
+<p>This can be used to e.g. constrain weights to unit norm.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">post_backwards_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hook to be called after each learning step.</span>
+
+<span class="sd">    This can be used to e.g. constrain weights to unit norm.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">constrain_weights_unit_norm</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3568,12 +3649,12 @@ model won't contain a component axis in any of the parameters).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>

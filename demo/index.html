@@ -839,69 +839,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_decoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_decoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_encoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_encoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_outer_bias/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_outer_bias
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../reference/autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
@@ -2466,10 +2403,8 @@
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="quick-start-training-demo">Quick Start Training Demo<a class="headerlink" href="#quick-start-training-demo" title="Permanent link">¤</a></h1>
 <p>This is a quick start demo to get training a SAE right away. All you need to do is choose a few
-hyperparameters (like the model to train on), and then set it off.
-By default it replicates Neel Nanda's
-<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html#comment-nanda">comment on the Anthropic dictionary learning
-paper</a>.</p>
+hyperparameters (like the model to train on), and then set it off. By default it trains SAEs on all
+MLP layers from GPT2 small.</p>
 </div>
 </div>
 </div>
@@ -2522,6 +2457,7 @@ paper</a>.</p>
     <span class="n">Method</span><span class="p">,</span>
     <span class="n">OptimizerHyperparameters</span><span class="p">,</span>
     <span class="n">Parameter</span><span class="p">,</span>
+    <span class="n">PipelineHyperparameters</span><span class="p">,</span>
     <span class="n">SourceDataHyperparameters</span><span class="p">,</span>
     <span class="n">SourceModelHyperparameters</span><span class="p">,</span>
     <span class="n">sweep</span><span class="p">,</span>
@@ -2553,10 +2489,16 @@ learning rate):</p>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
-<div class="highlight"><pre><span></span><code><span class="n">sweep_config</span> <span class="o">=</span> <span class="n">SweepConfig</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">n_layers_gpt2_small</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="n">sweep_config</span> <span class="o">=</span> <span class="n">SweepConfig</span><span class="p">(</span>
     <span class="n">parameters</span><span class="o">=</span><span class="n">Hyperparameters</span><span class="p">(</span>
         <span class="n">activation_resampler</span><span class="o">=</span><span class="n">ActivationResamplerHyperparameters</span><span class="p">(</span>
+            <span class="n">resample_interval</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">200_000_000</span><span class="p">),</span>
+            <span class="n">n_activations_activity_collate</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">100_000_000</span><span class="p">),</span>
             <span class="n">threshold_is_dead_portion_fires</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">),</span>
+            <span class="n">max_n_resamples</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="n">resample_dataset_size</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">200_000</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">loss</span><span class="o">=</span><span class="n">LossHyperparameters</span><span class="p">(</span>
             <span class="n">l1_coefficient</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">4e-3</span><span class="p">),</span>
@@ -2565,12 +2507,24 @@ learning rate):</p>
             <span class="n">lr</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">source_model</span><span class="o">=</span><span class="n">SourceModelHyperparameters</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;gelu-2l&quot;</span><span class="p">),</span>
-            <span class="n">cache_names</span><span class="o">=</span><span class="n">Parameter</span><span class="p">([</span><span class="s2">&quot;blocks.0.hook_mlp_out&quot;</span><span class="p">,</span> <span class="s2">&quot;blocks.1.hook_mlp_out&quot;</span><span class="p">]),</span>
-            <span class="n">hook_dimension</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;gpt2-small&quot;</span><span class="p">),</span>
+            <span class="c1"># Train in parallel on all MLP layers</span>
+            <span class="n">cache_names</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span>
+                <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;blocks.</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.hook_mlp_out&quot;</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers_gpt2_small</span><span class="p">)]</span>
+            <span class="p">),</span>
+            <span class="n">hook_dimension</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">768</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">source_data</span><span class="o">=</span><span class="n">SourceDataHyperparameters</span><span class="p">(</span>
-            <span class="n">dataset_path</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;NeelNanda/c4-code-tokenized-2b&quot;</span><span class="p">),</span>
+            <span class="n">dataset_path</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2&quot;</span><span class="p">),</span>
+            <span class="n">context_size</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span>
+            <span class="n">pre_tokenized</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">pipeline</span><span class="o">=</span><span class="n">PipelineHyperparameters</span><span class="p">(</span>
+            <span class="n">max_activations</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">1_000_000_000</span><span class="p">),</span>
+            <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">100_000_000</span><span class="p">),</span>
+            <span class="n">validation_frequency</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">100_000_000</span><span class="p">),</span>
+            <span class="n">train_batch_size</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">1024</span><span class="p">),</span>
+            <span class="n">max_store_size</span><span class="o">=</span><span class="n">Parameter</span><span class="p">(</span><span class="mi">300_000</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
     <span class="n">method</span><span class="o">=</span><span class="n">Method</span><span class="o">.</span><span class="n">RANDOM</span><span class="p">,</span>
@@ -2582,37 +2536,19 @@ learning rate):</p>
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="output_subarea output_text output_error">
+<div class="output_text output_subarea output_execute_result">
 <pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[3], line 12</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> sweep_config <span style="color: rgb(98,98,98)">=</span> SweepConfig(
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     parameters<span style="color: rgb(98,98,98)">=</span>Hyperparameters(
-<span class="ansi-green-intense-fg ansi-bold">      3</span>         activation_resampler<span style="color: rgb(98,98,98)">=</span>ActivationResamplerHyperparameters(
-<span class="ansi-green-intense-fg ansi-bold">      4</span>             threshold_is_dead_portion_fires<span style="color: rgb(98,98,98)">=</span>Parameter(<span style="color: rgb(98,98,98)">1e-6</span>),
-<span class="ansi-green-intense-fg ansi-bold">      5</span>         ),
-<span class="ansi-green-intense-fg ansi-bold">      6</span>         loss<span style="color: rgb(98,98,98)">=</span>LossHyperparameters(
-<span class="ansi-green-intense-fg ansi-bold">      7</span>             l1_coefficient<span style="color: rgb(98,98,98)">=</span>Parameter(<span style="color: rgb(0,135,0)">max</span><span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">1e-2</span>, <span style="color: rgb(0,135,0)">min</span><span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">4e-3</span>),
-<span class="ansi-green-intense-fg ansi-bold">      8</span>         ),
-<span class="ansi-green-intense-fg ansi-bold">      9</span>         optimizer<span style="color: rgb(98,98,98)">=</span>OptimizerHyperparameters(
-<span class="ansi-green-intense-fg ansi-bold">     10</span>             lr<span style="color: rgb(98,98,98)">=</span>Parameter(<span style="color: rgb(0,135,0)">max</span><span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">1e-3</span>, <span style="color: rgb(0,135,0)">min</span><span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">1e-5</span>),
-<span class="ansi-green-intense-fg ansi-bold">     11</span>         ),
-<span class="ansi-green-fg">---&gt; 12</span>         source_model<span style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">SourceModelHyperparameters</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">     13</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">Parameter</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">"</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">gelu-2l</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">"</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">cache_names</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">Parameter</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">"</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">mlp_out</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">"</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     15</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">hook_layer</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">Parameter</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     16</span> <span class="ansi-yellow-bg">            </span><span class="ansi-yellow-bg">hook_dimension</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">Parameter</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">512</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">)</span>,
-<span class="ansi-green-intense-fg ansi-bold">     18</span>         source_data<span style="color: rgb(98,98,98)">=</span>SourceDataHyperparameters(
-<span class="ansi-green-intense-fg ansi-bold">     19</span>             dataset_path<span style="color: rgb(98,98,98)">=</span>Parameter(<span style="color: rgb(175,0,0)">"</span><span style="color: rgb(175,0,0)">NeelNanda/c4-code-tokenized-2b</span><span style="color: rgb(175,0,0)">"</span>),
-<span class="ansi-green-intense-fg ansi-bold">     20</span>         ),
-<span class="ansi-green-intense-fg ansi-bold">     21</span>     ),
-<span class="ansi-green-intense-fg ansi-bold">     22</span>     method<span style="color: rgb(98,98,98)">=</span>Method<span style="color: rgb(98,98,98)">.</span>RANDOM,
-<span class="ansi-green-intense-fg ansi-bold">     23</span> )
-<span class="ansi-green-intense-fg ansi-bold">     24</span> sweep_config
-
-<span class="ansi-red-fg">TypeError</span>: SourceModelHyperparameters.__init__() got an unexpected keyword argument 'hook_layer'</pre>
+<code>SweepConfig(parameters=Hyperparameters(
+    source_data=SourceDataHyperparameters(dataset_path=Parameter(value=alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2), context_size=Parameter(value=128), dataset_column_name=Parameter(value=input_ids), dataset_dir=None, dataset_files=None, pre_download=Parameter(value=False), pre_tokenized=Parameter(value=True), tokenizer_name=None)
+    source_model=SourceModelHyperparameters(name=Parameter(value=gpt2-small), cache_names=Parameter(value=['blocks.0.hook_mlp_out', 'blocks.1.hook_mlp_out', 'blocks.2.hook_mlp_out', 'blocks.3.hook_mlp_out', 'blocks.4.hook_mlp_out', 'blocks.5.hook_mlp_out', 'blocks.6.hook_mlp_out', 'blocks.7.hook_mlp_out', 'blocks.8.hook_mlp_out', 'blocks.9.hook_mlp_out', 'blocks.10.hook_mlp_out', 'blocks.11.hook_mlp_out']), hook_dimension=Parameter(value=768), dtype=Parameter(value=float32))
+    activation_resampler=ActivationResamplerHyperparameters(resample_interval=Parameter(value=200000000), max_n_resamples=Parameter(value=4), n_activations_activity_collate=Parameter(value=100000000), resample_dataset_size=Parameter(value=200000), threshold_is_dead_portion_fires=Parameter(value=1e-06))
+    autoencoder=AutoencoderHyperparameters(expansion_factor=Parameter(value=2))
+    loss=LossHyperparameters(l1_coefficient=Parameter(max=0.01, min=0.004))
+    optimizer=OptimizerHyperparameters(lr=Parameter(max=0.001, min=1e-05), adam_beta_1=Parameter(value=0.9), adam_beta_2=Parameter(value=0.99), adam_weight_decay=Parameter(value=0.0), amsgrad=Parameter(value=False), fused=Parameter(value=False))
+    pipeline=PipelineHyperparameters(log_frequency=Parameter(value=100), source_data_batch_size=Parameter(value=16), train_batch_size=Parameter(value=1024), max_store_size=Parameter(value=300000), max_activations=Parameter(value=1000000000), checkpoint_frequency=Parameter(value=100000000), validation_frequency=Parameter(value=100000000), validation_n_activations=Parameter(value=8192))
+    random_seed=Parameter(value=49)
+), method=&lt;Method.RANDOM: 'random'&gt;, metric=Metric(name=train/loss/total_loss, goal=minimize), command=None, controller=None, description=None, earlyterminate=None, entity=None, imageuri=None, job=None, kind=None, name=None, program=None, project=None)</code>
+</pre>
 </div>
 </div>
 </div>

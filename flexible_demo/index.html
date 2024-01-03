@@ -890,69 +890,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_decoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_decoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_encoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_encoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/autoencoder/components/abstract_outer_bias/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_outer_bias
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../reference/autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
@@ -2658,18 +2595,6 @@ activations.</p>
 </code></pre></div>
 
 </div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-<code>Using device: mps
-</code>
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
@@ -2760,25 +2685,6 @@ we'll also get some details about that hook point.</p>
 </code></pre></div>
 
 </div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-<code>Loaded pretrained model gelu-2l into HookedTransformer
-</code>
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="output_text output_subarea output_execute_result">
-<pre>
-<code>'Source: gelu-2l,     Hook: blocks.0.hook_mlp_out,     Features: 512'</code>
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
@@ -2812,25 +2718,6 @@ classes (which are fully documented) for more details.</p>
 </code></pre></div>
 
 </div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea output_execute_result">
-<pre>
-<code>SparseAutoencoder(
-  (_pre_encoder_bias): TiedBias(position=pre_encoder)
-  (_encoder): LinearEncoder(
-    in_features=512, out_features=2048
-    (activation_function): ReLU()
-  )
-  (_decoder): UnitNormDecoder(in_features=2048, out_features=512)
-  (_post_decoder_bias): TiedBias(position=post_decoder)
-)</code>
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
@@ -2855,20 +2742,6 @@ optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWit
 </code></pre></div>
 
 </div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea output_execute_result">
-<pre>
-<code>LossReducer(
-  (0): LearnedActivationsL1Loss(l1_coefficient=0.0003)
-  (1): L2ReconstructionLoss()
-)</code>
-</pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -2880,33 +2753,11 @@ optimizers by extending <code>AbstractLoss</code> and <code>AbstractOptimizerWit
     <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_1&quot;</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_beta_2&quot;</span><span class="p">])),</span>
     <span class="n">eps</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_epsilon&quot;</span><span class="p">]),</span>
     <span class="n">weight_decay</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;adam_weight_decay&quot;</span><span class="p">]),</span>
+    <span class="n">has_components_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">optimizer</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea output_execute_result">
-<pre>
-<code>AdamWithReset (
-Parameter Group 0
-    amsgrad: False
-    betas: (0.9, 0.999)
-    capturable: False
-    differentiable: False
-    eps: 1e-08
-    foreach: None
-    fused: None
-    lr: 0.0001
-    maximize: False
-    weight_decay: 0.0
-)</code>
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -2948,21 +2799,11 @@ used to train the SAE).</p>
 <div class="input">
 
 <div class="highlight"><pre><span></span><code><span class="n">source_data</span> <span class="o">=</span> <span class="n">PreTokenizedDataset</span><span class="p">(</span>
-    <span class="n">dataset_path</span><span class="o">=</span><span class="s2">&quot;NeelNanda/c4-code-tokenized-2b&quot;</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;context_size&quot;</span><span class="p">])</span>
+    <span class="n">dataset_path</span><span class="o">=</span><span class="s2">&quot;alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2&quot;</span><span class="p">,</span>
+    <span class="n">context_size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;context_size&quot;</span><span class="p">]),</span>
 <span class="p">)</span>
 </code></pre></div>
 
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="output_text output_subarea">
-<pre>
-<code>Resolving data files:   0%|          | 0/28 [00:00&lt;?, ?it/s]</code>
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -3010,7 +2851,7 @@ wandb. </p>
 <div class="highlight"><pre><span></span><code><span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
     <span class="n">activation_resampler</span><span class="o">=</span><span class="n">activation_resampler</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="o">=</span><span class="n">autoencoder</span><span class="p">,</span>
-    <span class="n">cache_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point&quot;</span><span class="p">]),</span>
+    <span class="n">cache_names</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point&quot;</span><span class="p">])],</span>
     <span class="n">checkpoint_directory</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
     <span class="n">layer</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;source_model_hook_point_layer&quot;</span><span class="p">]),</span>
     <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
@@ -3027,14 +2868,6 @@ wandb. </p>
     <span class="n">checkpoint_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;checkpoint_frequency&quot;</span><span class="p">]),</span>
     <span class="n">validate_frequency</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;validation_frequency&quot;</span><span class="p">]),</span>
 <span class="p">)</span>
-</code></pre></div>
-
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="highlight"><pre><span></span><code><span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
 </code></pre></div>
 
 </div>

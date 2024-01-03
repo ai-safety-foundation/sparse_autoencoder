@@ -759,69 +759,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../autoencoder/components/abstract_decoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_decoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../autoencoder/components/abstract_encoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_encoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../autoencoder/components/abstract_outer_bias/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_outer_bias
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
@@ -3502,7 +3439,7 @@
             <span class="c1"># Backwards pass</span>
             <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">constrain_weights_unit_norm</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">post_backwards_hook</span><span class="p">()</span>
 
             <span class="c1"># Log training metrics</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span> <span class="o">+=</span> <span class="n">train_batch_size</span>
@@ -5287,7 +5224,7 @@ used 8bn, although others have had success with 100m+).</p>
         <span class="c1"># Backwards pass</span>
         <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">constrain_weights_unit_norm</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">post_backwards_hook</span><span class="p">()</span>
 
         <span class="c1"># Log training metrics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span> <span class="o">+=</span> <span class="n">train_batch_size</span>
