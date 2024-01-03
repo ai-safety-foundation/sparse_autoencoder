@@ -1038,6 +1038,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2543,8 +2564,7 @@ function.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_encoder.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
-<span class="normal"> 15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
 <span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
@@ -2696,7 +2716,8 @@ function.</p>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractEncoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractEncoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract encoder module.</span>
 
 <span class="sd">    Typically includes :attr:`weights` and :attr:`bias` parameters, as well as an activation</span>
@@ -2751,7 +2772,7 @@ function.</p>
 
     <span class="nd">@property</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">reset_optimizer_parameter_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">reset_optimizer_parameter_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResetOptimizerParameterDetails</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset optimizer parameter details.</span>
 
 <span class="sd">        Details of the parameters that should be reset in the optimizer, when resetting</span>
@@ -2892,7 +2913,7 @@ function.</p>
 
 
 <h3 id="sparse_autoencoder.autoencoder.components.abstract_encoder.AbstractEncoder.reset_optimizer_parameter_details" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">reset_optimizer_parameter_details</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span></code>
+          <code class="highlight language-python"><span class="n">reset_optimizer_parameter_details</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResetOptimizerParameterDetails</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -2921,7 +2942,7 @@ dictionary vectors.</p>
     <tbody>
         <tr>
           <td>
-                <code>list[tuple[<span title="torch.nn.Parameter">Parameter</span>, int]]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" href="../../types/#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails">ResetOptimizerParameterDetails</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2931,7 +2952,7 @@ dictionary vectors.</p>
         </tr>
         <tr>
           <td>
-                <code>list[tuple[<span title="torch.nn.Parameter">Parameter</span>, int]]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" href="../../types/#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails">ResetOptimizerParameterDetails</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3048,8 +3069,7 @@ representing a single basis element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
-<span class="normal">30</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
@@ -3065,7 +3085,8 @@ representing a single basis element in the learned activation space.</p>
 <span class="normal">43</span>
 <span class="normal">44</span>
 <span class="normal">45</span>
-<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">input_features</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -3165,8 +3186,7 @@ representing a single basis element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">80</span>
-<span class="normal">81</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
 <span class="normal">84</span>
@@ -3179,7 +3199,8 @@ representing a single basis element in the learned activation space.</p>
 <span class="normal">91</span>
 <span class="normal">92</span>
 <span class="normal">93</span>
-<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">94</span>
+<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -3300,8 +3321,7 @@ representing a single basis element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">135</span>
-<span class="normal">136</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
@@ -3332,7 +3352,8 @@ representing a single basis element in the learned activation space.</p>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">167</span>
+<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">update_bias</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">update_parameter_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
@@ -3472,8 +3493,7 @@ representing a single basis element in the learned activation space.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/components/abstract_encoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
-<span class="normal"> 97</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
@@ -3509,7 +3529,8 @@ representing a single basis element in the learned activation space.</p>
 <span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">133</span>
+<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">update_dictionary_vectors</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">dictionary_vector_indices</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>

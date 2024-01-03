@@ -907,6 +907,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../autoencoder/types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1087,6 +1108,15 @@
   <a href="#sparse_autoencoder.loss.abstract_loss.LossReductionType" class="md-nav__link">
     <span class="md-ellipsis">
       LossReductionType
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      LossResultWithMetrics
     </span>
   </a>
   
@@ -2462,6 +2492,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      LossResultWithMetrics
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2522,15 +2561,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 33</span>
 <span class="normal"> 34</span>
 <span class="normal"> 35</span>
 <span class="normal"> 36</span>
@@ -2712,7 +2743,15 @@
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
-<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractLoss</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractLoss</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract loss interface.</span>
 
 <span class="sd">    Interface for implementing batch itemwise loss functions.</span>
@@ -2809,7 +2848,7 @@
         <span class="p">],</span>
         <span class="n">batch_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
         <span class="n">component_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossResultWithMetrics</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scalar loss (reduced across the batch and component axis) with logging.</span>
 
 <span class="sd">        Args:</span>
@@ -2871,7 +2910,7 @@
             <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
                 <span class="k">pass</span>
 
-        <span class="k">return</span> <span class="n">current_module_loss</span><span class="p">,</span> <span class="n">metrics</span>
+        <span class="k">return</span> <span class="n">LossResultWithMetrics</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">current_module_loss</span><span class="p">,</span> <span class="n">loss_metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
@@ -2886,7 +2925,7 @@
             <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
         <span class="p">],</span>
         <span class="n">reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossResultWithMetrics</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Batch scalar loss.</span>
 
 <span class="sd">        Args:</span>
@@ -3021,7 +3060,7 @@ make the loss independent of the batch size.</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM">SINGLE_ITEM</a>], list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="../../metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]]</code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics" href="#sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics">LossResultWithMetrics</a></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3034,15 +3073,7 @@ make the loss independent of the batch size.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span>
@@ -3063,7 +3094,15 @@ make the loss independent of the batch size.</p>
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
-<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -3076,7 +3115,7 @@ make the loss independent of the batch size.</p>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="n">reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossResultWithMetrics</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Batch scalar loss.</span>
 
 <span class="sd">    Args:</span>
@@ -3239,15 +3278,7 @@ to make the loss independent of the batch size.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
 <span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
@@ -3279,7 +3310,15 @@ to make the loss independent of the batch size.</p>
 <span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span>
-<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">batch_loss</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -3431,15 +3470,7 @@ source model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
@@ -3454,7 +3485,15 @@ source model).</p>
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -3530,13 +3569,13 @@ source model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">log_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Log name.</span>
 
@@ -3666,7 +3705,7 @@ to make the loss independent of the batch size.</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>] | <span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.SINGLE_ITEM">SINGLE_ITEM</a>], list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.MetricResult" href="../../metrics/abstract_metric/#sparse_autoencoder.metrics.abstract_metric.MetricResult">MetricResult</a>]]</code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics" href="#sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics">LossResultWithMetrics</a></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -3679,15 +3718,7 @@ to make the loss independent of the batch size.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
@@ -3754,7 +3785,15 @@ to make the loss independent of the batch size.</p>
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scalar_loss_with_log</span><span class="p">(</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scalar_loss_with_log</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -3767,7 +3806,7 @@ to make the loss independent of the batch size.</p>
     <span class="p">],</span>
     <span class="n">batch_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
     <span class="n">component_reduction</span><span class="p">:</span> <span class="n">LossReductionType</span> <span class="o">=</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossResultWithMetrics</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scalar loss (reduced across the batch and component axis) with logging.</span>
 
 <span class="sd">    Args:</span>
@@ -3829,7 +3868,7 @@ to make the loss independent of the batch size.</p>
         <span class="k">case</span> <span class="n">LossReductionType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">return</span> <span class="n">current_module_loss</span><span class="p">,</span> <span class="n">metrics</span>
+    <span class="k">return</span> <span class="n">LossResultWithMetrics</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">current_module_loss</span><span class="p">,</span> <span class="n">loss_metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3880,6 +3919,61 @@ to make the loss independent of the batch size.</p>
     <span class="n">SUM</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span>
 
     <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics" class="doc doc-heading">
+          <code>LossResultWithMetrics</code>
+
+
+<a href="#sparse_autoencoder.loss.abstract_loss.LossResultWithMetrics" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="typing.NamedTuple">NamedTuple</span></code></p>
+
+  
+      <p>Loss result with any metrics to log.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/loss/abstract_loss.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LossResultWithMetrics</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Loss result with any metrics to log.&quot;&quot;&quot;</span>
+
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">]</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span>
+
+    <span class="n">loss_metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
 

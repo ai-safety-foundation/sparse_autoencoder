@@ -827,6 +827,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.abstract_autoencoder.AutoencoderForwardPassResult" class="md-nav__link">
+    <span class="md-ellipsis">
+      AutoencoderForwardPassResult
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1027,6 +1036,27 @@
   
   <span class="md-ellipsis">
     model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    types
   </span>
   
 
@@ -2480,6 +2510,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.abstract_autoencoder.AutoencoderForwardPassResult" class="md-nav__link">
+    <span class="md-ellipsis">
+      AutoencoderForwardPassResult
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2546,21 +2585,7 @@
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/abstract_autoencoder.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
@@ -2614,7 +2639,18 @@
 <span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
-<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractAutoencoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractAutoencoder</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract Sparse Autoencoder Model.</span>
 
 <span class="sd">    Warning:</span>
@@ -2645,7 +2681,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-decoder bias.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reset_optimizer_parameter_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">reset_optimizer_parameter_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResetOptimizerParameterDetails</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset optimizer parameter details.</span>
 
 <span class="sd">        Details of the parameters that should be reset in the optimizer, when resetting</span>
@@ -2666,10 +2702,7 @@
         <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
             <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
         <span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
-        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-    <span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AutoencoderForwardPassResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
 <span class="sd">        Args:</span>
@@ -2794,7 +2827,7 @@
 
 
 <h3 id="sparse_autoencoder.autoencoder.abstract_autoencoder.AbstractAutoencoder.reset_optimizer_parameter_details" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">reset_optimizer_parameter_details</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Parameter</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span></code>
+          <code class="highlight language-python"><span class="n">reset_optimizer_parameter_details</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ResetOptimizerParameterDetails</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -2822,7 +2855,7 @@ dictionary vectors.</p>
     <tbody>
         <tr>
           <td>
-                <code>list[tuple[<span title="torch.nn.Parameter">Parameter</span>, int]]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" href="../types/#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails">ResetOptimizerParameterDetails</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2832,7 +2865,7 @@ dictionary vectors.</p>
         </tr>
         <tr>
           <td>
-                <code>list[tuple[<span title="torch.nn.Parameter">Parameter</span>, int]]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" href="../types/#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails">ResetOptimizerParameterDetails</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2912,7 +2945,7 @@ transformer model).</p>
     <tbody>
         <tr>
           <td>
-                <code>tuple[<span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)], <span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]]</code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.abstract_autoencoder.AutoencoderForwardPassResult" href="#sparse_autoencoder.autoencoder.abstract_autoencoder.AutoencoderForwardPassResult">AutoencoderForwardPassResult</a></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2925,34 +2958,28 @@ transformer model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/abstract_autoencoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
     <span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
-    <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
-<span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AutoencoderForwardPassResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward Pass.</span>
 
 <span class="sd">    Args:</span>
@@ -2990,9 +3017,9 @@ transformer model).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/abstract_autoencoder.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -3000,6 +3027,69 @@ transformer model).</p>
   </div>
 
 </div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="sparse_autoencoder.autoencoder.abstract_autoencoder.AutoencoderForwardPassResult" class="doc doc-heading">
+          <code>AutoencoderForwardPassResult</code>
+
+
+<a href="#sparse_autoencoder.autoencoder.abstract_autoencoder.AutoencoderForwardPassResult" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="typing.NamedTuple">NamedTuple</span></code></p>
+
+  
+      <p>Autoencoder Forward Pass Result.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/autoencoder/abstract_autoencoder.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AutoencoderForwardPassResult</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Autoencoder Forward Pass Result.&quot;&quot;&quot;</span>
+
+    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
 
 
 
