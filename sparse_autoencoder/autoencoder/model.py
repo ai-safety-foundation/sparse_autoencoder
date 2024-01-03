@@ -15,6 +15,7 @@ from sparse_autoencoder.autoencoder.abstract_autoencoder import (
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
@@ -48,33 +49,17 @@ class SparseAutoencoder(AbstractAutoencoder):
     n_learned_features: int
     """Number of Learned Features."""
 
-    _pre_encoder_bias: TiedBias
+    pre_encoder_bias: TiedBias
+    """Pre-Encoder Bias."""
 
-    _encoder: LinearEncoder
+    encoder: LinearEncoder
+    """Encoder."""
 
-    _decoder: UnitNormDecoder
+    decoder: UnitNormDecoder
+    """Decoder."""
 
-    _post_decoder_bias: TiedBias
-
-    @property
-    def pre_encoder_bias(self) -> TiedBias:
-        """Pre-encoder bias."""
-        return self._pre_encoder_bias
-
-    @property
-    def encoder(self) -> LinearEncoder:
-        """Encoder."""
-        return self._encoder
-
-    @property
-    def decoder(self) -> UnitNormDecoder:
-        """Decoder."""
-        return self._decoder
-
-    @property
-    def post_decoder_bias(self) -> TiedBias:
-        """Post-decoder bias."""
-        return self._post_decoder_bias
+    post_decoder_bias: TiedBias
+    """Post-Decoder Bias."""
 
     @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
@@ -121,21 +106,21 @@ class SparseAutoencoder(AbstractAutoencoder):
         self.initialize_tied_parameters()
 
         # Initialize the components
-        self._pre_encoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER)
+        self.pre_encoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER)
 
-        self._encoder = LinearEncoder(
+        self.encoder = LinearEncoder(
             input_features=n_input_features,
             learnt_features=n_learned_features,
             n_components=n_components,
         )
 
-        self._decoder = UnitNormDecoder(
+        self.decoder = UnitNormDecoder(
             learnt_features=n_learned_features,
             decoded_features=n_input_features,
             n_components=n_components,
         )
 
-        self._post_decoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER)
+        self.post_decoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER)
 
     def forward(
         self,
@@ -151,10 +136,10 @@ class SparseAutoencoder(AbstractAutoencoder):
         Returns:
             Tuple of learned activations and decoded activations.
         """
-        x = self._pre_encoder_bias(x)
-        learned_activations = self._encoder(x)
-        x = self._decoder(learned_activations)
-        decoded_activations = self._post_decoder_bias(x)
+        x = self.pre_encoder_bias(x)
+        learned_activations = self.encoder(x)
+        x = self.decoder(learned_activations)
+        decoded_activations = self.post_decoder_bias(x)
 
         return AutoencoderForwardPassResult(learned_activations, decoded_activations)
 
@@ -169,3 +154,26 @@ class SparseAutoencoder(AbstractAutoencoder):
         for module in self.network:
             if "reset_parameters" in dir(module):
                 module.reset_parameters()
+
+    @property
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
+        """Reset optimizer parameter details.
+
+        Details of the parameters that should be reset in the optimizer, when resetting
+        dictionary vectors.
+
+        Returns:
+            List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
+            reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
+        """
+        return (
+            self.encoder.reset_optimizer_parameter_details
+            + self.decoder.reset_optimizer_parameter_details
+        )
+
+    def post_backwards_hook(self) -> None:
+        """Hook to be called after each learning step.
+
+        This can be used to e.g. constrain weights to unit norm.
+        """
+        self.decoder.constrain_weights_unit_norm()

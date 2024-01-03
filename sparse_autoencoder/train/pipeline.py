@@ -257,7 +257,7 @@ class Pipeline:
             # Backwards pass
             total_loss.backward()
             self.optimizer.step()
-            self.autoencoder.decoder.constrain_weights_unit_norm()
+            self.autoencoder.post_backwards_hook()
 
             # Log training metrics
             self.total_activations_trained_on += train_batch_size

@@ -2,13 +2,13 @@
 # name: test_representation
   '''
   SparseAutoencoder(
-    (_pre_encoder_bias): TiedBias(position=pre_encoder)
-    (_encoder): LinearEncoder(
+    (pre_encoder_bias): TiedBias(position=pre_encoder)
+    (encoder): LinearEncoder(
       input_features=3, learnt_features=6, n_components=None
       (activation_function): ReLU()
     )
-    (_decoder): UnitNormDecoder(learnt_features=6, decoded_features=3, n_components=None)
-    (_post_decoder_bias): TiedBias(position=post_decoder)
+    (decoder): UnitNormDecoder(learnt_features=6, decoded_features=3, n_components=None)
+    (post_decoder_bias): TiedBias(position=post_decoder)
   )
   '''
 # ---

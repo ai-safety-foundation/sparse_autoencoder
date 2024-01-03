@@ -47,8 +47,4 @@ The library is designed to be modular. By default it takes the approach from [To
 Monosemanticity: Decomposing Language Models With Dictionary Learning
 ](https://transformer-circuits.pub/2023/monosemantic-features/index.html), so you can pip install
 the library and get started quickly. Then when you need to customise something, you can just extend
-the abstract class for that component (e.g. you can extend
-[`AbstractEncoder`][sparse_autoencoder.autoencoder.components.abstract_encoder] if you want to
-customise the encoder layer, and then easily drop it in the standard
-[`SparseAutoencoder`][sparse_autoencoder.autoencoder.model] model to keep everything else as is.
-Every component is fully documented, so it's nice and easy to do this.
+the abstract class for that component (every component is documented so that it's easy to do this).
