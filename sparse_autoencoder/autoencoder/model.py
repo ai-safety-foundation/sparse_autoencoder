@@ -8,7 +8,10 @@ import torch
 from torch import Tensor
 from torch.nn.parameter import Parameter
 
-from sparse_autoencoder.autoencoder.abstract_autoencoder import AbstractAutoencoder
+from sparse_autoencoder.autoencoder.abstract_autoencoder import (
+    AbstractAutoencoder,
+    AutoencoderForwardPassResult,
+)
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
@@ -123,10 +126,7 @@ class SparseAutoencoder(AbstractAutoencoder):
         x: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-    ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
-    ]:
+    ) -> AutoencoderForwardPassResult:
         """Forward Pass.
 
         Args:
@@ -135,11 +135,12 @@ class SparseAutoencoder(AbstractAutoencoder):
         Returns:
             Tuple of learned activations and decoded activations.
         """
-        x = self.pre_encoder_bias(x)
-        learned_activations = self.encoder(x)
-        x = self.decoder(learned_activations)
-        decoded_activations = self.post_decoder_bias(x)
-        return learned_activations, decoded_activations
+        x = self._pre_encoder_bias(x)
+        learned_activations = self._encoder(x)
+        x = self._decoder(learned_activations)
+        decoded_activations = self._post_decoder_bias(x)
+
+        return AutoencoderForwardPassResult(learned_activations, decoded_activations)
 
     def initialize_tied_parameters(self) -> None:
         """Initialize the tied parameters."""

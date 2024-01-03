@@ -8,6 +8,7 @@ import torch
 from torch import Tensor
 from torch.nn import Module, Parameter, init
 
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
@@ -72,7 +73,7 @@ class UnitNormDecoder(Module):
         return self._weight
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
@@ -82,7 +83,7 @@ class UnitNormDecoder(Module):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self.weight, -1)]
+        return [ResetOptimizerParameterDetails(parameter=self.weight, axis=-1)]
 
     @validate_call
     def __init__(

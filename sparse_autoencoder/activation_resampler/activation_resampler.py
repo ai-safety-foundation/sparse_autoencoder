@@ -1,5 +1,5 @@
 """Activation resampler."""
-from typing import Annotated
+from typing import Annotated, NamedTuple
 
 from einops import rearrange
 from jaxtyping import Bool, Float, Int64
@@ -20,6 +20,15 @@ from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils import get_model_device
+
+
+class LossInputActivationsTuple(NamedTuple):
+    """Loss and corresponding input activations tuple."""
+
+    loss_per_item: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    input_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ]
 
 
 class ActivationResampler(AbstractActivationResampler):
@@ -182,10 +191,7 @@ class ActivationResampler(AbstractActivationResampler):
         autoencoder: SparseAutoencoder,
         loss_fn: AbstractLoss,
         train_batch_size: int,
-    ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
-    ]:
+    ) -> LossInputActivationsTuple:
         """Compute the loss on a random subset of inputs.
 
         Motivation:
@@ -226,18 +232,18 @@ class ActivationResampler(AbstractActivationResampler):
                 if batch_idx >= n_batches_required:
                     break
 
-            loss_result = torch.cat(loss_batches).to(model_device)
+            loss_per_item = torch.cat(loss_batches).to(model_device)
             input_activations = torch.cat(input_activations_batches).to(model_device)
 
             # Check we generated enough data
-            if len(loss_result) < n_inputs:
+            if len(loss_per_item) < n_inputs:
                 error_message = (
                     f"Cannot get {n_inputs} items from the store, "
-                    f"as only {len(loss_result)} were available."
+                    f"as only {len(loss_per_item)} were available."
                 )
                 raise ValueError(error_message)
 
-            return loss_result, input_activations
+            return LossInputActivationsTuple(loss_per_item, input_activations)
 
     @staticmethod
     def assign_sampling_probabilities(
@@ -440,7 +446,7 @@ class ActivationResampler(AbstractActivationResampler):
 
             # Compute the loss for the current model on a random subset of inputs and get the
             # activations.
-            loss, input_activations = self.compute_loss_and_get_activations(
+            loss_per_item, input_activations = self.compute_loss_and_get_activations(
                 store=activation_store,
                 autoencoder=autoencoder,
                 loss_fn=loss_fn,
@@ -451,7 +457,7 @@ class ActivationResampler(AbstractActivationResampler):
             # square of the autoencoder's loss on that input.
             sample_probabilities: Float[
                 Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
-            ] = self.assign_sampling_probabilities(loss)
+            ] = self.assign_sampling_probabilities(loss_per_item)
 
             # For each dead neuron sample an input according to these probabilities.
             sampled_input: list[

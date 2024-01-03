@@ -1,11 +1,24 @@
 """Abstract Sparse Autoencoder Model."""
 from abc import ABC, abstractmethod
+from typing import NamedTuple
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Module, Parameter
+from torch.nn import Module
 
 from sparse_autoencoder.tensor_types import Axis
+
+
+class AutoencoderForwardPassResult(NamedTuple):
+    """Autoencoder Forward Pass Result."""
+
+    learned_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+    ]
+
+    decoded_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ]
 
 
 class AbstractAutoencoder(Module, ABC):
@@ -44,10 +57,7 @@ class AbstractAutoencoder(Module, ABC):
         x: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-    ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
-    ]:
+    ) -> AutoencoderForwardPassResult:
         """Forward Pass.
 
         Args:

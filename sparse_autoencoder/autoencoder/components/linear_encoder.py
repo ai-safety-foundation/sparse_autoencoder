@@ -9,6 +9,7 @@ import torch
 from torch import Tensor
 from torch.nn import Module, Parameter, ReLU, init
 
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
@@ -70,7 +71,7 @@ class LinearEncoder(Module):
         return self._bias
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
@@ -80,7 +81,10 @@ class LinearEncoder(Module):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return [(self.weight, -2), (self.bias, -1)]
+        return [
+            ResetOptimizerParameterDetails(parameter=self.weight, axis=-2),
+            ResetOptimizerParameterDetails(parameter=self.bias, axis=-1),
+        ]
 
     activation_function: ReLU
     """Activation function."""
