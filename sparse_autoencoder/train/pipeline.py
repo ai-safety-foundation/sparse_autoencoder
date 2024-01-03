@@ -230,7 +230,7 @@ class Pipeline:
             batch = store_batch.detach().to(autoencoder_device)
 
             # Forward pass
-            learned_activations, reconstructed_activations = self.autoencoder(batch)
+            learned_activations, reconstructed_activations = self.autoencoder.forward(batch)
 
             # Get loss & metrics
             metrics: list[MetricResult] = []

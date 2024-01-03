@@ -1,14 +1,28 @@
 """Abstract Sparse Autoencoder Model."""
 from abc import ABC, abstractmethod
+from typing import NamedTuple
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Module, Parameter
+from torch.nn import Module
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
 from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
+
+
+class AutoencoderForwardPassResult(NamedTuple):
+    """Autoencoder Forward Pass Result."""
+
+    learned_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+    ]
+
+    decoded_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ]
 
 
 class AbstractAutoencoder(Module, ABC):
@@ -42,7 +56,7 @@ class AbstractAutoencoder(Module, ABC):
         """Post-decoder bias."""
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
@@ -63,10 +77,7 @@ class AbstractAutoencoder(Module, ABC):
         x: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-    ) -> tuple[
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)],
-        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
-    ]:
+    ) -> AutoencoderForwardPassResult:
         """Forward Pass.
 
         Args:

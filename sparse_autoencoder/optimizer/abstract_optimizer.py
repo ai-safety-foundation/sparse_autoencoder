@@ -1,6 +1,5 @@
 """Abstract optimizer with reset."""
 from abc import ABC, abstractmethod
-from typing import TypeAlias
 
 from jaxtyping import Int64
 from torch import Tensor
@@ -8,9 +7,6 @@ from torch.nn.parameter import Parameter
 from torch.optim import Optimizer
 
 from sparse_autoencoder.tensor_types import Axis
-
-
-ParameterAxis: TypeAlias = tuple[Parameter, int]
 
 
 class AbstractOptimizerWithReset(Optimizer, ABC):

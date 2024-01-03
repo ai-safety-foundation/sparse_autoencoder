@@ -8,6 +8,7 @@ import torch
 from torch import Tensor
 from torch.nn import Module, Parameter
 
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -66,7 +67,7 @@ class AbstractEncoder(Module, ABC):
 
     @property
     @abstractmethod
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting

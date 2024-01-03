@@ -9,6 +9,7 @@ from torch import Tensor
 from torch.nn import Parameter, init
 
 from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -46,9 +47,9 @@ class MockDecoder(AbstractDecoder):
         return self._weight
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details."""
-        return [(self.weight, 1)]
+        return [ResetOptimizerParameterDetails(parameter=self.weight, axis=1)]
 
     def forward(
         self, x: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)]
