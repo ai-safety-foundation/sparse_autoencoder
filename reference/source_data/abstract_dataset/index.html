@@ -1763,15 +1763,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.abstract_dataset.SourceDataset.__next__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __next__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sparse_autoencoder.source_data.abstract_dataset.SourceDataset.get_dataloader" class="md-nav__link">
     <span class="md-ellipsis">
       get_dataloader()
@@ -2503,15 +2494,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.abstract_dataset.SourceDataset.__next__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __next__()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sparse_autoencoder.source_data.abstract_dataset.SourceDataset.get_dataloader" class="md-nav__link">
     <span class="md-ellipsis">
       get_dataloader()
@@ -2864,15 +2846,7 @@ generation of the activations dataset.</p>
 <span class="normal">233</span>
 <span class="normal">234</span>
 <span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
+<span class="normal">236</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SourceDataset</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">HuggingFaceDatasetItem</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract source dataset.</span>
 
 <span class="sd">    Source dataset that is used to generate the activations dataset (by running forward passes of</span>
@@ -3040,14 +3014,6 @@ generation of the activations dataset.</p>
 <span class="sd">        Enables direct access to :attr:`dataset` with e.g. `for` loops.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
-
-    <span class="nd">@final</span>
-    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Next Dunder Method.</span>
-
-<span class="sd">        Enables direct access to :attr:`dataset` with e.g. `next` calls.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
@@ -3595,44 +3561,6 @@ tokenizing prompts).</p>
 
 
 
-<h3 id="sparse_autoencoder.source_data.abstract_dataset.SourceDataset.__next__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__next__</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.source_data.abstract_dataset.SourceDataset.__next__" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Next Dunder Method.</p>
-<p>Enables direct access to :attr:<code>dataset</code> with e.g. <code>next</code> calls.</p>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># noqa: ANN401</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Next Dunder Method.</span>
-
-<span class="sd">    Enables direct access to :attr:`dataset` with e.g. `next` calls.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
 <h3 id="sparse_autoencoder.source_data.abstract_dataset.SourceDataset.get_dataloader" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">get_dataloader</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span></code>
 
@@ -3699,7 +3627,15 @@ tokenizing prompts).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_data/abstract_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">226</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
 <span class="normal">227</span>
 <span class="normal">228</span>
 <span class="normal">229</span>
@@ -3709,15 +3645,7 @@ tokenizing prompts).</p>
 <span class="normal">233</span>
 <span class="normal">234</span>
 <span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">236</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">get_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a PyTorch DataLoader.</span>
 

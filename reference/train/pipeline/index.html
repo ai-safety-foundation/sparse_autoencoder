@@ -2166,15 +2166,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train.pipeline.Pipeline.stateful_dataloader_iterable" class="md-nav__link">
-    <span class="md-ellipsis">
-      stateful_dataloader_iterable()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sparse_autoencoder.train.pipeline.Pipeline.train_autoencoder" class="md-nav__link">
     <span class="md-ellipsis">
       train_autoencoder()
@@ -2704,15 +2695,6 @@
   <a href="#sparse_autoencoder.train.pipeline.Pipeline.save_checkpoint" class="md-nav__link">
     <span class="md-ellipsis">
       save_checkpoint()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train.pipeline.Pipeline.stateful_dataloader_iterable" class="md-nav__link">
-    <span class="md-ellipsis">
-      stateful_dataloader_iterable()
     </span>
   </a>
   
@@ -3282,49 +3264,7 @@
 <span class="normal">513</span>
 <span class="normal">514</span>
 <span class="normal">515</span>
-<span class="normal">516</span>
-<span class="normal">517</span>
-<span class="normal">518</span>
-<span class="normal">519</span>
-<span class="normal">520</span>
-<span class="normal">521</span>
-<span class="normal">522</span>
-<span class="normal">523</span>
-<span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
-<span class="normal">530</span>
-<span class="normal">531</span>
-<span class="normal">532</span>
-<span class="normal">533</span>
-<span class="normal">534</span>
-<span class="normal">535</span>
-<span class="normal">536</span>
-<span class="normal">537</span>
-<span class="normal">538</span>
-<span class="normal">539</span>
-<span class="normal">540</span>
-<span class="normal">541</span>
-<span class="normal">542</span>
-<span class="normal">543</span>
-<span class="normal">544</span>
-<span class="normal">545</span>
-<span class="normal">546</span>
-<span class="normal">547</span>
-<span class="normal">548</span>
-<span class="normal">549</span>
-<span class="normal">550</span>
-<span class="normal">551</span>
-<span class="normal">552</span>
-<span class="normal">553</span>
-<span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">516</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -3358,7 +3298,7 @@
     <span class="n">progress_bar</span><span class="p">:</span> <span class="n">tqdm</span> <span class="o">|</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Progress bar for the pipeline.&quot;&quot;&quot;</span>
 
-    <span class="n">source_data</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]</span>
+    <span class="n">source_data</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterable over the source data.&quot;&quot;&quot;</span>
 
     <span class="n">source_dataset</span><span class="p">:</span> <span class="n">SourceDataset</span>
@@ -3425,8 +3365,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">source_dataset</span> <span class="o">=</span> <span class="n">source_dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span> <span class="o">=</span> <span class="n">source_model</span>
 
+        <span class="c1"># Create a stateful iterator</span>
         <span class="n">source_dataloader</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">get_dataloader</span><span class="p">(</span><span class="n">source_data_batch_size</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateful_dataloader_iterable</span><span class="p">(</span><span class="n">source_dataloader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">source_dataloader</span><span class="p">)</span>
 
     <span class="nd">@validate_call</span>
     <span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
@@ -3463,16 +3404,14 @@
 
         <span class="c1"># Loop through the dataloader until the store reaches the desired size</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">store_size</span><span class="p">:</span>
+                <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">)</span>
                 <span class="n">input_ids</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SOURCE_DATA_BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">POSITION</span><span class="p">)]</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
                     <span class="s2">&quot;input_ids&quot;</span>
                 <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">source_model_device</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span>
                     <span class="n">input_ids</span><span class="p">,</span> <span class="n">stop_at_layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prepend_bos</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>  <span class="c1"># type: ignore (TLens is typed incorrectly)</span>
-
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">store_size</span><span class="p">:</span>
-                    <span class="k">break</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">remove_all_hook_fns</span><span class="p">()</span>
         <span class="n">store</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
@@ -3620,9 +3559,8 @@
         <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">losses_shape</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">source_model_device</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">component_idx</span><span class="p">,</span> <span class="n">cache_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_names</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">batch_idx</span> <span class="o">==</span> <span class="n">losses</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                    <span class="k">break</span>
+            <span class="k">for</span> <span class="n">batch_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">losses</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">)</span>
 
                 <span class="n">input_ids</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SOURCE_DATA_BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">POSITION</span><span class="p">)]</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
                     <span class="s2">&quot;input_ids&quot;</span>
@@ -3800,46 +3738,6 @@
 
         <span class="c1"># Save the final checkpoint</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="n">is_final</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">stateful_dataloader_iterable</span><span class="p">(</span>
-        <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a stateful dataloader iterable.</span>
-
-<span class="sd">        Create an iterable that maintains it&#39;s position in the dataloader between loops.</span>
-
-<span class="sd">        Examples:</span>
-<span class="sd">            Without this, when iterating over a DataLoader with 2 loops, each loop get the same data</span>
-<span class="sd">            (assuming shuffle is turned off). That is to say, the second loop won&#39;t maintain the</span>
-<span class="sd">            position from where the first loop left off.</span>
-
-<span class="sd">            &gt;&gt;&gt; from datasets import Dataset</span>
-<span class="sd">            &gt;&gt;&gt; from torch.utils.data import DataLoader</span>
-<span class="sd">            &gt;&gt;&gt; def gen():</span>
-<span class="sd">            ...     yield {&quot;int&quot;: 0}</span>
-<span class="sd">            ...     yield {&quot;int&quot;: 1}</span>
-<span class="sd">            &gt;&gt;&gt; data = DataLoader(Dataset.from_generator(gen))</span>
-<span class="sd">            &gt;&gt;&gt; next(iter(data))[&quot;int&quot;], next(iter(data))[&quot;int&quot;]</span>
-<span class="sd">            (tensor([0]), tensor([0]))</span>
-
-<span class="sd">            By contrast if you create a stateful iterable from the dataloader, each loop will get</span>
-<span class="sd">            different data.</span>
-
-<span class="sd">            &gt;&gt;&gt; iterator = Pipeline.stateful_dataloader_iterable(data)</span>
-<span class="sd">            &gt;&gt;&gt; next(iterator)[&quot;int&quot;], next(iterator)[&quot;int&quot;]</span>
-<span class="sd">            (tensor([0]), tensor([1]))</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            dataloader: PyTorch DataLoader.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Stateful iterable over the data in the dataloader.</span>
-
-<span class="sd">        Yields:</span>
-<span class="sd">            Data from the dataloader.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">yield from</span> <span class="n">dataloader</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -4079,7 +3977,7 @@
 
 
 <h3 id="sparse_autoencoder.train.pipeline.Pipeline.source_data" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">source_data</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateful_dataloader_iterable</span><span class="p">(</span><span class="n">source_dataloader</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">source_data</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">source_dataloader</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4432,7 +4330,8 @@ layer).</p>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
@@ -4482,8 +4381,9 @@ layer).</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_dataset</span> <span class="o">=</span> <span class="n">source_dataset</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span> <span class="o">=</span> <span class="n">source_model</span>
 
+    <span class="c1"># Create a stateful iterator</span>
     <span class="n">source_dataloader</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">get_dataloader</span><span class="p">(</span><span class="n">source_data_batch_size</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateful_dataloader_iterable</span><span class="p">(</span><span class="n">source_dataloader</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">source_dataloader</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -4586,8 +4486,7 @@ layer).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
-<span class="normal">148</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
@@ -4634,8 +4533,7 @@ layer).</p>
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations.</span>
 
@@ -4670,16 +4568,14 @@ layer).</p>
 
     <span class="c1"># Loop through the dataloader until the store reaches the desired size</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">:</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">store_size</span><span class="p">:</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">)</span>
             <span class="n">input_ids</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SOURCE_DATA_BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">POSITION</span><span class="p">)]</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
                 <span class="s2">&quot;input_ids&quot;</span>
             <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">source_model_device</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span>
                 <span class="n">input_ids</span><span class="p">,</span> <span class="n">stop_at_layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prepend_bos</span><span class="o">=</span><span class="kc">False</span>
             <span class="p">)</span>  <span class="c1"># type: ignore (TLens is typed incorrectly)</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">store_size</span><span class="p">:</span>
-                <span class="k">break</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">source_model</span><span class="o">.</span><span class="n">remove_all_hook_fns</span><span class="p">()</span>
     <span class="n">store</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
@@ -4810,7 +4706,9 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">424</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
 <span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span>
@@ -4902,9 +4800,7 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">513</span>
 <span class="normal">514</span>
 <span class="normal">515</span>
-<span class="normal">516</span>
-<span class="normal">517</span>
-<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">516</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -5077,7 +4973,9 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">394</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
 <span class="normal">395</span>
 <span class="normal">396</span>
 <span class="normal">397</span>
@@ -5103,9 +5001,7 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">417</span>
 <span class="normal">418</span>
 <span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.</span>
 
@@ -5134,212 +5030,6 @@ used 8bn, although others have had success with 100m+).</p>
         <span class="n">wandb</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">file_path</span>
-</code></pre></div></td></tr></table></div>
-          </details>
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-
-<h3 id="sparse_autoencoder.train.pipeline.Pipeline.stateful_dataloader_iterable" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">stateful_dataloader_iterable</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.train.pipeline.Pipeline.stateful_dataloader_iterable" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Create a stateful dataloader iterable.</p>
-<p>Create an iterable that maintains it's position in the dataloader between loops.</p>
-
-
-
-<p><strong>Examples:</strong></p>
-    <p>Without this, when iterating over a DataLoader with 2 loops, each loop get the same data
-(assuming shuffle is turned off). That is to say, the second loop won't maintain the
-position from where the first loop left off.</p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-<span class="gp">... </span>    <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">))[</span><span class="s2">&quot;int&quot;</span><span class="p">],</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">))[</span><span class="s2">&quot;int&quot;</span><span class="p">]</span>
-<span class="go">(tensor([0]), tensor([0]))</span>
-</code></pre></div>
-    <p>By contrast if you create a stateful iterable from the dataloader, each loop will get
-different data.</p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">iterator</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="o">.</span><span class="n">stateful_dataloader_iterable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)[</span><span class="s2">&quot;int&quot;</span><span class="p">],</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)[</span><span class="s2">&quot;int&quot;</span><span class="p">]</span>
-<span class="go">(tensor([0]), tensor([1]))</span>
-</code></pre></div>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>dataloader</code></td>
-          <td>
-                <code><span title="torch.utils.data.DataLoader">DataLoader</span>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts" href="../../source_data/abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts">TorchTokenizedPrompts</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>PyTorch DataLoader.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts" href="../../source_data/abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts">TorchTokenizedPrompts</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Stateful iterable over the data in the dataloader.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Yields:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts" href="../../source_data/abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TorchTokenizedPrompts">TorchTokenizedPrompts</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Data from the dataloader.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">520</span>
-<span class="normal">521</span>
-<span class="normal">522</span>
-<span class="normal">523</span>
-<span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
-<span class="normal">530</span>
-<span class="normal">531</span>
-<span class="normal">532</span>
-<span class="normal">533</span>
-<span class="normal">534</span>
-<span class="normal">535</span>
-<span class="normal">536</span>
-<span class="normal">537</span>
-<span class="normal">538</span>
-<span class="normal">539</span>
-<span class="normal">540</span>
-<span class="normal">541</span>
-<span class="normal">542</span>
-<span class="normal">543</span>
-<span class="normal">544</span>
-<span class="normal">545</span>
-<span class="normal">546</span>
-<span class="normal">547</span>
-<span class="normal">548</span>
-<span class="normal">549</span>
-<span class="normal">550</span>
-<span class="normal">551</span>
-<span class="normal">552</span>
-<span class="normal">553</span>
-<span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">stateful_dataloader_iterable</span><span class="p">(</span>
-    <span class="n">dataloader</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TorchTokenizedPrompts</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a stateful dataloader iterable.</span>
-
-<span class="sd">    Create an iterable that maintains it&#39;s position in the dataloader between loops.</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        Without this, when iterating over a DataLoader with 2 loops, each loop get the same data</span>
-<span class="sd">        (assuming shuffle is turned off). That is to say, the second loop won&#39;t maintain the</span>
-<span class="sd">        position from where the first loop left off.</span>
-
-<span class="sd">        &gt;&gt;&gt; from datasets import Dataset</span>
-<span class="sd">        &gt;&gt;&gt; from torch.utils.data import DataLoader</span>
-<span class="sd">        &gt;&gt;&gt; def gen():</span>
-<span class="sd">        ...     yield {&quot;int&quot;: 0}</span>
-<span class="sd">        ...     yield {&quot;int&quot;: 1}</span>
-<span class="sd">        &gt;&gt;&gt; data = DataLoader(Dataset.from_generator(gen))</span>
-<span class="sd">        &gt;&gt;&gt; next(iter(data))[&quot;int&quot;], next(iter(data))[&quot;int&quot;]</span>
-<span class="sd">        (tensor([0]), tensor([0]))</span>
-
-<span class="sd">        By contrast if you create a stateful iterable from the dataloader, each loop will get</span>
-<span class="sd">        different data.</span>
-
-<span class="sd">        &gt;&gt;&gt; iterator = Pipeline.stateful_dataloader_iterable(data)</span>
-<span class="sd">        &gt;&gt;&gt; next(iterator)[&quot;int&quot;], next(iterator)[&quot;int&quot;]</span>
-<span class="sd">        (tensor([0]), tensor([1]))</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        dataloader: PyTorch DataLoader.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Stateful iterable over the data in the dataloader.</span>
-
-<span class="sd">    Yields:</span>
-<span class="sd">        Data from the dataloader.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">yield from</span> <span class="n">dataloader</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -5432,7 +5122,8 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
+<span class="normal">198</span>
 <span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
@@ -5512,8 +5203,7 @@ different data.</p>
 <span class="normal">275</span>
 <span class="normal">276</span>
 <span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="normal">278</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]:</span>
@@ -5649,7 +5339,8 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">281</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">280</span>
+<span class="normal">281</span>
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
@@ -5679,8 +5370,7 @@ different data.</p>
 <span class="normal">308</span>
 <span class="normal">309</span>
 <span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">311</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the parameters of the model from the results of the resampler.</span>
 
 <span class="sd">    Args:</span>
@@ -5766,7 +5456,8 @@ different data.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">314</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">313</span>
+<span class="normal">314</span>
 <span class="normal">315</span>
 <span class="normal">316</span>
 <span class="normal">317</span>
@@ -5842,9 +5533,7 @@ different data.</p>
 <span class="normal">387</span>
 <span class="normal">388</span>
 <span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">390</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_n_activations</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 
@@ -5869,9 +5558,8 @@ different data.</p>
     <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">losses_shape</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">source_model_device</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">component_idx</span><span class="p">,</span> <span class="n">cache_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_names</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">batch_idx</span> <span class="o">==</span> <span class="n">losses</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="k">break</span>
+        <span class="k">for</span> <span class="n">batch_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">losses</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_data</span><span class="p">)</span>
 
             <span class="n">input_ids</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SOURCE_DATA_BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">POSITION</span><span class="p">)]</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
                 <span class="s2">&quot;input_ids&quot;</span>
