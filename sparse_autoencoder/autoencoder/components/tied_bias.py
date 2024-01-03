@@ -4,9 +4,8 @@ from typing import final
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Parameter
+from torch.nn import Module, Parameter
 
-from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -18,7 +17,7 @@ class TiedBiasPosition(str, Enum):
 
 
 @final
-class TiedBias(AbstractOuterBias):
+class TiedBias(Module):
     """Tied Bias Layer.
 
     The tied pre-encoder bias is a learned bias term that is subtracted from the input before

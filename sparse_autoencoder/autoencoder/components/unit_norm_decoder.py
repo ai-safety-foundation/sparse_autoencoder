@@ -2,19 +2,18 @@
 from typing import final
 
 import einops
-from jaxtyping import Float
+from jaxtyping import Float, Int64
 from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn import Parameter, init
+from torch.nn import Module, Parameter, init
 
-from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 @final
-class UnitNormDecoder(AbstractDecoder):
+class UnitNormDecoder(Module):
     r"""Constrained unit norm linear decoder layer.
 
     Linear layer decoder, where the dictionary vectors (columns of the weight matrix) are
@@ -43,6 +42,14 @@ class UnitNormDecoder(AbstractDecoder):
         unit norm after each gradient step, results in a small but real reduction in total
         loss](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-autoencoder-optimization).
     """
+
+    _learnt_features: int
+    """Number of learnt features (inputs to this layer)."""
+
+    _decoded_features: int
+    """Number of decoded features (outputs from this layer)."""
+
+    _n_components: int | None
 
     _weight: Float[
         Parameter,
@@ -95,12 +102,13 @@ class UnitNormDecoder(AbstractDecoder):
             enable_gradient_hook: Enable the gradient backwards hook (modify the gradient before
                 applying the gradient step, to maintain unit norm of the dictionary vectors).
         """
+        super().__init__()
+
+        self._learnt_features = learnt_features
+        self._decoded_features = decoded_features
+        self._n_components = n_components
+
         # Create the linear layer as per the standard PyTorch linear layer
-        super().__init__(
-            learnt_features=learnt_features,
-            decoded_features=decoded_features,
-            n_components=n_components,
-        )
         self._weight = Parameter(
             torch.empty(
                 shape_with_optional_dimensions(n_components, decoded_features, learnt_features),
@@ -112,6 +120,43 @@ class UnitNormDecoder(AbstractDecoder):
         # vectors (columns of the weight matrix) before applying the gradient step.
         if enable_gradient_hook:
             self._weight.register_hook(self._weight_backward_hook)
+
+    def update_dictionary_vectors(
+        self,
+        dictionary_vector_indices: Int64[
+            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
+        ],
+        updated_weights: Float[
+            Tensor,
+            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE_IDX),
+        ],
+        component_idx: int | None = None,
+    ) -> None:
+        """Update decoder dictionary vectors.
+
+        Updates the dictionary vectors (rows in the weight matrix) with the given values. Typically
+        this is used when resampling neurons (dictionary vectors) that have died.
+
+        Args:
+            dictionary_vector_indices: Indices of the dictionary vectors to update.
+            updated_weights: Updated weights for just these dictionary vectors.
+            component_idx: Component index to update.
+
+        Raises:
+            ValueError: If `component_idx` is not specified when `n_components` is not None.
+        """
+        if dictionary_vector_indices.numel() == 0:
+            return
+
+        with torch.no_grad():
+            if component_idx is None:
+                if self._n_components is not None:
+                    error_message = "component_idx must be specified when n_components is not None"
+                    raise ValueError(error_message)
+
+                self.weight[:, dictionary_vector_indices] = updated_weights
+            else:
+                self.weight[component_idx, :, dictionary_vector_indices] = updated_weights
 
     def constrain_weights_unit_norm(self) -> None:
         """Constrain the weights to have unit norm.

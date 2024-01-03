@@ -5,13 +5,13 @@
 # name: test_setup_autoencoder
   '''
   SparseAutoencoder(
-    (_pre_encoder_bias): TiedBias(position=pre_encoder)
-    (_encoder): LinearEncoder(
+    (pre_encoder_bias): TiedBias(position=pre_encoder)
+    (encoder): LinearEncoder(
       input_features=512, learnt_features=2048, n_components=1
       (activation_function): ReLU()
     )
-    (_decoder): UnitNormDecoder(learnt_features=2048, decoded_features=512, n_components=1)
-    (_post_decoder_bias): TiedBias(position=post_decoder)
+    (decoder): UnitNormDecoder(learnt_features=2048, decoded_features=512, n_components=1)
+    (post_decoder_bias): TiedBias(position=post_decoder)
   )
   '''
 # ---

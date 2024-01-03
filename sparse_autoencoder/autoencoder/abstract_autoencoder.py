@@ -5,9 +5,6 @@ from jaxtyping import Float
 from torch import Tensor
 from torch.nn import Module, Parameter
 
-from sparse_autoencoder.autoencoder.components.abstract_decoder import AbstractDecoder
-from sparse_autoencoder.autoencoder.components.abstract_encoder import AbstractEncoder
-from sparse_autoencoder.autoencoder.components.abstract_outer_bias import AbstractOuterBias
 from sparse_autoencoder.tensor_types import Axis
 
 
@@ -21,27 +18,15 @@ class AbstractAutoencoder(Module, ABC):
             signatures should allow for it.
     """
 
-    @property
     @abstractmethod
-    def encoder(self) -> AbstractEncoder:
-        """Encoder."""
+    def post_backwards_hook(self) -> None:
+        """Hook to be called after each learning step.
+
+        This can be used to e.g. constrain weights to unit norm.
+        """
 
     @property
     @abstractmethod
-    def decoder(self) -> AbstractDecoder:
-        """Decoder."""
-
-    @property
-    @abstractmethod
-    def pre_encoder_bias(self) -> AbstractOuterBias:
-        """Pre-encoder bias."""
-
-    @property
-    @abstractmethod
-    def post_decoder_bias(self) -> AbstractOuterBias:
-        """Post-decoder bias."""
-
-    @property
     def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
         """Reset optimizer parameter details.
 
@@ -52,10 +37,6 @@ class AbstractAutoencoder(Module, ABC):
             List of tuples of the form `(parameter, axis)`, where `parameter` is the parameter to
             reset (e.g. encoder.weight), and `axis` is the axis of the parameter to reset.
         """
-        return (
-            self.encoder.reset_optimizer_parameter_details
-            + self.decoder.reset_optimizer_parameter_details
-        )
 
     @abstractmethod
     def forward(

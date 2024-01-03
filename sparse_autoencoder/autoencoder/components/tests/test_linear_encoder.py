@@ -1,9 +1,12 @@
 """Linear encoder tests."""
+from jaxtyping import Float, Int64
 import pytest
 from syrupy.session import SnapshotSession
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
+from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
@@ -86,3 +89,55 @@ def test_output_same_without_component_dim_vs_with_1_component() -> None:
     output_with_1_component = encoder_with_1_component(input_with_components_dim)
 
     assert torch.allclose(output_without_components_dim, output_with_1_component.squeeze(1))
+
+
+def test_update_dictionary_vectors_with_no_neurons(encoder: LinearEncoder) -> None:
+    """Test update_dictionary_vectors with 0 neurons to update."""
+    torch.random.manual_seed(0)
+    original_weight = encoder.weight.clone()  # Save original weight for comparison
+
+    dictionary_vector_indices: Int64[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ] = torch.empty(
+        0,
+        dtype=torch.int64,  # Empty tensor with 1 dimension
+    )
+    updates: Float[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ] = torch.empty(
+        (0, 0),
+        dtype=torch.float,  # Empty tensor with 2 dimensions
+    )
+
+    encoder.update_dictionary_vectors(dictionary_vector_indices, updates)
+
+    # Ensure weight did not change when no indices were provided
+    assert torch.equal(
+        encoder.weight, original_weight
+    ), "Weights should not change when no indices are provided."
+
+
+@pytest.mark.parametrize(
+    ("dictionary_vector_indices", "updates"),
+    [
+        (torch.tensor([1]), torch.rand((1, 4))),  # Test with 1 neuron to update
+        (
+            torch.tensor([0, 2]),
+            torch.rand((2, 4)),
+        ),  # Test with 2 neurons to update
+    ],
+)
+def test_update_dictionary_vectors_with_neurons(
+    encoder: LinearEncoder,
+    dictionary_vector_indices: Int64[
+        Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ],
+    updates: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)],
+) -> None:
+    """Test update_dictionary_vectors with 1 or 2 neurons to update."""
+    encoder.update_dictionary_vectors(dictionary_vector_indices, updates)
+
+    # Check if the specified neurons are updated correctly
+    assert torch.allclose(
+        encoder.weight[dictionary_vector_indices, :], updates
+    ), "update_dictionary_vectors should update the weights correctly."

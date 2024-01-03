@@ -343,7 +343,7 @@ class TestResampleDeadNeurons:
         # Check the updated ones have changed
         for component_idx, neuron_idx in dead_neurons:
             # Decoder
-            decoder_weights = current_parameters["_decoder._weight"]
+            decoder_weights = current_parameters["decoder._weight"]
             current_dead_neuron_weights = decoder_weights[component_idx, neuron_idx]
             updated_dead_decoder_weights = parameter_updates[
                 component_idx
@@ -353,7 +353,7 @@ class TestResampleDeadNeurons:
             ), "Dead decoder weights should have changed."
 
             # Encoder
-            current_dead_encoder_weights = current_parameters["_encoder._weight"][
+            current_dead_encoder_weights = current_parameters["encoder._weight"][
                 component_idx, neuron_idx
             ]
             updated_dead_encoder_weights = parameter_updates[
@@ -363,7 +363,7 @@ class TestResampleDeadNeurons:
                 current_dead_encoder_weights, updated_dead_encoder_weights
             ), "Dead encoder weights should have changed."
 
-            current_dead_encoder_bias = current_parameters["_encoder._bias"][
+            current_dead_encoder_bias = current_parameters["encoder._bias"][
                 component_idx, neuron_idx
             ]
             updated_dead_encoder_bias = parameter_updates[component_idx].dead_encoder_bias_updates

@@ -1,7 +1,26 @@
 """Tests for the constrained unit norm linear layer."""
+from jaxtyping import Float, Int64
+import pytest
 import torch
+from torch import Tensor
 
 from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
+from sparse_autoencoder.tensor_types import Axis
+
+
+DEFAULT_N_LEARNT_FEATURES = 3
+DEFAULT_N_DECODED_FEATURES = 4
+DEFAULT_N_COMPONENTS = 2
+
+
+@pytest.fixture()
+def decoder() -> UnitNormDecoder:
+    """Pytest fixture to provide a MockDecoder instance."""
+    return UnitNormDecoder(
+        learnt_features=DEFAULT_N_LEARNT_FEATURES,
+        decoded_features=DEFAULT_N_DECODED_FEATURES,
+        n_components=DEFAULT_N_COMPONENTS,
+    )
 
 
 def test_initialization() -> None:
@@ -98,3 +117,48 @@ def test_output_same_without_component_dim_vs_with_1_component() -> None:
     output_without_components_dim = decoder_without_components_dim(input_tensor)
     output_with_1_component = decoder_with_1_component(input_with_components_dim)
     assert torch.allclose(output_without_components_dim, output_with_1_component.squeeze(1))
+
+
+def test_update_dictionary_vectors_with_no_neurons(decoder: UnitNormDecoder) -> None:
+    """Test update_dictionary_vectors with 0 neurons to update."""
+    original_weight = decoder.weight.clone()  # Save original weight for comparison
+
+    dictionary_vector_indices: Int64[
+        Tensor, Axis.names(Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
+    ] = torch.empty((0, 0), dtype=torch.int64)
+
+    updates: Float[
+        Tensor, Axis.names(Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)
+    ] = torch.empty((0, 0, 0), dtype=torch.float)
+
+    decoder.update_dictionary_vectors(dictionary_vector_indices, updates)
+
+    # Ensure weight did not change when no indices were provided
+    assert torch.equal(
+        decoder.weight, original_weight
+    ), "Weights should not change when no indices are provided."
+
+
+@pytest.mark.parametrize(
+    ("dictionary_vector_indices", "updates"),
+    [
+        pytest.param(torch.tensor([1]), torch.rand(4, 1), id="One neuron to update"),
+        pytest.param(
+            torch.tensor([0, 2]),
+            torch.rand(4, 2),
+            id="Two neurons to update",
+        ),
+    ],
+)
+def test_update_dictionary_vectors_with_neurons(
+    decoder: UnitNormDecoder,
+    dictionary_vector_indices: Int64[Tensor, Axis.INPUT_OUTPUT_FEATURE],
+    updates: Float[Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)],
+) -> None:
+    """Test update_dictionary_vectors with 1 or 2 neurons to update."""
+    decoder.update_dictionary_vectors(dictionary_vector_indices, updates, component_idx=0)
+
+    # Check if the specified neurons are updated correctly
+    assert torch.allclose(
+        decoder.weight[0, :, dictionary_vector_indices], updates
+    ), "update_dictionary_vectors should update the weights correctly."
