@@ -15,6 +15,7 @@ from sparse_autoencoder.autoencoder.abstract_autoencoder import (
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
+from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
@@ -155,7 +156,7 @@ class SparseAutoencoder(AbstractAutoencoder):
                 module.reset_parameters()
 
     @property
-    def reset_optimizer_parameter_details(self) -> list[tuple[Parameter, int]]:
+    def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details.
 
         Details of the parameters that should be reset in the optimizer, when resetting
