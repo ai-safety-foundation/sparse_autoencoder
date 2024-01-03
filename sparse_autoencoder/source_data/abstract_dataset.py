@@ -216,14 +216,6 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         return self.dataset.__iter__()
 
     @final
-    def __next__(self) -> Any:  # noqa: ANN401
-        """Next Dunder Method.
-
-        Enables direct access to :attr:`dataset` with e.g. `next` calls.
-        """
-        return next(iter(self))
-
-    @final
     def get_dataloader(self, batch_size: int) -> DataLoader[TorchTokenizedPrompts]:
         """Get a PyTorch DataLoader.
 
