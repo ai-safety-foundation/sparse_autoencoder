@@ -135,10 +135,10 @@ class SparseAutoencoder(AbstractAutoencoder):
         Returns:
             Tuple of learned activations and decoded activations.
         """
-        x = self._pre_encoder_bias(x)
-        learned_activations = self._encoder(x)
-        x = self._decoder(learned_activations)
-        decoded_activations = self._post_decoder_bias(x)
+        x = self.pre_encoder_bias(x)
+        learned_activations = self.encoder(x)
+        x = self.decoder(learned_activations)
+        decoded_activations = self.post_decoder_bias(x)
 
         return AutoencoderForwardPassResult(learned_activations, decoded_activations)
 

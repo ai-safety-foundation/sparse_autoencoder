@@ -162,12 +162,9 @@ class LinearEncoder(Module):
     @final
     def update_dictionary_vectors(
         self,
-        dictionary_vector_indices: Int64[
-            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX)
-        ],
+        dictionary_vector_indices: Int64[Tensor, Axis.names(Axis.LEARNT_FEATURE_IDX)],
         updated_dictionary_weights: Float[
-            Tensor,
-            Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE_IDX, Axis.INPUT_OUTPUT_FEATURE),
+            Tensor, Axis.names(Axis.LEARNT_FEATURE_IDX, Axis.INPUT_OUTPUT_FEATURE)
         ],
         component_idx: int | None = None,
     ) -> None:
@@ -194,9 +191,7 @@ class LinearEncoder(Module):
 
                 self.weight[dictionary_vector_indices] = updated_dictionary_weights
             else:
-                self.weight[
-                    component_idx, dictionary_vector_indices[component_idx]
-                ] = updated_dictionary_weights[component_idx]
+                self.weight[component_idx, dictionary_vector_indices] = updated_dictionary_weights
 
     @final
     def update_bias(

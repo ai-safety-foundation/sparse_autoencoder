@@ -4,7 +4,7 @@ from typing import NamedTuple
 
 from jaxtyping import Float
 from torch import Tensor
-from torch.nn import Module
+from torch.nn import Module, Parameter
 
 from sparse_autoencoder.tensor_types import Axis
 
