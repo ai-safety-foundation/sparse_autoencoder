@@ -1,5 +1,5 @@
 """Default pipeline."""
-from collections.abc import Iterable
+from collections.abc import Iterator
 from functools import partial
 from pathlib import Path
 import tempfile
@@ -74,7 +74,7 @@ class Pipeline:
     progress_bar: tqdm | None
     """Progress bar for the pipeline."""
 
-    source_data: Iterable[TorchTokenizedPrompts]
+    source_data: Iterator[TorchTokenizedPrompts]
     """Iterable over the source data."""
 
     source_dataset: SourceDataset
@@ -141,8 +141,9 @@ class Pipeline:
         self.source_dataset = source_dataset
         self.source_model = source_model
 
+        # Create a stateful iterator
         source_dataloader = source_dataset.get_dataloader(source_data_batch_size)
-        self.source_data = self.stateful_dataloader_iterable(source_dataloader)
+        self.source_data = iter(source_dataloader)
 
     @validate_call
     def generate_activations(self, store_size: PositiveInt) -> TensorActivationStore:
@@ -179,16 +180,14 @@ class Pipeline:
 
         # Loop through the dataloader until the store reaches the desired size
         with torch.no_grad():
-            for batch in self.source_data:
+            while len(store) < store_size:
+                batch = next(self.source_data)
                 input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
                     "input_ids"
                 ].to(source_model_device)
                 self.source_model.forward(
                     input_ids, stop_at_layer=self.layer + 1, prepend_bos=False
                 )  # type: ignore (TLens is typed incorrectly)
-
-                if len(store) >= store_size:
-                    break
 
         self.source_model.remove_all_hook_fns()
         store.shuffle()
@@ -336,9 +335,8 @@ class Pipeline:
         ] = torch.empty(losses_shape, device=source_model_device)
 
         for component_idx, cache_name in enumerate(self.cache_names):
-            for batch_idx, batch in enumerate(self.source_data):
-                if batch_idx == losses.shape[0]:
-                    break
+            for batch_idx in range(losses.shape[0]):
+                batch = next(self.source_data)
 
                 input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
                     "input_ids"
@@ -516,43 +514,3 @@ class Pipeline:
 
         # Save the final checkpoint
         self.save_checkpoint(is_final=True)
-
-    @staticmethod
-    def stateful_dataloader_iterable(
-        dataloader: DataLoader[TorchTokenizedPrompts],
-    ) -> Iterable[TorchTokenizedPrompts]:
-        """Create a stateful dataloader iterable.
-
-        Create an iterable that maintains it's position in the dataloader between loops.
-
-        Examples:
-            Without this, when iterating over a DataLoader with 2 loops, each loop get the same data
-            (assuming shuffle is turned off). That is to say, the second loop won't maintain the
-            position from where the first loop left off.
-
-            >>> from datasets import Dataset
-            >>> from torch.utils.data import DataLoader
-            >>> def gen():
-            ...     yield {"int": 0}
-            ...     yield {"int": 1}
-            >>> data = DataLoader(Dataset.from_generator(gen))
-            >>> next(iter(data))["int"], next(iter(data))["int"]
-            (tensor([0]), tensor([0]))
-
-            By contrast if you create a stateful iterable from the dataloader, each loop will get
-            different data.
-
-            >>> iterator = Pipeline.stateful_dataloader_iterable(data)
-            >>> next(iterator)["int"], next(iterator)["int"]
-            (tensor([0]), tensor([1]))
-
-        Args:
-            dataloader: PyTorch DataLoader.
-
-        Returns:
-            Stateful iterable over the data in the dataloader.
-
-        Yields:
-            Data from the dataloader.
-        """
-        yield from dataloader
