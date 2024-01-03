@@ -66,6 +66,20 @@ def pipeline_fixture() -> Pipeline:
     )
 
 
+class TestInit:
+    """Test the init method."""
+
+    @pytest.mark.integration_test()
+    def test_source_data_iterator_stateful(self, pipeline_fixture: Pipeline) -> None:
+        """Test that the source data iterator is stateful."""
+        iterator = pipeline_fixture.source_data
+
+        sample1 = next(iterator)["input_ids"]
+        sample2 = next(iterator)["input_ids"]
+
+        assert not torch.allclose(sample1, sample2), "Source data iterator should be stateful."
+
+
 class TestGenerateActivations:
     """Test the generate_activations method."""
 
