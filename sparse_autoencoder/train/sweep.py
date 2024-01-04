@@ -347,9 +347,28 @@ def train() -> None:
         sys.exit(1)
 
 
-def sweep(sweep_config: SweepConfig) -> None:
-    """Main function to run the training pipeline with wandb hyperparameter sweep."""
-    sweep_id = wandb.sweep(sweep_config.to_dict(), project="sparse-autoencoder")
+def sweep(sweep_config: SweepConfig | None = None, sweep_id: str | None = None) -> None:
+    """Run the training pipeline with wandb hyperparameter sweep.
 
-    wandb.agent(sweep_id, train)
+    Warning:
+        Either sweep_config or sweep_id must be specified, but not both.
+
+    Args:
+        sweep_config: The sweep configuration.
+        sweep_id: The sweep id for an existing sweep.
+
+    Raises:
+        ValueError: If neither sweep_config nor sweep_id is specified.
+    """
+    if sweep_id is not None:
+        wandb.agent(sweep_id, train, project="sparse-autoencoder")
+
+    elif sweep_config is not None:
+        sweep_id = wandb.sweep(sweep_config.to_dict(), project="sparse-autoencoder")
+        wandb.agent(sweep_id, train)
+
+    else:
+        error_message = "Either sweep_config or sweep_id must be specified."
+        raise ValueError(error_message)
+
     wandb.finish()
