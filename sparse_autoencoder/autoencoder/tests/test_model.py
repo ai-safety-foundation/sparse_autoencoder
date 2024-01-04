@@ -175,6 +175,7 @@ def test_load_single_component() -> None:
     path.unlink()
 
 
+@pytest.skip("Requires active wandb account.")
 @pytest.mark.integration_test()
 def test_save_load_wandb() -> None:
     """Test saving and loading from wandb."""
