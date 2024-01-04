@@ -74,11 +74,11 @@ def test_output_same_without_component_dim_vs_with_1_component() -> None:
     )
 
     # Set the weight and value parameters to be the same
-    encoder_with_1_component._weight = torch.nn.Parameter(  # type: ignore # noqa: SLF001
-        encoder_without_components_dim._weight.unsqueeze(0)  # type: ignore # noqa: SLF001
+    encoder_with_1_component.weight = torch.nn.Parameter(
+        encoder_without_components_dim.weight.unsqueeze(0)
     )
-    encoder_with_1_component._bias = torch.nn.Parameter(  # type: ignore # noqa: SLF001
-        encoder_without_components_dim._bias.unsqueeze(0)  # type: ignore # noqa: SLF001
+    encoder_with_1_component.bias = torch.nn.Parameter(
+        encoder_without_components_dim.bias.unsqueeze(0)
     )
 
     # Create the input

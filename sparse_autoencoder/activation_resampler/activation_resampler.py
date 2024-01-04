@@ -19,7 +19,7 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import Axis
-from sparse_autoencoder.train.utils import get_model_device
+from sparse_autoencoder.train.utils.get_model_device import get_model_device
 
 
 class LossInputActivationsTuple(NamedTuple):

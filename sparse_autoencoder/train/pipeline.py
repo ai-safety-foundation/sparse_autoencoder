@@ -4,7 +4,6 @@ from functools import partial
 from pathlib import Path
 import tempfile
 from typing import TYPE_CHECKING, final
-from urllib.parse import quote_plus
 
 from jaxtyping import Float, Int, Int64
 from pydantic import NonNegativeInt, PositiveInt, validate_call
@@ -31,7 +30,7 @@ from sparse_autoencoder.source_model.replace_activations_hook import replace_act
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
-from sparse_autoencoder.train.utils import get_model_device
+from sparse_autoencoder.train.utils.get_model_device import get_model_device
 
 
 if TYPE_CHECKING:
@@ -167,7 +166,7 @@ class Pipeline:
             raise ValueError(error_message)
 
         # Setup the store
-        n_neurons: int = self.autoencoder.n_input_features
+        n_neurons: int = self.autoencoder.config.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
         store = TensorActivationStore(store_size, n_neurons, n_components=self.n_components)
 
@@ -217,7 +216,7 @@ class Pipeline:
         learned_activations_fired_count: Int64[
             Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
         ] = torch.zeros(
-            (self.n_components, self.autoencoder.n_learned_features),
+            (self.n_components, self.autoencoder.config.n_learned_features),
             dtype=torch.int64,
             device=autoencoder_device,
         )
@@ -399,25 +398,16 @@ class Pipeline:
         Returns:
             Path to the saved checkpoint.
         """
-        # Create the name
         name: str = f"{self.run_name}_{'final' if is_final else self.total_activations_trained_on}"
-        safe_name = quote_plus(name, safe="_")
 
-        # Save locally
-        self.checkpoint_directory.mkdir(parents=True, exist_ok=True)
-        file_path: Path = self.checkpoint_directory / f"{safe_name}.pt"
-        torch.save(
-            self.autoencoder.state_dict(),
-            file_path,
-        )
-
-        # Upload to wandb
+        # Wandb
         if wandb.run is not None:
-            artifact = wandb.Artifact(safe_name, type="model")
-            artifact.add_file(str(file_path))
-            wandb.log_artifact(artifact)
+            self.autoencoder.save_to_wandb(name)
 
-        return file_path
+        # Local
+        local_path = self.checkpoint_directory / f"{name}.pt"
+        self.autoencoder.save(local_path)
+        return local_path
 
     @validate_call
     def run_pipeline(

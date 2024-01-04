@@ -76,7 +76,7 @@ def test_unit_norm_decreases() -> None:
         layer_without_hook = UnitNormDecoder(
             learnt_features=3, decoded_features=4, n_components=None, enable_gradient_hook=False
         )
-        layer_without_hook._weight = layer_weights  # type: ignore (testing only)  # noqa: SLF001
+        layer_without_hook.weight = layer_weights
         optimizer_without_hook = torch.optim.SGD(
             layer_without_hook.parameters(), lr=0.1, momentum=0
         )

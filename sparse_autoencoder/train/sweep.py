@@ -20,6 +20,7 @@ from sparse_autoencoder import (
     PreTokenizedDataset,
     SparseAutoencoder,
 )
+from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset
 from sparse_autoencoder.source_data.text_dataset import TextDataset
 from sparse_autoencoder.train.sweep_config import (
@@ -81,11 +82,13 @@ def setup_autoencoder(
     """
     autoencoder_input_dim: int = hyperparameters["source_model"]["hook_dimension"]
     expansion_factor = hyperparameters["autoencoder"]["expansion_factor"]
-    return SparseAutoencoder(
+
+    config = SparseAutoencoderConfig(
         n_input_features=autoencoder_input_dim,
         n_learned_features=autoencoder_input_dim * expansion_factor,
         n_components=len(hyperparameters["source_model"]["cache_names"]),
-    ).to(device)
+    )
+    return SparseAutoencoder(config).to(device)
 
 
 def setup_loss_function(hyperparameters: RuntimeHyperparameters) -> LossReducer:

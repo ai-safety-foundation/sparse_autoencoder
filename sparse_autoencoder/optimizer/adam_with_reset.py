@@ -60,8 +60,16 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
 
         Example:
             >>> import torch
-            >>> from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-            >>> model = SparseAutoencoder(5, 10, n_components=2)
+            >>> from sparse_autoencoder.autoencoder.model import (
+            ...     SparseAutoencoder, SparseAutoencoderConfig
+            ... )
+            >>> model = SparseAutoencoder(
+            ...        SparseAutoencoderConfig(
+            ...             n_input_features=5,
+            ...             n_learned_features=10,
+            ...             n_components=2
+            ...         )
+            ...    )
             >>> optimizer = AdamWithReset(
             ...     model.parameters(),
             ...     named_parameters=model.named_parameters(),
@@ -165,8 +173,16 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
 
         Example:
             >>> import torch
-            >>> from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-            >>> model = SparseAutoencoder(5, 10, n_components=2)
+            >>> from sparse_autoencoder.autoencoder.model import (
+            ...     SparseAutoencoder, SparseAutoencoderConfig
+            ... )
+            >>> model = SparseAutoencoder(
+            ...        SparseAutoencoderConfig(
+            ...             n_input_features=5,
+            ...             n_learned_features=10,
+            ...             n_components=2
+            ...         )
+            ...    )
             >>> optimizer = AdamWithReset(
             ...     model.parameters(),
             ...     named_parameters=model.named_parameters(),

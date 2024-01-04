@@ -9,7 +9,7 @@ from torch.nn import Parameter
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
 from sparse_autoencoder.loss.reducer import LossReducer
@@ -43,9 +43,11 @@ def full_activation_store() -> ActivationStore:
 def autoencoder_model() -> SparseAutoencoder:
     """Create a dummy autoencoder model."""
     return SparseAutoencoder(
-        n_components=DEFAULT_N_COMPONENTS,
-        n_input_features=DEFAULT_N_INPUT_FEATURES,
-        n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+        SparseAutoencoderConfig(
+            n_input_features=DEFAULT_N_INPUT_FEATURES,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+            n_components=DEFAULT_N_COMPONENTS,
+        )
     )
 
 
@@ -126,7 +128,7 @@ class TestComputeLossAndGetActivations:
         ):
             ActivationResampler(
                 resample_dataset_size=DEFAULT_N_ACTIVATIONS_STORE + 1,
-                n_learned_features=autoencoder_model.n_learned_features,
+                n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             ).compute_loss_and_get_activations(
                 store=full_activation_store,
                 autoencoder=autoencoder_model,
@@ -285,7 +287,7 @@ class TestResampleDeadNeurons:
             resample_interval=10,
             n_components=DEFAULT_N_COMPONENTS,
             n_activations_activity_collate=10,
-            n_learned_features=autoencoder_model.n_learned_features,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=100,
         )
         updates = resampler.step_resampler(
@@ -328,7 +330,7 @@ class TestResampleDeadNeurons:
             resample_interval=10,
             n_activations_activity_collate=10,
             n_components=DEFAULT_N_COMPONENTS,
-            n_learned_features=autoencoder_model.n_learned_features,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=100,
         )
         parameter_updates = resampler.step_resampler(
@@ -343,7 +345,7 @@ class TestResampleDeadNeurons:
         # Check the updated ones have changed
         for component_idx, neuron_idx in dead_neurons:
             # Decoder
-            decoder_weights = current_parameters["decoder._weight"]
+            decoder_weights = current_parameters["decoder.weight"]
             current_dead_neuron_weights = decoder_weights[component_idx, neuron_idx]
             updated_dead_decoder_weights = parameter_updates[
                 component_idx
@@ -353,7 +355,7 @@ class TestResampleDeadNeurons:
             ), "Dead decoder weights should have changed."
 
             # Encoder
-            current_dead_encoder_weights = current_parameters["encoder._weight"][
+            current_dead_encoder_weights = current_parameters["encoder.weight"][
                 component_idx, neuron_idx
             ]
             updated_dead_encoder_weights = parameter_updates[
@@ -363,7 +365,7 @@ class TestResampleDeadNeurons:
                 current_dead_encoder_weights, updated_dead_encoder_weights
             ), "Dead encoder weights should have changed."
 
-            current_dead_encoder_bias = current_parameters["encoder._bias"][
+            current_dead_encoder_bias = current_parameters["encoder.bias"][
                 component_idx, neuron_idx
             ]
             updated_dead_encoder_bias = parameter_updates[component_idx].dead_encoder_bias_updates

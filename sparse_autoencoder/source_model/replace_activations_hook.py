@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from torch import Tensor
 from transformer_lens.hook_points import HookPoint
 
-from sparse_autoencoder.autoencoder.abstract_autoencoder import AbstractAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 
 
 if TYPE_CHECKING:
@@ -15,7 +15,7 @@ from jaxtyping import Float
 def replace_activations_hook(
     value: Tensor,
     hook: HookPoint,  # noqa: ARG001
-    sparse_autoencoder: AbstractAutoencoder,
+    sparse_autoencoder: SparseAutoencoder,
     component_idx: int | None = None,
 ) -> Tensor:
     """Replace activations hook.
@@ -42,7 +42,7 @@ def replace_activations_hook(
     )
 
     if component_idx is not None:
-        if sparse_autoencoder.n_components is None:
+        if sparse_autoencoder.config.n_components is None:
             error_message = (
                 "Cannot replace for a specific component, if the model does not have a "
                 "component axis."
@@ -55,7 +55,7 @@ def replace_activations_hook(
         # components.
         expanded_shape = [
             squashed_value.shape[0],
-            sparse_autoencoder.n_components,
+            sparse_autoencoder.config.n_components,
             squashed_value.shape[-1],
         ]
         expanded = squashed_value.unsqueeze(1).expand(*expanded_shape)
