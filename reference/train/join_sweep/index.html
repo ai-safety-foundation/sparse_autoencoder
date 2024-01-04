@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../tensor_types/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="join_sweep/">
+        <link rel="next" href="../pipeline/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
-        <title>train - Sparse Autoencoder</title>
+        <title>join_sweep - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,19 +48,19 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../css/material_extra.css">
+      <link rel="stylesheet" href="../../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../../css/custom_formatting.css">
+      <link rel="stylesheet" href="../../../css/custom_formatting.css">
     
-      <link rel="stylesheet" href="../../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#train" class="md-skip">
+        <a href="#join-an-existing-weights-and-biases-sweep-as-a-new-agent" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              train
+              join_sweep
             
           </span>
         </div>
@@ -235,7 +235,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -265,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -285,7 +285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../demo/" class="md-nav__link">
+      <a href="../../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -305,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../flexible_demo/" class="md-nav__link">
+      <a href="../../../flexible_demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -325,7 +325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pre-process-datasets/" class="md-nav__link">
+      <a href="../../../pre-process-datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -398,7 +398,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../activation_resampler/" class="md-nav__link ">
+            <a href="../../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -429,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -450,7 +450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -485,7 +485,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../activation_resampler/utils/" class="md-nav__link ">
+            <a href="../../activation_resampler/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -516,7 +516,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -567,7 +567,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../activation_store/" class="md-nav__link ">
+            <a href="../../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -598,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/base_store/" class="md-nav__link">
+      <a href="../../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -619,7 +619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activation_store/tensor_store/" class="md-nav__link">
+      <a href="../../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -662,7 +662,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../autoencoder/" class="md-nav__link ">
+            <a href="../../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -693,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/abstract_autoencoder/" class="md-nav__link">
+      <a href="../../autoencoder/abstract_autoencoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -728,7 +728,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../autoencoder/components/" class="md-nav__link ">
+            <a href="../../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -759,7 +759,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/linear_encoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -780,7 +780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/tied_bias/" class="md-nav__link">
+      <a href="../../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -801,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -830,7 +830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/model/" class="md-nav__link">
+      <a href="../../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -851,7 +851,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../autoencoder/types/" class="md-nav__link">
+      <a href="../../autoencoder/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -894,7 +894,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../loss/" class="md-nav__link ">
+            <a href="../../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -925,7 +925,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/abstract_loss/" class="md-nav__link">
+      <a href="../../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -946,7 +946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/decoded_activations_l2/" class="md-nav__link">
+      <a href="../../loss/decoded_activations_l2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -967,7 +967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -988,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../loss/reducer/" class="md-nav__link">
+      <a href="../../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1031,7 +1031,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/" class="md-nav__link ">
+            <a href="../../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1062,7 +1062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/abstract_metric/" class="md-nav__link">
+      <a href="../../metrics/abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1083,7 +1083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/metrics_container/" class="md-nav__link">
+      <a href="../../metrics/metrics_container/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1118,7 +1118,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/train/" class="md-nav__link ">
+            <a href="../../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1149,7 +1149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1170,7 +1170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/capacity/" class="md-nav__link">
+      <a href="../../metrics/train/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1191,7 +1191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/feature_density/" class="md-nav__link">
+      <a href="../../metrics/train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1212,7 +1212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/l0_norm_metric/" class="md-nav__link">
+      <a href="../../metrics/train/l0_norm_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1233,7 +1233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/train/neuron_activity_metric/" class="md-nav__link">
+      <a href="../../metrics/train/neuron_activity_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1276,7 +1276,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/utils/" class="md-nav__link ">
+            <a href="../../metrics/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1307,7 +1307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/utils/add_component_axis_if_missing/" class="md-nav__link">
+      <a href="../../metrics/utils/add_component_axis_if_missing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1328,7 +1328,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/utils/find_metric_result/" class="md-nav__link">
+      <a href="../../metrics/utils/find_metric_result/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1371,7 +1371,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../metrics/validate/" class="md-nav__link ">
+            <a href="../../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1402,7 +1402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1423,7 +1423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/validate/model_reconstruction_score/" class="md-nav__link">
+      <a href="../../metrics/validate/model_reconstruction_score/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1474,7 +1474,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../optimizer/" class="md-nav__link ">
+            <a href="../../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1526,7 +1526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1569,7 +1569,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../source_data/" class="md-nav__link ">
+            <a href="../../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1600,7 +1600,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1621,7 +1621,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/mock_dataset/" class="md-nav__link">
+      <a href="../../source_data/mock_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1642,7 +1642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1663,7 +1663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_data/text_dataset/" class="md-nav__link">
+      <a href="../../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1706,7 +1706,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../source_model/" class="md-nav__link ">
+            <a href="../../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1737,7 +1737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/replace_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/replace_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1758,7 +1758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/reshape_activations/" class="md-nav__link">
+      <a href="../../source_model/reshape_activations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1779,7 +1779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1800,7 +1800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../source_model/zero_ablate_hook/" class="md-nav__link">
+      <a href="../../source_model/zero_ablate_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1829,7 +1829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tensor_types/" class="md-nav__link">
+      <a href="../../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1866,7 +1866,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1877,7 +1877,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -1894,10 +1894,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="join_sweep/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    join_sweep
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1906,6 +1926,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.join_sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      join_sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.join_sweep.parse_arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      parse_arguments()
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1918,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pipeline/" class="md-nav__link">
+      <a href="../pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1939,7 +1997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sweep/" class="md-nav__link">
+      <a href="../sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1960,7 +2018,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sweep_config/" class="md-nav__link">
+      <a href="../sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1995,7 +2053,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="utils/" class="md-nav__link ">
+            <a href="../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2026,7 +2084,7 @@
   
   
     <li class="md-nav__item">
-      <a href="utils/get_model_device/" class="md-nav__link">
+      <a href="../utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2047,7 +2105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="utils/round_down/" class="md-nav__link">
+      <a href="../utils/round_down/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2068,7 +2126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2119,7 +2177,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../utils/" class="md-nav__link ">
+            <a href="../../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2150,7 +2208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/tensor_shape/" class="md-nav__link">
+      <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2186,7 +2244,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/" class="md-nav__link">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2206,7 +2264,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../citation/" class="md-nav__link">
+      <a href="../../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2246,9 +2304,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train" class="md-nav__link">
+  <a href="#sparse_autoencoder.train.join_sweep" class="md-nav__link">
     <span class="md-ellipsis">
-      train
+      join_sweep
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.train.join_sweep.parse_arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      parse_arguments()
     </span>
   </a>
   
@@ -2269,17 +2336,17 @@
                   
 
 
-<h1 id="train">Train<a class="headerlink" href="#train" title="Permanent link">¤</a></h1>
+<h1 id="join-an-existing-weights-and-biases-sweep-as-a-new-agent">Join an existing Weights and Biases sweep, as a new agent<a class="headerlink" href="#join-an-existing-weights-and-biases-sweep-as-a-new-agent" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.train"></a>
+<a id="sparse_autoencoder.train.join_sweep"></a>
   <div class="doc doc-contents first">
   
-      <p>Train.</p>
+      <p>Join an existing Weights and Biases sweep, as a new agent.</p>
 
   
 
@@ -2292,6 +2359,75 @@
 
 
 
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h2 id="sparse_autoencoder.train.join_sweep.parse_arguments" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">parse_arguments</span><span class="p">()</span></code>
+
+<a href="#sparse_autoencoder.train.join_sweep.parse_arguments" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Parse command line arguments.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="argparse.Namespace">Namespace</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>argparse.Namespace: Parsed command line arguments.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/train/join_sweep.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_arguments</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command line arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        argparse.Namespace: Parsed command line arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Join an existing W&amp;B sweep.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--id&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Sweep ID for the existing sweep.&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
 
 
 
@@ -2346,14 +2482,14 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
-        <script src="../../javascript/custom_formatting.js"></script>
+        <script src="../../../javascript/custom_formatting.js"></script>
       
-        <script src="../../javascript/mathjax.js"></script>
+        <script src="../../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

@@ -1897,6 +1897,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../join_sweep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    join_sweep
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../pipeline/" class="md-nav__link">
         
   
@@ -2117,7 +2138,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10_5" >
         
           
           
@@ -2133,14 +2154,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_10_4" id="__nav_5_10_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_10_5" id="__nav_5_10_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_10_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_10_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_10_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_10_5">
             <span class="md-nav__icon md-icon"></span>
             utils
           </label>
@@ -3824,14 +3845,86 @@
 
 
 <h2 id="sparse_autoencoder.train.sweep.sweep" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sweep_id</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.train.sweep.sweep" class="headerlink" title="Permanent link">¤</a></h2>
 
 
   <div class="doc doc-contents ">
   
-      <p>Main function to run the training pipeline with wandb hyperparameter sweep.</p>
+      <p>Run the training pipeline with wandb hyperparameter sweep.</p>
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Either sweep_config or sweep_id must be specified, but not both.</p>
+</details>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>sweep_config</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.train.sweep_config.SweepConfig" href="../sweep_config/#sparse_autoencoder.train.sweep_config.SweepConfig">SweepConfig</a> | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The sweep configuration.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sweep_id</code></td>
+          <td>
+                <code>str | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The sweep id for an existing sweep.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If neither sweep_config nor sweep_id is specified.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
@@ -3840,11 +3933,49 @@
 <span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
-<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function to run the training pipeline with wandb hyperparameter sweep.&quot;&quot;&quot;</span>
-    <span class="n">sweep_id</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">)</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sweep_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the training pipeline with wandb hyperparameter sweep.</span>
 
-    <span class="n">wandb</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">sweep_id</span><span class="p">,</span> <span class="n">train</span><span class="p">)</span>
+<span class="sd">    Warning:</span>
+<span class="sd">        Either sweep_config or sweep_id must be specified, but not both.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sweep_config: The sweep configuration.</span>
+<span class="sd">        sweep_id: The sweep id for an existing sweep.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If neither sweep_config nor sweep_id is specified.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sweep_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wandb</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">sweep_id</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">sweep_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sweep_id</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">sweep_config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;sparse-autoencoder&quot;</span><span class="p">)</span>
+        <span class="n">wandb</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span><span class="n">sweep_id</span><span class="p">,</span> <span class="n">train</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Either sweep_config or sweep_id must be specified.&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
     <span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
           </details>
