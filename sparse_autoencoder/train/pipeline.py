@@ -2,7 +2,7 @@
 from collections.abc import Iterator
 from functools import partial
 from pathlib import Path
-import tempfile
+from tempfile import gettempdir
 from typing import TYPE_CHECKING, final
 
 from jaxtyping import Float, Int, Int64
@@ -36,7 +36,7 @@ from sparse_autoencoder.train.utils.get_model_device import get_model_device
 if TYPE_CHECKING:
     from sparse_autoencoder.metrics.abstract_metric import MetricResult
 
-DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(tempfile.gettempdir()) / "sparse_autoencoder"
+DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(gettempdir()) / "sparse_autoencoder"
 
 
 class Pipeline:

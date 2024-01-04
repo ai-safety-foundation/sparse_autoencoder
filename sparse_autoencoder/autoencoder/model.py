@@ -1,6 +1,6 @@
 """The Sparse Autoencoder Model."""
 from pathlib import Path
-from tempfile import tempdir
+from tempfile import gettempdir
 from typing import NamedTuple
 
 from jaxtyping import Float
@@ -74,7 +74,7 @@ class ForwardPassResult(NamedTuple):
     ]
 
 
-DEFAULT_TMP_DIR = Path(tempdir) if isinstance(tempdir, str) else Path.cwd() / ".cache"
+DEFAULT_TMP_DIR = Path(gettempdir()) / "sparse_autoencoder"
 
 
 class SparseAutoencoder(Module):
@@ -246,13 +246,13 @@ class SparseAutoencoder(Module):
         # Return the state dict for the component
         return {key: value[component_idx] for key, value in state.state_dict.items()}
 
-    def save(self, file_path: FILE_LIKE) -> None:
+    def save(self, file_path: Path) -> None:
         """Save the model config and state dict to a file.
 
         Args:
             file_path: Path to save the model to.
         """
-        # Save the state
+        file_path.parent.mkdir(parents=True, exist_ok=True)
         state = SparseAutoencoderState(config=self.config, state_dict=self.state_dict())
         torch.save(state, file_path)
 
