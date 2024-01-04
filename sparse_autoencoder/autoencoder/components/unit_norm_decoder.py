@@ -57,7 +57,7 @@ class UnitNormDecoder(Module):
         Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE),
     ]
     """Weight parameter.
-    
+
     Each column in the weights matrix acts as a dictionary vector, representing a single basis
     element in the learned activation space.
     """
