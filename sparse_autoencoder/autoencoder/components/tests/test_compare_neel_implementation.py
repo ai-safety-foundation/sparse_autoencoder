@@ -5,7 +5,7 @@ https://github.com/neelnanda-io/1L-Sparse-Autoencoder/blob/main/utils.py
 import torch
 from torch import nn
 
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 
 
 class NeelAutoencoder(nn.Module):
@@ -66,8 +66,10 @@ def test_biases_initialised_same_way() -> None:
 
     torch.random.manual_seed(0)
     autoencoder = SparseAutoencoder(
-        n_input_features=n_input_features,
-        n_learned_features=n_learned_features,
+        SparseAutoencoderConfig(
+            n_input_features=n_input_features,
+            n_learned_features=n_learned_features,
+        )
     )
 
     torch.random.manual_seed(0)
@@ -91,8 +93,10 @@ def test_forward_pass_same_weights() -> None:
     l1_coefficient: float = 0.01
 
     autoencoder = SparseAutoencoder(
-        n_input_features=n_input_features,
-        n_learned_features=n_learned_features,
+        SparseAutoencoderConfig(
+            n_input_features=n_input_features,
+            n_learned_features=n_learned_features,
+        )
     )
     neel_autoencoder = NeelAutoencoder(
         d_hidden=n_learned_features,
@@ -122,8 +126,10 @@ def test_unit_norm_weights() -> None:
     l1_coefficient: float = 0.01
 
     autoencoder = SparseAutoencoder(
-        n_input_features=n_input_features,
-        n_learned_features=n_learned_features,
+        SparseAutoencoderConfig(
+            n_input_features=n_input_features,
+            n_learned_features=n_learned_features,
+        )
     )
     neel_autoencoder = NeelAutoencoder(
         d_hidden=n_learned_features,
@@ -135,7 +141,7 @@ def test_unit_norm_weights() -> None:
 
     # Set the same decoder weights
     decoder_weights = torch.rand_like(autoencoder.decoder.weight)
-    autoencoder.decoder._weight.data = decoder_weights  # noqa: SLF001 # type: ignore
+    autoencoder.decoder.weight.data = decoder_weights  # type: ignore
     neel_autoencoder.W_dec.data = decoder_weights.T
 
     # Do a forward & backward pass so we have gradients
@@ -165,8 +171,10 @@ def test_unit_norm_weights_grad() -> None:
     l1_coefficient: float = 0.01
 
     autoencoder = SparseAutoencoder(
-        n_input_features=n_input_features,
-        n_learned_features=n_learned_features,
+        SparseAutoencoderConfig(
+            n_input_features=n_input_features,
+            n_learned_features=n_learned_features,
+        )
     )
     neel_autoencoder = NeelAutoencoder(
         d_hidden=n_learned_features,
@@ -176,9 +184,9 @@ def test_unit_norm_weights_grad() -> None:
 
     # Set the same decoder weights
     decoder_weights = torch.rand_like(autoencoder.decoder.weight)
-    autoencoder.decoder._weight.data = decoder_weights  # noqa: SLF001 # type: ignore
+    autoencoder.decoder.weight.data = decoder_weights  # type: ignore
     neel_autoencoder.W_dec.data = decoder_weights.T
-    autoencoder.decoder._weight.grad = torch.zeros_like(autoencoder.decoder.weight)  # noqa: SLF001 # type: ignore
+    autoencoder.decoder.weight.grad = torch.zeros_like(autoencoder.decoder.weight)  # type: ignore
     neel_autoencoder.W_dec.grad = torch.zeros_like(neel_autoencoder.W_dec)
 
     # Set the same tied bias weights

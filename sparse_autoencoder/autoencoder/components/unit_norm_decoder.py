@@ -52,25 +52,15 @@ class UnitNormDecoder(Module):
 
     _n_components: int | None
 
-    _weight: Float[
+    weight: Float[
         Parameter,
         Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE),
     ]
-    """Weight parameter internal state."""
+    """Weight parameter.
 
-    @property
-    def weight(
-        self,
-    ) -> Float[
-        Parameter,
-        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE, Axis.LEARNT_FEATURE),
-    ]:
-        """Weight parameter.
-
-        Each column in the weights matrix acts as a dictionary vector, representing a single basis
-        element in the learned activation space.
-        """
-        return self._weight
+    Each column in the weights matrix acts as a dictionary vector, representing a single basis
+    element in the learned activation space.
+    """
 
     @property
     def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
@@ -110,7 +100,7 @@ class UnitNormDecoder(Module):
         self._n_components = n_components
 
         # Create the linear layer as per the standard PyTorch linear layer
-        self._weight = Parameter(
+        self.weight = Parameter(
             torch.empty(
                 shape_with_optional_dimensions(n_components, decoded_features, learnt_features),
             )
@@ -120,7 +110,7 @@ class UnitNormDecoder(Module):
         # Register backward hook to remove any gradient information parallel to the dictionary
         # vectors (columns of the weight matrix) before applying the gradient step.
         if enable_gradient_hook:
-            self._weight.register_hook(self._weight_backward_hook)
+            self.weight.register_hook(self._weight_backward_hook)
 
     def update_dictionary_vectors(
         self,
@@ -183,7 +173,7 @@ class UnitNormDecoder(Module):
 
         """
         with torch.no_grad():
-            torch.nn.functional.normalize(self._weight, dim=-2, out=self._weight)
+            torch.nn.functional.normalize(self.weight, dim=-2, out=self.weight)
 
     def reset_parameters(self) -> None:
         """Initialize or reset the parameters.
@@ -202,10 +192,10 @@ class UnitNormDecoder(Module):
         # Initialize the weights with a normal distribution. Note we don't use e.g. kaiming
         # normalisation here, since we immediately scale the weights to have unit norm (so the
         # initial standard deviation doesn't matter). Note also that `init.normal_` is in place.
-        self._weight: Float[
+        self.weight: Float[
             Parameter,
             Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
-        ] = init.normal_(self._weight, mean=0, std=1)  # type: ignore
+        ] = init.normal_(self.weight, mean=0, std=1)  # type: ignore
 
         # Scale so that each row has unit norm
         self.constrain_weights_unit_norm()
@@ -258,7 +248,7 @@ class UnitNormDecoder(Module):
         normalized_weight: Float[
             Tensor,
             Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
-        ] = self._weight / torch.norm(self._weight, dim=-2, keepdim=True)
+        ] = self.weight / torch.norm(self.weight, dim=-2, keepdim=True)
 
         scalar_projections = einops.einsum(
             grad,

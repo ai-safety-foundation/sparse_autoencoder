@@ -7,7 +7,7 @@ import torch
 from torch import Tensor
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
 from sparse_autoencoder.tensor_types import Axis
 
@@ -17,7 +17,12 @@ def test_hook_replaces_activations() -> None:
     """Test that the hook replaces activations."""
     torch.random.manual_seed(0)
     source_model = HookedTransformer.from_pretrained("tiny-stories-1M", device="cpu")
-    autoencoder = SparseAutoencoder(source_model.cfg.d_model, source_model.cfg.d_model * 2)
+    autoencoder = SparseAutoencoder(
+        SparseAutoencoderConfig(
+            n_input_features=source_model.cfg.d_model,
+            n_learned_features=source_model.cfg.d_model * 2,
+        )
+    )
 
     tokens: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = source_model.to_tokens(
         "Hello world"
@@ -44,7 +49,11 @@ def test_hook_replaces_activations_2_components() -> None:
     torch.random.manual_seed(0)
     source_model = HookedTransformer.from_pretrained("tiny-stories-1M", device="cpu")
     autoencoder = SparseAutoencoder(
-        source_model.cfg.d_model, source_model.cfg.d_model * 2, n_components=2
+        SparseAutoencoderConfig(
+            n_input_features=source_model.cfg.d_model,
+            n_learned_features=source_model.cfg.d_model * 2,
+            n_components=2,
+        )
     )
 
     tokens: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = source_model.to_tokens(

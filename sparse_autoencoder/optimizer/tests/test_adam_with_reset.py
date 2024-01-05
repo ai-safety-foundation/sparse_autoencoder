@@ -2,7 +2,7 @@
 import pytest
 import torch
 
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 
 
@@ -10,7 +10,7 @@ from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 def model_and_optimizer() -> tuple[torch.nn.Module, AdamWithReset]:
     """Model and optimizer fixture."""
     torch.random.manual_seed(0)
-    model = SparseAutoencoder(5, 10)
+    model = SparseAutoencoder(SparseAutoencoderConfig(n_input_features=5, n_learned_features=10))
     optimizer = AdamWithReset(
         model.parameters(),
         named_parameters=model.named_parameters(),

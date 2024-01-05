@@ -19,6 +19,7 @@ from sparse_autoencoder.activation_resampler.abstract_activation_resampler impor
 )
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
+from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
 from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
     AbstractValidationMetric,
@@ -37,7 +38,11 @@ def pipeline_fixture() -> Pipeline:
     device = torch.device("cpu")
     src_model = HookedTransformer.from_pretrained("tiny-stories-1M", device=device)
     autoencoder = SparseAutoencoder(
-        src_model.cfg.d_model, int(src_model.cfg.d_model * 2), n_components=2
+        SparseAutoencoderConfig(
+            n_input_features=src_model.cfg.d_model,
+            n_learned_features=int(src_model.cfg.d_model * 2),
+            n_components=2,
+        )
     )
     loss = LossReducer(
         LearnedActivationsL1Loss(
@@ -51,7 +56,9 @@ def pipeline_fixture() -> Pipeline:
         has_components_dim=True,
     )
     source_data = MockDataset(context_size=10)
-    activation_resampler = ActivationResampler(n_learned_features=autoencoder.n_learned_features)
+    activation_resampler = ActivationResampler(
+        n_learned_features=autoencoder.config.n_learned_features
+    )
 
     return Pipeline(
         activation_resampler=activation_resampler,

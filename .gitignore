@@ -141,6 +141,7 @@ docs/content/reference
 
 # Wandb
 wandb/
+artifacts/
 
 # Scratch files
 scratch.py

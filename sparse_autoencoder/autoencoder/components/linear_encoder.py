@@ -42,33 +42,18 @@ class LinearEncoder(Module):
 
     _n_components: int | None
 
-    _weight: Float[
+    weight: Float[
         Parameter,
         Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
     ]
-    """Weight parameter internal state."""
+    """Weight parameter.
 
-    _bias: Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
-    """Bias parameter internal state."""
+    Each row in the weights matrix acts as a dictionary vector, representing a single basis
+    element in the learned activation space.
+    """
 
-    @property
-    def weight(
-        self,
-    ) -> Float[
-        Parameter,
-        Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE),
-    ]:
-        """Weight parameter.
-
-        Each row in the weights matrix acts as a dictionary vector, representing a single basis
-        element in the learned activation space.
-        """
-        return self._weight
-
-    @property
-    def bias(self) -> Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
-        """Bias parameter."""
-        return self._bias
+    bias: Float[Parameter, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
+    """Bias parameter."""
 
     @property
     def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
@@ -109,12 +94,12 @@ class LinearEncoder(Module):
         self._input_features = input_features
         self._n_components = n_components
 
-        self._weight = Parameter(
+        self.weight = Parameter(
             torch.empty(
                 shape_with_optional_dimensions(n_components, learnt_features, input_features),
             )
         )
-        self._bias = Parameter(
+        self.bias = Parameter(
             torch.zeros(shape_with_optional_dimensions(n_components, learnt_features))
         )
         self.activation_function = ReLU()
@@ -125,12 +110,12 @@ class LinearEncoder(Module):
         """Initialize or reset the parameters."""
         # Assumes we are using ReLU activation function (for e.g. leaky ReLU, the `a` parameter and
         # `nonlinerity` must be changed.
-        init.kaiming_uniform_(self._weight, nonlinearity="relu")
+        init.kaiming_uniform_(self.weight, nonlinearity="relu")
 
         # Bias (approach from nn.Linear)
-        fan_in = self._weight.size(1)
+        fan_in = self.weight.size(1)
         bound = 1 / math.sqrt(fan_in) if fan_in > 0 else 0
-        init.uniform_(self._bias, -bound, bound)
+        init.uniform_(self.bias, -bound, bound)
 
     def forward(
         self,

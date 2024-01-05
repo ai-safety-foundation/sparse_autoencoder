@@ -1,7 +1,7 @@
 """Sparse Autoencoder Library."""
 from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 from sparse_autoencoder.loss.abstract_loss import LossReductionType
 from sparse_autoencoder.loss.decoded_activations_l2 import L2ReconstructionLoss
 from sparse_autoencoder.loss.learned_activations_l1 import LearnedActivationsL1Loss
@@ -77,6 +77,7 @@ __all__ = [
     "SourceModelHyperparameters",
     "SourceModelRuntimeHyperparameters",
     "SparseAutoencoder",
+    "SparseAutoencoderConfig",
     "sweep",
     "SweepConfig",
     "TensorActivationStore",
