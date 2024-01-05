@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
 from typing import Any, Generic, TypedDict, TypeVar, final
 
-from datasets import Dataset, IterableDataset, load_dataset
+from datasets import Dataset, IterableDataset, VerificationMode, load_dataset
 from jaxtyping import Int
 from pydantic import PositiveInt, validate_call
 from torch import Tensor
@@ -162,6 +162,7 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             split=dataset_split,
             data_dir=dataset_dir,
             data_files=dataset_files,
+            verification_mode=VerificationMode.NO_CHECKS,  # As it fails when data_files is set
         )
 
         # Setup preprocessing (we remove all columns except for input ids)
