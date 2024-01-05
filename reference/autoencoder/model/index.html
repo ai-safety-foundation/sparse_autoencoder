@@ -1002,6 +1002,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_hugging_face" class="md-nav__link">
+    <span class="md-ellipsis">
+      load_from_hugging_face()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_wandb" class="md-nav__link">
     <span class="md-ellipsis">
       load_from_wandb()
@@ -1032,6 +1041,15 @@
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.save" class="md-nav__link">
     <span class="md-ellipsis">
       save()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.save_to_hugging_face" class="md-nav__link">
+    <span class="md-ellipsis">
+      save_to_hugging_face()
     </span>
   </a>
   
@@ -2680,6 +2698,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_hugging_face" class="md-nav__link">
+    <span class="md-ellipsis">
+      load_from_hugging_face()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_wandb" class="md-nav__link">
     <span class="md-ellipsis">
       load_from_wandb()
@@ -2710,6 +2737,15 @@
   <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.save" class="md-nav__link">
     <span class="md-ellipsis">
       save()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.save_to_hugging_face" class="md-nav__link">
+    <span class="md-ellipsis">
+      save_to_hugging_face()
     </span>
   </a>
   
@@ -2863,8 +2899,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
-<span class="normal">66</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
@@ -2872,7 +2907,8 @@
 <span class="normal">71</span>
 <span class="normal">72</span>
 <span class="normal">73</span>
-<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ForwardPassResult</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ForwardPassResult</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SAE model forward pass result.&quot;&quot;&quot;</span>
 
     <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -2926,8 +2962,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 80</span>
-<span class="normal"> 81</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
 <span class="normal"> 84</span>
@@ -3207,7 +3242,66 @@
 <span class="normal">358</span>
 <span class="normal">359</span>
 <span class="normal">360</span>
-<span class="normal">361</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoder</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoder</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Autoencoder Model.&quot;&quot;&quot;</span>
 
     <span class="n">config</span><span class="p">:</span> <span class="n">SparseAutoencoderConfig</span>
@@ -3489,6 +3583,64 @@
         <span class="n">artifact</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">artifact</span><span class="p">(</span><span class="n">wandb_artifact_name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
         <span class="n">download_path</span> <span class="o">=</span> <span class="n">artifact</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">SparseAutoencoder</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">download_path</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;sae-model-state.pt&quot;</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">save_to_hugging_face</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">directory</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">DEFAULT_TMP_DIR</span><span class="p">,</span>
+        <span class="n">hf_access_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model to Hugging Face.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name: Name of the file (e.g. &quot;model-something.pt&quot;).</span>
+<span class="sd">            repo_id: ID of the repo to save the model to.</span>
+<span class="sd">            directory: Directory to save the model to.</span>
+<span class="sd">            hf_access_token: Hugging Face access token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Save the file</span>
+        <span class="n">directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="n">file_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+        <span class="c1"># Upload to Hugging Face</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">HfApi</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">hf_access_token</span><span class="p">)</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span>
+            <span class="n">path_or_fileobj</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">path_in_repo</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_from_hugging_face</span><span class="p">(</span>
+        <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SparseAutoencoder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the model from Hugging Face.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name: File name of the .pt state file.</span>
+<span class="sd">            repo_id: ID of the repo to load the model from.</span>
+<span class="sd">            component_idx: If loading a state dict from a model that has been trained on multiple</span>
+<span class="sd">                components (e.g. all MLP layers) you may want to to load just one component. In this</span>
+<span class="sd">                case you can set `component_idx` to the index of the component to load. Note you</span>
+<span class="sd">                should not set this if you want to load a state dict from a model that has been</span>
+<span class="sd">                trained on a single component (or if you want to load all components).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The loaded model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">local_file</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+            <span class="n">revision</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SparseAutoencoder</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">local_file</span><span class="p">),</span> <span class="n">component_idx</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -3780,8 +3932,7 @@ dictionary vectors.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
-<span class="normal">115</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
@@ -3829,7 +3980,8 @@ dictionary vectors.</p>
 <span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">163</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">SparseAutoencoderConfig</span><span class="p">,</span>
     <span class="n">geometric_median_dataset</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -3957,8 +4109,7 @@ dictionary vectors.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
-<span class="normal">166</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
@@ -3976,7 +4127,8 @@ dictionary vectors.</p>
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+<span class="normal">184</span>
+<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
@@ -4116,8 +4268,7 @@ dictionary vectors.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
-<span class="normal">222</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
@@ -4142,7 +4293,8 @@ dictionary vectors.</p>
 <span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">247</span>
+<span class="normal">248</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">get_single_component_state_dict</span><span class="p">(</span>
     <span class="n">state</span><span class="p">:</span> <span class="n">SparseAutoencoderState</span><span class="p">,</span> <span class="n">component_idx</span><span class="p">:</span> <span class="n">NonNegativeInt</span>
@@ -4193,10 +4345,10 @@ dictionary vectors.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
-<span class="normal">187</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
 <span class="normal">188</span>
-<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">189</span>
+<span class="normal">190</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_tied_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the tied parameters.&quot;&quot;&quot;</span>
     <span class="c1"># The tied bias is initialised as the geometric median of the dataset</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tied_bias</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_median_dataset</span>
@@ -4300,8 +4452,7 @@ trained on a single component (or if you want to load all components).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
-<span class="normal">260</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">260</span>
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
@@ -4336,7 +4487,8 @@ trained on a single component (or if you want to load all components).</p>
 <span class="normal">292</span>
 <span class="normal">293</span>
 <span class="normal">294</span>
-<span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">295</span>
+<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">load</span><span class="p">(</span>
     <span class="n">file_path</span><span class="p">:</span> <span class="n">FILE_LIKE</span><span class="p">,</span>
     <span class="n">component_idx</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4373,6 +4525,175 @@ trained on a single component (or if you want to load all components).</p>
     <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">model</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_hugging_face" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">load_from_hugging_face</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.load_from_hugging_face" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Load the model from Hugging Face.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>file_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>File name of the .pt state file.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repo_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>ID of the repo to load the model from.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>component_idx</code></td>
+          <td>
+                <code><span title="pydantic.PositiveInt">PositiveInt</span> | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If loading a state dict from a model that has been trained on multiple
+components (e.g. all MLP layers) you may want to to load just one component. In this
+case you can set <code>component_idx</code> to the index of the component to load. Note you
+should not set this if you want to load a state dict from a model that has been
+trained on a single component (or if you want to load all components).</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The loaded model.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">load_from_hugging_face</span><span class="p">(</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SparseAutoencoder&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the model from Hugging Face.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_name: File name of the .pt state file.</span>
+<span class="sd">        repo_id: ID of the repo to load the model from.</span>
+<span class="sd">        component_idx: If loading a state dict from a model that has been trained on multiple</span>
+<span class="sd">            components (e.g. all MLP layers) you may want to to load just one component. In this</span>
+<span class="sd">            case you can set `component_idx` to the index of the component to load. Note you</span>
+<span class="sd">            should not set this if you want to load a state dict from a model that has been</span>
+<span class="sd">            trained on a single component (or if you want to load all components).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The loaded model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">local_file</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+        <span class="n">revision</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">SparseAutoencoder</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">local_file</span><span class="p">),</span> <span class="n">component_idx</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -4474,8 +4795,7 @@ trained on a single component (or if you want to load all components).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">339</span>
-<span class="normal">340</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">340</span>
 <span class="normal">341</span>
 <span class="normal">342</span>
 <span class="normal">343</span>
@@ -4496,7 +4816,8 @@ trained on a single component (or if you want to load all components).</p>
 <span class="normal">358</span>
 <span class="normal">359</span>
 <span class="normal">360</span>
-<span class="normal">361</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">361</span>
+<span class="normal">362</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">load_from_wandb</span><span class="p">(</span>
     <span class="n">wandb_artifact_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">component_idx</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4544,12 +4865,12 @@ trained on a single component (or if you want to load all components).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
-<span class="normal">215</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
-<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">post_backwards_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">219</span>
+<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">post_backwards_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Hook to be called after each learning step.</span>
 
 <span class="sd">    This can be used to e.g. constrain weights to unit norm.</span>
@@ -4579,12 +4900,12 @@ trained on a single component (or if you want to load all components).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
-<span class="normal">192</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
 <span class="normal">195</span>
-<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the parameters.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tied_parameters</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span>
@@ -4644,15 +4965,15 @@ trained on a single component (or if you want to load all components).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
-<span class="normal">250</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">257</span>
+<span class="normal">258</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model config and state dict to a file.</span>
 
 <span class="sd">    Args:</span>
@@ -4661,6 +4982,157 @@ trained on a single component (or if you want to load all components).</p>
     <span class="n">file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">SparseAutoencoderState</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">state_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="sparse_autoencoder.autoencoder.model.SparseAutoencoder.save_to_hugging_face" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">save_to_hugging_face</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">DEFAULT_TMP_DIR</span><span class="p">,</span> <span class="n">hf_access_token</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.autoencoder.model.SparseAutoencoder.save_to_hugging_face" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Save the model to Hugging Face.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>file_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Name of the file (e.g. "model-something.pt").</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repo_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>ID of the repo to save the model to.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>directory</code></td>
+          <td>
+                <code><span title="pydantic.DirectoryPath">DirectoryPath</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Directory to save the model to.</p>
+            </div>
+          </td>
+          <td>
+                <code><span title="sparse_autoencoder.autoencoder.model.DEFAULT_TMP_DIR">DEFAULT_TMP_DIR</span></code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>hf_access_token</code></td>
+          <td>
+                <code>str | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Hugging Face access token.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_to_hugging_face</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">DEFAULT_TMP_DIR</span><span class="p">,</span>
+    <span class="n">hf_access_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model to Hugging Face.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_name: Name of the file (e.g. &quot;model-something.pt&quot;).</span>
+<span class="sd">        repo_id: ID of the repo to save the model to.</span>
+<span class="sd">        directory: Directory to save the model to.</span>
+<span class="sd">        hf_access_token: Hugging Face access token.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Save the file</span>
+    <span class="n">directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="n">file_name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+    <span class="c1"># Upload to Hugging Face</span>
+    <span class="n">api</span> <span class="o">=</span> <span class="n">HfApi</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">hf_access_token</span><span class="p">)</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span>
+        <span class="n">path_or_fileobj</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
+        <span class="n">path_in_repo</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -4780,8 +5252,7 @@ project. Example: "sweep_name 1e9 activations".</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
-<span class="normal">298</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">298</span>
 <span class="normal">299</span>
 <span class="normal">300</span>
 <span class="normal">301</span>
@@ -4820,7 +5291,8 @@ project. Example: "sweep_name 1e9 activations".</p>
 <span class="normal">334</span>
 <span class="normal">335</span>
 <span class="normal">336</span>
-<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_to_wandb</span><span class="p">(</span>
+<span class="normal">337</span>
+<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">save_to_wandb</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">artifact_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">directory</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">DEFAULT_TMP_DIR</span><span class="p">,</span>
@@ -4896,8 +5368,7 @@ project. Example: "sweep_name 1e9 activations".</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
-<span class="normal">29</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
@@ -4917,7 +5388,8 @@ project. Example: "sweep_name 1e9 activations".</p>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SAE model config.&quot;&quot;&quot;</span>
 
     <span class="n">n_input_features</span><span class="p">:</span> <span class="n">PositiveInt</span>
@@ -5057,8 +5529,7 @@ used a multiple of 8.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/autoencoder/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
-<span class="normal">53</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
@@ -5067,7 +5538,8 @@ used a multiple of 8.</p>
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderState</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderState</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SAE model state.</span>
 
 <span class="sd">    Used for saving and loading the model.</span>
