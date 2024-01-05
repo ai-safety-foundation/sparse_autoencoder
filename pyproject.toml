@@ -137,6 +137,7 @@
     [tool.pytest.ini_options]
         addopts=[
             "--doctest-modules",
+            "--ignore=*.md",
             "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
             "-n=auto",
             "-s",
@@ -145,7 +146,6 @@
             "ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
             "ignore::pydantic.warnings.PydanticDeprecatedSince20",
         ]
-        norecursedirs=['*.md']
 
 [tool.ruff]
     cache-dir=".cache/ruff"
