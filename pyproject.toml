@@ -30,6 +30,7 @@
             pytest-cov=">=4"
             pytest-integration=">=0.2.3"
             pytest-timeout=">=2.2.0"
+            pytest-xdist="^3.5.0"
             ruff=">=0.1.4"
             syrupy=">=4.6.0"
 
@@ -137,12 +138,14 @@
         addopts=[
             "--doctest-modules",
             "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
+            "-n=auto",
             "-s",
         ]
         filterwarnings=[
             "ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
             "ignore::pydantic.warnings.PydanticDeprecatedSince20",
         ]
+        norecursedirs=['*.md']
 
 [tool.ruff]
     cache-dir=".cache/ruff"
