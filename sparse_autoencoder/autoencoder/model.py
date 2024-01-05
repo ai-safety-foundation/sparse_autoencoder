@@ -3,6 +3,7 @@ from pathlib import Path
 from tempfile import gettempdir
 from typing import NamedTuple
 
+from huggingface_hub import HfApi, hf_hub_download
 from jaxtyping import Float
 from pydantic import (
     BaseModel,
@@ -359,3 +360,61 @@ class SparseAutoencoder(Module):
         artifact = api.artifact(wandb_artifact_name, type="model")
         download_path = artifact.download()
         return SparseAutoencoder.load(Path(download_path) / "sae-model-state.pt", component_idx)
+
+    def save_to_hugging_face(
+        self,
+        file_name: str,
+        repo_id: str,
+        directory: DirectoryPath = DEFAULT_TMP_DIR,
+        hf_access_token: str | None = None,
+    ) -> None:
+        """Save the model to Hugging Face.
+
+        Args:
+            file_name: Name of the file (e.g. "model-something.pt").
+            repo_id: ID of the repo to save the model to.
+            directory: Directory to save the model to.
+            hf_access_token: Hugging Face access token.
+        """
+        # Save the file
+        directory.mkdir(parents=True, exist_ok=True)
+        file_path = directory / file_name
+        self.save(file_path)
+
+        # Upload to Hugging Face
+        api = HfApi(token=hf_access_token)
+        api.upload_file(
+            path_or_fileobj=file_path,
+            path_in_repo=file_name,
+            repo_id=repo_id,
+            repo_type="model",
+        )
+
+    @staticmethod
+    def load_from_hugging_face(
+        file_name: str,
+        repo_id: str,
+        component_idx: PositiveInt | None = None,
+    ) -> "SparseAutoencoder":
+        """Load the model from Hugging Face.
+
+        Args:
+            file_name: File name of the .pt state file.
+            repo_id: ID of the repo to load the model from.
+            component_idx: If loading a state dict from a model that has been trained on multiple
+                components (e.g. all MLP layers) you may want to to load just one component. In this
+                case you can set `component_idx` to the index of the component to load. Note you
+                should not set this if you want to load a state dict from a model that has been
+                trained on a single component (or if you want to load all components).
+
+        Returns:
+            The loaded model.
+        """
+        local_file = hf_hub_download(
+            repo_id=repo_id,
+            repo_type="model",
+            filename=file_name,
+            revision="main",
+        )
+
+        return SparseAutoencoder.load(Path(local_file), component_idx)

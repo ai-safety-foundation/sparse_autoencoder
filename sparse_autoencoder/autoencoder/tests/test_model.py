@@ -1,5 +1,7 @@
 """Sparse Autoencoder Model Tests."""
+import os
 from pathlib import Path
+import uuid
 
 from jaxtyping import Float
 import pytest
@@ -143,7 +145,7 @@ def test_load_all_components() -> None:
     model = SparseAutoencoder(config)
 
     # Save
-    path = Path(__file__).parents[3] / ".cache" / "test_save.pt"
+    path = Path(__file__).parents[3] / ".cache" / f"{uuid.uuid4()!s}.pt"
     model.save(path)
 
     # Load into a new model
@@ -151,6 +153,8 @@ def test_load_all_components() -> None:
 
     for key in model.state_dict():
         assert torch.allclose(model.state_dict()[key], loaded_model.state_dict()[key])
+
+    path.unlink()
 
 
 def test_load_single_component() -> None:
@@ -160,7 +164,7 @@ def test_load_single_component() -> None:
     model = SparseAutoencoder(config)
 
     # Save
-    path = Path(__file__).parents[3] / ".cache" / "test_save.pt"
+    path = Path(__file__).parents[3] / ".cache" / f"{uuid.uuid4()!s}.pt"
     model.save(path)
 
     # Load into a new model
@@ -175,7 +179,7 @@ def test_load_single_component() -> None:
     path.unlink()
 
 
-@pytest.mark.skip("Requires active wandb account.")
+@pytest.mark.skipif(os.getenv("WANDB_API_KEY") is None, reason="No wandb API key.")
 @pytest.mark.integration_test()
 def test_save_load_wandb() -> None:
     """Test saving and loading from wandb."""
@@ -196,3 +200,25 @@ def test_save_load_wandb() -> None:
         assert torch.allclose(model.state_dict()[key], loaded_model.state_dict()[key])
 
     wandb.finish()
+
+
+@pytest.mark.skipif(os.getenv("HF_TESTING_ACCESS_TOKEN") is None, reason="No HF access token.")
+@pytest.mark.integration_test()
+def test_save_load_hugging_face() -> None:
+    """Test saving and loading from Hugging Fae."""
+    # Create the model
+    config = SparseAutoencoderConfig(n_input_features=3, n_learned_features=6, n_components=2)
+    model = SparseAutoencoder(config)
+
+    # Save
+    file_name = "test-model.pt"
+    repo_id = "alancooney/test"
+    access_token = os.getenv("HF_TESTING_ACCESS_TOKEN")
+    model.save_to_hugging_face(file_name=file_name, repo_id=repo_id, hf_access_token=access_token)
+
+    # Get it back
+    loaded_model = SparseAutoencoder.load_from_hugging_face(file_name=file_name, repo_id=repo_id)
+
+    # Check the state dict is the same
+    for key in model.state_dict():
+        assert torch.allclose(model.state_dict()[key], loaded_model.state_dict()[key])

@@ -15,7 +15,7 @@ def reset_reference_dir() -> None:
     """Reset the reference directory to its initial state."""
     # Unlink the directory including all files
     shutil.rmtree(REFERENCE_DIR, ignore_errors=True)
-    REFERENCE_DIR.mkdir(parents=True)
+    REFERENCE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def is_source_file(file: Path) -> bool:
