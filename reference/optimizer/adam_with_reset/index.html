@@ -2736,7 +2736,10 @@ will be incorrect if the parameters are changed.</p>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">class</span> <span class="nc">AdamWithReset</span><span class="p">(</span><span class="n">Adam</span><span class="p">,</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adam Optimizer with a reset method.</span>
 
@@ -2956,6 +2959,9 @@ will be incorrect if the parameters are changed.</p>
         <span class="c1"># Check there are any neurons to reset</span>
         <span class="k">if</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
+
+        <span class="c1"># Move the neuron indices to the correct device</span>
+        <span class="n">neuron_indices</span> <span class="o">=</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
         <span class="c1"># Reset running averages for the specified neurons</span>
         <span class="k">if</span> <span class="s2">&quot;exp_avg&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
@@ -3740,7 +3746,10 @@ False.</p>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
     <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
@@ -3813,6 +3822,9 @@ False.</p>
     <span class="c1"># Check there are any neurons to reset</span>
     <span class="k">if</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
+
+    <span class="c1"># Move the neuron indices to the correct device</span>
+    <span class="n">neuron_indices</span> <span class="o">=</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
     <span class="c1"># Reset running averages for the specified neurons</span>
     <span class="k">if</span> <span class="s2">&quot;exp_avg&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
