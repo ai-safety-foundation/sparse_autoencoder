@@ -1,8 +1,6 @@
 """Sweep."""
 from pathlib import Path
 import re
-import sys
-import traceback
 
 import torch
 from transformer_lens import HookedTransformer
