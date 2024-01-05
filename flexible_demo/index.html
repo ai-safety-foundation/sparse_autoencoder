@@ -823,27 +823,6 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../reference/autoencoder/abstract_autoencoder/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_autoencoder
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
     
     
     
@@ -854,7 +833,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3_1" >
         
           
           
@@ -870,14 +849,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_3_2" id="__nav_5_3_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_3_1" id="__nav_5_3_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_3_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3_1">
             <span class="md-nav__icon md-icon"></span>
             components
           </label>
@@ -2605,6 +2584,7 @@ activations.</p>
     <span class="n">Pipeline</span><span class="p">,</span>
     <span class="n">PreTokenizedDataset</span><span class="p">,</span>
     <span class="n">SparseAutoencoder</span><span class="p">,</span>
+    <span class="n">SparseAutoencoderConfig</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">import</span> <span class="nn">wandb</span>
 
@@ -2732,8 +2712,10 @@ classes (which are fully documented) for more details.</p>
 
 <div class="highlight"><pre><span></span><code><span class="n">expansion_factor</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;expansion_factor&quot;</span><span class="p">]</span>
 <span class="n">autoencoder</span> <span class="o">=</span> <span class="n">SparseAutoencoder</span><span class="p">(</span>
-    <span class="n">n_input_features</span><span class="o">=</span><span class="n">autoencoder_input_dim</span><span class="p">,</span>  <span class="c1"># size of the activations we are autoencoding</span>
-    <span class="n">n_learned_features</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">autoencoder_input_dim</span> <span class="o">*</span> <span class="n">expansion_factor</span><span class="p">),</span>  <span class="c1"># size of SAE</span>
+    <span class="n">SparseAutoencoderConfig</span><span class="p">(</span>
+        <span class="n">n_input_features</span><span class="o">=</span><span class="n">autoencoder_input_dim</span><span class="p">,</span>  <span class="c1"># size of the activations we are autoencoding</span>
+        <span class="n">n_learned_features</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">autoencoder_input_dim</span> <span class="o">*</span> <span class="n">expansion_factor</span><span class="p">),</span>  <span class="c1"># size of SAE</span>
+    <span class="p">)</span>
 <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 <span class="n">autoencoder</span>
 </code></pre></div>
