@@ -1,6 +1,7 @@
 """Sparse Autoencoder Model Tests."""
 import os
 from pathlib import Path
+import uuid
 
 from jaxtyping import Float
 import pytest
@@ -144,7 +145,7 @@ def test_load_all_components() -> None:
     model = SparseAutoencoder(config)
 
     # Save
-    path = Path(__file__).parents[3] / ".cache" / "test_save.pt"
+    path = Path(__file__).parents[3] / ".cache" / f"{uuid.uuid4()!s}.pt"
     model.save(path)
 
     # Load into a new model
@@ -152,6 +153,8 @@ def test_load_all_components() -> None:
 
     for key in model.state_dict():
         assert torch.allclose(model.state_dict()[key], loaded_model.state_dict()[key])
+
+    path.unlink()
 
 
 def test_load_single_component() -> None:
@@ -161,7 +164,7 @@ def test_load_single_component() -> None:
     model = SparseAutoencoder(config)
 
     # Save
-    path = Path(__file__).parents[3] / ".cache" / "test_save.pt"
+    path = Path(__file__).parents[3] / ".cache" / f"{uuid.uuid4()!s}.pt"
     model.save(path)
 
     # Load into a new model
@@ -176,7 +179,7 @@ def test_load_single_component() -> None:
     path.unlink()
 
 
-@pytest.mark.skip("Requires active wandb account.")
+@pytest.mark.skipif(os.getenv("WANDB_API_KEY") is None, reason="No wandb API key.")
 @pytest.mark.integration_test()
 def test_save_load_wandb() -> None:
     """Test saving and loading from wandb."""
