@@ -236,6 +236,9 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         if neuron_indices.numel() == 0:
             return
 
+        # Move the neuron indices to the correct device
+        neuron_indices = neuron_indices.to(device=state["exp_avg"].device)
+
         # Reset running averages for the specified neurons
         if "exp_avg" in state:
             if self._has_components_dim:
