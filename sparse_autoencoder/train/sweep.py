@@ -324,8 +324,8 @@ def train() -> None:
     # Run the training pipeline
     run_training_pipeline(
         hyperparameters=hyperparameters,
-        source_model=source_model,
-        autoencoder=autoencoder,
+        source_model=DataParallelWithModelAttributes(source_model),
+        autoencoder=DataParallelWithModelAttributes(autoencoder),
         loss=loss_function,
         optimizer=optimizer,
         activation_resampler=activation_resampler,
