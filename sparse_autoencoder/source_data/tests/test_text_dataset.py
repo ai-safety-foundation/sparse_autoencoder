@@ -1,6 +1,6 @@
 """Pile Uncopyrighted Dataset Tests."""
 import pytest
-from transformers import PreTrainedTokenizerFast
+from transformers import GPT2Tokenizer
 
 from sparse_autoencoder.source_data.text_dataset import TextDataset
 
@@ -9,7 +9,7 @@ from sparse_autoencoder.source_data.text_dataset import TextDataset
 @pytest.mark.parametrize("context_size", [50, 250])
 def test_tokenized_prompts_correct_size(context_size: int) -> None:
     """Test that the tokenized prompts have the correct context size."""
-    tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 
     data = TextDataset(
         tokenizer=tokenizer, context_size=context_size, dataset_path="monology/pile-uncopyrighted"
@@ -31,7 +31,7 @@ def test_dataloader_correct_size_items() -> None:
     """Test the dataloader returns the correct number & sized items."""
     batch_size = 10
     context_size = 250
-    tokenizer = PreTrainedTokenizerFast.from_pretrained("gpt2")
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
     data = TextDataset(
         tokenizer=tokenizer, context_size=context_size, dataset_path="monology/pile-uncopyrighted"
     )
