@@ -10,6 +10,7 @@ from sparse_autoencoder.activation_store.tensor_store import TensorActivationSto
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 @dataclass
@@ -58,7 +59,7 @@ class AbstractActivationResampler(ABC):
         self,
         batch_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
         activation_store: TensorActivationStore,
-        autoencoder: SparseAutoencoder,
+        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
         loss_fn: AbstractLoss,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults] | None:

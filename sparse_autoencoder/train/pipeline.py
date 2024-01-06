@@ -31,6 +31,7 @@ from sparse_autoencoder.source_model.store_activations_hook import store_activat
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 if TYPE_CHECKING:
@@ -49,7 +50,7 @@ class Pipeline:
     activation_resampler: AbstractActivationResampler | None
     """Activation resampler to use."""
 
-    autoencoder: SparseAutoencoder
+    autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder]
     """Sparse autoencoder to train."""
 
     cache_names: list[str]
@@ -79,7 +80,7 @@ class Pipeline:
     source_dataset: SourceDataset
     """Source dataset to generate activation data from (tokenized prompts)."""
 
-    source_model: HookedTransformer
+    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer]
     """Source model to get activations from."""
 
     total_activations_trained_on: int = 0
@@ -95,13 +96,13 @@ class Pipeline:
     def __init__(
         self,
         activation_resampler: AbstractActivationResampler | None,
-        autoencoder: SparseAutoencoder,
+        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
         cache_names: list[str],
         layer: NonNegativeInt,
         loss: AbstractLoss,
         optimizer: AbstractOptimizerWithReset,
         source_dataset: SourceDataset,
-        source_model: HookedTransformer,
+        source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
         log_frequency: PositiveInt = 100,
