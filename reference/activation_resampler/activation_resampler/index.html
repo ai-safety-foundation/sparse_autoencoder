@@ -2292,6 +2292,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../utils/data_parallel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data_parallel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2600,8 +2621,7 @@ causes training to diverge.</p>
 </details>
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 34</span>
-<span class="normal"> 35</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 35</span>
 <span class="normal"> 36</span>
 <span class="normal"> 37</span>
 <span class="normal"> 38</span>
@@ -3144,7 +3164,8 @@ causes training to diverge.</p>
 <span class="normal">575</span>
 <span class="normal">576</span>
 <span class="normal">577</span>
-<span class="normal">578</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ActivationResampler</span><span class="p">(</span><span class="n">AbstractActivationResampler</span><span class="p">):</span>
+<span class="normal">578</span>
+<span class="normal">579</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ActivationResampler</span><span class="p">(</span><span class="n">AbstractActivationResampler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Activation resampler.</span>
 
 <span class="sd">    Collates the number of times each neuron fires over a set number of learned activation vectors,</span>
@@ -3301,7 +3322,7 @@ causes training to diverge.</p>
     <span class="k">def</span> <span class="nf">compute_loss_and_get_activations</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
-        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
         <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossInputActivationsTuple</span><span class="p">:</span>
@@ -3534,7 +3555,7 @@ causes training to diverge.</p>
     <span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
-        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
         <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">]:</span>
@@ -3626,7 +3647,7 @@ causes training to diverge.</p>
             <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
         <span class="p">],</span>
         <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
-        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
         <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
@@ -3911,8 +3932,7 @@ the loss, as part of the resampling process to create the reset neuron weights.<
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
-<span class="normal">100</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
@@ -3959,7 +3979,8 @@ the loss, as part of the resampling process to create the reset neuron weights.<
 <span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
-<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">147</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">n_learned_features</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -4032,8 +4053,7 @@ the loss, as part of the resampling process to create the reset neuron weights.<
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">568</span>
-<span class="normal">569</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">569</span>
 <span class="normal">570</span>
 <span class="normal">571</span>
 <span class="normal">572</span>
@@ -4042,7 +4062,8 @@ the loss, as part of the resampling process to create the reset neuron weights.<
 <span class="normal">575</span>
 <span class="normal">576</span>
 <span class="normal">577</span>
-<span class="normal">578</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">578</span>
+<span class="normal">579</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a string representation of the activation resampler.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;ActivationResampler(&quot;</span>
@@ -4151,8 +4172,7 @@ the autoencoder's loss on that input.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">248</span>
-<span class="normal">249</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
 <span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
@@ -4178,7 +4198,8 @@ the autoencoder's loss on that input.</p>
 <span class="normal">272</span>
 <span class="normal">273</span>
 <span class="normal">274</span>
-<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">275</span>
+<span class="normal">276</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">assign_sampling_probabilities</span><span class="p">(</span>
     <span class="n">loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]:</span>
@@ -4263,7 +4284,7 @@ in a way that improves performance on these specific input vectors.</p>
         <tr>
           <td><code>autoencoder</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a> | <a class="autorefs autorefs-internal" title="sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes" href="../../utils/data_parallel/#sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes">DataParallelWithModelAttributes</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4355,8 +4376,7 @@ in a way that improves performance on these specific input vectors.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
-<span class="normal">189</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
@@ -4413,10 +4433,11 @@ in a way that improves performance on these specific input vectors.</p>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute_loss_and_get_activations</span><span class="p">(</span>
+<span class="normal">246</span>
+<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute_loss_and_get_activations</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
-    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossInputActivationsTuple</span><span class="p">:</span>
@@ -4629,8 +4650,7 @@ tensor([[0.2000, 0.2000]])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">355</span>
-<span class="normal">356</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">356</span>
 <span class="normal">357</span>
 <span class="normal">358</span>
 <span class="normal">359</span>
@@ -4693,7 +4713,8 @@ tensor([[0.2000, 0.2000]])</p>
 <span class="normal">416</span>
 <span class="normal">417</span>
 <span class="normal">418</span>
-<span class="normal">419</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">419</span>
+<span class="normal">420</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">renormalize_and_scale</span><span class="p">(</span>
     <span class="n">sampled_input</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">DEAD_FEATURE</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)],</span>
     <span class="n">neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
@@ -4810,7 +4831,7 @@ tensor([[0.2000, 0.2000]])</p>
         <tr>
           <td><code>autoencoder</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a> | <a class="autorefs autorefs-internal" title="sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes" href="../../utils/data_parallel/#sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes">DataParallelWithModelAttributes</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4888,8 +4909,7 @@ tensor([[0.2000, 0.2000]])</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">421</span>
-<span class="normal">422</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">422</span>
 <span class="normal">423</span>
 <span class="normal">424</span>
 <span class="normal">425</span>
@@ -4975,10 +4995,11 @@ tensor([[0.2000, 0.2000]])</p>
 <span class="normal">505</span>
 <span class="normal">506</span>
 <span class="normal">507</span>
-<span class="normal">508</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
+<span class="normal">508</span>
+<span class="normal">509</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">resample_dead_neurons</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
-    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">]:</span>
@@ -5214,8 +5235,7 @@ sampled_input[0].tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
-<span class="normal">278</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
 <span class="normal">281</span>
@@ -5290,7 +5310,8 @@ sampled_input[0].tolist()
 <span class="normal">350</span>
 <span class="normal">351</span>
 <span class="normal">352</span>
-<span class="normal">353</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">353</span>
+<span class="normal">354</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">sample_input</span><span class="p">(</span>
     <span class="n">probabilities</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)],</span>
     <span class="n">input_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
@@ -5433,7 +5454,7 @@ sampled_input[0].tolist()
         <tr>
           <td><code>autoencoder</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a> | <a class="autorefs autorefs-internal" title="sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes" href="../../utils/data_parallel/#sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes">DataParallelWithModelAttributes</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -5511,8 +5532,7 @@ sampled_input[0].tolist()
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">510</span>
-<span class="normal">511</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">511</span>
 <span class="normal">512</span>
 <span class="normal">513</span>
 <span class="normal">514</span>
@@ -5567,13 +5587,14 @@ sampled_input[0].tolist()
 <span class="normal">563</span>
 <span class="normal">564</span>
 <span class="normal">565</span>
-<span class="normal">566</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
+<span class="normal">566</span>
+<span class="normal">567</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
         <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="n">activation_store</span><span class="p">:</span> <span class="n">ActivationStore</span><span class="p">,</span>
-    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
@@ -5659,13 +5680,13 @@ sampled_input[0].tolist()
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/activation_resampler/activation_resampler.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
-<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LossInputActivationsTuple</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="normal">31</span>
+<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LossInputActivationsTuple</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Loss and corresponding input activations tuple.&quot;&quot;&quot;</span>
 
     <span class="n">loss_per_item</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]</span>

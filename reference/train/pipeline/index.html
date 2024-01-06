@@ -2382,6 +2382,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../utils/data_parallel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data_parallel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2749,8 +2770,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 42</span>
-<span class="normal"> 43</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 43</span>
 <span class="normal"> 44</span>
 <span class="normal"> 45</span>
 <span class="normal"> 46</span>
@@ -3213,7 +3233,8 @@
 <span class="normal">503</span>
 <span class="normal">504</span>
 <span class="normal">505</span>
-<span class="normal">506</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">506</span>
+<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -3223,7 +3244,7 @@
     <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Activation resampler to use.&quot;&quot;&quot;</span>
 
-    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span>
+    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse autoencoder to train.&quot;&quot;&quot;</span>
 
     <span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
@@ -3253,7 +3274,7 @@
     <span class="n">source_dataset</span><span class="p">:</span> <span class="n">SourceDataset</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Source dataset to generate activation data from (tokenized prompts).&quot;&quot;&quot;</span>
 
-    <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span>
+    <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Source model to get activations from.&quot;&quot;&quot;</span>
 
     <span class="n">total_activations_trained_on</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
@@ -3269,13 +3290,13 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+        <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
         <span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">layer</span><span class="p">:</span> <span class="n">NonNegativeInt</span><span class="p">,</span>
         <span class="n">loss</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
         <span class="n">optimizer</span><span class="p">:</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">,</span>
         <span class="n">source_dataset</span><span class="p">:</span> <span class="n">SourceDataset</span><span class="p">,</span>
-        <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
+        <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">],</span>
         <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sparse_autoencoder&quot;</span><span class="p">,</span>
         <span class="n">checkpoint_directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_CHECKPOINT_DIRECTORY</span><span class="p">,</span>
         <span class="n">log_frequency</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
@@ -3719,7 +3740,7 @@
 
 
 <h3 id="sparse_autoencoder.train.pipeline.Pipeline.autoencoder" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">=</span> <span class="n">autoencoder</span></code>
+          <code class="highlight language-python"><span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">]</span> <span class="o">=</span> <span class="n">autoencoder</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3961,7 +3982,7 @@
 
 
 <h3 id="sparse_autoencoder.train.pipeline.Pipeline.source_model" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">=</span> <span class="n">source_model</span></code>
+          <code class="highlight language-python"><span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_model</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4048,7 +4069,7 @@
         <tr>
           <td><code>autoencoder</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a> | <a class="autorefs autorefs-internal" title="sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes" href="../../utils/data_parallel/#sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes">DataParallelWithModelAttributes</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4133,7 +4154,7 @@ layer).</p>
         <tr>
           <td><code>source_model</code></td>
           <td>
-                <code><span title="transformer_lens.HookedTransformer">HookedTransformer</span></code>
+                <code><span title="transformer_lens.HookedTransformer">HookedTransformer</span> | <a class="autorefs autorefs-internal" title="sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes" href="../../utils/data_parallel/#sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes">DataParallelWithModelAttributes</a>[<span title="transformer_lens.HookedTransformer">HookedTransformer</span>]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4219,8 +4240,7 @@ layer).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
-<span class="normal"> 94</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
@@ -4271,18 +4291,19 @@ layer).</p>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span><span class="p">,</span>
+    <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
     <span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">layer</span><span class="p">:</span> <span class="n">NonNegativeInt</span><span class="p">,</span>
     <span class="n">loss</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="p">:</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">,</span>
     <span class="n">source_dataset</span><span class="p">:</span> <span class="n">SourceDataset</span><span class="p">,</span>
-    <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span><span class="p">,</span>
+    <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">],</span>
     <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sparse_autoencoder&quot;</span><span class="p">,</span>
     <span class="n">checkpoint_directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_CHECKPOINT_DIRECTORY</span><span class="p">,</span>
     <span class="n">log_frequency</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
@@ -4426,8 +4447,7 @@ layer).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
-<span class="normal">148</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
@@ -4473,7 +4493,8 @@ layer).</p>
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">194</span>
+<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations.</span>
 
@@ -4646,8 +4667,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">412</span>
-<span class="normal">413</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">413</span>
 <span class="normal">414</span>
 <span class="normal">415</span>
 <span class="normal">416</span>
@@ -4740,7 +4760,8 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">503</span>
 <span class="normal">504</span>
 <span class="normal">505</span>
-<span class="normal">506</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">506</span>
+<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -4913,8 +4934,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">391</span>
-<span class="normal">392</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">392</span>
 <span class="normal">393</span>
 <span class="normal">394</span>
 <span class="normal">395</span>
@@ -4932,7 +4952,8 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">407</span>
 <span class="normal">408</span>
 <span class="normal">409</span>
-<span class="normal">410</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">410</span>
+<span class="normal">411</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.</span>
 
@@ -5044,8 +5065,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
-<span class="normal">197</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span>
 <span class="normal">200</span>
@@ -5125,7 +5145,8 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">274</span>
 <span class="normal">275</span>
 <span class="normal">276</span>
-<span class="normal">277</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="normal">277</span>
+<span class="normal">278</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]:</span>
@@ -5261,8 +5282,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">279</span>
-<span class="normal">280</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span>
 <span class="normal">283</span>
@@ -5292,7 +5312,8 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">307</span>
 <span class="normal">308</span>
 <span class="normal">309</span>
-<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">310</span>
+<span class="normal">311</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the parameters of the model from the results of the resampler.</span>
 
 <span class="sd">    Args:</span>
@@ -5378,8 +5399,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
-<span class="normal">313</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
 <span class="normal">316</span>
@@ -5455,7 +5475,8 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">386</span>
 <span class="normal">387</span>
 <span class="normal">388</span>
-<span class="normal">389</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">389</span>
+<span class="normal">390</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_n_activations</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 
