@@ -282,6 +282,7 @@ def run_training_pipeline(
         source_model=source_model,
         log_frequency=hyperparameters["pipeline"]["log_frequency"],
         run_name=run_name,
+        num_workers_data_loading=hyperparameters["pipeline"]["num_workers_data_loading"],
     )
 
     pipeline.run_pipeline(

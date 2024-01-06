@@ -54,6 +54,9 @@
             pymdown-extensions=">=10.5"
             pytkdocs-tweaks=">=0.0.7"
 
+[tool.poetry.scripts]
+    join-sae-sweep='sparse_autoencoder.train.join_sweep:run'
+
 [tool.poe.tasks]
     [tool.poe.tasks.check]
         help="All checks"
@@ -124,10 +127,6 @@
     [tool.poe.tasks.docs-hot-reload]
         cmd="mkdocs serve"
         help="Hot reload the docs site (so changes appear instantly)"
-
-    [tool.poe.tasks.run]
-        cmd="poetry run python"
-        help="Run a python file (append with file name)"
 
 [build-system]
     build-backend="poetry.core.masonry.api"

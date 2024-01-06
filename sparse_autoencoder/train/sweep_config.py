@@ -270,6 +270,9 @@ class PipelineHyperparameters(NestedParameter):
     )
     """Max activations."""
 
+    num_workers_data_loading: Parameter[int] = field(default=Parameter(0))
+    """Number of CPU workers for data loading."""
+
     checkpoint_frequency: Parameter[int] = field(
         default=Parameter(round_to_multiple(5e7, DEFAULT_STORE_SIZE))
     )
@@ -294,6 +297,7 @@ class PipelineRuntimeHyperparameters(TypedDict):
     train_batch_size: int
     max_store_size: int
     max_activations: int
+    num_workers_data_loading: int
     checkpoint_frequency: int
     validation_frequency: int
     validation_n_activations: int
