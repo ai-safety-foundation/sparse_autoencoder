@@ -125,6 +125,10 @@
         cmd="mkdocs serve"
         help="Hot reload the docs site (so changes appear instantly)"
 
+    [tool.poe.tasks.run]
+        cmd="poetry run python"
+        help="Run a python file (append with file name)"
+
 [build-system]
     build-backend="poetry.core.masonry.api"
     requires=["poetry-core"]

@@ -25,6 +25,7 @@ from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
     SweepConfig,
 )
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> ActivationResampler:
@@ -239,8 +240,8 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
 
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
-    source_model: HookedTransformer,
-    autoencoder: SparseAutoencoder,
+    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
+    autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
     loss: LossReducer,
     optimizer: AdamWithReset,
     activation_resampler: ActivationResampler,
@@ -324,7 +325,7 @@ def train() -> None:
     run_training_pipeline(
         hyperparameters=hyperparameters,
         source_model=source_model,
-        autoencoder=autoencoder,
+        autoencoder=DataParallelWithModelAttributes(autoencoder),
         loss=loss_function,
         optimizer=optimizer,
         activation_resampler=activation_resampler,

@@ -5,6 +5,7 @@ from torch import Tensor
 from transformer_lens.hook_points import HookPoint
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 if TYPE_CHECKING:
@@ -15,7 +16,7 @@ from jaxtyping import Float
 def replace_activations_hook(
     value: Tensor,
     hook: HookPoint,  # noqa: ARG001
-    sparse_autoencoder: SparseAutoencoder,
+    sparse_autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
     component_idx: int | None = None,
 ) -> Tensor:
     """Replace activations hook.
