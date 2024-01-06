@@ -17,7 +17,12 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def run() -> None:
+    """Run the join_sweep script."""
     args = parse_arguments()
 
     sweep(sweep_id=args.id)
+
+
+if __name__ == "__main__":
+    run()
