@@ -5,7 +5,7 @@ from typing import Any, Generic, TypedDict, TypeVar, final
 
 from datasets import Dataset, IterableDataset, VerificationMode, load_dataset
 from jaxtyping import Int
-from pydantic import PositiveInt, validate_call
+from pydantic import NonNegativeInt, PositiveInt, validate_call
 from torch import Tensor
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset as TorchDataset
@@ -217,11 +217,14 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
         return self.dataset.__iter__()
 
     @final
-    def get_dataloader(self, batch_size: int) -> DataLoader[TorchTokenizedPrompts]:
+    def get_dataloader(
+        self, batch_size: int, num_workers: NonNegativeInt = 0
+    ) -> DataLoader[TorchTokenizedPrompts]:
         """Get a PyTorch DataLoader.
 
         Args:
             batch_size: The batch size to use.
+            num_workers: Number of CPU workers.
 
         Returns:
             PyTorch DataLoader.
@@ -234,4 +237,5 @@ class SourceDataset(ABC, Generic[HuggingFaceDatasetItem]):
             # Shuffle is most efficiently done with the `shuffle` method on the dataset itself, not
             # here.
             shuffle=False,
+            num_workers=num_workers,
         )

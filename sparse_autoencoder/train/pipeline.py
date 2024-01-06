@@ -107,6 +107,7 @@ class Pipeline:
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
         log_frequency: PositiveInt = 100,
         metrics: MetricsContainer = default_metrics,
+        num_workers_data_loading: NonNegativeInt = 0,
         source_data_batch_size: PositiveInt = 12,
     ) -> None:
         """Initialize the pipeline.
@@ -125,6 +126,7 @@ class Pipeline:
             checkpoint_directory: Directory to save checkpoints to.
             log_frequency: Frequency at which to log metrics (in steps)
             metrics: Metrics to use.
+            num_workers_data_loading: Number of CPU workers for the dataloader.
             source_data_batch_size: Batch size for the source data.
         """
         self.activation_resampler = activation_resampler
@@ -142,7 +144,9 @@ class Pipeline:
         self.source_model = source_model
 
         # Create a stateful iterator
-        source_dataloader = source_dataset.get_dataloader(source_data_batch_size)
+        source_dataloader = source_dataset.get_dataloader(
+            source_data_batch_size, num_workers=num_workers_data_loading
+        )
         self.source_data = iter(source_dataloader)
 
     @validate_call
