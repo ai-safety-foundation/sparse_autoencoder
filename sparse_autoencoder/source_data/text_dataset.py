@@ -124,7 +124,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
         repo_id: str,
         commit_message: str = "Upload preprocessed dataset using sparse_autoencoder.",
         max_shard_size: str | None = None,
-        n_shards: PositiveInt = 64,
+        n_shards: PositiveInt = 32,
         revision: str = "main",
         *,
         private: bool = False,
