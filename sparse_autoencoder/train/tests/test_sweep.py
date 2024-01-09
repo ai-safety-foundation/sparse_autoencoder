@@ -34,6 +34,7 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
             "amsgrad": False,
             "fused": False,
             "lr": 1e-05,
+            "lr_scheduler": None,
         },
         "pipeline": {
             "checkpoint_frequency": 100000000,

@@ -9,6 +9,7 @@ from jaxtyping import Float, Int, Int64
 from pydantic import NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
+from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
@@ -105,6 +106,7 @@ class Pipeline:
         source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
+        lr_scheduler: LRScheduler | None = None,
         log_frequency: PositiveInt = 100,
         metrics: MetricsContainer = default_metrics,
         num_workers_data_loading: NonNegativeInt = 0,
@@ -124,6 +126,7 @@ class Pipeline:
             source_model: Source model to get activations from.
             run_name: Name of the run for saving checkpoints.
             checkpoint_directory: Directory to save checkpoints to.
+            lr_scheduler: Learning rate scheduler to use.
             log_frequency: Frequency at which to log metrics (in steps)
             metrics: Metrics to use.
             num_workers_data_loading: Number of CPU workers for the dataloader.
@@ -138,6 +141,7 @@ class Pipeline:
         self.loss = loss
         self.metrics = metrics
         self.optimizer = optimizer
+        self.lr_scheduler = lr_scheduler
         self.run_name = run_name
         self.source_data_batch_size = source_data_batch_size
         self.source_dataset = source_dataset
@@ -262,6 +266,8 @@ class Pipeline:
             total_loss.backward()
             self.optimizer.step()
             self.autoencoder.post_backwards_hook()
+            if self.lr_scheduler is not None:
+                self.lr_scheduler.step()
 
             # Log training metrics
             self.total_activations_trained_on += train_batch_size
@@ -461,9 +467,9 @@ class Pipeline:
 
                 # Train
                 progress_bar.set_postfix({"stage": "train"})
-                batch_neuron_activity: Int64[Tensor, Axis.LEARNT_FEATURE] = self.train_autoencoder(
-                    activation_store, train_batch_size=train_batch_size
-                )
+                batch_neuron_activity: Int64[
+                    Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
+                ] = self.train_autoencoder(activation_store, train_batch_size=train_batch_size)
 
                 # Resample dead neurons (if needed)
                 progress_bar.set_postfix({"stage": "resample"})

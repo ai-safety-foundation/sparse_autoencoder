@@ -5,6 +5,7 @@ import sys
 import traceback
 
 import torch
+from torch.optim.lr_scheduler import CosineAnnealingLR, LRScheduler, ReduceLROnPlateau
 from transformer_lens import HookedTransformer
 from transformer_lens.utils import get_device
 from transformers import AutoTokenizer
@@ -112,7 +113,7 @@ def setup_loss_function(hyperparameters: RuntimeHyperparameters) -> LossReducer:
 
 def setup_optimizer(
     autoencoder: SparseAutoencoder, hyperparameters: RuntimeHyperparameters
-) -> AdamWithReset:
+) -> tuple[AdamWithReset, LRScheduler | None]:
     """Setup the optimizer for the autoencoder.
 
     Args:
@@ -120,9 +121,9 @@ def setup_optimizer(
         hyperparameters: The hyperparameters dictionary.
 
     Returns:
-        The initialized optimizer.
+        The initialized optimizer & learning rate scheduler.
     """
-    return AdamWithReset(
+    optim = AdamWithReset(
         params=autoencoder.parameters(),
         named_parameters=autoencoder.named_parameters(),
         lr=hyperparameters["optimizer"]["lr"],
@@ -135,6 +136,19 @@ def setup_optimizer(
         fused=hyperparameters["optimizer"]["fused"],
         has_components_dim=True,
     )
+
+    lr_scheduler: LRScheduler | None = None
+
+    if hyperparameters["optimizer"]["lr_scheduler"] == "reduce_on_plateau":
+        lr_scheduler = ReduceLROnPlateau(optimizer=optim, patience=10)  # type: ignore
+
+    elif hyperparameters["optimizer"]["lr_scheduler"] == "cosine_annealing":
+        lr_scheduler = CosineAnnealingLR(
+            optimizer=optim,
+            T_max=10,
+        )
+
+    return optim, lr_scheduler
 
 
 def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
@@ -247,6 +261,7 @@ def run_training_pipeline(
     autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
     loss: LossReducer,
     optimizer: AdamWithReset,
+    lr_scheduler: LRScheduler | None,
     activation_resampler: ActivationResampler,
     source_data: SourceDataset,
     run_name: str,
@@ -259,6 +274,7 @@ def run_training_pipeline(
         autoencoder: The sparse autoencoder.
         loss: The loss function.
         optimizer: The optimizer.
+        lr_scheduler: Learning rate scheduler.
         activation_resampler: The activation resampler.
         source_data: The source data.
         run_name: The name of the run.
@@ -286,6 +302,7 @@ def run_training_pipeline(
         log_frequency=hyperparameters["pipeline"]["log_frequency"],
         run_name=run_name,
         num_workers_data_loading=hyperparameters["pipeline"]["num_workers_data_loading"],
+        lr_scheduler=lr_scheduler,
     )
 
     pipeline.run_pipeline(
@@ -333,6 +350,7 @@ def train() -> None:
             autoencoder=DataParallelWithModelAttributes(autoencoder),
             loss=loss_function,
             optimizer=optimizer,
+            lr_scheduler=lr_scheduler,
             activation_resampler=activation_resampler,
             source_data=source_data,
             run_name=run_name,

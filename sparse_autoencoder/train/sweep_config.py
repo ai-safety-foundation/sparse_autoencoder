@@ -7,7 +7,7 @@ Warning:
     classes, so that static type checking works.
 """
 from dataclasses import dataclass, field
-from typing import TypedDict, final
+from typing import Literal, TypedDict, final
 
 from sparse_autoencoder.train.utils.round_down import round_to_multiple
 from sparse_autoencoder.train.utils.wandb_sweep_types import (
@@ -152,6 +152,9 @@ class OptimizerHyperparameters(NestedParameter):
     Whether to use a fused implementation of the optimizer (may be faster on CUDA).
     """
 
+    lr_scheduler: Parameter[Literal["reduce_on_plateau"]] | None = None
+    """Learning rate scheduler."""
+
 
 class OptimizerRuntimeHyperparameters(TypedDict):
     """Optimizer runtime hyperparameters."""
@@ -162,6 +165,7 @@ class OptimizerRuntimeHyperparameters(TypedDict):
     adam_weight_decay: float
     amsgrad: bool
     fused: bool
+    lr_scheduler: str | None
 
 
 @dataclass(frozen=True)
