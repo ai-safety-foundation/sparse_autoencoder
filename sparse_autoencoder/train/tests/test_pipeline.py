@@ -14,10 +14,10 @@ from sparse_autoencoder import (
     Pipeline,
     SparseAutoencoder,
 )
-from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
+from sparse_autoencoder.activation_resampler.activation_resampler import (
+    ActivationResampler,
     ParameterUpdateResults,
 )
-from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
 from sparse_autoencoder.metrics.abstract_metric import MetricResult
