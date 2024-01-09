@@ -8,7 +8,7 @@
       'component_3/train/learned_neuron_activity/dead_over_10_activations': tensor(0),
       'component_4/train/learned_neuron_activity/dead_over_10_activations': tensor(0),
       'component_5/train/learned_neuron_activity/dead_over_10_activations': tensor(0),
-      'train/learned_neuron_activity/dead_over_10_activations': tensor([0, 0, 0, 0, 0, 0]),
+      'train/learned_neuron_activity/dead_over_10_activations/component_mean': tensor(0.),
     }),
     dict({
       'component_0/train/learned_neuron_activity/alive_over_10_activations': tensor(8),
@@ -17,7 +17,7 @@
       'component_3/train/learned_neuron_activity/alive_over_10_activations': tensor(8),
       'component_4/train/learned_neuron_activity/alive_over_10_activations': tensor(8),
       'component_5/train/learned_neuron_activity/alive_over_10_activations': tensor(8),
-      'train/learned_neuron_activity/alive_over_10_activations': tensor([8, 8, 8, 8, 8, 8]),
+      'train/learned_neuron_activity/alive_over_10_activations/component_mean': tensor(8.),
     }),
     dict({
       'component_0/train/learned_neuron_activity/activity_histogram_over_10_activations': Histogram(
@@ -366,7 +366,7 @@
       'component_3/train/learned_neuron_activity/almost_dead_1.0e-05_over_10_activations': tensor(0),
       'component_4/train/learned_neuron_activity/almost_dead_1.0e-05_over_10_activations': tensor(0),
       'component_5/train/learned_neuron_activity/almost_dead_1.0e-05_over_10_activations': tensor(0),
-      'train/learned_neuron_activity/almost_dead_1.0e-05_over_10_activations': tensor([0, 0, 0, 0, 0, 0]),
+      'train/learned_neuron_activity/almost_dead_1.0e-05_over_10_activations/component_mean': tensor(0.),
     }),
     dict({
       'component_0/train/learned_neuron_activity/almost_dead_1.0e-06_over_10_activations': tensor(0),
@@ -375,7 +375,7 @@
       'component_3/train/learned_neuron_activity/almost_dead_1.0e-06_over_10_activations': tensor(0),
       'component_4/train/learned_neuron_activity/almost_dead_1.0e-06_over_10_activations': tensor(0),
       'component_5/train/learned_neuron_activity/almost_dead_1.0e-06_over_10_activations': tensor(0),
-      'train/learned_neuron_activity/almost_dead_1.0e-06_over_10_activations': tensor([0, 0, 0, 0, 0, 0]),
+      'train/learned_neuron_activity/almost_dead_1.0e-06_over_10_activations/component_mean': tensor(0.),
     }),
   ])
 # ---

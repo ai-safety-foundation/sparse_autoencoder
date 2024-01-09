@@ -13,6 +13,7 @@ from typing import Any, TypeAlias, cast, final
 from jaxtyping import Float, Int
 import numpy as np
 from strenum import LowercaseStrEnum, SnakeCaseStrEnum
+import torch
 from torch import Tensor
 from wandb import data_types
 
@@ -99,7 +100,7 @@ class MetricResult:
         | Int[Tensor, Axis.names(Axis.COMPONENT)],
         name: str,
         location: MetricLocation,
-        aggregate_approach: ComponentAggregationApproach | None = ComponentAggregationApproach.ALL,
+        aggregate_approach: ComponentAggregationApproach | None = ComponentAggregationApproach.MEAN,
         aggregate_value: Any | None = None,  # noqa: ANN401
         postfix: str | None = None,
     ) -> None:
@@ -195,9 +196,9 @@ class MetricResult:
         ):
             match self.aggregate_approach:
                 case ComponentAggregationApproach.MEAN:
-                    return self.component_wise_values.mean(dim=0)
+                    return self.component_wise_values.mean(dim=0, dtype=torch.float32)
                 case ComponentAggregationApproach.SUM:
-                    return self.component_wise_values.sum(dim=0)
+                    return self.component_wise_values.sum(dim=0, dtype=torch.float32)
                 case ComponentAggregationApproach.ALL:
                     return self.component_wise_values
                 case _:
