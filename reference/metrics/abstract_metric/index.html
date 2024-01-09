@@ -2710,8 +2710,7 @@ training pipeline.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
-<span class="normal">336</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">336</span>
 <span class="normal">337</span>
 <span class="normal">338</span>
 <span class="normal">339</span>
@@ -2720,7 +2719,8 @@ training pipeline.</p>
 <span class="normal">342</span>
 <span class="normal">343</span>
 <span class="normal">344</span>
-<span class="normal">345</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="normal">345</span>
+<span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AbstractMetric</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract metric.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -2791,9 +2791,9 @@ training pipeline.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]:</span>  <span class="c1"># type: ignore # noqa: ANN001 (type to be narrowed by abstract subclasses)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate metrics.&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
@@ -2834,8 +2834,7 @@ define how the component-wise values should be aggregated.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
-<span class="normal">37</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
@@ -2849,7 +2848,8 @@ define how the component-wise values should be aggregated.</p>
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ComponentAggregationApproach</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ComponentAggregationApproach</span><span class="p">(</span><span class="n">LowercaseStrEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Component aggregation method.</span>
 
 <span class="sd">    When training multiple SAEs on multiple components (e.g. every MLP layer in a source model), it</span>
@@ -2980,8 +2980,7 @@ when the metric was logged.</p>
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
-<span class="normal">23</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
@@ -2991,7 +2990,8 @@ when the metric was logged.</p>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MetricLocation</span><span class="p">(</span><span class="n">SnakeCaseStrEnum</span><span class="p">):</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MetricLocation</span><span class="p">(</span><span class="n">SnakeCaseStrEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metric location.</span>
 
 <span class="sd">    Metrics can be logged at different stages of the training pipeline. This enum is used to define</span>
@@ -3048,8 +3048,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
-<span class="normal"> 78</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
 <span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
@@ -3303,7 +3302,8 @@ result, as well as the component-wise values and how they should be aggregated.<
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
-<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MetricResult</span><span class="p">:</span>
+<span class="normal">332</span>
+<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MetricResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metric result.</span>
 
 <span class="sd">    Every metric (and loss module) should return a list of metric results (a list so that it can</span>
@@ -3328,7 +3328,7 @@ result, as well as the component-wise values and how they should be aggregated.<
         <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)],</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span><span class="p">,</span>
-        <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
         <span class="n">aggregate_value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
         <span class="n">postfix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3424,9 +3424,9 @@ result, as well as the component-wise values and how they should be aggregated.<
         <span class="p">):</span>
             <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_approach</span><span class="p">:</span>
                 <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">MEAN</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
                 <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">SUM</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
                 <span class="k">case</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_wise_values</span>
                 <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
@@ -3758,7 +3758,7 @@ result, as well as the component-wise values and how they should be aggregated.<
 
 
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">component_wise_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">aggregate_approach</span><span class="o">=</span><span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span> <span class="n">aggregate_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postfix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">component_wise_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">aggregate_approach</span><span class="o">=</span><span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span> <span class="n">aggregate_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postfix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3856,7 +3856,7 @@ name of the form <code>component_name/metric_location/metric_name/metric_postfix
             </div>
           </td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL">ALL</a></code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.MEAN" href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.MEAN">MEAN</a></code>
           </td>
         </tr>
         <tr>
@@ -3894,8 +3894,7 @@ calculated.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
-<span class="normal"> 96</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
@@ -3940,14 +3939,15 @@ calculated.</p>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">141</span>
+<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">component_wise_values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">WandbSupportedLogTypes</span><span class="p">]</span>
     <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span>
     <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)],</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span><span class="p">,</span>
-    <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+    <span class="n">aggregate_approach</span><span class="p">:</span> <span class="n">ComponentAggregationApproach</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span>
     <span class="n">aggregate_value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="n">postfix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -4011,8 +4011,7 @@ calculated.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
-<span class="normal">323</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">323</span>
 <span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
@@ -4021,7 +4020,8 @@ calculated.</p>
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
-<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">332</span>
+<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation.&quot;&quot;&quot;</span>
     <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">(</span>
@@ -4056,9 +4056,9 @@ calculated.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;String representation.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_log</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4174,8 +4174,7 @@ component.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/metrics/abstract_metric.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
-<span class="normal">210</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span>
@@ -4226,7 +4225,8 @@ component.</p>
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
-<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">261</span>
+<span class="normal">262</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">create_wandb_name</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
