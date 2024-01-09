@@ -1,6 +1,8 @@
 """Sweep."""
 from pathlib import Path
 import re
+import sys
+import traceback
 
 import torch
 from transformer_lens import HookedTransformer
@@ -298,42 +300,47 @@ def run_training_pipeline(
 
 def train() -> None:
     """Train the sparse autoencoder using the hyperparameters from the WandB sweep."""
-    # Set up WandB
-    hyperparameters = setup_wandb()
-    run_name: str = wandb.run.name  # type: ignore
+    try:
+        # Set up WandB
+        hyperparameters = setup_wandb()
+        run_name: str = wandb.run.name  # type: ignore
 
-    # Setup the device for training
-    device = get_device()
+        # Setup the device for training
+        device = get_device()
 
-    # Set up the source model
-    source_model = setup_source_model(hyperparameters)
+        # Set up the source model
+        source_model = setup_source_model(hyperparameters)
 
-    # Set up the autoencoder
-    autoencoder = setup_autoencoder(hyperparameters, device)
+        # Set up the autoencoder
+        autoencoder = setup_autoencoder(hyperparameters, device)
 
-    # Set up the loss function
-    loss_function = setup_loss_function(hyperparameters)
+        # Set up the loss function
+        loss_function = setup_loss_function(hyperparameters)
 
-    # Set up the optimizer
-    optimizer = setup_optimizer(autoencoder, hyperparameters)
+        # Set up the optimizer
+        optimizer, lr_scheduler = setup_optimizer(autoencoder, hyperparameters)
 
-    # Set up the activation resampler
-    activation_resampler = setup_activation_resampler(hyperparameters)
+        # Set up the activation resampler
+        activation_resampler = setup_activation_resampler(hyperparameters)
 
-    # Set up the source data
-    source_data = setup_source_data(hyperparameters)
+        # Set up the source data
+        source_data = setup_source_data(hyperparameters)
 
-    # Run the training pipeline
-    run_training_pipeline(
-        hyperparameters=hyperparameters,
-        source_model=source_model,
-        autoencoder=DataParallelWithModelAttributes(autoencoder),
-        loss=loss_function,
-        optimizer=optimizer,
-        activation_resampler=activation_resampler,
-        source_data=source_data,
-        run_name=run_name,
-    )
+        # Run the training pipeline
+        run_training_pipeline(
+            hyperparameters=hyperparameters,
+            source_model=source_model,
+            autoencoder=DataParallelWithModelAttributes(autoencoder),
+            loss=loss_function,
+            optimizer=optimizer,
+            activation_resampler=activation_resampler,
+            source_data=source_data,
+            run_name=run_name,
+        )
+    except Exception as _e:  # noqa: BLE001
+        # exit gracefully, so wandb logs the problem
+        print(traceback.print_exc(), file=sys.stderr)  # noqa: T201
+        sys.exit(1)
 
 
 def sweep(sweep_config: SweepConfig | None = None, sweep_id: str | None = None) -> None:
