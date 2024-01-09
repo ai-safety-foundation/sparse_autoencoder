@@ -334,6 +334,12 @@ class TestValidateSAE:
             dummy_metric.data.source_model_loss_with_zero_ablation is not None
         ), "Source model loss with zero ablation should be calculated."
 
+        # Check the dimensions are correct
+        ndim_with_component = 2
+        assert dummy_metric.data.source_model_loss.ndim == ndim_with_component
+        assert dummy_metric.data.source_model_loss_with_reconstruction.ndim == ndim_with_component
+        assert dummy_metric.data.source_model_loss_with_zero_ablation.ndim == ndim_with_component
+
 
 class TestSaveCheckpoint:
     """Test the save_checkpoint method."""
