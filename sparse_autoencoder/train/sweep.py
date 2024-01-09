@@ -49,6 +49,7 @@ def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> Activ
         threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
             "threshold_is_dead_portion_fires"
         ],
+        n_components=len(hyperparameters["source_model"]["cache_names"]),
     )
 
 
