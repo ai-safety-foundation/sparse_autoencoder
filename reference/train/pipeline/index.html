@@ -2750,8 +2750,7 @@
 
             <details class="quote">
               <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 43</span>
-<span class="normal"> 44</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 44</span>
 <span class="normal"> 45</span>
 <span class="normal"> 46</span>
 <span class="normal"> 47</span>
@@ -3218,7 +3217,13 @@
 <span class="normal">508</span>
 <span class="normal">509</span>
 <span class="normal">510</span>
-<span class="normal">511</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pipeline</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline for training a Sparse Autoencoder on TransformerLens activations.</span>
 
 <span class="sd">    Includes all the key functionality to train a sparse autoencoder, with a specific set of</span>
@@ -3283,6 +3288,7 @@
         <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">],</span>
         <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sparse_autoencoder&quot;</span><span class="p">,</span>
         <span class="n">checkpoint_directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_CHECKPOINT_DIRECTORY</span><span class="p">,</span>
+        <span class="n">lr_scheduler</span><span class="p">:</span> <span class="n">LRScheduler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">log_frequency</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">metrics</span><span class="p">:</span> <span class="n">MetricsContainer</span> <span class="o">=</span> <span class="n">default_metrics</span><span class="p">,</span>
         <span class="n">num_workers_data_loading</span><span class="p">:</span> <span class="n">NonNegativeInt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -3302,6 +3308,7 @@
 <span class="sd">            source_model: Source model to get activations from.</span>
 <span class="sd">            run_name: Name of the run for saving checkpoints.</span>
 <span class="sd">            checkpoint_directory: Directory to save checkpoints to.</span>
+<span class="sd">            lr_scheduler: Learning rate scheduler to use.</span>
 <span class="sd">            log_frequency: Frequency at which to log metrics (in steps)</span>
 <span class="sd">            metrics: Metrics to use.</span>
 <span class="sd">            num_workers_data_loading: Number of CPU workers for the dataloader.</span>
@@ -3316,6 +3323,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_data_batch_size</span> <span class="o">=</span> <span class="n">source_data_batch_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_dataset</span> <span class="o">=</span> <span class="n">source_dataset</span>
@@ -3440,6 +3448,8 @@
             <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">post_backwards_hook</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
             <span class="c1"># Log training metrics</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span> <span class="o">+=</span> <span class="n">train_batch_size</span>
@@ -3639,9 +3649,9 @@
 
                 <span class="c1"># Train</span>
                 <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;train&quot;</span><span class="p">})</span>
-                <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_autoencoder</span><span class="p">(</span>
-                    <span class="n">activation_store</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span>
-                <span class="p">)</span>
+                <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
+                    <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_autoencoder</span><span class="p">(</span><span class="n">activation_store</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">)</span>
 
                 <span class="c1"># Resample dead neurons (if needed)</span>
                 <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;resample&quot;</span><span class="p">})</span>
@@ -4018,7 +4028,7 @@
 
 
 <h3 id="sparse_autoencoder.train.pipeline.Pipeline.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">activation_resampler</span><span class="p">,</span> <span class="n">autoencoder</span><span class="p">,</span> <span class="n">cache_names</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">source_dataset</span><span class="p">,</span> <span class="n">source_model</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="s1">&#39;sparse_autoencoder&#39;</span><span class="p">,</span> <span class="n">checkpoint_directory</span><span class="o">=</span><span class="n">DEFAULT_CHECKPOINT_DIRECTORY</span><span class="p">,</span> <span class="n">log_frequency</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">default_metrics</span><span class="p">,</span> <span class="n">num_workers_data_loading</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">activation_resampler</span><span class="p">,</span> <span class="n">autoencoder</span><span class="p">,</span> <span class="n">cache_names</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">source_dataset</span><span class="p">,</span> <span class="n">source_model</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="s1">&#39;sparse_autoencoder&#39;</span><span class="p">,</span> <span class="n">checkpoint_directory</span><span class="o">=</span><span class="n">DEFAULT_CHECKPOINT_DIRECTORY</span><span class="p">,</span> <span class="n">lr_scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_frequency</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">default_metrics</span><span class="p">,</span> <span class="n">num_workers_data_loading</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">source_data_batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.train.pipeline.Pipeline.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4182,6 +4192,20 @@ layer).</p>
           </td>
         </tr>
         <tr>
+          <td><code>lr_scheduler</code></td>
+          <td>
+                <code><span title="torch.optim.lr_scheduler.LRScheduler">LRScheduler</span> | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Learning rate scheduler to use.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
           <td><code>log_frequency</code></td>
           <td>
                 <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
@@ -4242,8 +4266,7 @@ layer).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
-<span class="normal"> 95</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
@@ -4298,7 +4321,11 @@ layer).</p>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
@@ -4312,6 +4339,7 @@ layer).</p>
     <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">],</span>
     <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sparse_autoencoder&quot;</span><span class="p">,</span>
     <span class="n">checkpoint_directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">DEFAULT_CHECKPOINT_DIRECTORY</span><span class="p">,</span>
+    <span class="n">lr_scheduler</span><span class="p">:</span> <span class="n">LRScheduler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">log_frequency</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
     <span class="n">metrics</span><span class="p">:</span> <span class="n">MetricsContainer</span> <span class="o">=</span> <span class="n">default_metrics</span><span class="p">,</span>
     <span class="n">num_workers_data_loading</span><span class="p">:</span> <span class="n">NonNegativeInt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -4331,6 +4359,7 @@ layer).</p>
 <span class="sd">        source_model: Source model to get activations from.</span>
 <span class="sd">        run_name: Name of the run for saving checkpoints.</span>
 <span class="sd">        checkpoint_directory: Directory to save checkpoints to.</span>
+<span class="sd">        lr_scheduler: Learning rate scheduler to use.</span>
 <span class="sd">        log_frequency: Frequency at which to log metrics (in steps)</span>
 <span class="sd">        metrics: Metrics to use.</span>
 <span class="sd">        num_workers_data_loading: Number of CPU workers for the dataloader.</span>
@@ -4345,6 +4374,7 @@ layer).</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">lr_scheduler</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_data_batch_size</span> <span class="o">=</span> <span class="n">source_data_batch_size</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">source_dataset</span> <span class="o">=</span> <span class="n">source_dataset</span>
@@ -4457,11 +4487,7 @@ layer).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">156</span>
 <span class="normal">157</span>
 <span class="normal">158</span>
 <span class="normal">159</span>
@@ -4504,7 +4530,11 @@ layer).</p>
 <span class="normal">196</span>
 <span class="normal">197</span>
 <span class="normal">198</span>
-<span class="normal">199</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">generate_activations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorActivationStore</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate activations.</span>
 
@@ -4677,13 +4707,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">423</span>
 <span class="normal">424</span>
 <span class="normal">425</span>
 <span class="normal">426</span>
@@ -4771,7 +4795,13 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">508</span>
 <span class="normal">509</span>
 <span class="normal">510</span>
-<span class="normal">511</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">run_pipeline</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">,</span>
@@ -4818,9 +4848,9 @@ used 8bn, although others have had success with 100m+).</p>
 
             <span class="c1"># Train</span>
             <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;train&quot;</span><span class="p">})</span>
-            <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_autoencoder</span><span class="p">(</span>
-                <span class="n">activation_store</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span>
-            <span class="p">)</span>
+            <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span>
+                <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_autoencoder</span><span class="p">(</span><span class="n">activation_store</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">)</span>
 
             <span class="c1"># Resample dead neurons (if needed)</span>
             <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="s2">&quot;resample&quot;</span><span class="p">})</span>
@@ -4944,13 +4974,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">396</span>
-<span class="normal">397</span>
-<span class="normal">398</span>
-<span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">402</span>
 <span class="normal">403</span>
 <span class="normal">404</span>
 <span class="normal">405</span>
@@ -4963,7 +4987,13 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">412</span>
 <span class="normal">413</span>
 <span class="normal">414</span>
-<span class="normal">415</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
 <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model as a checkpoint.</span>
 
@@ -5075,11 +5105,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
@@ -5156,7 +5182,13 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">279</span>
 <span class="normal">280</span>
 <span class="normal">281</span>
-<span class="normal">282</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="nf">train_autoencoder</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]:</span>
@@ -5220,6 +5252,8 @@ used 8bn, although others have had success with 100m+).</p>
         <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder</span><span class="o">.</span><span class="n">post_backwards_hook</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
         <span class="c1"># Log training metrics</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_activations_trained_on</span> <span class="o">+=</span> <span class="n">train_batch_size</span>
@@ -5292,13 +5326,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">290</span>
 <span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
@@ -5323,7 +5351,13 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">312</span>
 <span class="normal">313</span>
 <span class="normal">314</span>
-<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_updates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterUpdateResults</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the parameters of the model from the results of the resampler.</span>
 
 <span class="sd">    Args:</span>
@@ -5409,13 +5443,7 @@ used 8bn, although others have had success with 100m+).</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/pipeline.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">323</span>
 <span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
@@ -5486,7 +5514,13 @@ used 8bn, although others have had success with 100m+).</p>
 <span class="normal">391</span>
 <span class="normal">392</span>
 <span class="normal">393</span>
-<span class="normal">394</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
 <span class="k">def</span> <span class="nf">validate_sae</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validation_n_activations</span><span class="p">:</span> <span class="n">PositiveInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get validation metrics.</span>
 

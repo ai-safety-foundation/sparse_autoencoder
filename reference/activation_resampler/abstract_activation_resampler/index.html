@@ -2571,7 +2571,7 @@ think it would be useful for others as well please do also submit an issue/PR fo
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+        <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
         <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span>
         <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
         <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
@@ -2641,7 +2641,7 @@ think it would be useful for others as well please do also submit an issue/PR fo
         <tr>
           <td><code>batch_neuron_activity</code></td>
           <td>
-                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>]</code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT">COMPONENT</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2771,7 +2771,7 @@ think it would be useful for others as well please do also submit an issue/PR fo
 <span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">step_resampler</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">],</span>
+    <span class="n">batch_neuron_activity</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)],</span>
     <span class="n">activation_store</span><span class="p">:</span> <span class="n">TensorActivationStore</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
     <span class="n">loss_fn</span><span class="p">:</span> <span class="n">AbstractLoss</span><span class="p">,</span>
