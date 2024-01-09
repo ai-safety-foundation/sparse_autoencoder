@@ -409,27 +409,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_resampler/abstract_activation_resampler/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_activation_resampler
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
@@ -460,7 +439,7 @@
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2" >
         
           
           
@@ -476,14 +455,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
             <span class="md-nav__icon md-icon"></span>
             utils
           </label>
@@ -3230,7 +3209,7 @@
 <span class="sd">        hyperparameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">ActivationResampler</span> <span class="o">|</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Activation resampler to use.&quot;&quot;&quot;</span>
 
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">]</span>
@@ -3278,7 +3257,7 @@
     <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">ActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
         <span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">layer</span><span class="p">:</span> <span class="n">NonNegativeInt</span><span class="p">,</span>
@@ -3716,7 +3695,7 @@
 
 
 <h3 id="sparse_autoencoder.train.pipeline.Pipeline.activation_resampler" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">activation_resampler</span></code>
+          <code class="highlight language-python"><span class="n">activation_resampler</span><span class="p">:</span> <span class="n">ActivationResampler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">activation_resampler</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4053,7 +4032,7 @@
         <tr>
           <td><code>activation_resampler</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler" href="../../activation_resampler/abstract_activation_resampler/#sparse_autoencoder.activation_resampler.abstract_activation_resampler.AbstractActivationResampler">AbstractActivationResampler</a> | None</code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_resampler.activation_resampler.ActivationResampler" href="../../activation_resampler/activation_resampler/#sparse_autoencoder.activation_resampler.activation_resampler.ActivationResampler">ActivationResampler</a> | None</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -4329,7 +4308,7 @@ layer).</p>
 <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">AbstractActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">activation_resampler</span><span class="p">:</span> <span class="n">ActivationResampler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
     <span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">layer</span><span class="p">:</span> <span class="n">NonNegativeInt</span><span class="p">,</span>
@@ -5310,7 +5289,7 @@ used 8bn, although others have had success with 100m+).</p>
         <tr>
           <td><code>parameter_updates</code></td>
           <td>
-                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults" href="../../activation_resampler/abstract_activation_resampler/#sparse_autoencoder.activation_resampler.abstract_activation_resampler.ParameterUpdateResults">ParameterUpdateResults</a>]</code>
+                <code>list[<a class="autorefs autorefs-internal" title="sparse_autoencoder.activation_resampler.activation_resampler.ParameterUpdateResults" href="../../activation_resampler/activation_resampler/#sparse_autoencoder.activation_resampler.activation_resampler.ParameterUpdateResults">ParameterUpdateResults</a>]</code>
           </td>
           <td>
             <div class="doc-md-description">
