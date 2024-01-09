@@ -57,7 +57,7 @@ class AbstractActivationResampler(ABC):
     @abstractmethod
     def step_resampler(
         self,
-        batch_neuron_activity: Int[Tensor, Axis.LEARNT_FEATURE],
+        batch_neuron_activity: Int[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: TensorActivationStore,
         autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
         loss_fn: AbstractLoss,
