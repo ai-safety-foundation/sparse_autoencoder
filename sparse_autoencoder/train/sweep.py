@@ -138,15 +138,15 @@ def setup_optimizer(
     )
 
     lr_scheduler: LRScheduler | None = None
+    if "lr_scheduler" in hyperparameters["optimizer"]:
+        if hyperparameters["optimizer"]["lr_scheduler"] == "reduce_on_plateau":
+            lr_scheduler = ReduceLROnPlateau(optimizer=optim, patience=10)  # type: ignore
 
-    if hyperparameters["optimizer"]["lr_scheduler"] == "reduce_on_plateau":
-        lr_scheduler = ReduceLROnPlateau(optimizer=optim, patience=10)  # type: ignore
-
-    elif hyperparameters["optimizer"]["lr_scheduler"] == "cosine_annealing":
-        lr_scheduler = CosineAnnealingLR(
-            optimizer=optim,
-            T_max=10,
-        )
+        elif hyperparameters["optimizer"]["lr_scheduler"] == "cosine_annealing":
+            lr_scheduler = CosineAnnealingLR(
+                optimizer=optim,
+                T_max=10,
+            )
 
     return optim, lr_scheduler
 

@@ -152,7 +152,9 @@ class OptimizerHyperparameters(NestedParameter):
     Whether to use a fused implementation of the optimizer (may be faster on CUDA).
     """
 
-    lr_scheduler: Parameter[Literal["reduce_on_plateau"]] | None = None
+    lr_scheduler: Parameter[Literal["reduce_on_plateau", "cosine_annealing"]] | None = field(
+        default=None
+    )
     """Learning rate scheduler."""
 
 
