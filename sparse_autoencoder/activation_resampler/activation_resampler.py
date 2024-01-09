@@ -1,4 +1,5 @@
 """Activation resampler."""
+from dataclasses import dataclass
 from typing import Annotated, NamedTuple
 
 from einops import rearrange
@@ -8,10 +9,6 @@ import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
 
-from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
-    AbstractActivationResampler,
-    ParameterUpdateResults,
-)
 from sparse_autoencoder.activation_resampler.utils.component_slice_tensor import (
     get_component_slice_tensor,
 )
@@ -23,6 +20,27 @@ from sparse_autoencoder.train.utils.get_model_device import get_model_device
 from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
+@dataclass
+class ParameterUpdateResults:
+    """Parameter update results from resampling dead neurons."""
+
+    dead_neuron_indices: Int64[Tensor, Axis.LEARNT_FEATURE_IDX]
+    """Dead neuron indices."""
+
+    dead_encoder_weight_updates: Float[
+        Tensor, Axis.names(Axis.DEAD_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
+    ]
+    """Dead encoder weight updates."""
+
+    dead_encoder_bias_updates: Float[Tensor, Axis.DEAD_FEATURE]
+    """Dead encoder bias updates."""
+
+    dead_decoder_weight_updates: Float[
+        Tensor, Axis.names(Axis.INPUT_OUTPUT_FEATURE, Axis.DEAD_FEATURE)
+    ]
+    """Dead decoder weight updates."""
+
+
 class LossInputActivationsTuple(NamedTuple):
     """Loss and corresponding input activations tuple."""
 
@@ -32,7 +50,7 @@ class LossInputActivationsTuple(NamedTuple):
     ]
 
 
-class ActivationResampler(AbstractActivationResampler):
+class ActivationResampler:
     """Activation resampler.
 
     Collates the number of times each neuron fires over a set number of learned activation vectors,
@@ -510,9 +528,7 @@ class ActivationResampler(AbstractActivationResampler):
 
     def step_resampler(
         self,
-        batch_neuron_activity: Int64[
-            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
-        ],
+        batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
         autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
         loss_fn: AbstractLoss,

@@ -15,8 +15,8 @@ from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 import wandb
 
-from sparse_autoencoder.activation_resampler.abstract_activation_resampler import (
-    AbstractActivationResampler,
+from sparse_autoencoder.activation_resampler.activation_resampler import (
+    ActivationResampler,
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
@@ -48,7 +48,7 @@ class Pipeline:
         hyperparameters.
     """
 
-    activation_resampler: AbstractActivationResampler | None
+    activation_resampler: ActivationResampler | None
     """Activation resampler to use."""
 
     autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder]
@@ -96,7 +96,7 @@ class Pipeline:
     @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
         self,
-        activation_resampler: AbstractActivationResampler | None,
+        activation_resampler: ActivationResampler | None,
         autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
         cache_names: list[str],
         layer: NonNegativeInt,
