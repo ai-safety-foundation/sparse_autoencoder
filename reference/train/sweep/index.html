@@ -3314,15 +3314,15 @@
     <span class="p">)</span>
 
     <span class="n">lr_scheduler</span><span class="p">:</span> <span class="n">LRScheduler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;lr_scheduler&quot;</span> <span class="ow">in</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">][</span><span class="s2">&quot;lr_scheduler&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;reduce_on_plateau&quot;</span><span class="p">:</span>
+            <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
-    <span class="k">if</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">][</span><span class="s2">&quot;lr_scheduler&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;reduce_on_plateau&quot;</span><span class="p">:</span>
-        <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-
-    <span class="k">elif</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">][</span><span class="s2">&quot;lr_scheduler&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cosine_annealing&quot;</span><span class="p">:</span>
-        <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealingLR</span><span class="p">(</span>
-            <span class="n">optimizer</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span>
-            <span class="n">T_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">][</span><span class="s2">&quot;lr_scheduler&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cosine_annealing&quot;</span><span class="p">:</span>
+            <span class="n">lr_scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealingLR</span><span class="p">(</span>
+                <span class="n">optimizer</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span>
+                <span class="n">T_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">optim</span><span class="p">,</span> <span class="n">lr_scheduler</span>
 </code></pre></div></td></tr></table></div>
