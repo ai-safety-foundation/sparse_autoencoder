@@ -51,6 +51,7 @@
         "jaxtyping",
         "kaiming",
         "keepdim",
+        "logit",
         "lognormal",
         "loguniform",
         "loguniformvalues",
