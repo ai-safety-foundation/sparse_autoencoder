@@ -76,11 +76,11 @@ class ActivationResamplerRuntimeHyperparameters(TypedDict):
 class AutoencoderHyperparameters(NestedParameter):
     """Sparse autoencoder hyperparameters."""
 
-    expansion_factor: Parameter[int] = field(default=Parameter(2))
+    expansion_factor: Parameter[int] = field(default=Parameter(32))
     """Expansion Factor.
 
-    Size of the learned features relative to the input features. A good expansion factor to start
-    with is typically 2-4.
+    Size of the learned features relative to the input features. For real models, you'll probably
+    want a relatively large expansion factor (say 16-128). For toy models 2-4x may be fine.
     """
 
 
@@ -276,7 +276,7 @@ class PipelineHyperparameters(NestedParameter):
     )
     """Max activations."""
 
-    num_workers_data_loading: Parameter[int] = field(default=Parameter(0))
+    num_workers_data_loading: Parameter[int] = field(default=Parameter(4))
     """Number of CPU workers for data loading."""
 
     checkpoint_frequency: Parameter[int] = field(
