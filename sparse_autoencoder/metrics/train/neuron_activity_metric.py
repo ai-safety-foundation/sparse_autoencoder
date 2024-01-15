@@ -129,12 +129,6 @@ class NeuronActivityHorizonData:
                 postfix=f"dead_over_{self._horizon_n_activations}_activations",
             ),
             MetricResult(
-                component_wise_values=self._alive_count,
-                location=metric_location,
-                name=name,
-                postfix=f"alive_over_{self._horizon_n_activations}_activations",
-            ),
-            MetricResult(
                 component_wise_values=self._activity_histogram,
                 location=metric_location,
                 name=name,
