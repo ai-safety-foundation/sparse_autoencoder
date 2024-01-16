@@ -1,14 +1,14 @@
-"""Adam Optimizer with a reset method.
+"""Deepspeed Zero One Adam Optimizer with a reset method.
 
 This reset method is useful when resampling dead neurons during training.
 """
 from collections.abc import Iterator
 from typing import final
 
-from jaxtyping import Float, Int
+from deepspeed.runtime.fp16.onebit.zoadam import ZeroOneAdam
+from jaxtyping import Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
-from torch.optim import Adam
 from torch.optim.optimizer import params_t
 
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
@@ -16,15 +16,20 @@ from sparse_autoencoder.tensor_types import Axis
 
 
 @final
-class AdamWithReset(Adam, AbstractOptimizerWithReset):
-    """Adam Optimizer with a reset method.
+class ZeroOneAdamWithReset(ZeroOneAdam, AbstractOptimizerWithReset):
+    """Deepspeed Zero One Adam Optimizer with a reset method.
+
+    https://deepspeed.readthedocs.io/en/latest/optimizers.html#zerooneadam-gpu
 
     The :meth:`reset_state_all_parameters` and :meth:`reset_neurons_state` methods are useful when
     manually editing the model parameters during training (e.g. when resampling dead neurons). This
     is because Adam maintains running averages of the gradients and the squares of gradients, which
     will be incorrect if the parameters are changed.
 
-    Otherwise this is the same as the standard Adam optimizer.
+    Otherwise this is the same as the standard ZeroOneAdam optimizer.
+
+    Warning:
+        Requires a distributed torch backend.
     """
 
     parameter_names: list[str]
@@ -36,20 +41,14 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
     _has_components_dim: bool
     """Whether the parameters have a components dimension."""
 
-    def __init__(  # (extending existing implementation)
+    def __init__(
         self,
         params: params_t,
-        lr: float | Float[Tensor, Axis.names(Axis.SINGLE_ITEM)] = 1e-3,
+        lr: float = 1e-3,
         betas: tuple[float, float] = (0.9, 0.999),
         eps: float = 1e-8,
         weight_decay: float = 0.0,
         *,
-        amsgrad: bool = False,
-        foreach: bool | None = None,
-        maximize: bool = False,
-        capturable: bool = False,
-        differentiable: bool = False,
-        fused: bool | None = None,
         named_parameters: Iterator[tuple[str, Parameter]],
         has_components_dim: bool,
     ) -> None:
@@ -58,25 +57,6 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         Warning:
             Named parameters must be with default settings (remove duplicates and not recursive).
 
-        Example:
-            >>> import torch
-            >>> from sparse_autoencoder.autoencoder.model import (
-            ...     SparseAutoencoder, SparseAutoencoderConfig
-            ... )
-            >>> model = SparseAutoencoder(
-            ...        SparseAutoencoderConfig(
-            ...             n_input_features=5,
-            ...             n_learned_features=10,
-            ...             n_components=2
-            ...         )
-            ...    )
-            >>> optimizer = AdamWithReset(
-            ...     model.parameters(),
-            ...     named_parameters=model.named_parameters(),
-            ...     has_components_dim=True,
-            ... )
-            >>> optimizer.reset_state_all_parameters()
-
         Args:
             params: Iterable of parameters to optimize or dicts defining parameter groups.
             lr: Learning rate. A Tensor LR is not yet fully supported for all implementations. Use a
@@ -84,24 +64,12 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             betas: Coefficients used for computing running averages of gradient and its square.
             eps: Term added to the denominator to improve numerical stability.
             weight_decay: Weight decay (L2 penalty).
-            amsgrad: Whether to use the AMSGrad variant of this algorithm from the paper "On the
-                Convergence of Adam and Beyond".
-            foreach: Whether foreach implementation of optimizer is used. If None, foreach is used
-                over the for-loop implementation on CUDA if more performant. Note that foreach uses
-                more peak memory.
-            maximize: If True, maximizes the parameters based on the objective, instead of
-                minimizing.
-            capturable: Whether this instance is safe to capture in a CUDA graph. True can impair
-                ungraphed performance.
-            differentiable: Whether autograd should occur through the optimizer step in training.
-                Setting to True can impair performance.
-            fused: Whether the fused implementation (CUDA only) is used. Supports torch.float64,
-                torch.float32, torch.float16, and torch.bfloat16.
             named_parameters: An iterator over the named parameters of the model. This is used to
                 find the parameters when resetting their state. You should set this as
                 `model.named_parameters()`.
             has_components_dim: If the parameters have a components dimension (i.e. if you are
                 training an SAE on more than one component).
+
 
         Raises:
             ValueError: If the number of parameter names does not match the number of parameters.
@@ -113,12 +81,6 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
             betas=betas,
             eps=eps,
             weight_decay=weight_decay,
-            amsgrad=amsgrad,
-            foreach=foreach,
-            maximize=maximize,
-            capturable=capturable,
-            differentiable=differentiable,
-            fused=fused,
         )
 
         self._has_components_dim = has_components_dim
@@ -170,34 +132,6 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         component_idx: int = 0,
     ) -> None:
         """Reset the state for specific neurons, on a specific parameter.
-
-        Example:
-            >>> import torch
-            >>> from sparse_autoencoder.autoencoder.model import (
-            ...     SparseAutoencoder, SparseAutoencoderConfig
-            ... )
-            >>> model = SparseAutoencoder(
-            ...        SparseAutoencoderConfig(
-            ...             n_input_features=5,
-            ...             n_learned_features=10,
-            ...             n_components=2
-            ...         )
-            ...    )
-            >>> optimizer = AdamWithReset(
-            ...     model.parameters(),
-            ...     named_parameters=model.named_parameters(),
-            ...     has_components_dim=True,
-            ... )
-            >>> # ... train the model and then resample some dead neurons, then do this ...
-            >>> dead_neurons_indices = torch.tensor([0, 1]) # Dummy dead neuron indices
-            >>> # Reset the optimizer state for parameters that have been updated
-            >>> optimizer.reset_neurons_state(model.encoder.weight, dead_neurons_indices, axis=0)
-            >>> optimizer.reset_neurons_state(model.encoder.bias, dead_neurons_indices, axis=0)
-            >>> optimizer.reset_neurons_state(
-            ...     model.decoder.weight,
-            ...     dead_neurons_indices,
-            ...     axis=1
-            ... )
 
         Args:
             parameter: The parameter to be reset. Examples from the standard sparse autoencoder

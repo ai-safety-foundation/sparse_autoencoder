@@ -1,6 +1,8 @@
 """Replace activations hook."""
 from typing import TYPE_CHECKING
 
+from deepspeed import DeepSpeedEngine
+from jaxtyping import Float
 from torch import Tensor
 from transformer_lens.hook_points import HookPoint
 
@@ -10,24 +12,28 @@ from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttribut
 
 if TYPE_CHECKING:
     from sparse_autoencoder.tensor_types import Axis
-from jaxtyping import Float
 
 
 def replace_activations_hook(
     value: Tensor,
     hook: HookPoint,  # noqa: ARG001
-    sparse_autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+    sparse_autoencoder: SparseAutoencoder
+    | DataParallelWithModelAttributes[SparseAutoencoder]
+    | DeepSpeedEngine,
     component_idx: int | None = None,
+    n_components: int | None = None,
 ) -> Tensor:
     """Replace activations hook.
+
+    This should be pre-initialised with `functools.partial`.
 
     Args:
         value: The activations to replace.
         hook: The hook point.
-        sparse_autoencoder: The sparse autoencoder. This should be pre-initialised with
-            `functools.partial`.
+        sparse_autoencoder: The sparse autoencoder.
         component_idx: The component index to replace the activations with, if just replacing
             activations for a single component. Requires the model to have a component axis.
+        n_components: The number of components that the SAE is trained on.
 
     Returns:
         Replaced activations.
@@ -43,11 +49,8 @@ def replace_activations_hook(
     )
 
     if component_idx is not None:
-        if sparse_autoencoder.config.n_components is None:
-            error_message = (
-                "Cannot replace for a specific component, if the model does not have a "
-                "component axis."
-            )
+        if n_components is None:
+            error_message = "The number of model components must be set if component_idx is set."
             raise RuntimeError(error_message)
 
         # The approach here is to run a forward pass with dummy values for all components other than
@@ -56,7 +59,7 @@ def replace_activations_hook(
         # components.
         expanded_shape = [
             squashed_value.shape[0],
-            sparse_autoencoder.config.n_components,
+            n_components,
             squashed_value.shape[-1],
         ]
         expanded = squashed_value.unsqueeze(1).expand(*expanded_shape)

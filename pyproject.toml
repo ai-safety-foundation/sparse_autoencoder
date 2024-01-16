@@ -9,6 +9,7 @@
 
     [tool.poetry.dependencies]
         datasets=">=2.15.0"
+        deepspeed=">=0.4.3"
         einops=">=0.6"
         pydantic=">=2.5.2"
         python=">=3.10, <3.12"

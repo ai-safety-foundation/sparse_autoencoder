@@ -165,7 +165,7 @@ class Distribution(LowercaseStrEnum):
 class Controller:
     """Controller."""
 
-    type: ControllerType  # noqa: A003
+    type: ControllerType
 
 
 @dataclass
@@ -180,7 +180,7 @@ class HyperbandStopping:
         HyperbandStopping(type=hyperband)
     """
 
-    type: HyperbandStoppingType | None = HyperbandStoppingType.HYPERBAND  # noqa: A003
+    type: HyperbandStoppingType | None = HyperbandStoppingType.HYPERBAND
 
     eta: float | None = None
     """ETA.
@@ -286,10 +286,10 @@ class Parameter(Generic[ParamType]):
     Specifies the single valid value for this hyperparameter. Compatible with grid.
     """
 
-    max: ParamType | None = None  # noqa: A003
+    max: ParamType | None = None
     """Maximum value."""
 
-    min: ParamType | None = None  # noqa: A003
+    min: ParamType | None = None
     """Minimum value."""
 
     distribution: Distribution | None = None

@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Annotated, NamedTuple
 
+from deepspeed import DeepSpeedEngine
 from einops import rearrange
 from jaxtyping import Bool, Float, Int64
 from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
@@ -207,7 +208,9 @@ class ActivationResampler:
     def compute_loss_and_get_activations(
         self,
         store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder
+        | DataParallelWithModelAttributes[SparseAutoencoder]
+        | DeepSpeedEngine,
         loss_fn: AbstractLoss,
         train_batch_size: int,
     ) -> LossInputActivationsTuple:
@@ -440,7 +443,9 @@ class ActivationResampler:
     def resample_dead_neurons(
         self,
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder
+        | DataParallelWithModelAttributes[SparseAutoencoder]
+        | DeepSpeedEngine,
         loss_fn: AbstractLoss,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults]:
@@ -530,7 +535,9 @@ class ActivationResampler:
         self,
         batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder
+        | DataParallelWithModelAttributes[SparseAutoencoder]
+        | DeepSpeedEngine,
         loss_fn: AbstractLoss,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults] | None:

@@ -4,10 +4,11 @@ import re
 import sys
 import traceback
 
+import deepspeed
+from deepspeed import DeepSpeedEngine
 import torch
 from torch.optim.lr_scheduler import CosineAnnealingLR, LRScheduler, ReduceLROnPlateau
 from transformer_lens import HookedTransformer
-from transformer_lens.utils import get_device
 from transformers import AutoTokenizer
 import wandb
 
@@ -22,6 +23,7 @@ from sparse_autoencoder import (
     SparseAutoencoder,
 )
 from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
+from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset
 from sparse_autoencoder.source_data.text_dataset import TextDataset
 from sparse_autoencoder.train.sweep_config import (
@@ -71,14 +73,14 @@ def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransfo
     )
 
 
-def setup_autoencoder(
-    hyperparameters: RuntimeHyperparameters, device: torch.device
-) -> SparseAutoencoder:
+def setup_autoencoder_optimizer_scheduler(
+    hyperparameters: RuntimeHyperparameters, *, use_deepspeed: bool = False
+) -> tuple[DeepSpeedEngine | SparseAutoencoder, AdamWithReset, LRScheduler | None]:
     """Setup the sparse autoencoder.
 
     Args:
         hyperparameters: The hyperparameters dictionary.
-        device: The computation device.
+        use_deepspeed: Whether to use deepspeed.
 
     Returns:
         The initialized sparse autoencoder.
@@ -91,41 +93,12 @@ def setup_autoencoder(
         n_learned_features=autoencoder_input_dim * expansion_factor,
         n_components=len(hyperparameters["source_model"]["cache_names"]),
     )
-    return SparseAutoencoder(config).to(device)
 
+    model = SparseAutoencoder(config)
 
-def setup_loss_function(hyperparameters: RuntimeHyperparameters) -> LossReducer:
-    """Setup the loss function for the autoencoder.
-
-    Args:
-        hyperparameters: The hyperparameters dictionary.
-
-    Returns:
-        The combined loss function.
-    """
-    return LossReducer(
-        LearnedActivationsL1Loss(
-            l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
-        ),
-        L2ReconstructionLoss(),
-    )
-
-
-def setup_optimizer(
-    autoencoder: SparseAutoencoder, hyperparameters: RuntimeHyperparameters
-) -> tuple[AdamWithReset, LRScheduler | None]:
-    """Setup the optimizer for the autoencoder.
-
-    Args:
-        autoencoder: The sparse autoencoder model.
-        hyperparameters: The hyperparameters dictionary.
-
-    Returns:
-        The initialized optimizer & learning rate scheduler.
-    """
     optim = AdamWithReset(
-        params=autoencoder.parameters(),
-        named_parameters=autoencoder.named_parameters(),
+        params=model.parameters(),
+        named_parameters=model.named_parameters(),
         lr=hyperparameters["optimizer"]["lr"],
         betas=(
             hyperparameters["optimizer"]["adam_beta_1"],
@@ -148,7 +121,34 @@ def setup_optimizer(
                 T_max=10,
             )
 
-    return optim, lr_scheduler
+    if use_deepspeed:
+        model_engine, optimizer_engine, _dataset, scheduler = deepspeed.initialize(
+            args={"local_rank": -1},
+            model=model,
+            optimizer=optim,
+            lr_scheduler=lr_scheduler,  # type: ignore
+        )
+
+        return (model_engine, optimizer_engine, scheduler)  # type: ignore
+
+    return (model, optim, lr_scheduler)
+
+
+def setup_loss_function(hyperparameters: RuntimeHyperparameters) -> LossReducer:
+    """Setup the loss function for the autoencoder.
+
+    Args:
+        hyperparameters: The hyperparameters dictionary.
+
+    Returns:
+        The combined loss function.
+    """
+    return LossReducer(
+        LearnedActivationsL1Loss(
+            l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
+        ),
+        L2ReconstructionLoss(),
+    )
 
 
 def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
@@ -258,9 +258,11 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
     source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
-    autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+    autoencoder: SparseAutoencoder
+    | DataParallelWithModelAttributes[SparseAutoencoder]
+    | DeepSpeedEngine,
     loss: LossReducer,
-    optimizer: AdamWithReset,
+    optimizer: AbstractOptimizerWithReset,
     lr_scheduler: LRScheduler | None,
     activation_resampler: ActivationResampler,
     source_data: SourceDataset,
@@ -303,6 +305,11 @@ def run_training_pipeline(
         run_name=run_name,
         num_workers_data_loading=hyperparameters["pipeline"]["num_workers_data_loading"],
         lr_scheduler=lr_scheduler,
+        n_input_features=hyperparameters["source_model"]["hook_dimension"],
+        n_learned_features=int(
+            hyperparameters["autoencoder"]["expansion_factor"]
+            * hyperparameters["source_model"]["hook_dimension"]
+        ),
     )
 
     pipeline.run_pipeline(
@@ -322,20 +329,16 @@ def train() -> None:
         hyperparameters = setup_wandb()
         run_name: str = wandb.run.name  # type: ignore
 
-        # Setup the device for training
-        device = get_device()
-
         # Set up the source model
         source_model = setup_source_model(hyperparameters)
 
-        # Set up the autoencoder
-        autoencoder = setup_autoencoder(hyperparameters, device)
+        # Set up the autoencoder, optimizer and learning rate scheduler
+        autoencoder, optimizer, lr_scheduler = setup_autoencoder_optimizer_scheduler(
+            hyperparameters
+        )
 
         # Set up the loss function
         loss_function = setup_loss_function(hyperparameters)
-
-        # Set up the optimizer
-        optimizer, lr_scheduler = setup_optimizer(autoencoder, hyperparameters)
 
         # Set up the activation resampler
         activation_resampler = setup_activation_resampler(hyperparameters)
@@ -347,7 +350,7 @@ def train() -> None:
         run_training_pipeline(
             hyperparameters=hyperparameters,
             source_model=source_model,
-            autoencoder=DataParallelWithModelAttributes(autoencoder),
+            autoencoder=autoencoder,
             loss=loss_function,
             optimizer=optimizer,
             lr_scheduler=lr_scheduler,
