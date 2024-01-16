@@ -5,10 +5,12 @@ from pathlib import Path
 from tempfile import gettempdir
 from typing import TYPE_CHECKING, final
 
+from deepspeed import DeepSpeedEngine
 from jaxtyping import Float, Int, Int64
 from pydantic import NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
+from torch.nn.parallel import DataParallel
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -32,7 +34,6 @@ from sparse_autoencoder.source_model.store_activations_hook import store_activat
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
-from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 if TYPE_CHECKING:
@@ -51,8 +52,14 @@ class Pipeline:
     activation_resampler: ActivationResampler | None
     """Activation resampler to use."""
 
-    autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder]
+    autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine
     """Sparse autoencoder to train."""
+
+    n_input_features: int
+    """Number of input features in the sparse autoencoder."""
+
+    n_learned_features: int
+    """Number of learned features in the sparse autoencoder."""
 
     cache_names: list[str]
     """Names of the cache hook points to use in the source model."""
@@ -81,7 +88,7 @@ class Pipeline:
     source_dataset: SourceDataset
     """Source dataset to generate activation data from (tokenized prompts)."""
 
-    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer]
+    source_model: HookedTransformer | DataParallel[HookedTransformer]
     """Source model to get activations from."""
 
     total_activations_trained_on: int = 0
@@ -97,13 +104,15 @@ class Pipeline:
     def __init__(
         self,
         activation_resampler: ActivationResampler | None,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
         cache_names: list[str],
         layer: NonNegativeInt,
         loss: AbstractLoss,
         optimizer: AbstractOptimizerWithReset,
         source_dataset: SourceDataset,
-        source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
+        source_model: HookedTransformer | DataParallel[HookedTransformer],
+        n_input_features: int,
+        n_learned_features: int,
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
         lr_scheduler: LRScheduler | None = None,
@@ -124,6 +133,8 @@ class Pipeline:
             optimizer: Optimizer to use.
             source_dataset: Source dataset to get data from.
             source_model: Source model to get activations from.
+            n_input_features: Number of input features in the sparse autoencoder.
+            n_learned_features: Number of learned features in the sparse autoencoder.
             run_name: Name of the run for saving checkpoints.
             checkpoint_directory: Directory to save checkpoints to.
             lr_scheduler: Learning rate scheduler to use.
@@ -146,6 +157,8 @@ class Pipeline:
         self.source_data_batch_size = source_data_batch_size
         self.source_dataset = source_dataset
         self.source_model = source_model
+        self.n_input_features = n_input_features
+        self.n_learned_features = n_learned_features
 
         # Create a stateful iterator
         source_dataloader = source_dataset.get_dataloader(
@@ -175,9 +188,10 @@ class Pipeline:
             raise ValueError(error_message)
 
         # Setup the store
-        n_neurons: int = self.autoencoder.config.n_input_features
         source_model_device: torch.device = get_model_device(self.source_model)
-        store = TensorActivationStore(store_size, n_neurons, n_components=self.n_components)
+        store = TensorActivationStore(
+            store_size, self.n_input_features, n_components=self.n_components
+        )
 
         # Add the hook to the model (will automatically store the activations every time the model
         # runs)
@@ -225,7 +239,7 @@ class Pipeline:
         learned_activations_fired_count: Int64[
             Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
         ] = torch.zeros(
-            (self.n_components, self.autoencoder.config.n_learned_features),
+            (self.n_components, self.n_learned_features),
             dtype=torch.int64,
             device=autoencoder_device,
         )
@@ -358,6 +372,7 @@ class Pipeline:
                     replace_activations_hook,
                     sparse_autoencoder=self.autoencoder,
                     component_idx=component_idx,
+                    n_components=self.n_components,
                 )
 
                 with torch.no_grad():

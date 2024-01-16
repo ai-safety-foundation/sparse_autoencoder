@@ -9,6 +9,7 @@ from sparse_autoencoder.loss.reducer import LossReducer
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
 from sparse_autoencoder.metrics.train.feature_density import TrainBatchFeatureDensityMetric
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
+from sparse_autoencoder.optimizer.deepspeed_adam_with_reset import ZeroOneAdamWithReset
 from sparse_autoencoder.source_data.pretokenized_dataset import PreTokenizedDataset
 from sparse_autoencoder.source_data.text_dataset import TextDataset
 from sparse_autoencoder.train.pipeline import Pipeline
@@ -83,4 +84,5 @@ __all__ = [
     "TensorActivationStore",
     "TextDataset",
     "TrainBatchFeatureDensityMetric",
+    "ZeroOneAdamWithReset",
 ]
