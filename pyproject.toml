@@ -12,7 +12,7 @@
         datasets=">=2.15.0"
         deepspeed={version=">=0.12.6", extras=["deepspeed"], optional=false}
         einops=">=0.6"
-        mpi4py={version=">=3.1.5", extras=["deepspeed"], optional=true}
+        mpi4py={version=">=3", extras=["deepspeed"], optional=true}
         pydantic=">=2.5.2"
         python=">=3.10, <3.12"
         strenum=">=0.4.15"

@@ -128,6 +128,9 @@ def setup_autoencoder_optimizer_scheduler(
             model=model,
             optimizer=optim,
             lr_scheduler=lr_scheduler,  # type: ignore
+            config={
+                "train_batch_size": hyperparameters["pipeline"]["train_batch_size"],
+            },
         )
 
         return (model_engine, optimizer_engine, scheduler)  # type: ignore
@@ -321,16 +324,19 @@ def run_training_pipeline(
     )
 
 
-def train(*, use_deepspeed: bool) -> None:
+def train(hyperparameters: RuntimeHyperparameters | None = None, *, use_deepspeed: bool) -> None:
     """Train the sparse autoencoder using the hyperparameters from the WandB sweep.
 
     Args:
         use_deepspeed: Whether to use deepspeed.
     """
     try:
-        # Set up WandB
-        hyperparameters = setup_wandb()
-        run_name: str = wandb.run.name  # type: ignore
+        # Set up
+        if hyperparameters is None:
+            hyperparameters = setup_wandb()
+        else:
+            wandb.init()
+        run_name: str = wandb.run.name or "run"  # type: ignore
 
         # Set up the source model
         source_model = setup_source_model(hyperparameters)
