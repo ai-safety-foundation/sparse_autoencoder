@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 from deepspeed import DeepSpeedEngine
 from jaxtyping import Float
 from torch import Tensor
+from torch.nn.parallel import DataParallel
 from transformer_lens.hook_points import HookPoint
 
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 if TYPE_CHECKING:
@@ -17,9 +17,7 @@ if TYPE_CHECKING:
 def replace_activations_hook(
     value: Tensor,
     hook: HookPoint,  # noqa: ARG001
-    sparse_autoencoder: SparseAutoencoder
-    | DataParallelWithModelAttributes[SparseAutoencoder]
-    | DeepSpeedEngine,
+    sparse_autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
     component_idx: int | None = None,
     n_components: int | None = None,
 ) -> Tensor:

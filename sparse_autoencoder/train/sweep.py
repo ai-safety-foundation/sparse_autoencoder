@@ -1,4 +1,5 @@
 """Sweep."""
+from functools import partial
 from pathlib import Path
 import re
 import sys
@@ -7,6 +8,7 @@ import traceback
 import deepspeed
 from deepspeed import DeepSpeedEngine
 import torch
+from torch.nn.parallel import DataParallel
 from torch.optim.lr_scheduler import CosineAnnealingLR, LRScheduler, ReduceLROnPlateau
 from transformer_lens import HookedTransformer
 from transformers import AutoTokenizer
@@ -30,7 +32,6 @@ from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
     SweepConfig,
 )
-from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> ActivationResampler:
@@ -74,7 +75,7 @@ def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransfo
 
 
 def setup_autoencoder_optimizer_scheduler(
-    hyperparameters: RuntimeHyperparameters, *, use_deepspeed: bool = False
+    hyperparameters: RuntimeHyperparameters, *, use_deepspeed: bool
 ) -> tuple[DeepSpeedEngine | SparseAutoencoder, AdamWithReset, LRScheduler | None]:
     """Setup the sparse autoencoder.
 
@@ -257,10 +258,8 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
 
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
-    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
-    autoencoder: SparseAutoencoder
-    | DataParallelWithModelAttributes[SparseAutoencoder]
-    | DeepSpeedEngine,
+    source_model: HookedTransformer | DataParallel[HookedTransformer],
+    autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
     loss: LossReducer,
     optimizer: AbstractOptimizerWithReset,
     lr_scheduler: LRScheduler | None,
@@ -322,8 +321,12 @@ def run_training_pipeline(
     )
 
 
-def train() -> None:
-    """Train the sparse autoencoder using the hyperparameters from the WandB sweep."""
+def train(*, use_deepspeed: bool) -> None:
+    """Train the sparse autoencoder using the hyperparameters from the WandB sweep.
+
+    Args:
+        use_deepspeed: Whether to use deepspeed.
+    """
     try:
         # Set up WandB
         hyperparameters = setup_wandb()
@@ -334,7 +337,7 @@ def train() -> None:
 
         # Set up the autoencoder, optimizer and learning rate scheduler
         autoencoder, optimizer, lr_scheduler = setup_autoencoder_optimizer_scheduler(
-            hyperparameters
+            hyperparameters, use_deepspeed=use_deepspeed
         )
 
         # Set up the loss function
@@ -364,7 +367,12 @@ def train() -> None:
         sys.exit(1)
 
 
-def sweep(sweep_config: SweepConfig | None = None, sweep_id: str | None = None) -> None:
+def sweep(
+    sweep_config: SweepConfig | None = None,
+    sweep_id: str | None = None,
+    *,
+    use_deepspeed: bool = False,
+) -> None:
     """Run the training pipeline with wandb hyperparameter sweep.
 
     Warning:
@@ -373,16 +381,19 @@ def sweep(sweep_config: SweepConfig | None = None, sweep_id: str | None = None) 
     Args:
         sweep_config: The sweep configuration.
         sweep_id: The sweep id for an existing sweep.
+        use_deepspeed: Whether to use deepspeed.
 
     Raises:
         ValueError: If neither sweep_config nor sweep_id is specified.
     """
     if sweep_id is not None:
-        wandb.agent(sweep_id, train, project="sparse-autoencoder")
+        wandb.agent(
+            sweep_id, partial(train, use_deepspeed=use_deepspeed), project="sparse-autoencoder"
+        )
 
     elif sweep_config is not None:
         sweep_id = wandb.sweep(sweep_config.to_dict(), project="sparse-autoencoder")
-        wandb.agent(sweep_id, train)
+        wandb.agent(sweep_id, partial(train, use_deepspeed=use_deepspeed))
 
     else:
         error_message = "Either sweep_config or sweep_id must be specified."
