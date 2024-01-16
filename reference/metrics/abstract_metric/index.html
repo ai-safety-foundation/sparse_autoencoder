@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -1087,7 +1087,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.AbstractMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      calculate()
+      calculate
     </span>
   </a>
   
@@ -1189,7 +1189,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
+      __init__
     </span>
   </a>
   
@@ -1198,7 +1198,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__repr__" class="md-nav__link">
     <span class="md-ellipsis">
-      __repr__()
+      __repr__
     </span>
   </a>
   
@@ -1207,7 +1207,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__str__" class="md-nav__link">
     <span class="md-ellipsis">
-      __str__()
+      __str__
     </span>
   </a>
   
@@ -1216,7 +1216,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.create_wandb_name" class="md-nav__link">
     <span class="md-ellipsis">
-      create_wandb_name()
+      create_wandb_name
     </span>
   </a>
   
@@ -1691,6 +1691,27 @@
   
   <span class="md-ellipsis">
     adam_with_reset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimizer/deepspeed_adam_with_reset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    deepspeed_adam_with_reset
   </span>
   
 
@@ -2308,27 +2329,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/data_parallel/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    data_parallel
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2464,7 +2464,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.AbstractMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      calculate()
+      calculate
     </span>
   </a>
   
@@ -2566,7 +2566,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
+      __init__
     </span>
   </a>
   
@@ -2575,7 +2575,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__repr__" class="md-nav__link">
     <span class="md-ellipsis">
-      __repr__()
+      __repr__
     </span>
   </a>
   
@@ -2584,7 +2584,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__str__" class="md-nav__link">
     <span class="md-ellipsis">
-      __str__()
+      __str__
     </span>
   </a>
   
@@ -2593,7 +2593,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.create_wandb_name" class="md-nav__link">
     <span class="md-ellipsis">
-      create_wandb_name()
+      create_wandb_name
     </span>
   </a>
   
@@ -2649,9 +2649,8 @@ training pipeline.</p>
 
 
 
-
 <h2 id="sparse_autoencoder.metrics.abstract_metric.WandbSupportedLogTypes" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">WandbSupportedLogTypes</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Audio</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Bokeh</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Histogram</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Html</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Image</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Molecule</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Object3D</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Plotly</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Table</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Video</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">WBTraceTree</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;WandbSupportedLogTypes&#39;</span><span class="p">]</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">WandbSupportedLogTypes</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Audio</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Bokeh</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Histogram</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Html</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Image</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Molecule</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Object3D</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Plotly</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Table</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">Video</span> <span class="o">|</span> <span class="n">data_types</span><span class="o">.</span><span class="n">WBTraceTree</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;WandbSupportedLogTypes&#39;</span><span class="p">]</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -2672,9 +2671,8 @@ training pipeline.</p>
 
 
 
-
 <h2 id="sparse_autoencoder.metrics.abstract_metric.AbstractMetric" class="doc doc-heading">
-          <code>AbstractMetric</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>AbstractMetric</code>
 
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.AbstractMetric" class="headerlink" title="Permanent link">¤</a></h2>
@@ -2727,9 +2725,8 @@ training pipeline.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.AbstractMetric.location" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -2753,9 +2750,8 @@ training pipeline.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.AbstractMetric.calculate" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -2787,15 +2783,15 @@ training pipeline.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
 
 
 
-
 <h2 id="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach" class="doc doc-heading">
-          <code>ComponentAggregationApproach</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>ComponentAggregationApproach</code>
 
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach" class="headerlink" title="Permanent link">¤</a></h2>
@@ -2861,9 +2857,8 @@ define how the component-wise values should be aggregated.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.ALL" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ALL</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">ALL</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2884,9 +2879,8 @@ define how the component-wise values should be aggregated.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.MEAN" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">MEAN</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">MEAN</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2907,9 +2901,8 @@ define how the component-wise values should be aggregated.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.ComponentAggregationApproach.SUM" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">SUM</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">SUM</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2934,15 +2927,15 @@ define how the component-wise values should be aggregated.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
 
 
 
-
 <h2 id="sparse_autoencoder.metrics.abstract_metric.MetricLocation" class="doc doc-heading">
-          <code>MetricLocation</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>MetricLocation</code>
 
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricLocation" class="headerlink" title="Permanent link">¤</a></h2>
@@ -3003,15 +2996,15 @@ when the metric was logged.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
 
 
 
-
 <h2 id="sparse_autoencoder.metrics.abstract_metric.MetricResult" class="doc doc-heading">
-          <code>MetricResult</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>MetricResult</code>
 
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult" class="headerlink" title="Permanent link">¤</a></h2>
@@ -3555,9 +3548,8 @@ result, as well as the component-wise values and how they should be aggregated.<
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.aggregate_value" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">aggregate_value</span><span class="p">:</span> <span class="n">WandbSupportedLogTypes</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span> <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">aggregate_value</span><span class="p">:</span> <span class="n">WandbSupportedLogTypes</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span> <span class="o">|</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">)]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -3635,9 +3627,8 @@ result, as well as the component-wise values and how they should be aggregated.<
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.n_components" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -3657,9 +3648,8 @@ result, as well as the component-wise values and how they should be aggregated.<
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.wandb_log" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">wandb_log</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">WandbSupportedLogTypes</span><span class="p">]</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">wandb_log</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">WandbSupportedLogTypes</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -3735,9 +3725,8 @@ result, as well as the component-wise values and how they should be aggregated.<
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">component_wise_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">aggregate_approach</span><span class="o">=</span><span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span> <span class="n">aggregate_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postfix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">component_wise_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">aggregate_approach</span><span class="o">=</span><span class="n">ComponentAggregationApproach</span><span class="o">.</span><span class="n">MEAN</span><span class="p">,</span> <span class="n">aggregate_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postfix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3977,9 +3966,8 @@ calculated.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.__repr__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__repr__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4022,9 +4010,8 @@ calculated.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.__str__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__str__</span><span class="p">()</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__str__</span><span class="p">()</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.__str__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4051,9 +4038,8 @@ calculated.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.metrics.abstract_metric.MetricResult.create_wandb_name" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">create_wandb_name</span><span class="p">(</span><span class="n">component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aggregation_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">create_wandb_name</span><span class="p">(</span><span class="n">component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aggregation_approach</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.abstract_metric.MetricResult.create_wandb_name" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -4270,6 +4256,7 @@ component.</p>
 
   </div>
 
+
 </div>
 
 
@@ -4326,10 +4313,10 @@ component.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
         <script src="../../../javascript/custom_formatting.js"></script>
       

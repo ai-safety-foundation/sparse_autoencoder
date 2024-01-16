@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -1478,6 +1478,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimizer/deepspeed_adam_with_reset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    deepspeed_adam_with_reset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1734,7 +1755,7 @@
         <li class="md-nav__item">
   <a href="#sparse_autoencoder.source_model.replace_activations_hook.replace_activations_hook" class="md-nav__link">
     <span class="md-ellipsis">
-      replace_activations_hook()
+      replace_activations_hook
     </span>
   </a>
   
@@ -2146,27 +2167,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/data_parallel/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    data_parallel
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2274,7 +2274,7 @@
         <li class="md-nav__item">
   <a href="#sparse_autoencoder.source_model.replace_activations_hook.replace_activations_hook" class="md-nav__link">
     <span class="md-ellipsis">
-      replace_activations_hook()
+      replace_activations_hook
     </span>
   </a>
   
@@ -2324,9 +2324,8 @@
 
 
 
-
 <h2 id="sparse_autoencoder.source_model.replace_activations_hook.replace_activations_hook" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">replace_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">sparse_autoencoder</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">replace_activations_hook</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hook</span><span class="p">,</span> <span class="n">sparse_autoencoder</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.source_model.replace_activations_hook.replace_activations_hook" class="headerlink" title="Permanent link">¤</a></h2>
 
@@ -2334,6 +2333,7 @@
   <div class="doc doc-contents ">
   
       <p>Replace activations hook.</p>
+<p>This should be pre-initialised with <code>functools.partial</code>.</p>
 
 
 
@@ -2379,12 +2379,11 @@
         <tr>
           <td><code>sparse_autoencoder</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a> | <a class="autorefs autorefs-internal" title="sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes" href="../../utils/data_parallel/#sparse_autoencoder.utils.data_parallel.DataParallelWithModelAttributes">DataParallelWithModelAttributes</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a>]</code>
+                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a> | <span title="torch.nn.parallel.DataParallel">DataParallel</span>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.autoencoder.model.SparseAutoencoder" href="../../autoencoder/model/#sparse_autoencoder.autoencoder.model.SparseAutoencoder">SparseAutoencoder</a>] | <span title="deepspeed.DeepSpeedEngine">DeepSpeedEngine</span></code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The sparse autoencoder. This should be pre-initialised with
-<code>functools.partial</code>.</p>
+              <p>The sparse autoencoder.</p>
             </div>
           </td>
           <td>
@@ -2400,6 +2399,20 @@
             <div class="doc-md-description">
               <p>The component index to replace the activations with, if just replacing
 activations for a single component. Requires the model to have a component axis.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>n_components</code></td>
+          <td>
+                <code>int | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The number of components that the SAE is trained on.</p>
             </div>
           </td>
           <td>
@@ -2459,8 +2472,7 @@ activations for a single component. Requires the model to have a component axis.
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/source_model/replace_activations_hook.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -2516,21 +2528,25 @@ activations for a single component. Requires the model to have a component axis.
 <span class="normal">70</span>
 <span class="normal">71</span>
 <span class="normal">72</span>
-<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">replace_activations_hook</span><span class="p">(</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">replace_activations_hook</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span>
     <span class="n">hook</span><span class="p">:</span> <span class="n">HookPoint</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
-    <span class="n">sparse_autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallelWithModelAttributes</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">],</span>
+    <span class="n">sparse_autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallel</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">]</span> <span class="o">|</span> <span class="n">DeepSpeedEngine</span><span class="p">,</span>
     <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace activations hook.</span>
+
+<span class="sd">    This should be pre-initialised with `functools.partial`.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        value: The activations to replace.</span>
 <span class="sd">        hook: The hook point.</span>
-<span class="sd">        sparse_autoencoder: The sparse autoencoder. This should be pre-initialised with</span>
-<span class="sd">            `functools.partial`.</span>
+<span class="sd">        sparse_autoencoder: The sparse autoencoder.</span>
 <span class="sd">        component_idx: The component index to replace the activations with, if just replacing</span>
 <span class="sd">            activations for a single component. Requires the model to have a component axis.</span>
+<span class="sd">        n_components: The number of components that the SAE is trained on.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Replaced activations.</span>
@@ -2546,11 +2562,8 @@ activations for a single component. Requires the model to have a component axis.
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">component_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sparse_autoencoder</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Cannot replace for a specific component, if the model does not have a &quot;</span>
-                <span class="s2">&quot;component axis.&quot;</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;The number of model components must be set if component_idx is set.&quot;</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 
         <span class="c1"># The approach here is to run a forward pass with dummy values for all components other than</span>
@@ -2559,7 +2572,7 @@ activations for a single component. Requires the model to have a component axis.
         <span class="c1"># components.</span>
         <span class="n">expanded_shape</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">squashed_value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">sparse_autoencoder</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_components</span><span class="p">,</span>
+            <span class="n">n_components</span><span class="p">,</span>
             <span class="n">squashed_value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
         <span class="p">]</span>
         <span class="n">expanded</span> <span class="o">=</span> <span class="n">squashed_value</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="o">*</span><span class="n">expanded_shape</span><span class="p">)</span>
@@ -2633,10 +2646,10 @@ activations for a single component. Requires the model to have a component axis.
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
         <script src="../../../javascript/custom_formatting.js"></script>
       

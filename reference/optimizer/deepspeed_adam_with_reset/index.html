@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../pretokenized_dataset/">
+        <link rel="prev" href="../adam_with_reset/">
       
       
-        <link rel="next" href="../../source_model/">
+        <link rel="next" href="../../source_data/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>text_dataset - Sparse Autoencoder</title>
+        <title>deepspeed_adam_with_reset - Sparse Autoencoder</title>
       
     
     
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#generic-text-dataset-module-for-hugging-face-datasets" class="md-skip">
+        <a href="#deepspeed-zero-one-adam-optimizer-with-a-reset-method" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              text_dataset
+              deepspeed_adam_with_reset
             
           </span>
         </div>
@@ -1395,24 +1395,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../optimizer/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1429,7 +1431,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_6">
             <span class="md-nav__icon md-icon"></span>
             optimizer
@@ -1443,7 +1445,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1464,150 +1466,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     adam_with_reset
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../optimizer/deepspeed_adam_with_reset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    deepspeed_adam_with_reset
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    source_data
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_7">
-            <span class="md-nav__icon md-icon"></span>
-            source_data
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../abstract_dataset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    abstract_dataset
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mock_dataset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    mock_dataset
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pretokenized_dataset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    pretokenized_dataset
   </span>
   
 
@@ -1637,7 +1500,7 @@
           
   
   <span class="md-ellipsis">
-    text_dataset
+    deepspeed_adam_with_reset
   </span>
   
 
@@ -1648,7 +1511,7 @@
         
   
   <span class="md-ellipsis">
-    text_dataset
+    deepspeed_adam_with_reset
   </span>
   
 
@@ -1670,35 +1533,35 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset" class="md-nav__link">
     <span class="md-ellipsis">
-      text_dataset
+      deepspeed_adam_with_reset
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset" class="md-nav__link">
     <span class="md-ellipsis">
-      GenericTextDataBatch
+      ZeroOneAdamWithReset
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      TextDataset
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TextDataset">
+    <nav class="md-nav" aria-label="ZeroOneAdamWithReset">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.__init__" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.parameter_names" class="md-nav__link">
+    <span class="md-ellipsis">
+      parameter_names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       __init__
     </span>
@@ -1707,18 +1570,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.preprocess" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_neurons_state" class="md-nav__link">
     <span class="md-ellipsis">
-      preprocess
+      reset_neurons_state
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.push_to_hugging_face_hub" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_state_all_parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      push_to_hugging_face_hub
+      reset_state_all_parameters
     </span>
   </a>
   
@@ -1733,6 +1596,143 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../source_data/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    source_data
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            source_data
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source_data/abstract_dataset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    abstract_dataset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source_data/mock_dataset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mock_dataset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source_data/pretokenized_dataset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pretokenized_dataset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../source_data/text_dataset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    text_dataset
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2305,35 +2305,35 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset" class="md-nav__link">
     <span class="md-ellipsis">
-      text_dataset
+      deepspeed_adam_with_reset
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset" class="md-nav__link">
     <span class="md-ellipsis">
-      GenericTextDataBatch
+      ZeroOneAdamWithReset
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      TextDataset
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TextDataset">
+    <nav class="md-nav" aria-label="ZeroOneAdamWithReset">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.__init__" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.parameter_names" class="md-nav__link">
+    <span class="md-ellipsis">
+      parameter_names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       __init__
     </span>
@@ -2342,18 +2342,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.preprocess" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_neurons_state" class="md-nav__link">
     <span class="md-ellipsis">
-      preprocess
+      reset_neurons_state
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.push_to_hugging_face_hub" class="md-nav__link">
+  <a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_state_all_parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      push_to_hugging_face_hub
+      reset_state_all_parameters
     </span>
   </a>
   
@@ -2379,21 +2379,18 @@
                   
 
 
-<h1 id="generic-text-dataset-module-for-hugging-face-datasets">Generic Text Dataset Module for Hugging Face Datasets<a class="headerlink" href="#generic-text-dataset-module-for-hugging-face-datasets" title="Permanent link">¤</a></h1>
+<h1 id="deepspeed-zero-one-adam-optimizer-with-a-reset-method">Deepspeed Zero One Adam Optimizer with a reset method<a class="headerlink" href="#deepspeed-zero-one-adam-optimizer-with-a-reset-method" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.source_data.text_dataset"></a>
+<a id="sparse_autoencoder.optimizer.deepspeed_adam_with_reset"></a>
   <div class="doc doc-contents first">
   
-      <p>Generic Text Dataset Module for Hugging Face Datasets.</p>
-<p>GenericTextDataset should work with the following datasets:
-- monology/pile-uncopyrighted
-- the_pile_openwebtext2
-- roneneldan/TinyStories</p>
+      <p>Deepspeed Zero One Adam Optimizer with a reset method.</p>
+<p>This reset method is useful when resampling dead neurons during training.</p>
 
   
 
@@ -2410,83 +2407,43 @@
 
 
 
-<h2 id="sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>GenericTextDataBatch</code>
+<h2 id="sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>ZeroOneAdamWithReset</code>
 
 
-<a href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
-
-  
-      <p>Generic Text Dataset Batch.</p>
-<p>Assumes the dataset provides a 'text' field with a list of strings.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GenericTextDataBatch</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic Text Dataset Batch.</span>
-
-<span class="sd">    Assumes the dataset provides a &#39;text&#39; field with a list of strings.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">text</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">meta</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>  <span class="c1"># Optional, depending on the dataset structure.</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-  </div>
-
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="sparse_autoencoder.source_data.text_dataset.TextDataset" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>TextDataset</code>
-
-
-<a href="#sparse_autoencoder.source_data.text_dataset.TextDataset" class="headerlink" title="Permanent link">¤</a></h2>
+<a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset" class="headerlink" title="Permanent link">¤</a></h2>
 
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.SourceDataset" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.SourceDataset">SourceDataset</a>[<a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch">GenericTextDataBatch</a>]</code></p>
+            Bases: <code><span title="deepspeed.runtime.fp16.onebit.zoadam.ZeroOneAdam">ZeroOneAdam</span></code>, <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.optimizer.abstract_optimizer.AbstractOptimizerWithReset" href="../abstract_optimizer/#sparse_autoencoder.optimizer.abstract_optimizer.AbstractOptimizerWithReset">AbstractOptimizerWithReset</a></code></p>
 
   
-      <p>Generic Text Dataset for any text-based dataset from Hugging Face.</p>
+      <p>Deepspeed Zero One Adam Optimizer with a reset method.</p>
+<p><a href="https://deepspeed.readthedocs.io/en/latest/optimizers.html#zerooneadam-gpu">https://deepspeed.readthedocs.io/en/latest/optimizers.html#zerooneadam-gpu</a></p>
+<p>The :meth:<code>reset_state_all_parameters</code> and :meth:<code>reset_neurons_state</code> methods are useful when
+manually editing the model parameters during training (e.g. when resampling dead neurons). This
+is because Adam maintains running averages of the gradients and the squares of gradients, which
+will be incorrect if the parameters are changed.</p>
+<p>Otherwise this is the same as the standard ZeroOneAdam optimizer.</p>
 
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Requires a distributed torch backend.</p>
+</details>
             <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 28</span>
+              <summary>Source code in <code>sparse_autoencoder/optimizer/deepspeed_adam_with_reset.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
 <span class="normal"> 29</span>
 <span class="normal"> 30</span>
 <span class="normal"> 31</span>
@@ -2633,154 +2590,202 @@
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
-<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
-<span class="k">class</span> <span class="nc">TextDataset</span><span class="p">(</span><span class="n">SourceDataset</span><span class="p">[</span><span class="n">GenericTextDataBatch</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic Text Dataset for any text-based dataset from Hugging Face.&quot;&quot;&quot;</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@final</span>
+<span class="k">class</span> <span class="nc">ZeroOneAdamWithReset</span><span class="p">(</span><span class="n">ZeroOneAdam</span><span class="p">,</span> <span class="n">AbstractOptimizerWithReset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deepspeed Zero One Adam Optimizer with a reset method.</span>
 
-    <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span>
+<span class="sd">    https://deepspeed.readthedocs.io/en/latest/optimizers.html#zerooneadam-gpu</span>
 
-    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">source_batch</span><span class="p">:</span> <span class="n">GenericTextDataBatch</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Preprocess a batch of prompts.</span>
+<span class="sd">    The :meth:`reset_state_all_parameters` and :meth:`reset_neurons_state` methods are useful when</span>
+<span class="sd">    manually editing the model parameters during training (e.g. when resampling dead neurons). This</span>
+<span class="sd">    is because Adam maintains running averages of the gradients and the squares of gradients, which</span>
+<span class="sd">    will be incorrect if the parameters are changed.</span>
 
-<span class="sd">        Tokenizes and chunks text data into lists of tokenized prompts with specified context size.</span>
+<span class="sd">    Otherwise this is the same as the standard ZeroOneAdam optimizer.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            source_batch: A batch of source data, including &#39;text&#39; with a list of strings.</span>
-<span class="sd">            context_size: Context size for tokenized prompts.</span>
+<span class="sd">    Warning:</span>
+<span class="sd">        Requires a distributed torch backend.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            Tokenized prompts.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+    <span class="n">parameter_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter Names.</span>
 
-        <span class="n">tokenized_prompts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="sd">    The names of the parameters, so that we can find them later when resetting the state.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-        <span class="c1"># Chunk each tokenized prompt into blocks of context_size, discarding incomplete blocks.</span>
-        <span class="n">context_size_prompts</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">tokenized_prompts</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_column_name</span><span class="p">]):</span>  <span class="c1"># type: ignore</span>
-            <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="n">context_size</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">])</span> <span class="o">==</span> <span class="n">context_size</span>
-            <span class="p">]</span>
-            <span class="n">context_size_prompts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+    <span class="n">_has_components_dim</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether the parameters have a components dimension.&quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">context_size_prompts</span><span class="p">}</span>
-
-    <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span><span class="p">,</span>
-        <span class="n">buffer_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="n">context_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
-        <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
-        <span class="n">dataset_column_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;input_ids&quot;</span><span class="p">,</span>
-        <span class="n">n_processes_preprocessing</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">params_t</span><span class="p">,</span>
+        <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">betas</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span>
+        <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+        <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">pre_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a generic text dataset from Hugging Face.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            dataset_path: Path to the dataset on Hugging Face (e.g. `&#39;monology/pile-uncopyright&#39;`).</span>
-<span class="sd">            tokenizer: Tokenizer to process text data.</span>
-<span class="sd">            buffer_size: The buffer size to use when shuffling the dataset when streaming. When</span>
-<span class="sd">                streaming a dataset, this just pre-downloads at least `buffer_size` items and then</span>
-<span class="sd">                shuffles just that buffer. Note that the generated activations should also be</span>
-<span class="sd">                shuffled before training the sparse autoencoder, so a large buffer may not be</span>
-<span class="sd">                strictly necessary here. Note also that this is the number of items in the dataset</span>
-<span class="sd">                (e.g. number of prompts) and is typically significantly less than the number of</span>
-<span class="sd">                tokenized prompts once the preprocessing function has been applied.</span>
-<span class="sd">            context_size: The context size to use when returning a list of tokenized prompts.</span>
-<span class="sd">                *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used</span>
-<span class="sd">                a context size of 250.</span>
-<span class="sd">            dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
-<span class="sd">            dataset_files: Path(s) to source data file(s).</span>
-<span class="sd">            dataset_split: Dataset split (e.g., &#39;train&#39;).</span>
-<span class="sd">            dataset_column_name: The column name for the prompts.</span>
-<span class="sd">            n_processes_preprocessing: Number of processes to use for preprocessing.</span>
-<span class="sd">            preprocess_batch_size: Batch size for preprocessing (tokenizing prompts).</span>
-<span class="sd">            pre_download: Whether to pre-download the whole dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span>
-            <span class="n">context_size</span><span class="o">=</span><span class="n">context_size</span><span class="p">,</span>
-            <span class="n">dataset_dir</span><span class="o">=</span><span class="n">dataset_dir</span><span class="p">,</span>
-            <span class="n">dataset_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
-            <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
-            <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
-            <span class="n">dataset_column_name</span><span class="o">=</span><span class="n">dataset_column_name</span><span class="p">,</span>
-            <span class="n">n_processes_preprocessing</span><span class="o">=</span><span class="n">n_processes_preprocessing</span><span class="p">,</span>
-            <span class="n">pre_download</span><span class="o">=</span><span class="n">pre_download</span><span class="p">,</span>
-            <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="nd">@validate_call</span>
-    <span class="k">def</span> <span class="nf">push_to_hugging_face_hub</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">commit_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Upload preprocessed dataset using sparse_autoencoder.&quot;</span><span class="p">,</span>
-        <span class="n">max_shard_size</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">n_shards</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
-        <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">private</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">named_parameters</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]],</span>
+        <span class="n">has_components_dim</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Share preprocessed dataset to Hugging Face hub.</span>
-
-<span class="sd">        Motivation:</span>
-<span class="sd">            Pre-processing a dataset can be time-consuming, so it is useful to be able to share the</span>
-<span class="sd">            pre-processed dataset with others. This function allows you to do that by pushing the</span>
-<span class="sd">            pre-processed dataset to the Hugging Face hub.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the optimizer.</span>
 
 <span class="sd">        Warning:</span>
-<span class="sd">            You must be logged into HuggingFace (e.g with `huggingface-cli login` from the terminal)</span>
-<span class="sd">            to use this.</span>
-
-<span class="sd">        Warning:</span>
-<span class="sd">            This will only work if the dataset is not streamed (i.e. if `pre_download=True` when</span>
-<span class="sd">            initializing the dataset).</span>
+<span class="sd">            Named parameters must be with default settings (remove duplicates and not recursive).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).</span>
-<span class="sd">            commit_message: Commit message.</span>
-<span class="sd">            max_shard_size: Maximum shard size (e.g. `&#39;500MB&#39;`). Should not be set if `n_shards`</span>
-<span class="sd">                is set.</span>
-<span class="sd">            n_shards: Number of shards to split the dataset into. A high number is recommended</span>
-<span class="sd">                here to allow for flexible distributed training of SAEs across nodes (where e.g.</span>
-<span class="sd">                each node fetches it&#39;s own shard).</span>
-<span class="sd">            revision: Branch to push to.</span>
-<span class="sd">            private: Whether to save the dataset privately.</span>
+<span class="sd">            params: Iterable of parameters to optimize or dicts defining parameter groups.</span>
+<span class="sd">            lr: Learning rate. A Tensor LR is not yet fully supported for all implementations. Use a</span>
+<span class="sd">                float LR unless specifying fused=True or capturable=True.</span>
+<span class="sd">            betas: Coefficients used for computing running averages of gradient and its square.</span>
+<span class="sd">            eps: Term added to the denominator to improve numerical stability.</span>
+<span class="sd">            weight_decay: Weight decay (L2 penalty).</span>
+<span class="sd">            named_parameters: An iterator over the named parameters of the model. This is used to</span>
+<span class="sd">                find the parameters when resetting their state. You should set this as</span>
+<span class="sd">                `model.named_parameters()`.</span>
+<span class="sd">            has_components_dim: If the parameters have a components dimension (i.e. if you are</span>
+<span class="sd">                training an SAE on more than one component).</span>
+
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If the dataset is streamed.</span>
+<span class="sd">            ValueError: If the number of parameter names does not match the number of parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">IterableDataset</span><span class="p">):</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Cannot share a streamed dataset to Hugging Face. &quot;</span>
-                <span class="s2">&quot;Please use `pre_download=True` when initializing the dataset.&quot;</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">push_to_hub</span><span class="p">(</span>
-            <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-            <span class="n">commit_message</span><span class="o">=</span><span class="n">commit_message</span><span class="p">,</span>
-            <span class="n">max_shard_size</span><span class="o">=</span><span class="n">max_shard_size</span><span class="p">,</span>
-            <span class="n">num_shards</span><span class="o">=</span><span class="n">n_shards</span><span class="p">,</span>
-            <span class="n">private</span><span class="o">=</span><span class="n">private</span><span class="p">,</span>
-            <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+        <span class="c1"># Initialise the parent class (note we repeat the parameter names so that type hints work).</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+            <span class="n">betas</span><span class="o">=</span><span class="n">betas</span><span class="p">,</span>
+            <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span>
+            <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span> <span class="o">=</span> <span class="n">has_components_dim</span>
+
+        <span class="c1"># Store the names of the parameters, so that we can find them later when resetting the</span>
+        <span class="c1"># state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_value</span> <span class="ow">in</span> <span class="n">named_parameters</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;params&quot;</span><span class="p">]):</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;The number of parameter names does not match the number of parameters. &quot;</span>
+                <span class="s2">&quot;If using model.named_parameters() make sure remove_duplicates is True &quot;</span>
+                <span class="s2">&quot;and recursive is False (the default settings).&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset_state_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the state for all parameters.</span>
+
+<span class="sd">        Iterates over all parameters and resets both the running averages of the gradients and the</span>
+<span class="sd">        squares of gradients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Iterate over every parameter</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]:</span>
+                <span class="c1"># Get the state</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+
+                <span class="c1"># Check if state is initialized</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Reset running averages</span>
+                <span class="n">exp_avg</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span>
+                <span class="n">exp_avg</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+                <span class="n">exp_avg_sq</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span>
+                <span class="n">exp_avg_sq</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+
+                <span class="c1"># If AdamW is used (weight decay fix), also reset the max exp_avg_sq</span>
+                <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+                    <span class="n">max_exp_avg_sq</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span>
+                    <span class="n">max_exp_avg_sq</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
+        <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
+        <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parameter: The parameter to be reset. Examples from the standard sparse autoencoder</span>
+<span class="sd">                implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,</span>
+<span class="sd">            neuron_indices: The indices of the neurons to reset.</span>
+<span class="sd">            axis: The axis of the state values to reset (i.e. the input/output features axis, as</span>
+<span class="sd">                we&#39;re resetting all input/output features for a specific dead neuron).</span>
+<span class="sd">            component_idx: The component index of the state values to reset.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the parameter has a components dimension, but has_components_dim is</span>
+<span class="sd">                False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the state of the parameter</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+
+        <span class="c1"># If the number of dimensions is 3, we definitely have a components dimension. If 2, we may</span>
+        <span class="c1"># do (as the bias has 2 dimensions with components, but the weight has 2 dimensions without</span>
+        <span class="c1"># components).</span>
+        <span class="n">definitely_has_components_dimension</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span>
+            <span class="ow">and</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="n">definitely_has_components_dimension</span>
+        <span class="p">):</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;The parameter has a components dimension, but has_components_dim is False. &quot;</span>
+                <span class="s2">&quot;This should not happen.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+        <span class="c1"># Check if state is initialized</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Check there are any neurons to reset</span>
+        <span class="k">if</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Move the neuron indices to the correct device</span>
+        <span class="n">neuron_indices</span> <span class="o">=</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="c1"># Reset running averages for the specified neurons</span>
+        <span class="k">if</span> <span class="s2">&quot;exp_avg&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># If AdamW is used (weight decay fix), also reset the max exp_avg_sq</span>
+        <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2794,330 +2799,49 @@
 
 
 
+<div class="doc doc-object doc-attribute">
 
 
 
-<div class="doc doc-object doc-function">
+<h3 id="sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.parameter_names" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">parameter_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">named_parameters</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
 
-
-
-<h3 id="sparse_autoencoder.source_data.text_dataset.TextDataset.__init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">context_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">dataset_column_name</span><span class="o">=</span><span class="s1">&#39;input_ids&#39;</span><span class="p">,</span> <span class="n">n_processes_preprocessing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pre_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
-
-<a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.parameter_names" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Initialize a generic text dataset from Hugging Face.</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>dataset_path</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Path to the dataset on Hugging Face (e.g. <code>'monology/pile-uncopyright'</code>).</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>tokenizer</code></td>
-          <td>
-                <code><span title="transformers.PreTrainedTokenizerBase">PreTrainedTokenizerBase</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Tokenizer to process text data.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>buffer_size</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The buffer size to use when shuffling the dataset when streaming. When
-streaming a dataset, this just pre-downloads at least <code>buffer_size</code> items and then
-shuffles just that buffer. Note that the generated activations should also be
-shuffled before training the sparse autoencoder, so a large buffer may not be
-strictly necessary here. Note also that this is the number of items in the dataset
-(e.g. number of prompts) and is typically significantly less than the number of
-tokenized prompts once the preprocessing function has been applied.</p>
-            </div>
-          </td>
-          <td>
-                <code>1000</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>context_size</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The context size to use when returning a list of tokenized prompts.
-<em>Towards Monosemanticity: Decomposing Language Models With Dictionary Learning</em> used
-a context size of 250.</p>
-            </div>
-          </td>
-          <td>
-                <code>256</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>dataset_dir</code></td>
-          <td>
-                <code>str | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Defining the <code>data_dir</code> of the dataset configuration.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>dataset_files</code></td>
-          <td>
-                <code>str | <span title="collections.abc.Sequence">Sequence</span>[str] | <span title="collections.abc.Mapping">Mapping</span>[str, str | <span title="collections.abc.Sequence">Sequence</span>[str]] | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Path(s) to source data file(s).</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>dataset_split</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Dataset split (e.g., 'train').</p>
-            </div>
-          </td>
-          <td>
-                <code>&#39;train&#39;</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>dataset_column_name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The column name for the prompts.</p>
-            </div>
-          </td>
-          <td>
-                <code>&#39;input_ids&#39;</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>n_processes_preprocessing</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span> | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Number of processes to use for preprocessing.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>preprocess_batch_size</code></td>
-          <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Batch size for preprocessing (tokenizing prompts).</p>
-            </div>
-          </td>
-          <td>
-                <code>1000</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>pre_download</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to pre-download the whole dataset.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arbitrary_types_allowed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
-<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">dataset_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerBase</span><span class="p">,</span>
-    <span class="n">buffer_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-    <span class="n">context_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
-    <span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">dataset_files</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">dataset_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
-    <span class="n">dataset_column_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;input_ids&quot;</span><span class="p">,</span>
-    <span class="n">n_processes_preprocessing</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">preprocess_batch_size</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">pre_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a generic text dataset from Hugging Face.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        dataset_path: Path to the dataset on Hugging Face (e.g. `&#39;monology/pile-uncopyright&#39;`).</span>
-<span class="sd">        tokenizer: Tokenizer to process text data.</span>
-<span class="sd">        buffer_size: The buffer size to use when shuffling the dataset when streaming. When</span>
-<span class="sd">            streaming a dataset, this just pre-downloads at least `buffer_size` items and then</span>
-<span class="sd">            shuffles just that buffer. Note that the generated activations should also be</span>
-<span class="sd">            shuffled before training the sparse autoencoder, so a large buffer may not be</span>
-<span class="sd">            strictly necessary here. Note also that this is the number of items in the dataset</span>
-<span class="sd">            (e.g. number of prompts) and is typically significantly less than the number of</span>
-<span class="sd">            tokenized prompts once the preprocessing function has been applied.</span>
-<span class="sd">        context_size: The context size to use when returning a list of tokenized prompts.</span>
-<span class="sd">            *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* used</span>
-<span class="sd">            a context size of 250.</span>
-<span class="sd">        dataset_dir: Defining the `data_dir` of the dataset configuration.</span>
-<span class="sd">        dataset_files: Path(s) to source data file(s).</span>
-<span class="sd">        dataset_split: Dataset split (e.g., &#39;train&#39;).</span>
-<span class="sd">        dataset_column_name: The column name for the prompts.</span>
-<span class="sd">        n_processes_preprocessing: Number of processes to use for preprocessing.</span>
-<span class="sd">        preprocess_batch_size: Batch size for preprocessing (tokenizing prompts).</span>
-<span class="sd">        pre_download: Whether to pre-download the whole dataset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
-
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span>
-        <span class="n">context_size</span><span class="o">=</span><span class="n">context_size</span><span class="p">,</span>
-        <span class="n">dataset_dir</span><span class="o">=</span><span class="n">dataset_dir</span><span class="p">,</span>
-        <span class="n">dataset_files</span><span class="o">=</span><span class="n">dataset_files</span><span class="p">,</span>
-        <span class="n">dataset_path</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span>
-        <span class="n">dataset_split</span><span class="o">=</span><span class="n">dataset_split</span><span class="p">,</span>
-        <span class="n">dataset_column_name</span><span class="o">=</span><span class="n">dataset_column_name</span><span class="p">,</span>
-        <span class="n">n_processes_preprocessing</span><span class="o">=</span><span class="n">n_processes_preprocessing</span><span class="p">,</span>
-        <span class="n">pre_download</span><span class="o">=</span><span class="n">pre_download</span><span class="p">,</span>
-        <span class="n">preprocess_batch_size</span><span class="o">=</span><span class="n">preprocess_batch_size</span><span class="p">,</span>
-    <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-          </details>
+      <p>Parameter Names.</p>
+<p>The names of the parameters, so that we can find them later when resetting the state.</p>
   </div>
 
 </div>
 
 
+
+
 <div class="doc doc-object doc-function">
 
 
 
-<h3 id="sparse_autoencoder.source_data.text_dataset.TextDataset.preprocess" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">preprocess</span><span class="p">(</span><span class="n">source_batch</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">context_size</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">named_parameters</span><span class="p">,</span> <span class="n">has_components_dim</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.preprocess" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Preprocess a batch of prompts.</p>
-<p>Tokenizes and chunks text data into lists of tokenized prompts with specified context size.</p>
+      <p>Initialize the optimizer.</p>
 
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Named parameters must be with default settings (remove duplicates and not recursive).</p>
+</details>
 
 
   <p><strong>Parameters:</strong></p>
@@ -3132,13 +2856,13 @@ a context size of 250.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>source_batch</code></td>
+          <td><code>params</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch" href="#sparse_autoencoder.source_data.text_dataset.GenericTextDataBatch">GenericTextDataBatch</a></code>
+                <code><span title="torch.optim.optimizer.params_t">params_t</span></code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>A batch of source data, including 'text' with a list of strings.</p>
+              <p>Iterable of parameters to optimize or dicts defining parameter groups.</p>
             </div>
           </td>
           <td>
@@ -3146,13 +2870,87 @@ a context size of 250.</p>
           </td>
         </tr>
         <tr>
-          <td><code>context_size</code></td>
+          <td><code>lr</code></td>
           <td>
-                <code>int</code>
+                <code>float</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Context size for tokenized prompts.</p>
+              <p>Learning rate. A Tensor LR is not yet fully supported for all implementations. Use a
+float LR unless specifying fused=True or capturable=True.</p>
+            </div>
+          </td>
+          <td>
+                <code>0.001</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>betas</code></td>
+          <td>
+                <code>tuple[float, float]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Coefficients used for computing running averages of gradient and its square.</p>
+            </div>
+          </td>
+          <td>
+                <code>(0.9, 0.999)</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>eps</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Term added to the denominator to improve numerical stability.</p>
+            </div>
+          </td>
+          <td>
+                <code>1e-08</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>weight_decay</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Weight decay (L2 penalty).</p>
+            </div>
+          </td>
+          <td>
+                <code>0.0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>named_parameters</code></td>
+          <td>
+                <code><span title="collections.abc.Iterator">Iterator</span>[tuple[str, <span title="torch.nn.parameter.Parameter">Parameter</span>]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An iterator over the named parameters of the model. This is used to
+find the parameters when resetting their state. You should set this as
+<code>model.named_parameters()</code>.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>has_components_dim</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If the parameters have a components dimension (i.e. if you are
+training an SAE on more than one component).</p>
             </div>
           </td>
           <td>
@@ -3164,7 +2962,7 @@ a context size of 250.</p>
 
 
 
-  <p><strong>Returns:</strong></p>
+  <p><strong>Raises:</strong></p>
   <table>
     <thead>
       <tr>
@@ -3175,11 +2973,11 @@ a context size of 250.</p>
     <tbody>
         <tr>
           <td>
-                <code><a class="autorefs autorefs-internal" title="sparse_autoencoder.source_data.abstract_dataset.TokenizedPrompts" href="../abstract_dataset/#sparse_autoencoder.source_data.abstract_dataset.TokenizedPrompts">TokenizedPrompts</a></code>
+                <code>ValueError</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Tokenized prompts.</p>
+              <p>If the number of parameter names does not match the number of parameters.</p>
             </div>
           </td>
         </tr>
@@ -3187,18 +2985,8 @@ a context size of 250.</p>
   </table>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
+            <summary>Source code in <code>sparse_autoencoder/optimizer/deepspeed_adam_with_reset.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
@@ -3219,38 +3007,94 @@ a context size of 250.</p>
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">source_batch</span><span class="p">:</span> <span class="n">GenericTextDataBatch</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">params_t</span><span class="p">,</span>
+    <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">betas</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span>
+    <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">context_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenizedPrompts</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Preprocess a batch of prompts.</span>
+    <span class="n">named_parameters</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]],</span>
+    <span class="n">has_components_dim</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the optimizer.</span>
 
-<span class="sd">    Tokenizes and chunks text data into lists of tokenized prompts with specified context size.</span>
+<span class="sd">    Warning:</span>
+<span class="sd">        Named parameters must be with default settings (remove duplicates and not recursive).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source_batch: A batch of source data, including &#39;text&#39; with a list of strings.</span>
-<span class="sd">        context_size: Context size for tokenized prompts.</span>
+<span class="sd">        params: Iterable of parameters to optimize or dicts defining parameter groups.</span>
+<span class="sd">        lr: Learning rate. A Tensor LR is not yet fully supported for all implementations. Use a</span>
+<span class="sd">            float LR unless specifying fused=True or capturable=True.</span>
+<span class="sd">        betas: Coefficients used for computing running averages of gradient and its square.</span>
+<span class="sd">        eps: Term added to the denominator to improve numerical stability.</span>
+<span class="sd">        weight_decay: Weight decay (L2 penalty).</span>
+<span class="sd">        named_parameters: An iterator over the named parameters of the model. This is used to</span>
+<span class="sd">            find the parameters when resetting their state. You should set this as</span>
+<span class="sd">            `model.named_parameters()`.</span>
+<span class="sd">        has_components_dim: If the parameters have a components dimension (i.e. if you are</span>
+<span class="sd">            training an SAE on more than one component).</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Tokenized prompts.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the number of parameter names does not match the number of parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_batch</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+    <span class="c1"># Initialise the parent class (note we repeat the parameter names so that type hints work).</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+        <span class="n">betas</span><span class="o">=</span><span class="n">betas</span><span class="p">,</span>
+        <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">tokenized_prompts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span> <span class="o">=</span> <span class="n">has_components_dim</span>
 
-    <span class="c1"># Chunk each tokenized prompt into blocks of context_size, discarding incomplete blocks.</span>
-    <span class="n">context_size_prompts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">tokenized_prompts</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_column_name</span><span class="p">]):</span>  <span class="c1"># type: ignore</span>
-        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">),</span> <span class="n">context_size</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_size</span><span class="p">])</span> <span class="o">==</span> <span class="n">context_size</span>
-        <span class="p">]</span>
-        <span class="n">context_size_prompts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+    <span class="c1"># Store the names of the parameters, so that we can find them later when resetting the</span>
+    <span class="c1"># state.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_value</span> <span class="ow">in</span> <span class="n">named_parameters</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="n">context_size_prompts</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;params&quot;</span><span class="p">]):</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The number of parameter names does not match the number of parameters. &quot;</span>
+            <span class="s2">&quot;If using model.named_parameters() make sure remove_duplicates is True &quot;</span>
+            <span class="s2">&quot;and recursive is False (the default settings).&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3262,32 +3106,16 @@ a context size of 250.</p>
 
 
 
-<h3 id="sparse_autoencoder.source_data.text_dataset.TextDataset.push_to_hugging_face_hub" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">push_to_hugging_face_hub</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">commit_message</span><span class="o">=</span><span class="s1">&#39;Upload preprocessed dataset using sparse_autoencoder.&#39;</span><span class="p">,</span> <span class="n">max_shard_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_shards</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_neurons_state" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.source_data.text_dataset.TextDataset.push_to_hugging_face_hub" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_neurons_state" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Share preprocessed dataset to Hugging Face hub.</p>
+      <p>Reset the state for specific neurons, on a specific parameter.</p>
 
-<details class="motivation" open>
-  <summary>Motivation</summary>
-  <p>Pre-processing a dataset can be time-consuming, so it is useful to be able to share the
-pre-processed dataset with others. This function allows you to do that by pushing the
-pre-processed dataset to the Hugging Face hub.</p>
-</details>
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>You must be logged into HuggingFace (e.g with <code>huggingface-cli login</code> from the terminal)
-to use this.</p>
-</details>
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>This will only work if the dataset is not streamed (i.e. if <code>pre_download=True</code> when
-initializing the dataset).</p>
-</details>
 
 
   <p><strong>Parameters:</strong></p>
@@ -3302,13 +3130,14 @@ initializing the dataset).</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>repo_id</code></td>
+          <td><code>parameter</code></td>
           <td>
-                <code>str</code>
+                <code><span title="torch.nn.parameter.Parameter">Parameter</span></code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Hugging Face repo ID to save the dataset to (e.g. <code>username/dataset_name</code>).</p>
+              <p>The parameter to be reset. Examples from the standard sparse autoencoder
+implementation  include <code>tied_bias</code>, <code>_encoder._weight</code>, <code>_encoder._bias</code>,</p>
             </div>
           </td>
           <td>
@@ -3316,76 +3145,46 @@ initializing the dataset).</p>
           </td>
         </tr>
         <tr>
-          <td><code>commit_message</code></td>
+          <td><code>neuron_indices</code></td>
           <td>
-                <code>str</code>
+                <code><span title="jaxtyping.Int">Int</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX" href="../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE_IDX">LEARNT_FEATURE_IDX</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Commit message.</p>
+              <p>The indices of the neurons to reset.</p>
             </div>
           </td>
           <td>
-                <code>&#39;Upload preprocessed dataset using sparse_autoencoder.&#39;</code>
+              <em>required</em>
           </td>
         </tr>
         <tr>
-          <td><code>max_shard_size</code></td>
+          <td><code>axis</code></td>
           <td>
-                <code>str | None</code>
+                <code>int</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Maximum shard size (e.g. <code>'500MB'</code>). Should not be set if <code>n_shards</code>
-is set.</p>
+              <p>The axis of the state values to reset (i.e. the input/output features axis, as
+we're resetting all input/output features for a specific dead neuron).</p>
             </div>
           </td>
           <td>
-                <code>None</code>
+              <em>required</em>
           </td>
         </tr>
         <tr>
-          <td><code>n_shards</code></td>
+          <td><code>component_idx</code></td>
           <td>
-                <code><span title="pydantic.PositiveInt">PositiveInt</span></code>
+                <code>int</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>Number of shards to split the dataset into. A high number is recommended
-here to allow for flexible distributed training of SAEs across nodes (where e.g.
-each node fetches it's own shard).</p>
+              <p>The component index of the state values to reset.</p>
             </div>
           </td>
           <td>
-                <code>64</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>revision</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Branch to push to.</p>
-            </div>
-          </td>
-          <td>
-                <code>&#39;main&#39;</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>private</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to save the dataset privately.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
+                <code>0</code>
           </td>
         </tr>
     </tbody>
@@ -3404,11 +3203,12 @@ each node fetches it's own shard).</p>
     <tbody>
         <tr>
           <td>
-                <code>TypeError</code>
+                <code>ValueError</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>If the dataset is streamed.</p>
+              <p>If the parameter has a components dimension, but has_components_dim is
+False.</p>
             </div>
           </td>
         </tr>
@@ -3416,14 +3216,8 @@ each node fetches it's own shard).</p>
   </table>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/source_data/text_dataset.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
+            <summary>Source code in <code>sparse_autoencoder/optimizer/deepspeed_adam_with_reset.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
 <span class="normal">130</span>
@@ -3471,61 +3265,169 @@ each node fetches it's own shard).</p>
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
-<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
-<span class="k">def</span> <span class="nf">push_to_hugging_face_hub</span><span class="p">(</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_neurons_state</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">commit_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Upload preprocessed dataset using sparse_autoencoder.&quot;</span><span class="p">,</span>
-    <span class="n">max_shard_size</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">n_shards</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
-    <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">private</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">,</span>
+    <span class="n">neuron_indices</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE_IDX</span><span class="p">)],</span>
+    <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">component_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Share preprocessed dataset to Hugging Face hub.</span>
-
-<span class="sd">    Motivation:</span>
-<span class="sd">        Pre-processing a dataset can be time-consuming, so it is useful to be able to share the</span>
-<span class="sd">        pre-processed dataset with others. This function allows you to do that by pushing the</span>
-<span class="sd">        pre-processed dataset to the Hugging Face hub.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        You must be logged into HuggingFace (e.g with `huggingface-cli login` from the terminal)</span>
-<span class="sd">        to use this.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        This will only work if the dataset is not streamed (i.e. if `pre_download=True` when</span>
-<span class="sd">        initializing the dataset).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for specific neurons, on a specific parameter.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_id: Hugging Face repo ID to save the dataset to (e.g. `username/dataset_name`).</span>
-<span class="sd">        commit_message: Commit message.</span>
-<span class="sd">        max_shard_size: Maximum shard size (e.g. `&#39;500MB&#39;`). Should not be set if `n_shards`</span>
-<span class="sd">            is set.</span>
-<span class="sd">        n_shards: Number of shards to split the dataset into. A high number is recommended</span>
-<span class="sd">            here to allow for flexible distributed training of SAEs across nodes (where e.g.</span>
-<span class="sd">            each node fetches it&#39;s own shard).</span>
-<span class="sd">        revision: Branch to push to.</span>
-<span class="sd">        private: Whether to save the dataset privately.</span>
+<span class="sd">        parameter: The parameter to be reset. Examples from the standard sparse autoencoder</span>
+<span class="sd">            implementation  include `tied_bias`, `_encoder._weight`, `_encoder._bias`,</span>
+<span class="sd">        neuron_indices: The indices of the neurons to reset.</span>
+<span class="sd">        axis: The axis of the state values to reset (i.e. the input/output features axis, as</span>
+<span class="sd">            we&#39;re resetting all input/output features for a specific dead neuron).</span>
+<span class="sd">        component_idx: The component index of the state values to reset.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        TypeError: If the dataset is streamed.</span>
+<span class="sd">        ValueError: If the parameter has a components dimension, but has_components_dim is</span>
+<span class="sd">            False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">IterableDataset</span><span class="p">):</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;Cannot share a streamed dataset to Hugging Face. &quot;</span>
-            <span class="s2">&quot;Please use `pre_download=True` when initializing the dataset.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+    <span class="c1"># Get the state of the parameter</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">push_to_hub</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-        <span class="n">commit_message</span><span class="o">=</span><span class="n">commit_message</span><span class="p">,</span>
-        <span class="n">max_shard_size</span><span class="o">=</span><span class="n">max_shard_size</span><span class="p">,</span>
-        <span class="n">num_shards</span><span class="o">=</span><span class="n">n_shards</span><span class="p">,</span>
-        <span class="n">private</span><span class="o">=</span><span class="n">private</span><span class="p">,</span>
-        <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="c1"># If the number of dimensions is 3, we definitely have a components dimension. If 2, we may</span>
+    <span class="c1"># do (as the bias has 2 dimensions with components, but the weight has 2 dimensions without</span>
+    <span class="c1"># components).</span>
+    <span class="n">definitely_has_components_dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span>
+        <span class="ow">and</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="n">definitely_has_components_dimension</span>
+    <span class="p">):</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;The parameter has a components dimension, but has_components_dim is False. &quot;</span>
+            <span class="s2">&quot;This should not happen.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="c1"># Check if state is initialized</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Check there are any neurons to reset</span>
+    <span class="k">if</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Move the neuron indices to the correct device</span>
+    <span class="n">neuron_indices</span> <span class="o">=</span> <span class="n">neuron_indices</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="c1"># Reset running averages for the specified neurons</span>
+    <span class="k">if</span> <span class="s2">&quot;exp_avg&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># If AdamW is used (weight decay fix), also reset the max exp_avg_sq</span>
+    <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_components_dim</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">][</span><span class="n">component_idx</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index_fill_</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_state_all_parameters" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">reset_state_all_parameters</span><span class="p">()</span></code>
+
+<a href="#sparse_autoencoder.optimizer.deepspeed_adam_with_reset.ZeroOneAdamWithReset.reset_state_all_parameters" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Reset the state for all parameters.</p>
+<p>Iterates over all parameters and resets both the running averages of the gradients and the
+squares of gradients.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/optimizer/deepspeed_adam_with_reset.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">reset_state_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the state for all parameters.</span>
+
+<span class="sd">    Iterates over all parameters and resets both the running averages of the gradients and the</span>
+<span class="sd">    squares of gradients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Iterate over every parameter</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]:</span>
+            <span class="c1"># Get the state</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+
+            <span class="c1"># Check if state is initialized</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Reset running averages</span>
+            <span class="n">exp_avg</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg&quot;</span><span class="p">]</span>
+            <span class="n">exp_avg</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+            <span class="n">exp_avg_sq</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;exp_avg_sq&quot;</span><span class="p">]</span>
+            <span class="n">exp_avg_sq</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+
+            <span class="c1"># If AdamW is used (weight decay fix), also reset the max exp_avg_sq</span>
+            <span class="k">if</span> <span class="s2">&quot;max_exp_avg_sq&quot;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+                <span class="n">max_exp_avg_sq</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;max_exp_avg_sq&quot;</span><span class="p">]</span>
+                <span class="n">max_exp_avg_sq</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
