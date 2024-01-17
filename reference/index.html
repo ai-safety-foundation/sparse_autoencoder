@@ -16125,7 +16125,7 @@ set.</p>
         <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_learned_features</span><span class="p">),</span>
             <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
-            <span class="n">device</span><span class="o">=</span><span class="n">autoencoder_device</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">store_batch</span> <span class="ow">in</span> <span class="n">activations_dataloader</span><span class="p">:</span>
@@ -16158,7 +16158,7 @@ set.</p>
             <span class="c1"># Store count of how many neurons have fired</span>
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
                 <span class="n">fired</span> <span class="o">=</span> <span class="n">learned_activations</span> <span class="o">&gt;</span> <span class="mi">0</span>
-                <span class="n">learned_activations_fired_count</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span><span class="n">fired</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+                <span class="n">learned_activations_fired_count</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span><span class="n">fired</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
 
             <span class="c1"># Backwards pass</span>
             <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -17995,7 +17995,7 @@ used 8bn, although others have had success with 100m+).</p>
     <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_learned_features</span><span class="p">),</span>
         <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
-        <span class="n">device</span><span class="o">=</span><span class="n">autoencoder_device</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">store_batch</span> <span class="ow">in</span> <span class="n">activations_dataloader</span><span class="p">:</span>
@@ -18028,7 +18028,7 @@ used 8bn, although others have had success with 100m+).</p>
         <span class="c1"># Store count of how many neurons have fired</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="n">fired</span> <span class="o">=</span> <span class="n">learned_activations</span> <span class="o">&gt;</span> <span class="mi">0</span>
-            <span class="n">learned_activations_fired_count</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span><span class="n">fired</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">learned_activations_fired_count</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span><span class="n">fired</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
 
         <span class="c1"># Backwards pass</span>
         <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -27167,10 +27167,7 @@ squares of gradients.</p>
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span>
-<span class="normal">373</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">373</span>
 <span class="normal">374</span>
 <span class="normal">375</span>
 <span class="normal">376</span>
@@ -27199,7 +27196,10 @@ squares of gradients.</p>
 <span class="normal">399</span>
 <span class="normal">400</span>
 <span class="normal">401</span>
-<span class="normal">402</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span>
     <span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sweep_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>

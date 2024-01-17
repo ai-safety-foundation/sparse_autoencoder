@@ -2640,10 +2640,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">262</span>
 <span class="normal">263</span>
 <span class="normal">264</span>
 <span class="normal">265</span>
@@ -2702,7 +2699,10 @@
 <span class="normal">318</span>
 <span class="normal">319</span>
 <span class="normal">320</span>
-<span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_training_pipeline</span><span class="p">(</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_training_pipeline</span><span class="p">(</span>
     <span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">,</span>
     <span class="n">source_model</span><span class="p">:</span> <span class="n">HookedTransformer</span> <span class="o">|</span> <span class="n">DataParallel</span><span class="p">[</span><span class="n">HookedTransformer</span><span class="p">],</span>
     <span class="n">autoencoder</span><span class="p">:</span> <span class="n">SparseAutoencoder</span> <span class="o">|</span> <span class="n">DataParallel</span><span class="p">[</span><span class="n">SparseAutoencoder</span><span class="p">]</span> <span class="o">|</span> <span class="n">DeepSpeedEngine</span><span class="p">,</span>
@@ -3036,7 +3036,10 @@
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_autoencoder_optimizer_scheduler</span><span class="p">(</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_autoencoder_optimizer_scheduler</span><span class="p">(</span>
     <span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">use_deepspeed</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DeepSpeedEngine</span> <span class="o">|</span> <span class="n">SparseAutoencoder</span><span class="p">,</span> <span class="n">AdamWithReset</span><span class="p">,</span> <span class="n">LRScheduler</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the sparse autoencoder.</span>
@@ -3090,6 +3093,9 @@
             <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
             <span class="n">optimizer</span><span class="o">=</span><span class="n">optim</span><span class="p">,</span>
             <span class="n">lr_scheduler</span><span class="o">=</span><span class="n">lr_scheduler</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;train_batch_size&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">][</span><span class="s2">&quot;train_batch_size&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">model_engine</span><span class="p">,</span> <span class="n">optimizer_engine</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
@@ -3172,10 +3178,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
@@ -3186,7 +3189,10 @@
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
-<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_loss_function</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossReducer</span><span class="p">:</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_loss_function</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LossReducer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the loss function for the autoencoder.</span>
 
 <span class="sd">    Args:</span>
@@ -3302,10 +3308,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
@@ -3354,7 +3357,10 @@
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
-<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_source_data</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SourceDataset</span><span class="p">:</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_source_data</span><span class="p">(</span><span class="n">hyperparameters</span><span class="p">:</span> <span class="n">RuntimeHyperparameters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SourceDataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup the source data for training.</span>
 
 <span class="sd">    Args:</span>
@@ -3532,11 +3538,11 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_wandb</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">RuntimeHyperparameters</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">setup_wandb</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">RuntimeHyperparameters</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise wandb for experiment tracking.&quot;&quot;&quot;</span>
     <span class="n">wandb</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Fix for broken pipe bug in wandb</span>
     <span class="n">wandb</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
@@ -3661,10 +3667,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
 <span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
@@ -3700,7 +3703,10 @@
 <span class="normal">253</span>
 <span class="normal">254</span>
 <span class="normal">255</span>
-<span class="normal">256</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop_layer_from_cache_names</span><span class="p">(</span><span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">stop_layer_from_cache_names</span><span class="p">(</span><span class="n">cache_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the stop layer from the cache names.</span>
 
 <span class="sd">    Examples:</span>
@@ -3849,10 +3855,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span>
-<span class="normal">373</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">373</span>
 <span class="normal">374</span>
 <span class="normal">375</span>
 <span class="normal">376</span>
@@ -3881,7 +3884,10 @@
 <span class="normal">399</span>
 <span class="normal">400</span>
 <span class="normal">401</span>
-<span class="normal">402</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">sweep</span><span class="p">(</span>
     <span class="n">sweep_config</span><span class="p">:</span> <span class="n">SweepConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sweep_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -3967,10 +3973,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/sweep.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">327</span>
 <span class="normal">328</span>
 <span class="normal">329</span>
 <span class="normal">330</span>
@@ -4010,7 +4013,10 @@
 <span class="normal">364</span>
 <span class="normal">365</span>
 <span class="normal">366</span>
-<span class="normal">367</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">use_deepspeed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">use_deepspeed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the sparse autoencoder using the hyperparameters from the WandB sweep.</span>
 
 <span class="sd">    Args:</span>
