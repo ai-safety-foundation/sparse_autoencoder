@@ -17,16 +17,15 @@ from sparse_autoencoder import (
     LossHyperparameters,
     Method,
     OptimizerHyperparameters,
+)
+from sparse_autoencoder import Parameter as WandbParameter
+from sparse_autoencoder import (
     PipelineHyperparameters,
     SourceDataHyperparameters,
     SourceModelHyperparameters,
     SweepConfig,
     sweep,
 )
-from sparse_autoencoder import (
-    Parameter as WandbParameter,
-)
-
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -36,7 +35,7 @@ def train() -> None:
     sweep_config = SweepConfig(
         parameters=Hyperparameters(
             loss=LossHyperparameters(
-                l1_coefficient=WandbParameter(values=[0.0001]),
+                l1_coefficient=WandbParameter(values=[0.0001, 0.0005]),
             ),
             optimizer=OptimizerHyperparameters(
                 lr=WandbParameter(value=0.0001),
@@ -57,7 +56,7 @@ def train() -> None:
                 pre_download=WandbParameter(value=True),
                 # Total dataset is c.7bn activations (64 files)
                 dataset_files=WandbParameter(
-                    [f"data/train-{str(i).zfill(5)}-of-00064.parquet" for i in range(21)]
+                    [f"data/train-{str(i).zfill(5)}-of-00064.parquet" for i in range(22)]
                 ),
             ),
             autoencoder=AutoencoderHyperparameters(
