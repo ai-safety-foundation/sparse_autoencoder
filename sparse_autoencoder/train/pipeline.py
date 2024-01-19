@@ -25,7 +25,6 @@ from sparse_autoencoder.activation_store.tensor_store import TensorActivationSto
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
 from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
-from sparse_autoencoder.metrics.train.abstract_train_metric import TrainMetricData
 from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
 from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
@@ -266,10 +265,8 @@ class Pipeline:
 
             with torch.no_grad():
                 for metric in self.metrics.train_metrics:
-                    calculated = metric.calculate(
-                        TrainMetricData(batch, learned_activations, reconstructed_activations)
-                    )
-                    metrics.extend(calculated)
+                    res = metric(batch, learned_activations, reconstructed_activations)
+                    metrics.extend(res)
 
             # Store count of how many neurons have fired
             with torch.no_grad():

@@ -63,6 +63,13 @@ class Axis(LowercaseStrEnum):
     ALIVE_FEATURE = auto()
     """Alive feature."""
 
+    # Process
+    PROCESS = auto()
+    """Process (e.g. GPU)."""
+
+    PROCESS_BATCH = auto()
+    """Sub-batch on a specific process (e.g. different GPU)."""
+
     # Feature indices
     INPUT_OUTPUT_FEATURE_IDX = auto()
     """Input or output feature index."""

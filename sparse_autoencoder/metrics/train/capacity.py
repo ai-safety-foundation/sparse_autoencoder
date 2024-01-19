@@ -2,16 +2,11 @@
 
 import einops
 from jaxtyping import Float
-import numpy as np
-from numpy import histogram
 import torch
 from torch import Tensor
-import wandb
 
-from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
-    TrainMetricData,
 )
 from sparse_autoencoder.tensor_types import Axis
 
@@ -29,6 +24,46 @@ class CapacityMetric(AbstractTrainMetric):
     If the features are orthogonal, the capacity is 1. If they are all the same, the capacity is
     1/n.
     """
+
+    _component_names: list[str]
+    full_state_update: bool | None = False
+    learned_activations: list[
+        Float[Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)]
+    ]
+
+    def __init__(self, component_names: list[str]) -> None:
+        """Initialize the metric.
+
+        Args:
+            component_names: Names of the components.
+        """
+        super().__init__(component_names, "capacity")
+        self._component_names = component_names
+        self.add_state(
+            "learned_activations",
+            default=[],
+        )
+
+    def update(
+        self,
+        input_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> None:
+        """Update the metric state.
+
+        Args:
+            input_activations: The input activations.
+            learned_activations: The learned activations.
+            decoded_activations: The decoded activations.
+        """
+        self.learned_activations.append(learned_activations)
 
     @staticmethod
     def capacities(
@@ -71,40 +106,18 @@ class CapacityMetric(AbstractTrainMetric):
 
         return diagonal / sum_of_sq_dot
 
-    @staticmethod
-    def wandb_capacities_histogram(
-        capacities: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.BATCH)],
-    ) -> list[wandb.Histogram]:
-        """Create a W&B histogram of the capacities.
+    def compute(
+        self,
+    ) -> dict[str, float | Tensor]:
+        """Compute the metric."""
+        batch_learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ] = torch.cat(self.learned_activations)
 
-        This can be logged with Weights & Biases using e.g. `wandb.log({"capacities_histogram":
-        wandb_capacities_histogram(capacities)})`.
+        capacities: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.BATCH)] = self.capacities(
+            batch_learned_activations
+        )
 
-        Args:
-            capacities: Capacity of each feature. Can be calculated using :func:`calc_capacities`.
-
-        Returns:
-            Weights & Biases histogram for logging with `wandb.log`.
-        """
-        np_capacities: Float[
-            np.ndarray, Axis.names(Axis.COMPONENT, Axis.BATCH)
-        ] = capacities.cpu().numpy()
-
-        np_histograms = [histogram(capacity, bins=20, range=(0, 1)) for capacity in np_capacities]
-
-        return [wandb.Histogram(np_histogram=np_histogram) for np_histogram in np_histograms]
-
-    def calculate(self, data: TrainMetricData) -> list[MetricResult]:
-        """Calculate the capacities for a training batch."""
-        train_batch_capacities = self.capacities(data.learned_activations)
-
-        histograms = self.wandb_capacities_histogram(train_batch_capacities)
-
-        return [
-            MetricResult(
-                name="capacities",
-                component_wise_values=histograms,
-                location=self.location,
-                aggregate_approach=None,  # Don't aggregate histograms
-            )
-        ]
+        results: dict[str, Float] = dict(zip(self._component_names, capacities))
+        results["total"] = capacities.mean(0)
+        return results

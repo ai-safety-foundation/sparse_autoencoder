@@ -1,17 +1,12 @@
 """Train batch feature density."""
 import einops
 from jaxtyping import Float
-import numpy as np
-from numpy import histogram
 from pydantic import NonNegativeFloat, validate_call
 import torch
 from torch import Tensor
-import wandb
 
-from sparse_autoencoder.metrics.abstract_metric import MetricResult
 from sparse_autoencoder.metrics.train.abstract_train_metric import (
     AbstractTrainMetric,
-    TrainMetricData,
 )
 from sparse_autoencoder.tensor_types import Axis
 
@@ -31,25 +26,33 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
         tracking the progress of training.
     """
 
+    _component_names: list[str]
+    full_state_update: bool | None = False
+    process_results: list[Float[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]]
     threshold: float
 
     @validate_call
     def __init__(
         self,
+        component_names: list[str],
         threshold: NonNegativeFloat = 0.0,
     ) -> None:
         """Initialise the train batch feature density metric.
 
         Args:
+            component_names: Names of the components.
             threshold: Threshold for considering a feature active (i.e. the neuron has "fired").
                 This should be close to zero.
         """
-        super().__init__()
+        super().__init__(component_names, "feature_density")
+        self._component_names = component_names
         self.threshold = threshold
 
     def feature_density(
         self,
-        activations: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ],
     ) -> Float[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
         """Count how many times each feature was active.
 
@@ -58,18 +61,18 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
         Example:
             >>> import torch
             >>> activations = torch.tensor([[[0.5, 0.5, 0.0]], [[0.5, 0.0, 0.0001]]])
-            >>> TrainBatchFeatureDensityMetric(0.001).feature_density(activations).tolist()
+            >>> TrainBatchFeatureDensityMetric(["mlp_1"], 0.001).feature_density(activations).tolist()
             [[1.0, 0.5, 0.0]]
 
         Args:
-            activations: Sample of cached activations (the Autoencoder's learned features).
+            learned_activations: Sample of cached activations (the Autoencoder's learned features).
 
         Returns:
             Number of times each feature was active in a sample.
         """
         has_fired: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)
-        ] = torch.gt(activations, self.threshold).to(
+        ] = torch.gt(learned_activations, self.threshold).to(
             dtype=torch.float  # Move to float so it can be averaged
         )
 
@@ -80,56 +83,42 @@ class TrainBatchFeatureDensityMetric(AbstractTrainMetric):
             "mean",
         )
 
-    @staticmethod
-    def wandb_feature_density_histogram(
-        feature_density: Float[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
-    ) -> list[wandb.Histogram]:
-        """Create a W&B histogram of the feature density.
-
-        This can be logged with Weights & Biases using e.g. `wandb.log({"feature_density_histogram":
-        wandb_feature_density_histogram(feature_density)})`.
-
-        Args:
-            feature_density: Number of times each feature was active in a sample. Can be calculated
-                using :func:`feature_activity_count`.
-
-        Returns:
-            Weights & Biases histogram for logging with `wandb.log`.
-        """
-        numpy_feature_density: Float[
-            np.ndarray, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
-        ] = feature_density.cpu().numpy()
-
-        np_histograms = [
-            histogram(component_feature_density, bins=50)
-            for component_feature_density in numpy_feature_density
-        ]
-
-        return [wandb.Histogram(np_histogram=np_histogram) for np_histogram in np_histograms]
-
-    def calculate(self, data: TrainMetricData) -> list[MetricResult]:
-        """Calculate the train batch feature density metrics.
+    def update(
+        self,
+        input_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[  # noqa: ARG002
+            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> None:
+        """Update the metric state.
 
         Args:
-            data: Train metric data.
-
-        Returns:
-            Dictionary with the train batch feature density metric, and a histogram of the feature
-            density.
+            input_activations: The input activations.
+            learned_activations: The learned activations.
+            decoded_activations: The decoded activations.
         """
-        train_batch_feature_density: Float[
-            Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
-        ] = self.feature_density(data.learned_activations)
+        process_res = self.feature_density(learned_activations)
+        self.process_results.append(process_res)
 
-        component_wise_histograms = self.wandb_feature_density_histogram(
-            train_batch_feature_density
+    def compute(
+        self,
+    ) -> dict[str, float | Tensor]:
+        """Compute the metric."""
+        all_process_results = torch.stack(self.process_results)
+        process_average: Float[Tensor, Axis.COMPONENT] = einops.reduce(
+            all_process_results,
+            (
+                f"{Axis.PROCESS} {Axis.COMPONENT} {Axis.LEARNT_FEATURE} "
+                f"-> {Axis.COMPONENT} {Axis.LEARNT_FEATURE}"
+            ),
+            "mean",
         )
 
-        return [
-            MetricResult(
-                name="feature_density",
-                component_wise_values=component_wise_histograms,
-                location=self.location,
-                aggregate_approach=None,  # Don't aggregate the histograms
-            )
-        ]
+        results: dict[str, Float] = dict(zip(self._component_names, process_average))
+        results["total"] = process_average.mean(0)
+        return results

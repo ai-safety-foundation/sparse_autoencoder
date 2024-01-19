@@ -1,16 +1,12 @@
 """Abstract metric classes."""
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import final
+from typing import Any, final
 
 from jaxtyping import Float
 from torch import Tensor
 
-from sparse_autoencoder.metrics.abstract_metric import (
-    AbstractMetric,
-    MetricLocation,
-    MetricResult,
-)
+from sparse_autoencoder.metrics.abstract_metric import MetricLocation
 from sparse_autoencoder.metrics.utils.add_component_axis_if_missing import (
     add_component_axis_if_missing,
 )
@@ -54,15 +50,14 @@ class ValidationMetricData:
         ).detach()
 
 
-class AbstractValidationMetric(AbstractMetric, ABC):
+class AbstractValidationMetric(ABC):
     """Abstract validation metric."""
 
-    @final
     @property
     def location(self) -> MetricLocation:
-        """Metric type name."""
+        """Location."""
         return MetricLocation.VALIDATE
 
     @abstractmethod
-    def calculate(self, data: ValidationMetricData) -> list[MetricResult]:
+    def calculate(self, data: ValidationMetricData) -> list[Any]:
         """Calculate any metrics."""
