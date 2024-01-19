@@ -107,6 +107,7 @@
         "snapshottest",
         "solu",
         "tinystories",
+        "torchmetrics",
         "tqdm",
         "transformer_lens",
         "typecheck",

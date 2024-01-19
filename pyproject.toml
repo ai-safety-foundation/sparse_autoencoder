@@ -12,12 +12,14 @@
         datasets=">=2.15.0"
         deepspeed={version=">=0.12.6", extras=["deepspeed"], optional=false}
         einops=">=0.6"
+        lightning="^2.1.3"
         mpi4py={version=">=3.1.5", extras=["deepspeed"], optional=true}
         pydantic=">=2.5.2"
         python=">=3.10, <3.12"
         strenum=">=0.4.15"
         tokenizers=">=0.15.0"
         torch=">=2.1.1"
+        torchmetrics="^1.3.0.post0"
         transformers=">=4.35.2"
         wandb=">=0.16.1"
         zstandard=">=0.22.0"
@@ -148,7 +150,6 @@
             "--doctest-modules",
             "--ignore=*.md",
             "--jaxtyping-packages=sparse_autoencoder,beartype.beartype",
-            "-n=auto",
             "-s",
         ]
         filterwarnings=[
