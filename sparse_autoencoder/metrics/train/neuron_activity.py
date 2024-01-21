@@ -1,6 +1,8 @@
-"""Train batch feature density."""
+"""Neuron activity metric."""
+from typing import Annotated
+
 from jaxtyping import Bool, Float, Int64
-from pydantic import PositiveInt, validate_call
+from pydantic import Field, NonNegativeFloat, PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torchmetrics import Metric
@@ -8,18 +10,19 @@ from torchmetrics import Metric
 from sparse_autoencoder.tensor_types import Axis
 
 
-class FeatureDensityMetric(Metric):
-    """Feature density metric.
+class NeuronActivityMetric(Metric):
+    """Neuron activity metric.
 
-    Percentage of samples in which each feature was active (i.e. the neuron has "fired"), in a
-    training batch.
-
-    Generally we want a small number of features to be active in each batch, so average feature
-    density should be low. By contrast if the average feature density is high, it means that the
-    features are not sparse enough.
+    Note that if you create several versions of this (e.g. with different thresholds), as long as
+    they are in the same torchmetrics MetricCollection, they will share the same state.
 
     Example:
-        >>> metric = FeatureDensityMetric(num_learned_features=3, num_components=1)
+        With a single component and a horizon of 2 activations, the metric will return nothing
+        after the first activation is added and then computed, and then return the number of dead
+        neurons after the second activation is added (with update). The breakdown by component isn't
+        shown here as there is just one component.
+
+        >>> metric = NeuronActivityMetric(num_learned_features=3)
         >>> learned_activations = torch.tensor([
         ...     [ # Batch 1
         ...         [1., 0., 1.] # Component 1: learned features (2 active neurons)
@@ -29,23 +32,39 @@ class FeatureDensityMetric(Metric):
         ...     ]
         ... ])
         >>> metric.forward(learned_activations)
-        tensor([[0.5000, 0.0000, 0.5000]])
+        tensor(1)
     """
 
-    # Torchmetrics settings
+    # Persist state across multiple batches
     is_differentiable: bool | None = False
     full_state_update: bool | None = True
     plot_lower_bound: float | None = 0.0
-    plot_upper_bound: float | None = 1.0
+
+    # Metric settings
+    _threshold_is_dead_portion_fires: NonNegativeFloat
 
     # State
     neuron_fired_count: Int64[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
-    def __init__(self, num_learned_features: PositiveInt, num_components: PositiveInt = 1) -> None:
-        """Initialise the metric."""
+    def __init__(
+        self,
+        num_learned_features: PositiveInt,
+        num_components: PositiveInt = 1,
+        threshold_is_dead_portion_fires: Annotated[float, Field(strict=True, ge=0, le=1)] = 0.0,
+    ) -> None:
+        """Initialise the metric.
+
+        Args:
+            num_learned_features: Number of learned features.
+            num_components: Number of components.
+            threshold_is_dead_portion_fires: Thresholds for counting a neuron as dead (portion of
+                activation vectors that it fires for must be less than or equal to this number).
+                Commonly used values are 0.0, 1e-5 and 1e-6.
+        """
         super().__init__()
+        self._threshold_is_dead_portion_fires = threshold_is_dead_portion_fires
 
         self.add_state(
             "neuron_fired_count",
@@ -80,8 +99,10 @@ class FeatureDensityMetric(Metric):
 
         self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.int64)
 
-    def compute(
-        self,
-    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
+    def compute(self) -> Int64[Tensor, Axis.COMPONENT_OPTIONAL]:
         """Compute the metric."""
-        return self.neuron_fired_count / self.num_activation_vectors
+        threshold_activations: Float[Tensor, Axis.SINGLE_ITEM] = (
+            self._threshold_is_dead_portion_fires * self.num_activation_vectors
+        )
+
+        return torch.sum(self.neuron_fired_count <= threshold_activations, dim=-1)
