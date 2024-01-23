@@ -1,11 +1,10 @@
 """Get the device that the model is on."""
-from deepspeed import DeepSpeedEngine
 import torch
 from torch.nn import Module
 from torch.nn.parallel import DataParallel
 
 
-def get_model_device(model: Module | DataParallel | DeepSpeedEngine) -> torch.device:
+def get_model_device(model: Module | DataParallel) -> torch.device:
     """Get the device on which a PyTorch model is on.
 
     Args:
@@ -17,7 +16,7 @@ def get_model_device(model: Module | DataParallel | DeepSpeedEngine) -> torch.de
     Raises:
         ValueError: If the model has no parameters.
     """
-    # Deepspeed models already have a device property, so just return that
+    # Some modules (e.g. Deepspeed models) already have a device property, so just return that
     if hasattr(model, "device"):
         return model.device
 
