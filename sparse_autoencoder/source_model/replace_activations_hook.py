@@ -1,12 +1,12 @@
 """Replace activations hook."""
 from typing import TYPE_CHECKING
 
-from deepspeed import DeepSpeedEngine
 from jaxtyping import Float
 from torch import Tensor
 from torch.nn.parallel import DataParallel
 from transformer_lens.hook_points import HookPoint
 
+from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 def replace_activations_hook(
     value: Tensor,
     hook: HookPoint,  # noqa: ARG001
-    sparse_autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
+    sparse_autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | LitSparseAutoencoder,
     component_idx: int | None = None,
     n_components: int | None = None,
 ) -> Tensor:
