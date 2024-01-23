@@ -13,9 +13,6 @@ from sparse_autoencoder.tensor_types import Axis
 class NeuronActivityMetric(Metric):
     """Neuron activity metric.
 
-    Note that if you create several versions of this (e.g. with different thresholds), as long as
-    they are in the same torchmetrics MetricCollection, they will share the same state.
-
     Example:
         With a single component and a horizon of 2 activations, the metric will return nothing
         after the first activation is added and then computed, and then return the number of dead
@@ -35,7 +32,7 @@ class NeuronActivityMetric(Metric):
         tensor(1)
     """
 
-    # Persist state across multiple batches
+    # Torchmetrics settings
     is_differentiable: bool | None = False
     full_state_update: bool | None = True
     plot_lower_bound: float | None = 0.0
