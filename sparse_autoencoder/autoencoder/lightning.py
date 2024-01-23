@@ -32,6 +32,8 @@ class LitSparseAutoencoder(LightningModule):
         config: SparseAutoencoderConfig,
         component_names: list[str],
         l1_coefficient: float = 0.001,
+        *,
+        keep_batch_dim: bool = False,
     ):
         """Initialise the module."""
         super().__init__()
@@ -42,8 +44,12 @@ class LitSparseAutoencoder(LightningModule):
         add_component_names = partial(ClasswiseWrapper, labels=component_names, prefix="train/")
 
         # Create the loss metrics
-        self.l1_loss = L1AbsoluteLoss(num_components=num_components)
-        self.l2_loss = L2ReconstructionLoss(num_components=num_components)
+        self.l1_loss = add_component_names(
+            L1AbsoluteLoss(num_components=num_components, keep_batch_dim=keep_batch_dim)
+        )
+        self.l2_loss = add_component_names(
+            L2ReconstructionLoss(num_components=num_components, keep_batch_dim=keep_batch_dim)
+        )
 
         self.neuron_fired_count = NeuronFiredCountMetric(
             num_learned_features=config.n_learned_features,
@@ -82,7 +88,10 @@ class LitSparseAutoencoder(LightningModule):
         batch: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-    ) -> None:
+    ) -> (
+        Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
+        | Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    ):
         """Training step."""
         # Forward pass
         output: ForwardPassResult = self(batch)

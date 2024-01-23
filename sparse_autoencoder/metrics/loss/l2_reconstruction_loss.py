@@ -49,16 +49,25 @@ class L2ReconstructionLoss(Metric):
     plot_lower_bound: float | None = 0.0
 
     # State
-    sum_activation_vectors_mse: Float[Tensor, Axis.COMPONENT_OPTIONAL]
+    sum_activation_vectors_mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] | list[
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    ]
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
-    def __init__(self, num_components: PositiveInt = 1) -> None:
+    def __init__(
+        self,
+        num_components: PositiveInt = 1,
+        *,
+        keep_batch_dim: bool = False,
+    ) -> None:
         """Initialise the L2 reconstruction loss."""
         super().__init__()
 
         self.add_state(
-            "sum_activation_vectors_mse", default=torch.zeros(num_components), dist_reduce_fx="sum"
+            "sum_activation_vectors_mse",
+            default=[] if keep_batch_dim else torch.zeros(num_components),  # See `update` method
+            dist_reduce_fx="sum",
         )
         self.add_state(
             "num_activation_vectors",
@@ -78,16 +87,33 @@ class L2ReconstructionLoss(Metric):
     ) -> None:
         """Update the metric state.
 
+        If we're keeping the batch dimension, we simply take the mse of the activations
+        (over the features dimension) and then append this tensor to a list. Then during compute we
+        just concatenate and return this list. This is useful for e.g. getting L1 loss by batch item
+        when resampling neurons (see the neuron resampler for details).
+
+        By contrast if we're averaging over the batch dimension, we sum the activations over the
+        batch dimension during update (on each process), and then divide by the number of activation
+        vectors on compute to get the mean.
+
         Args:
             decoded_activations: The decoded activations from the autoencoder.
             source_activations: The source activations from the autoencoder.
         """
         mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] = (
-            (decoded_activations - source_activations).pow(2).mean(dim=-1).sum(dim=0)
+            (decoded_activations - source_activations).pow(2).mean(dim=-1)
         )
-        self.sum_activation_vectors_mse += mse
-        self.num_activation_vectors += source_activations.shape[0]
+
+        if isinstance(self.sum_activation_vectors_mse, list):  # If keeping the batch dimension
+            self.sum_activation_vectors_mse.append(mse)
+
+        else:
+            self.sum_activation_vectors_mse += mse.sum(dim=0)
+            self.num_activation_vectors += source_activations.shape[0]
 
     def compute(self) -> Float[Tensor, Axis.COMPONENT_OPTIONAL]:
         """Compute the metric."""
+        if isinstance(self.sum_activation_vectors_mse, list):  # If keeping the batch dimension
+            return torch.cat(self.sum_activation_vectors_mse)
+
         return self.sum_activation_vectors_mse / self.num_activation_vectors

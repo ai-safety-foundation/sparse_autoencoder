@@ -34,16 +34,31 @@ class L1AbsoluteLoss(Metric):
     plot_lower_bound: float | None = 0.0
 
     # State
-    sum_learned_activations: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
+    sum_learned_activations: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)] | list[
+        Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
+    ]
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
-    def __init__(self, num_components: PositiveInt = 1) -> None:
-        """Initialize the metric."""
+    def __init__(
+        self,
+        num_components: PositiveInt = 1,
+        *,
+        keep_batch_dim: bool = False,
+    ) -> None:
+        """Initialize the metric.
+
+        Args:
+            num_components: Number of components.
+            keep_batch_dim: Whether to keep the batch dimension in the loss output.
+        """
         super().__init__()
 
+        # Add the state
         self.add_state(
-            "sum_learned_activations", default=torch.zeros(num_components), dist_reduce_fx="sum"
+            "sum_learned_activations",
+            default=[] if keep_batch_dim else torch.zeros(num_components),  # See `update` method
+            dist_reduce_fx="sum",
         )
         self.add_state(
             "num_activation_vectors",
@@ -60,12 +75,29 @@ class L1AbsoluteLoss(Metric):
     ) -> None:
         """Update the metric state.
 
+        If we're keeping the batch dimension, we simply take the absolute sum of the activations
+        (over the features dimension) and then append this tensor to a list. Then during compute we
+        just concatenate and return this list. This is useful for e.g. getting L1 loss by batch item
+        when resampling neurons (see the neuron resampler for details).
+
+        By contrast if we're averaging over the batch dimension, we sum the activations over the
+        batch dimension during update (on each process), and then divide by the number of activation
+        vectors on compute to get the mean.
+
         Args:
             learned_activations: Learned activations (intermediate activations in the autoencoder).
         """
-        self.sum_learned_activations += torch.abs(learned_activations).sum(dim=-1).sum(dim=0)
-        self.num_activation_vectors += learned_activations.shape[0]
+        absolute_loss = torch.abs(learned_activations).sum(dim=-1)
 
-    def compute(self) -> Float[Tensor, Axis.COMPONENT_OPTIONAL]:
+        if isinstance(self.sum_learned_activations, list):  # If keeping the batch dimension
+            self.sum_learned_activations.append(absolute_loss)
+        else:
+            self.sum_learned_activations += absolute_loss.sum(dim=0)
+            self.num_activation_vectors += learned_activations.shape[0]
+
+    def compute(self) -> Tensor:
         """Compute the metric."""
+        if isinstance(self.sum_learned_activations, list):  # If keeping the batch dimension
+            return torch.cat(self.sum_learned_activations)
+
         return self.sum_learned_activations / self.num_activation_vectors
