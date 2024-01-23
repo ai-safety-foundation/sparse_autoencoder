@@ -153,6 +153,7 @@
             "-s",
         ]
         filterwarnings=[
+            "ignore::DeprecationWarning",
             "ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
             "ignore::pydantic.warnings.PydanticDeprecatedSince20",
         ]
