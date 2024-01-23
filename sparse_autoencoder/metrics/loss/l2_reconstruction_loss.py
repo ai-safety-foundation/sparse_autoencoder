@@ -48,10 +48,51 @@ class L2ReconstructionLoss(Metric):
     full_state_update: bool | None = False
     plot_lower_bound: float | None = 0.0
 
+    # Settings
+    _num_components: int
+
+    @property
+    def num_components(self) -> int:
+        """Number of components."""
+        return self._num_components
+
+    _keep_batch_dim: bool
+
+    @property
+    def keep_batch_dim(self) -> bool:
+        """Whether to keep the batch dimension in the loss output."""
+        return self._keep_batch_dim
+
+    @keep_batch_dim.setter
+    def keep_batch_dim(self, keep_batch_dim: bool) -> None:
+        """Set whether to keep the batch dimension in the loss output.
+
+        When setting this we need to change the state to either a list if keeping the batch
+        dimension (so we can accumulate all the losses and concatenate them at the end along this
+        dimension). Alternatively it should be a tensor if not keeping the batch dimension (so we
+        can sum the losses over the batch dimension during update and then take the mean).
+
+        By doing this in a setter we allow changing of this setting after the metric is initialised.
+        """
+        self._keep_batch_dim = keep_batch_dim
+        self.reset()  # Reset the metric to update the state
+        if keep_batch_dim and not isinstance(self.sum_activation_vectors_mse, list):
+            self.add_state(
+                "sum_activation_vectors_mse",
+                default=[],
+                dist_reduce_fx="sum",
+            )
+        elif not isinstance(self.sum_activation_vectors_mse, Tensor):
+            self.add_state(
+                "sum_activation_vectors_mse",
+                default=torch.zeros(self._num_components),
+                dist_reduce_fx="sum",
+            )
+
     # State
     sum_activation_vectors_mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] | list[
         Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
-    ]
+    ] | None = None
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
@@ -63,12 +104,9 @@ class L2ReconstructionLoss(Metric):
     ) -> None:
         """Initialise the L2 reconstruction loss."""
         super().__init__()
+        self._num_components = num_components
+        self.keep_batch_dim = keep_batch_dim
 
-        self.add_state(
-            "sum_activation_vectors_mse",
-            default=[] if keep_batch_dim else torch.zeros(num_components),  # See `update` method
-            dist_reduce_fx="sum",
-        )
         self.add_state(
             "num_activation_vectors",
             default=torch.tensor(0, dtype=torch.int64),

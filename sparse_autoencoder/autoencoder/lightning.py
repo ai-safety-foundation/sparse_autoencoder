@@ -27,13 +27,24 @@ class LitSparseAutoencoder(LightningModule):
 
     neuron_fired_count: NeuronFiredCountMetric
 
+    _keep_batch_dim_loss: bool = False
+
+    @property
+    def keep_batch_dim_loss(self) -> bool:
+        """Whether to keep the batch dimension in the loss output."""
+        return self._keep_batch_dim_loss
+
+    @keep_batch_dim_loss.setter
+    def keep_batch_dim_loss(self, keep_batch_dim_loss: bool) -> None:
+        """Set whether to keep the batch dimension in the loss output."""
+        self.l1_loss.keep_batch_dim = keep_batch_dim_loss
+        self.l2_loss.keep_batch_dim = keep_batch_dim_loss
+
     def __init__(
         self,
         config: SparseAutoencoderConfig,
         component_names: list[str],
         l1_coefficient: float = 0.001,
-        *,
-        keep_batch_dim: bool = False,
     ):
         """Initialise the module."""
         super().__init__()
@@ -44,32 +55,21 @@ class LitSparseAutoencoder(LightningModule):
         add_component_names = partial(ClasswiseWrapper, labels=component_names, prefix="train/")
 
         # Create the loss metrics
-        self.l1_loss = add_component_names(
-            L1AbsoluteLoss(num_components=num_components, keep_batch_dim=keep_batch_dim)
-        )
-        self.l2_loss = add_component_names(
-            L2ReconstructionLoss(num_components=num_components, keep_batch_dim=keep_batch_dim)
-        )
+        self.l1_loss = add_component_names(L1AbsoluteLoss(num_components))
+        self.l2_loss = add_component_names(L2ReconstructionLoss(num_components))
 
         self.neuron_fired_count = NeuronFiredCountMetric(
-            num_learned_features=config.n_learned_features,
-            num_components=num_components,
+            num_learned_features=config.n_learned_features, num_components=num_components
         )
 
         self.train_metrics = MetricCollection(
             [
-                add_component_names(L0NormMetric(num_components=num_components)),
+                add_component_names(L0NormMetric(num_components)),
                 add_component_names(
-                    NeuronActivityMetric(
-                        num_learned_features=config.n_learned_features,
-                        num_components=num_components,
-                    ),
+                    NeuronActivityMetric(config.n_learned_features, num_components),
                 ),
                 add_component_names(
-                    FeatureDensityMetric(
-                        num_learned_features=config.n_learned_features,
-                        num_components=num_components,
-                    ),
+                    FeatureDensityMetric(config.n_learned_features, num_components),
                 ),
             ]
         )
@@ -88,6 +88,7 @@ class LitSparseAutoencoder(LightningModule):
         batch: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
+        batch_idx: int | None = None,  # noqa: ARG002
     ) -> (
         Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
         | Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
