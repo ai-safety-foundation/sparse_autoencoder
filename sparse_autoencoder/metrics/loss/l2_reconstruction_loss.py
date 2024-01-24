@@ -50,12 +50,6 @@ class L2ReconstructionLoss(Metric):
 
     # Settings
     _num_components: int
-
-    @property
-    def num_components(self) -> int:
-        """Number of components."""
-        return self._num_components
-
     _keep_batch_dim: bool
 
     @property
@@ -76,21 +70,21 @@ class L2ReconstructionLoss(Metric):
         """
         self._keep_batch_dim = keep_batch_dim
         self.reset()  # Reset the metric to update the state
-        if keep_batch_dim and not isinstance(self.sum_activation_vectors_mse, list):
+        if keep_batch_dim and not isinstance(self.mse, list):
             self.add_state(
-                "sum_activation_vectors_mse",
+                "mse",
                 default=[],
                 dist_reduce_fx="sum",
             )
-        elif not isinstance(self.sum_activation_vectors_mse, Tensor):
+        elif not isinstance(self.mse, Tensor):
             self.add_state(
-                "sum_activation_vectors_mse",
+                "mse",
                 default=torch.zeros(self._num_components),
                 dist_reduce_fx="sum",
             )
 
     # State
-    sum_activation_vectors_mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] | list[
+    mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] | list[
         Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
     ] | None = None
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
@@ -106,12 +100,23 @@ class L2ReconstructionLoss(Metric):
         super().__init__()
         self._num_components = num_components
         self.keep_batch_dim = keep_batch_dim
-
         self.add_state(
             "num_activation_vectors",
             default=torch.tensor(0, dtype=torch.int64),
             dist_reduce_fx="sum",
         )
+
+    @staticmethod
+    def calculate_mse(
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
+        """Calculate the MSE."""
+        return (decoded_activations - source_activations).pow(2).mean(dim=-1)
 
     def update(
         self,
@@ -139,20 +144,18 @@ class L2ReconstructionLoss(Metric):
             source_activations: The source activations from the autoencoder.
             **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
-        mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] = (
-            (decoded_activations - source_activations).pow(2).mean(dim=-1)
-        )
+        mse = self.calculate_mse(decoded_activations, source_activations)
 
-        if isinstance(self.sum_activation_vectors_mse, list):  # If keeping the batch dimension
-            self.sum_activation_vectors_mse.append(mse)
-
+        if self.keep_batch_dim:
+            self.mse.append(mse)  # type: ignore
         else:
-            self.sum_activation_vectors_mse += mse.sum(dim=0)
+            self.mse += mse.sum(dim=0)
             self.num_activation_vectors += source_activations.shape[0]
 
     def compute(self) -> Float[Tensor, Axis.COMPONENT_OPTIONAL]:
         """Compute the metric."""
-        if isinstance(self.sum_activation_vectors_mse, list):  # If keeping the batch dimension
-            return torch.cat(self.sum_activation_vectors_mse)
-
-        return self.sum_activation_vectors_mse / self.num_activation_vectors
+        return (
+            torch.cat(self.mse)  # type: ignore
+            if self.keep_batch_dim
+            else self.mse / self.num_activation_vectors
+        )
