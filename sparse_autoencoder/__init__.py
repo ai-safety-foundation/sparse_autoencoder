@@ -4,6 +4,7 @@ from sparse_autoencoder.activation_store.tensor_store import TensorActivationSto
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 from sparse_autoencoder.metrics.loss.l1_absolute_loss import L1AbsoluteLoss
 from sparse_autoencoder.metrics.loss.l2_reconstruction_loss import L2ReconstructionLoss
+from sparse_autoencoder.metrics.loss.sae_loss import SparseAutoencoderLoss
 from sparse_autoencoder.metrics.train.capacity import CapacityMetric
 from sparse_autoencoder.metrics.train.feature_density import FeatureDensityMetric
 from sparse_autoencoder.metrics.train.l0_norm import L0NormMetric
@@ -81,6 +82,7 @@ __all__ = [
     "SourceModelRuntimeHyperparameters",
     "SparseAutoencoder",
     "SparseAutoencoderConfig",
+    "SparseAutoencoderLoss",
     "sweep",
     "SweepConfig",
     "TensorActivationStore",
