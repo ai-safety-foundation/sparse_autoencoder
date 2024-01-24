@@ -6,6 +6,7 @@ from lightning.pytorch import LightningModule
 from torch import Tensor
 from torch.optim.optimizer import Optimizer
 from torchmetrics import MetricCollection
+from torchmetrics.metric import CompositionalMetric
 
 from sparse_autoencoder.autoencoder.model import (
     ForwardPassResult,
@@ -26,20 +27,13 @@ from sparse_autoencoder.tensor_types import Axis
 class LitSparseAutoencoder(LightningModule):
     """Lightning Sparse Autoencoder."""
 
+    sparse_autoencoder: SparseAutoencoder
+
     neuron_fired_count: NeuronFiredCountMetric
 
-    _keep_batch_dim_loss: bool = False
+    loss_metric: CompositionalMetric
 
-    @property
-    def keep_batch_dim_loss(self) -> bool:
-        """Whether to keep the batch dimension in the loss output."""
-        return self._keep_batch_dim_loss
-
-    @keep_batch_dim_loss.setter
-    def keep_batch_dim_loss(self, keep_batch_dim_loss: bool) -> None:
-        """Set whether to keep the batch dimension in the loss output."""
-        self.l1_loss.keep_batch_dim = keep_batch_dim_loss
-        self.l2_loss.keep_batch_dim = keep_batch_dim_loss
+    train_metrics: MetricCollection
 
     def __init__(
         self,
@@ -50,15 +44,14 @@ class LitSparseAutoencoder(LightningModule):
         """Initialise the module."""
         super().__init__()
         self.sparse_autoencoder = SparseAutoencoder(config)
-        self._l1_coefficient = l1_coefficient
 
         num_components = config.n_components or 1
         add_component_names = partial(ClasswiseWrapperWithMean, labels=component_names)
 
         # Create the loss & metrics
-        self.l1_loss = L1AbsoluteLoss(num_components)
-        self.l2_loss = L2ReconstructionLoss(num_components)
-        loss = l1_coefficient * self.l1_loss + self.l2_loss
+        l1_loss_metric = L1AbsoluteLoss(num_components)
+        l2_loss_metric = L2ReconstructionLoss(num_components)
+        self.loss_metric = l1_coefficient * l1_loss_metric + l2_loss_metric
 
         self.neuron_fired_count = NeuronFiredCountMetric(
             num_learned_features=config.n_learned_features, num_components=num_components
@@ -75,10 +68,14 @@ class LitSparseAutoencoder(LightningModule):
                     FeatureDensityMetric(config.n_learned_features, num_components),
                     prefix="train/feature_density/",
                 ),
-                "l1": add_component_names(self.l1_loss, prefix="loss/l1_learned_activations/"),
-                "l2": add_component_names(self.l2_loss, prefix="loss/l2_reconstruction/"),
-                "loss": add_component_names(loss, prefix="loss/total/"),
-            }
+                "l1": add_component_names(l1_loss_metric, prefix="loss/l1_learned_activations/"),
+                "l2": add_component_names(l2_loss_metric, prefix="loss/l2_reconstruction/"),
+                "loss": add_component_names(self.loss_metric, prefix="loss/total/"),
+            },
+            # Share state & updates across groups (to avoid e.g. computing l1 twice for both the
+            # loss and l1 metrics). Note the metric that goes first must calculate all the states
+            # needed by the rest of the group.
+            compute_groups=[["loss", "l1", "l2"], ["activity", "density"], ["l0"]],
         )
 
     def forward(  # type: ignore[override]
@@ -119,7 +116,7 @@ class LitSparseAutoencoder(LightningModule):
 
     def on_after_backward(self) -> None:
         """After-backward pass hook."""
-        self.autoencoder.post_backwards_hook()
+        self.sparse_autoencoder.post_backwards_hook()
 
     def on_train_start(self) -> None:
         """Train start hook."""
@@ -129,5 +126,24 @@ class LitSparseAutoencoder(LightningModule):
     def configure_optimizers(self) -> Optimizer:
         """Configure the optimizer."""
         return AdamWithReset(
-            self.parameters(), named_parameters=self.named_parameters(), has_components_dim=True
+            self.sparse_autoencoder.parameters(),
+            named_parameters=self.sparse_autoencoder.named_parameters(),
+            has_components_dim=True,
         )
+
+    @property
+    def keep_batch_dim_loss(self) -> bool:
+        """Whether to keep the batch dimension in the loss output."""
+        if not isinstance(self.loss_metric.metric_a, (L1AbsoluteLoss, L2ReconstructionLoss)):
+            error = "Underlying loss metric is not supported."
+            raise TypeError(error)
+        return self.loss_metric.metric_a.keep_batch_dim
+
+    @keep_batch_dim_loss.setter
+    def keep_batch_dim_loss(self, keep_batch_dim_loss: bool) -> None:
+        """Set whether to keep the batch dimension in the loss output."""
+        for module in self.loss_metric.children():
+            if not isinstance(module, (L1AbsoluteLoss, L2ReconstructionLoss)):
+                error = "Underlying loss metric is not supported."
+                raise TypeError(error)
+            module.keep_batch_dim = keep_batch_dim_loss
