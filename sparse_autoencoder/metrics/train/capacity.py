@@ -76,6 +76,7 @@ class CapacityMetric(Metric):
         learned_activations: Float[
             Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ],
+        **kwargs,  # type: ignore # noqa: ANN003, ARG002 (allows combining with other metrics)
     ) -> None:
         """Update the metric state.
 
@@ -83,6 +84,7 @@ class CapacityMetric(Metric):
             input_activations: The input activations.
             learned_activations: The learned activations.
             decoded_activations: The decoded activations.
+            **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
         self.learned_activations.append(learned_activations)
 

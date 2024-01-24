@@ -5,7 +5,7 @@ from jaxtyping import Float
 from lightning.pytorch import LightningModule
 from torch import Tensor
 from torch.optim.optimizer import Optimizer
-from torchmetrics import ClasswiseWrapper, MetricCollection
+from torchmetrics import MetricCollection
 
 from sparse_autoencoder.autoencoder.model import (
     ForwardPassResult,
@@ -18,6 +18,7 @@ from sparse_autoencoder.metrics.train.feature_density import FeatureDensityMetri
 from sparse_autoencoder.metrics.train.l0_norm import L0NormMetric
 from sparse_autoencoder.metrics.train.neuron_activity import NeuronActivityMetric
 from sparse_autoencoder.metrics.train.neuron_fired_count import NeuronFiredCountMetric
+from sparse_autoencoder.metrics.wrappers.classwise import ClasswiseWrapperWithMean
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.tensor_types import Axis
 
@@ -52,26 +53,32 @@ class LitSparseAutoencoder(LightningModule):
         self._l1_coefficient = l1_coefficient
 
         num_components = config.n_components or 1
-        add_component_names = partial(ClasswiseWrapper, labels=component_names, prefix="train/")
+        add_component_names = partial(ClasswiseWrapperWithMean, labels=component_names)
 
-        # Create the loss metrics
-        self.l1_loss = add_component_names(L1AbsoluteLoss(num_components))
-        self.l2_loss = add_component_names(L2ReconstructionLoss(num_components))
+        # Create the loss & metrics
+        self.l1_loss = L1AbsoluteLoss(num_components)
+        self.l2_loss = L2ReconstructionLoss(num_components)
+        loss = l1_coefficient * self.l1_loss + self.l2_loss
 
         self.neuron_fired_count = NeuronFiredCountMetric(
             num_learned_features=config.n_learned_features, num_components=num_components
         )
 
         self.train_metrics = MetricCollection(
-            [
-                add_component_names(L0NormMetric(num_components)),
-                add_component_names(
+            {
+                "l0": add_component_names(L0NormMetric(num_components), prefix="train/l0_norm/"),
+                "activity": add_component_names(
                     NeuronActivityMetric(config.n_learned_features, num_components),
+                    prefix="train/neuron_activity/",
                 ),
-                add_component_names(
+                "density": add_component_names(
                     FeatureDensityMetric(config.n_learned_features, num_components),
+                    prefix="train/feature_density/",
                 ),
-            ]
+                "l1": add_component_names(self.l1_loss, prefix="loss/l1_learned_activations/"),
+                "l2": add_component_names(self.l2_loss, prefix="loss/l2_reconstruction/"),
+                "loss": add_component_names(loss, prefix="loss/total/"),
+            }
         )
 
     def forward(  # type: ignore[override]
@@ -97,28 +104,18 @@ class LitSparseAutoencoder(LightningModule):
         # Forward pass
         output: ForwardPassResult = self(batch)
 
-        # Metrics
-        train_metrics = self.train_metrics(learned_activations=output.learned_activations)
-
-        # Loss
-        l1_loss = self.l1_loss(learned_activations=output.learned_activations)
-        l2_loss = self.l2_loss(
-            source_activations=batch, decoded_activations=output.decoded_activations
+        # Metrics & loss
+        train_metrics = self.train_metrics(
+            source_activations=batch,
+            learned_activations=output.learned_activations,
+            decoded_activations=output.decoded_activations,
         )
-        component_wise_loss = l1_loss.values() * self._l1_coefficient + l2_loss.values()
-        loss = train_metrics["loss"]
-
-        # Log
-        component_wise_loss_metrics = {
-            f"train/loss/{name}": value
-            for name, value in zip(self.component_names, component_wise_loss)
-        }
-        self.log_dict({**train_metrics, **l1_loss, **l2_loss, **component_wise_loss_metrics})
+        self.log_dict(train_metrics)
 
         # Neuron activity
         self.neuron_fired_count.update(learned_activations=output.learned_activations)
 
-        return loss
+        return train_metrics["loss/total/mean"]
 
     def on_after_backward(self) -> None:
         """After-backward pass hook."""

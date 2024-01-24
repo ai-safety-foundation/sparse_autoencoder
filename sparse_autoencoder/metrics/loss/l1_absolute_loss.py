@@ -106,10 +106,10 @@ class L1AbsoluteLoss(Metric):
 
     def update(
         self,
-        *,  # Keyword args so that torchmetrics collections pass just the required args
         learned_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ],
+        **kwargs,  # type: ignore # noqa: ANN003, ARG002 (allows combining with other metrics)
     ) -> None:
         """Update the metric state.
 
@@ -124,6 +124,7 @@ class L1AbsoluteLoss(Metric):
 
         Args:
             learned_activations: Learned activations (intermediate activations in the autoencoder).
+            **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
         absolute_loss = torch.abs(learned_activations).sum(dim=-1)
 

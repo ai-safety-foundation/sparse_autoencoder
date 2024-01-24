@@ -115,13 +115,13 @@ class L2ReconstructionLoss(Metric):
 
     def update(
         self,
-        *,  # Keyword args so that torchmetrics collections pass just the required args
         decoded_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
         source_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
+        **kwargs,  # type: ignore # noqa: ANN003, ARG002 (allows combining with other metrics)
     ) -> None:
         """Update the metric state.
 
@@ -137,6 +137,7 @@ class L2ReconstructionLoss(Metric):
         Args:
             decoded_activations: The decoded activations from the autoencoder.
             source_activations: The source activations from the autoencoder.
+            **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
         mse: Float[Tensor, Axis.COMPONENT_OPTIONAL] = (
             (decoded_activations - source_activations).pow(2).mean(dim=-1)

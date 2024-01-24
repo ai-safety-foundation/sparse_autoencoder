@@ -76,11 +76,13 @@ class L0NormMetric(Metric):
         learned_activations: Float[
             Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ],
+        **kwargs,  # type: ignore # noqa: ANN003, ARG002 (allows combining with other metrics)
     ) -> None:
         """Update the metric state.
 
         Args:
             learned_activations: The learned activations.
+            **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
         self.num_activation_vectors += learned_activations.shape[0]
 
