@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
     
     
       
@@ -1542,7 +1542,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
+      __init__
     </span>
   </a>
   
@@ -1551,11 +1551,11 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state" class="md-nav__link">
     <span class="md-ellipsis">
-      reset_neurons_state()
+      reset_neurons_state
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="reset_neurons_state()">
+    <nav class="md-nav" aria-label="reset_neurons_state">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1584,7 +1584,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_state_all_parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      reset_state_all_parameters()
+      reset_state_all_parameters
     </span>
   </a>
   
@@ -2212,27 +2212,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/data_parallel/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    data_parallel
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2359,7 +2338,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
+      __init__
     </span>
   </a>
   
@@ -2368,11 +2347,11 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state" class="md-nav__link">
     <span class="md-ellipsis">
-      reset_neurons_state()
+      reset_neurons_state
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="reset_neurons_state()">
+    <nav class="md-nav" aria-label="reset_neurons_state">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2401,7 +2380,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_state_all_parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      reset_state_all_parameters()
+      reset_state_all_parameters
     </span>
   </a>
   
@@ -2455,9 +2434,8 @@
 
 
 
-
 <h2 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset" class="doc doc-heading">
-          <code>AdamWithReset</code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>AdamWithReset</code>
 
 
 <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset" class="headerlink" title="Permanent link">¤</a></h2>
@@ -2746,7 +2724,7 @@ will be incorrect if the parameters are changed.</p>
         <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">betas</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span>
         <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
-        <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">amsgrad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">foreach</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2979,9 +2957,8 @@ will be incorrect if the parameters are changed.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.parameter_names" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">parameter_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">named_parameters</span><span class="p">]</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">parameter_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">named_parameters</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3005,9 +2982,8 @@ will be incorrect if the parameters are changed.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">amsgrad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">capturable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">differentiable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fused</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">named_parameters</span><span class="p">,</span> <span class="n">has_components_dim</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">amsgrad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">capturable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">differentiable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fused</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">named_parameters</span><span class="p">,</span> <span class="n">has_components_dim</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3127,7 +3103,7 @@ float LR unless specifying fused=True or capturable=True.</p>
             </div>
           </td>
           <td>
-                <code>0</code>
+                <code>0.0</code>
           </td>
         </tr>
         <tr>
@@ -3384,7 +3360,7 @@ training an SAE on more than one component).</p>
     <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
     <span class="n">betas</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span>
     <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
-    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">amsgrad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">foreach</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3487,9 +3463,8 @@ training an SAE on more than one component).</p>
 
 
 
-
 <h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">reset_neurons_state</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">neuron_indices</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">component_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_neurons_state" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3836,9 +3811,8 @@ False.</p>
 
 
 
-
 <h3 id="sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_state_all_parameters" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">reset_state_all_parameters</span><span class="p">()</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">reset_state_all_parameters</span><span class="p">()</span></code>
 
 <a href="#sparse_autoencoder.optimizer.adam_with_reset.AdamWithReset.reset_state_all_parameters" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3914,6 +3888,7 @@ squares of gradients.</p>
 
   </div>
 
+
 </div>
 
 
@@ -3970,10 +3945,10 @@ squares of gradients.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
       
         <script src="../../../javascript/custom_formatting.js"></script>
       

@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
     
     
       
@@ -2023,7 +2023,7 @@
         <li class="md-nav__item">
   <a href="#sparse_autoencoder.train.utils.get_model_device.get_model_device" class="md-nav__link">
     <span class="md-ellipsis">
-      get_model_device()
+      get_model_device
     </span>
   </a>
   
@@ -2148,27 +2148,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utils/data_parallel/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    data_parallel
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2276,7 +2255,7 @@
         <li class="md-nav__item">
   <a href="#sparse_autoencoder.train.utils.get_model_device.get_model_device" class="md-nav__link">
     <span class="md-ellipsis">
-      get_model_device()
+      get_model_device
     </span>
   </a>
   
@@ -2326,9 +2305,8 @@
 
 
 
-
 <h2 id="sparse_autoencoder.train.utils.get_model_device.get_model_device" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_model_device</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">get_model_device</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.train.utils.get_model_device.get_model_device" class="headerlink" title="Permanent link">¤</a></h2>
 
@@ -2353,7 +2331,7 @@
         <tr>
           <td><code>model</code></td>
           <td>
-                <code><span title="torch.nn.Module">Module</span></code>
+                <code><span title="torch.nn.Module">Module</span> | <span title="torch.nn.parallel.DataParallel">DataParallel</span></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2417,8 +2395,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/utils/get_model_device.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
-<span class="normal"> 7</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
@@ -2435,7 +2412,12 @@
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
-<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_device</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_device</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Module</span> <span class="o">|</span> <span class="n">DataParallel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the device on which a PyTorch model is on.</span>
 
 <span class="sd">    Args:</span>
@@ -2447,6 +2429,10 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If the model has no parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Deepspeed models already have a device property, so just return that</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">device</span>
+
     <span class="c1"># Check if the model has parameters</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">exception_message</span> <span class="o">=</span> <span class="s2">&quot;The model has no parameters.&quot;</span>
@@ -2513,10 +2499,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
       
         <script src="../../../../javascript/custom_formatting.js"></script>
       
