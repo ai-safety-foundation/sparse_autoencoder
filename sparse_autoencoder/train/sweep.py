@@ -128,9 +128,6 @@ def setup_autoencoder_optimizer_scheduler(
             model=model,
             optimizer=optim,
             lr_scheduler=lr_scheduler,  # type: ignore
-            config={
-                "train_batch_size": hyperparameters["pipeline"]["train_batch_size"],
-            },
         )
 
         return (model_engine, optimizer_engine, scheduler)  # type: ignore
