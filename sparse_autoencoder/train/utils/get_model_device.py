@@ -1,9 +1,10 @@
 """Get the device that the model is on."""
 import torch
 from torch.nn import Module
+from torch.nn.parallel import DataParallel
 
 
-def get_model_device(model: Module) -> torch.device:
+def get_model_device(model: Module | DataParallel) -> torch.device:
     """Get the device on which a PyTorch model is on.
 
     Args:
@@ -15,6 +16,10 @@ def get_model_device(model: Module) -> torch.device:
     Raises:
         ValueError: If the model has no parameters.
     """
+    # Deepspeed models already have a device property, so just return that
+    if hasattr(model, "device"):
+        return model.device
+
     # Check if the model has parameters
     if len(list(model.parameters())) == 0:
         exception_message = "The model has no parameters."

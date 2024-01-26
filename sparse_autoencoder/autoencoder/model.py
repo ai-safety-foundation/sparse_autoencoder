@@ -276,7 +276,7 @@ class SparseAutoencoder(Module):
             The loaded model.
         """
         # Load the file
-        serialized_state = torch.load(file_path)
+        serialized_state = torch.load(file_path, map_location=torch.device("cpu"))
         state = SparseAutoencoderState.model_validate(serialized_state)
 
         # Initialise the model

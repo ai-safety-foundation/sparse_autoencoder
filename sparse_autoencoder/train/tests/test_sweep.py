@@ -2,11 +2,10 @@
 
 import pytest
 from syrupy.session import SnapshotSession
-import torch
 
 from sparse_autoencoder.train.sweep import (
     setup_activation_resampler,
-    setup_autoencoder,
+    setup_autoencoder_optimizer_scheduler,
     setup_loss_function,
 )
 from sparse_autoencoder.train.sweep_config import (
@@ -30,7 +29,7 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
         "optimizer": {
             "adam_beta_1": 0.9,
             "adam_beta_2": 0.99,
-            "adam_weight_decay": 0,
+            "adam_weight_decay": 0.0,
             "amsgrad": False,
             "fused": False,
             "lr": 1e-05,
@@ -81,7 +80,7 @@ def test_setup_autoencoder(
     dummy_hyperparameters: RuntimeHyperparameters, snapshot: SnapshotSession
 ) -> None:
     """Test the setup_autoencoder function."""
-    autoencoder = setup_autoencoder(dummy_hyperparameters, device=torch.device("cpu"))
+    autoencoder, _, _ = setup_autoencoder_optimizer_scheduler(dummy_hyperparameters)
     assert snapshot == str(autoencoder), "Autoencoder string representation has changed."
 
 
