@@ -367,22 +367,19 @@ test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.12.3"
+version = "4.12.2"
 description = "Screen-scraping library"
 optional = false
 python-versions = ">=3.6.0"
 files = [
-    {file = "beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"},
-    {file = "beautifulsoup4-4.12.3.tar.gz", hash = "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051"},
+    {file = "beautifulsoup4-4.12.2-py3-none-any.whl", hash = "sha256:bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a"},
+    {file = "beautifulsoup4-4.12.2.tar.gz", hash = "sha256:492bbc69dca35d12daac71c4db1bfff0c876c00ef4a2ffacce226d4638eb72da"},
 ]
 
 [package.dependencies]
 soupsieve = ">1.2"
 
 [package.extras]
-cchardet = ["cchardet"]
-chardet = ["chardet"]
-charset-normalizer = ["charset-normalizer"]
 html5lib = ["html5lib"]
 lxml = ["lxml"]
 
@@ -1134,13 +1131,13 @@ test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre
 
 [[package]]
 name = "griffe"
-version = "0.39.0"
+version = "0.38.1"
 description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "griffe-0.39.0-py3-none-any.whl", hash = "sha256:b5e2f249d86feaad1d3068b33b1c8c2ecf39cb870bf292f2af3a4311891a4835"},
-    {file = "griffe-0.39.0.tar.gz", hash = "sha256:34461730c975a31c4ffa413bdad841f217a5d1a1c611b95f6110ed0f2b2fc04d"},
+    {file = "griffe-0.38.1-py3-none-any.whl", hash = "sha256:334c79d3b5964ade65c05dfcaf53518c576dedd387aaba5c9fd71212f34f1483"},
+    {file = "griffe-0.38.1.tar.gz", hash = "sha256:bd68d7da7f3d87bc57eb9962b250db123efd9bbcc06c11c1a91b6e583b2a9361"},
 ]
 
 [package.dependencies]
@@ -1394,13 +1391,13 @@ files = [
 
 [[package]]
 name = "jsonschema"
-version = "4.21.0"
+version = "4.20.0"
 description = "An implementation of JSON Schema validation for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jsonschema-4.21.0-py3-none-any.whl", hash = "sha256:70a09719d375c0a2874571b363c8a24be7df8071b80c9aa76bc4551e7297c63c"},
-    {file = "jsonschema-4.21.0.tar.gz", hash = "sha256:3ba18e27f7491ea4a1b22edce00fb820eec968d397feb3f9cb61d5894bb38167"},
+    {file = "jsonschema-4.20.0-py3-none-any.whl", hash = "sha256:ed6231f0429ecf966f5bc8dfef245998220549cbbcf140f913b7464c52c3b6b3"},
+    {file = "jsonschema-4.20.0.tar.gz", hash = "sha256:4f614fd46d8d61258610998997743ec5492a648b33cf478c1ddc23ed4598a5fa"},
 ]
 
 [package.dependencies]
@@ -1562,13 +1559,13 @@ jupyter-server = ">=1.1.2"
 
 [[package]]
 name = "jupyter-server"
-version = "2.12.5"
+version = "2.12.4"
 description = "The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyter_server-2.12.5-py3-none-any.whl", hash = "sha256:184a0f82809a8522777cfb6b760ab6f4b1bb398664c5860a27cec696cb884923"},
-    {file = "jupyter_server-2.12.5.tar.gz", hash = "sha256:0edb626c94baa22809be1323f9770cf1c00a952b17097592e40d03e6a3951689"},
+    {file = "jupyter_server-2.12.4-py3-none-any.whl", hash = "sha256:a125ae18a60de568f78f55c84dd58759901a18ef279abf0418ac220653ca1320"},
+    {file = "jupyter_server-2.12.4.tar.gz", hash = "sha256:41f4a1e6b912cc24a7c6c694851b37d3d8412b180f43d72315fe422cb2b85cc2"},
 ]
 
 [package.dependencies]
@@ -2231,13 +2228,13 @@ test = ["flaky", "ipykernel (>=6.19.3)", "ipython", "ipywidgets", "nbconvert (>=
 
 [[package]]
 name = "nbconvert"
-version = "7.14.2"
+version = "7.14.1"
 description = "Converting Jupyter Notebooks"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "nbconvert-7.14.2-py3-none-any.whl", hash = "sha256:db28590cef90f7faf2ebbc71acd402cbecf13d29176df728c0a9025a49345ea1"},
-    {file = "nbconvert-7.14.2.tar.gz", hash = "sha256:a7f8808fd4e082431673ac538400218dd45efd076fbeb07cc6e5aa5a3a4e949e"},
+    {file = "nbconvert-7.14.1-py3-none-any.whl", hash = "sha256:aa83e3dd27ea38d0c1d908e3ce9518d15fa908dd30521b6d5040bd23f33fffb0"},
+    {file = "nbconvert-7.14.1.tar.gz", hash = "sha256:20cba10e0448dc76b3bebfe1adf923663e3b98338daf77b97b42511ef5a88618"},
 ]
 
 [package.dependencies]
@@ -4620,13 +4617,13 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "transformer-lens"
-version = "1.12.1"
+version = "1.12.0"
 description = "An implementation of transformers tailored for mechanistic interpretability."
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "transformer_lens-1.12.1-py3-none-any.whl", hash = "sha256:ab11cc0089d29e59954c641ff1763752406b22c78b90cad5cc56ee87a6ccaef2"},
-    {file = "transformer_lens-1.12.1.tar.gz", hash = "sha256:98ba181fe6173085dd9f2c0d23a34d75db48c73c20439ac6ddc328f260c7f22e"},
+    {file = "transformer_lens-1.12.0-py3-none-any.whl", hash = "sha256:764740fc3bdf2ed5390d27cd2422eb9b161587ae39420722130a62f322aeef22"},
+    {file = "transformer_lens-1.12.0.tar.gz", hash = "sha256:8e9022e1c72deecc9b02eead0d4465d96361fecf1aa9f5a0179d363a850f6d79"},
 ]
 
 [package.dependencies]

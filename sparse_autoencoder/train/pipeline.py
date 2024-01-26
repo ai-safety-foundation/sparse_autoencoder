@@ -241,7 +241,7 @@ class Pipeline:
         ] = torch.zeros(
             (self.n_components, self.n_learned_features),
             dtype=torch.int64,
-            device=torch.device("cpu"),
+            device=autoencoder_device,
         )
 
         for store_batch in activations_dataloader:
@@ -274,7 +274,7 @@ class Pipeline:
             # Store count of how many neurons have fired
             with torch.no_grad():
                 fired = learned_activations > 0
-                learned_activations_fired_count.add_(fired.sum(dim=0).cpu())
+                learned_activations_fired_count.add_(fired.sum(dim=0))
 
             # Backwards pass
             total_loss.backward()
