@@ -22,10 +22,6 @@ class ClasswiseWrapperWithMean(ClasswiseWrapper):
         Returns:
             A dictionary of metric results.
         """
-        print("here")
-        print(self._prefix)
-        print(x.shape)
-
         # Same naming logic as original classwise wrapper
         if not self._prefix and not self._postfix:
             prefix = f"{self.metric.__class__.__name__.lower()}_"
