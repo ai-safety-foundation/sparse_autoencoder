@@ -114,4 +114,5 @@ def run() -> None:
     generate_nav_file(nav, REFERENCE_DIR)
 
 
-run()
+if __name__ == "__main__":
+    run()
