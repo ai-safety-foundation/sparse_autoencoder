@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
@@ -1269,7 +1269,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__
+      __init__()
     </span>
   </a>
   
@@ -1278,7 +1278,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.step" class="md-nav__link">
     <span class="md-ellipsis">
-      step
+      step()
     </span>
   </a>
   
@@ -1302,7 +1302,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__
+      __init__()
     </span>
   </a>
   
@@ -1311,7 +1311,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      calculate
+      calculate()
     </span>
   </a>
   
@@ -1320,7 +1320,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.initialise_horizons" class="md-nav__link">
     <span class="md-ellipsis">
-      initialise_horizons
+      initialise_horizons()
     </span>
   </a>
   
@@ -1624,27 +1624,6 @@
   
   <span class="md-ellipsis">
     adam_with_reset
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../optimizer/deepspeed_adam_with_reset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    deepspeed_adam_with_reset
   </span>
   
 
@@ -2262,6 +2241,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../utils/data_parallel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data_parallel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2406,7 +2406,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__
+      __init__()
     </span>
   </a>
   
@@ -2415,7 +2415,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.step" class="md-nav__link">
     <span class="md-ellipsis">
-      step
+      step()
     </span>
   </a>
   
@@ -2439,7 +2439,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__
+      __init__()
     </span>
   </a>
   
@@ -2448,7 +2448,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      calculate
+      calculate()
     </span>
   </a>
   
@@ -2457,7 +2457,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.initialise_horizons" class="md-nav__link">
     <span class="md-ellipsis">
-      initialise_horizons
+      initialise_horizons()
     </span>
   </a>
   
@@ -2511,8 +2511,9 @@ activity, and the number of neurons that are almost dead.</p>
 
 
 
+
 <h2 id="sparse_autoencoder.metrics.train.neuron_activity_metric.DEFAULT_HORIZONS" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">DEFAULT_HORIZONS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">]</span></code>
+          <code class="highlight language-python"><span class="n">DEFAULT_HORIZONS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -2532,8 +2533,9 @@ activity, and the number of neurons that are almost dead.</p>
 
 
 
+
 <h2 id="sparse_autoencoder.metrics.train.neuron_activity_metric.DEFAULT_THRESHOLDS" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">DEFAULT_THRESHOLDS</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-05</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">]</span></code>
+          <code class="highlight language-python"><span class="n">DEFAULT_THRESHOLDS</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-05</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -2554,8 +2556,9 @@ activity, and the number of neurons that are almost dead.</p>
 
 
 
+
 <h2 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>NeuronActivityHorizonData</code>
+          <code>NeuronActivityHorizonData</code>
 
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData" class="headerlink" title="Permanent link">¤</a></h2>
@@ -2953,8 +2956,9 @@ this data.</p>
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.metric_results" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">metric_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span></code>
+          <code class="highlight language-python"><span class="n">metric_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricResult</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -2977,8 +2981,9 @@ this data.</p>
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.__init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">approximate_activation_horizon</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">approximate_activation_horizon</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">n_learned_features</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3137,8 +3142,9 @@ this data.</p>
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.step" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">step</span><span class="p">(</span><span class="n">neuron_activity</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">step</span><span class="p">(</span><span class="n">neuron_activity</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityHorizonData.step" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3256,15 +3262,15 @@ this data.</p>
 
   </div>
 
-
 </div>
 
 <div class="doc doc-object doc-class">
 
 
 
+
 <h2 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>NeuronActivityMetric</code>
+          <code>NeuronActivityMetric</code>
 
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric" class="headerlink" title="Permanent link">¤</a></h2>
@@ -3448,8 +3454,9 @@ this data.</p>
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.__init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">approximate_horizons</span><span class="o">=</span><span class="n">DEFAULT_HORIZONS</span><span class="p">,</span> <span class="n">thresholds</span><span class="o">=</span><span class="n">DEFAULT_THRESHOLDS</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">approximate_horizons</span><span class="o">=</span><span class="n">DEFAULT_HORIZONS</span><span class="p">,</span> <span class="n">thresholds</span><span class="o">=</span><span class="n">DEFAULT_THRESHOLDS</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3549,8 +3556,9 @@ this data.</p>
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.calculate" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.calculate" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3669,8 +3677,9 @@ this data.</p>
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.initialise_horizons" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">initialise_horizons</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">initialise_horizons</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.neuron_activity_metric.NeuronActivityMetric.initialise_horizons" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -3774,7 +3783,6 @@ this data.</p>
 
   </div>
 
-
 </div>
 
 
@@ -3831,10 +3839,10 @@ this data.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
         <script src="../../../../javascript/custom_formatting.js"></script>
       

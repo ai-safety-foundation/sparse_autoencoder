@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
@@ -1167,7 +1167,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.abstract_train_metric.AbstractTrainMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      calculate
+      calculate()
     </span>
   </a>
   
@@ -1218,7 +1218,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__
+      __init__()
     </span>
   </a>
   
@@ -1606,27 +1606,6 @@
   
   <span class="md-ellipsis">
     adam_with_reset
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../optimizer/deepspeed_adam_with_reset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    deepspeed_adam_with_reset
   </span>
   
 
@@ -2244,6 +2223,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../utils/data_parallel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    data_parallel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../utils/tensor_shape/" class="md-nav__link">
         
   
@@ -2370,7 +2370,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.abstract_train_metric.AbstractTrainMetric.calculate" class="md-nav__link">
     <span class="md-ellipsis">
-      calculate
+      calculate()
     </span>
   </a>
   
@@ -2421,7 +2421,7 @@
           <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.__init__" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__
+      __init__()
     </span>
   </a>
   
@@ -2474,8 +2474,9 @@
 
 
 
+
 <h2 id="sparse_autoencoder.metrics.train.abstract_train_metric.AbstractTrainMetric" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>AbstractTrainMetric</code>
+          <code>AbstractTrainMetric</code>
 
 
 <a href="#sparse_autoencoder.metrics.train.abstract_train_metric.AbstractTrainMetric" class="headerlink" title="Permanent link">¤</a></h2>
@@ -2544,8 +2545,9 @@
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.abstract_train_metric.AbstractTrainMetric.location" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span></code>
+          <code class="highlight language-python"><span class="n">location</span><span class="p">:</span> <span class="n">MetricLocation</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
@@ -2568,8 +2570,9 @@
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.abstract_train_metric.AbstractTrainMetric.calculate" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -2669,15 +2672,15 @@
 
   </div>
 
-
 </div>
 
 <div class="doc doc-object doc-class">
 
 
 
+
 <h2 id="sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>TrainMetricData</code>
+          <code>TrainMetricData</code>
 
   
   <span class="doc doc-labels">
@@ -2790,8 +2793,9 @@
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.decoded_activations" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">add_component_axis_if_missing</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">dimensions_without_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span></code>
+          <code class="highlight language-python"><span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">add_component_axis_if_missing</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">dimensions_without_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2811,8 +2815,9 @@
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.input_activations" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">input_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">add_component_axis_if_missing</span><span class="p">(</span><span class="n">input_activations</span><span class="p">,</span> <span class="n">dimensions_without_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span></code>
+          <code class="highlight language-python"><span class="n">input_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">add_component_axis_if_missing</span><span class="p">(</span><span class="n">input_activations</span><span class="p">,</span> <span class="n">dimensions_without_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2832,8 +2837,9 @@
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.learned_activations" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">add_component_axis_if_missing</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="n">dimensions_without_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span></code>
+          <code class="highlight language-python"><span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span> <span class="o">=</span> <span class="n">add_component_axis_if_missing</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="n">dimensions_without_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2856,8 +2862,9 @@
 
 
 
+
 <h3 id="sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.__init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">input_activations</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">input_activations</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">)</span></code>
 
 <a href="#sparse_autoencoder.metrics.train.abstract_train_metric.TrainMetricData.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -2923,7 +2930,6 @@
 
   </div>
 
-
 </div>
 
 
@@ -2980,10 +2986,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.action.edit"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
         <script src="../../../../javascript/custom_formatting.js"></script>
       
