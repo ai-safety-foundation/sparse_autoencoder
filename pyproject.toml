@@ -31,7 +31,7 @@
             pytest-integration=">=0.2.3"
             pytest-timeout=">=2.2.0"
             pytest-xdist="^3.5.0"
-            ruff=">=0.1.4"
+            ruff=">=0.1.14"
             syrupy=">=4.6.0"
 
         [tool.poetry.group.demos.dependencies]

@@ -70,6 +70,8 @@ def pipeline_fixture() -> Pipeline:
         source_dataset=source_data,
         source_model=src_model,
         source_data_batch_size=10,
+        n_input_features=src_model.cfg.d_model,
+        n_learned_features=int(src_model.cfg.d_model * 2),
     )
 
 
