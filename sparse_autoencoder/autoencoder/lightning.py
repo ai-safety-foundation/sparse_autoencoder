@@ -93,10 +93,7 @@ class LitSparseAutoencoder(LightningModule):
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
         batch_idx: int | None = None,  # noqa: ARG002
-    ) -> (
-        Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]
-        | Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]
-    ):
+    ) -> Float[Tensor, Axis.SINGLE_ITEM] | Float[Tensor, Axis.BATCH]:
         """Training step."""
         # Forward pass
         output: ForwardPassResult = self.forward(batch)
