@@ -8,26 +8,26 @@
     version="0.0.0"
 
     [tool.poetry.dependencies]
-        datasets=">=2.15.0"
-        einops=">=0.6"
-        pydantic=">=2.5.2"
+        datasets=">=2.16.1"
+        einops=">=0.7.0"
+        pydantic=">=2.5.3"
         python=">=3.10, <3.12"
         strenum=">=0.4.15"
-        tokenizers=">=0.15.0"
-        torch=">=2.1.1"
-        transformers=">=4.35.2"
-        wandb=">=0.16.1"
+        tokenizers=">=0.15.1"
+        torch=">=2.1.2"
+        transformers=">=4.37.1"
+        wandb=">=0.16.2"
         zstandard=">=0.22.0"    # Required for downloading datasets such as The Pile
 
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
-            jupyter=">=1"
-            plotly=">=5"
-            poethepoet=">=0.24.2"
-            pydoclint=">=0.3.8"
-            pyright=">=1.1.340"
-            pytest=">=7"
-            pytest-cov=">=4"
+            jupyter=">=1.0.0"
+            plotly=">=5.18.0"
+            poethepoet=">=0.24.4"
+            pydoclint=">=0.3.9"
+            pyright=">=1.1.348"
+            pytest=">=7.4.4"
+            pytest-cov=">=4.1.0"
             pytest-integration=">=0.2.3"
             pytest-timeout=">=2.2.0"
             pytest-xdist="^3.5.0"
@@ -35,24 +35,24 @@
             syrupy=">=4.6.0"
 
         [tool.poetry.group.demos.dependencies]
-            huggingface-hub=">=0.19.4"
+            huggingface-hub=">=0.20.3"
             ipywidgets=">=8.1.1"
-            jupyterlab=">=3"
-            transformer-lens=">=1.9.0"
+            jupyterlab=">=4.0.11"
+            transformer-lens=">=1.13.0"
 
         [tool.poetry.group.docs.dependencies]
             mkdocs=">=1.5.3"
             mkdocs-gen-files=">=0.5.0"
             mkdocs-htmlproofer-plugin=">=1.0.0"
             mkdocs-literate-nav=">=0.6.1"
-            mkdocs-material=">=9.4.10"
+            mkdocs-material=">=9.5.5"
             mkdocs-section-index=">=0.3.8"
             mkdocstrings={extras=["python"], version=">=0.24.0"}
-            mkdocstrings-python=">=1.7.3"
+            mkdocstrings-python=">=1.8.0"
             mknotebooks=">=0.8.0"
             pygments=">=2.17.2"
-            pymdown-extensions=">=10.5"
-            pytkdocs-tweaks=">=0.0.7"
+            pymdown-extensions=">=10.7"
+            pytkdocs-tweaks=">=0.0.8"
 
 [tool.poetry.scripts]
     join-sae-sweep='sparse_autoencoder.train.join_sweep:run'
