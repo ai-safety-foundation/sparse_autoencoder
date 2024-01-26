@@ -2,23 +2,19 @@
 from dataclasses import dataclass
 from typing import Annotated, NamedTuple
 
-from deepspeed import DeepSpeedEngine
 from einops import rearrange
 from jaxtyping import Bool, Float, Int64
 from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn.parallel import DataParallel
 from torch.utils.data import DataLoader
 
 from sparse_autoencoder.activation_resampler.utils.component_slice_tensor import (
     get_component_slice_tensor,
 )
 from sparse_autoencoder.activation_store.base_store import ActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss
+from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
 from sparse_autoencoder.tensor_types import Axis
-from sparse_autoencoder.train.utils.get_model_device import get_model_device
 
 
 @dataclass
@@ -208,8 +204,7 @@ class ActivationResampler:
     def compute_loss_and_get_activations(
         self,
         store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
-        loss_fn: AbstractLoss,
+        autoencoder: LitSparseAutoencoder,
         train_batch_size: int,
     ) -> LossInputActivationsTuple:
         """Compute the loss on a random subset of inputs.
@@ -221,47 +216,32 @@ class ActivationResampler:
         Args:
             store: Activation store.
             autoencoder: Sparse autoencoder model.
-            loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
             A tuple of loss per item, and all input activations.
-
-        Raises:
-            ValueError: If the number of items in the store is less than the number of inputs
         """
         with torch.no_grad():
+            prev_keep_batch_dim_setting = autoencoder.loss_metric.keep_batch_dim
+            autoencoder.loss_metric.keep_batch_dim = True
+
             loss_batches: list[Float[Tensor, Axis.BATCH]] = []
             input_activations_batches: list[
                 Float[Tensor, Axis.names(Axis.BATCH, Axis.INPUT_OUTPUT_FEATURE)]
             ] = []
             dataloader = DataLoader(store, batch_size=train_batch_size)
-            n_inputs = self._resample_dataset_size
-            n_batches_required: int = n_inputs // train_batch_size
-            model_device: torch.device = get_model_device(autoencoder)
+            n_batches_required: int = self._resample_dataset_size // train_batch_size
 
             for batch_idx, batch in enumerate(iter(dataloader)):
                 input_activations_batches.append(batch)
-                source_activations = batch.to(model_device)
-                learned_activations, reconstructed_activations = autoencoder(source_activations)
-                loss_batches.append(
-                    loss_fn.forward(
-                        source_activations, learned_activations, reconstructed_activations
-                    )
-                )
+                loss = autoencoder.training_step(batch, batch_idx)
+                loss_batches.append(loss)
                 if batch_idx >= n_batches_required:
                     break
 
-            loss_per_item = torch.cat(loss_batches).to(model_device)
-            input_activations = torch.cat(input_activations_batches).to(model_device)
-
-            # Check we generated enough data
-            if len(loss_per_item) < n_inputs:
-                error_message = (
-                    f"Cannot get {n_inputs} items from the store, "
-                    f"as only {len(loss_per_item)} were available."
-                )
-                raise ValueError(error_message)
+            loss_per_item = torch.cat(loss_batches)
+            input_activations = torch.cat(input_activations_batches)
+            autoencoder.loss_metric.keep_batch_dim = prev_keep_batch_dim_setting
 
             return LossInputActivationsTuple(loss_per_item, input_activations)
 
@@ -441,8 +421,7 @@ class ActivationResampler:
     def resample_dead_neurons(
         self,
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
-        loss_fn: AbstractLoss,
+        autoencoder: LitSparseAutoencoder,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults]:
         """Resample dead neurons.
@@ -450,7 +429,6 @@ class ActivationResampler:
         Args:
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
-            loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
@@ -469,7 +447,6 @@ class ActivationResampler:
             loss_per_item, input_activations = self.compute_loss_and_get_activations(
                 store=activation_store,
                 autoencoder=autoencoder,
-                loss_fn=loss_fn,
                 train_batch_size=train_batch_size,
             )
 
@@ -531,8 +508,7 @@ class ActivationResampler:
         self,
         batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
-        loss_fn: AbstractLoss,
+        autoencoder: LitSparseAutoencoder,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults] | None:
         """Step the resampler, collating neuron activity and resampling if necessary.
@@ -541,7 +517,6 @@ class ActivationResampler:
             batch_neuron_activity: Number of times each neuron fired in the current batch.
             activation_store: Activation store.
             autoencoder: Sparse autoencoder model.
-            loss_fn: Loss function.
             train_batch_size: Train batch size (also used for resampling).
 
         Returns:
@@ -567,7 +542,6 @@ class ActivationResampler:
                 resample_res = self.resample_dead_neurons(
                     activation_store=activation_store,
                     autoencoder=autoencoder,
-                    loss_fn=loss_fn,
                     train_batch_size=train_batch_size,
                 )
 

@@ -1,4 +1,5 @@
 """Classwise metrics wrapper."""
+import torch
 from torch import Tensor
 from torchmetrics import ClasswiseWrapper
 
@@ -16,8 +17,15 @@ class ClasswiseWrapperWithMean(ClasswiseWrapper):
         """Convert the input tensor to a dictionary of metrics.
 
         Args:
-            x: The input tensor.?
+            x: The input tensor.
+
+        Returns:
+            A dictionary of metric results.
         """
+        print("here")
+        print(self._prefix)
+        print(x.shape)
+
         # Same naming logic as original classwise wrapper
         if not self._prefix and not self._postfix:
             prefix = f"{self.metric.__class__.__name__.lower()}_"
@@ -33,5 +41,5 @@ class ClasswiseWrapperWithMean(ClasswiseWrapper):
             res = {f"{prefix}{lab}{postfix}": val for lab, val in zip(self.labels, x)}
 
         # add in the mean
-        res[f"{prefix}mean{postfix}"] = x.mean(0)
+        res[f"{prefix}mean{postfix}"] = x.mean(0, dtype=torch.float)
         return res

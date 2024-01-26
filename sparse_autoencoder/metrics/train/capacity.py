@@ -63,11 +63,7 @@ class CapacityMetric(Metric):
     ]
 
     def __init__(self) -> None:
-        """Initialize the metric.
-
-        Args:
-            component_names: Names of the components.
-        """
+        """Initialize the metric."""
         super().__init__()
         self.add_state("learned_activations", default=[])
 
@@ -81,9 +77,7 @@ class CapacityMetric(Metric):
         """Update the metric state.
 
         Args:
-            input_activations: The input activations.
             learned_activations: The learned activations.
-            decoded_activations: The decoded activations.
             **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
         self.learned_activations.append(learned_activations)

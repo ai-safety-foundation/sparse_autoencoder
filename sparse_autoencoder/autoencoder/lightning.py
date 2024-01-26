@@ -85,7 +85,7 @@ class LitSparseAutoencoder(LightningModule):
         ],
     ) -> ForwardPassResult:
         """Forward pass."""
-        return self.model.forward(inputs)
+        return self.sparse_autoencoder.forward(inputs)
 
     def training_step(  # type: ignore[override]
         self,
@@ -99,10 +99,10 @@ class LitSparseAutoencoder(LightningModule):
     ):
         """Training step."""
         # Forward pass
-        output: ForwardPassResult = self(batch)
+        output: ForwardPassResult = self.forward(batch)
 
         # Metrics & loss
-        train_metrics = self.train_metrics(
+        train_metrics = self.train_metrics.forward(
             source_activations=batch,
             learned_activations=output.learned_activations,
             decoded_activations=output.decoded_activations,

@@ -3,15 +3,15 @@ from collections.abc import Iterator
 from functools import partial
 from pathlib import Path
 from tempfile import gettempdir
-from typing import TYPE_CHECKING, final
+from typing import final
 
-from deepspeed import DeepSpeedEngine
 from jaxtyping import Float, Int, Int64
+from lightning import Trainer
+from lightning.pytorch.loggers import WandbLogger
 from pydantic import NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
 from torch.nn.parallel import DataParallel
-from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
@@ -22,11 +22,8 @@ from sparse_autoencoder.activation_resampler.activation_resampler import (
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss, LossReductionType
-from sparse_autoencoder.metrics.metrics_container import MetricsContainer, default_metrics
-from sparse_autoencoder.metrics.validate.abstract_validate_metric import ValidationMetricData
-from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
+from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
+from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
@@ -34,9 +31,6 @@ from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
 
-
-if TYPE_CHECKING:
-    from sparse_autoencoder.metrics.abstract_metric import MetricResult
 
 DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(gettempdir()) / "sparse_autoencoder"
 
@@ -51,7 +45,7 @@ class Pipeline:
     activation_resampler: ActivationResampler | None
     """Activation resampler to use."""
 
-    autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine
+    autoencoder: LitSparseAutoencoder
     """Sparse autoencoder to train."""
 
     n_input_features: int
@@ -68,15 +62,6 @@ class Pipeline:
 
     log_frequency: int
     """Frequency at which to log metrics (in steps)."""
-
-    loss: AbstractLoss
-    """Loss function to use."""
-
-    metrics: MetricsContainer
-    """Metrics to use."""
-
-    optimizer: AbstractOptimizerWithReset
-    """Optimizer to use."""
 
     progress_bar: tqdm | None
     """Progress bar for the pipeline."""
@@ -103,20 +88,16 @@ class Pipeline:
     def __init__(
         self,
         activation_resampler: ActivationResampler | None,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder] | DeepSpeedEngine,
+        autoencoder: LitSparseAutoencoder,
         cache_names: list[str],
         layer: NonNegativeInt,
-        loss: AbstractLoss,
-        optimizer: AbstractOptimizerWithReset,
         source_dataset: SourceDataset,
         source_model: HookedTransformer | DataParallel[HookedTransformer],
         n_input_features: int,
         n_learned_features: int,
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
-        lr_scheduler: LRScheduler | None = None,
         log_frequency: PositiveInt = 100,
-        metrics: MetricsContainer = default_metrics,
         num_workers_data_loading: NonNegativeInt = 0,
         source_data_batch_size: PositiveInt = 12,
     ) -> None:
@@ -128,17 +109,13 @@ class Pipeline:
             cache_names: Names of the cache hook points to use in the source model.
             layer: Layer to stope the source model at (if we don't need activations after this
                 layer).
-            loss: Loss function to use.
-            optimizer: Optimizer to use.
             source_dataset: Source dataset to get data from.
             source_model: Source model to get activations from.
             n_input_features: Number of input features in the sparse autoencoder.
             n_learned_features: Number of learned features in the sparse autoencoder.
             run_name: Name of the run for saving checkpoints.
             checkpoint_directory: Directory to save checkpoints to.
-            lr_scheduler: Learning rate scheduler to use.
             log_frequency: Frequency at which to log metrics (in steps)
-            metrics: Metrics to use.
             num_workers_data_loading: Number of CPU workers for the dataloader.
             source_data_batch_size: Batch size for the source data.
         """
@@ -148,10 +125,6 @@ class Pipeline:
         self.checkpoint_directory = checkpoint_directory
         self.layer = layer
         self.log_frequency = log_frequency
-        self.loss = loss
-        self.metrics = metrics
-        self.optimizer = optimizer
-        self.lr_scheduler = lr_scheduler
         self.run_name = run_name
         self.source_data_batch_size = source_data_batch_size
         self.source_dataset = source_dataset
@@ -187,7 +160,7 @@ class Pipeline:
             raise ValueError(error_message)
 
         # Setup the store
-        source_model_device: torch.device = get_model_device(self.source_model)
+        source_model_device = get_model_device(self.source_model)
         store = TensorActivationStore(
             store_size, self.n_input_features, n_components=self.n_components
         )
@@ -228,81 +201,24 @@ class Pipeline:
         Returns:
             Number of times each neuron fired, for each component.
         """
-        autoencoder_device: torch.device = get_model_device(self.autoencoder)
-
         activations_dataloader = DataLoader(
             activation_store,
             batch_size=train_batch_size,
         )
-
-        learned_activations_fired_count: Int64[
-            Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
-        ] = torch.zeros(
-            (self.n_components, self.n_learned_features),
-            dtype=torch.int64,
-            device=torch.device("cpu"),
-        )
-
-        for store_batch in activations_dataloader:
-            # Zero the gradients
-            self.optimizer.zero_grad()
-
-            # Move the batch to the device (in place)
-            batch = store_batch.detach().to(autoencoder_device)
-
-            # Forward pass
-            learned_activations, reconstructed_activations = self.autoencoder.forward(batch)
-
-            # Get loss & metrics
-            metrics: list[MetricResult] = []
-            total_loss, loss_metrics = self.loss.scalar_loss_with_log(
-                batch,
-                learned_activations,
-                reconstructed_activations,
-                component_reduction=LossReductionType.MEAN,
-            )
-            metrics.extend(loss_metrics)
-
-            with torch.no_grad():
-                for metric in self.metrics.train_metrics:
-                    res = metric(batch, learned_activations, reconstructed_activations)
-                    metrics.extend(res)
-
-            # Store count of how many neurons have fired
-            with torch.no_grad():
-                fired = learned_activations > 0
-                learned_activations_fired_count.add_(fired.sum(dim=0).cpu())
-
-            # Backwards pass
-            total_loss.backward()
-            self.optimizer.step()
-            self.autoencoder.post_backwards_hook()
-            if self.lr_scheduler is not None:
-                self.lr_scheduler.step()
-
-            # Log training metrics
-            self.total_activations_trained_on += train_batch_size
-            if (
-                wandb.run is not None
-                and int(self.total_activations_trained_on / train_batch_size) % self.log_frequency
-                == 0
-            ):
-                log = {}
-                for metric_result in metrics:
-                    log.update(metric_result.wandb_log)
-                wandb.log(
-                    log,
-                    step=self.total_activations_trained_on,
-                    commit=True,
-                )
-
-        return learned_activations_fired_count
+        trainer = Trainer(logger=WandbLogger(), max_epochs=1)
+        trainer.fit(self.autoencoder, activations_dataloader)
+        fired_count = self.autoencoder.neuron_fired_count.compute()
+        self.autoencoder.neuron_fired_count.reset()
+        return fired_count
 
     def update_parameters(self, parameter_updates: list[ParameterUpdateResults]) -> None:
         """Update the parameters of the model from the results of the resampler.
 
         Args:
             parameter_updates: Parameter updates from the resampler.
+
+        Raises:
+            TypeError: If the optimizer is not an AdamWithReset.
         """
         for component_idx, component_parameter_update in enumerate(parameter_updates):
             # Update the weights and biases
@@ -324,7 +240,14 @@ class Pipeline:
 
             # Reset the optimizer
             for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
-                self.optimizer.reset_neurons_state(
+                optimizer = self.autoencoder.optimizers(use_pl_optimizer=False)
+                if not isinstance(optimizer, AdamWithReset):
+                    error_message = "Cannot reset the optimizer. "
+                    raise TypeError(error_message)
+
+                # TODO: Consider moving this to the
+                # LitSparseAutoencoder to make sure we apply across all processes/nodes.
+                optimizer.reset_neurons_state(
                     parameter=parameter,
                     neuron_indices=component_parameter_update.dead_neuron_indices,
                     axis=axis,
@@ -342,7 +265,7 @@ class Pipeline:
             validation_n_activations // self.source_data_batch_size,
             self.n_components,
         )
-        source_model_device: torch.device = get_model_device(self.source_model)
+        source_model_device = get_model_device(self.source_model)
 
         # Create the metric data stores
         losses: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)] = torch.empty(
@@ -399,17 +322,22 @@ class Pipeline:
                     ] = loss_with_zero_ablation.sum()
 
         # Log
-        validation_data = ValidationMetricData(
-            source_model_loss=losses,
-            source_model_loss_with_reconstruction=losses_with_reconstruction,
-            source_model_loss_with_zero_ablation=losses_with_zero_ablation,
+        self.autoencoder.log_dict(
+            {f"validation/source_model_losses/{c}": val for c, val in zip(self.cache_names, losses)}
         )
-        for metric in self.metrics.validation_metrics:
-            log = {}
-            for metric_result in metric.calculate(validation_data):
-                log.update(metric_result.wandb_log)
-            if wandb.run is not None:
-                wandb.log(log, commit=False)
+        self.autoencoder.log_dict(
+            {
+                f"validation/source_model_losses_with_reconstruction/{c}": val
+                for c, val in zip(self.cache_names, loss_with_reconstruction)  # type: ignore
+            }
+        )
+        self.autoencoder.log_dict(
+            {
+                f"validation/source_model_losses_with_zero_ablation/{c}": val
+                for c, val in zip(self.cache_names, loss_with_zero_ablation)  # type: ignore
+            }
+        )
+        # TODO: Log validation metric
 
     @final
     def save_checkpoint(self, *, is_final: bool = False) -> Path:
@@ -491,7 +419,6 @@ class Pipeline:
                         batch_neuron_activity=batch_neuron_activity,
                         activation_store=activation_store,
                         autoencoder=self.autoencoder,
-                        loss_fn=self.loss,
                         train_batch_size=train_batch_size,
                     )
 
