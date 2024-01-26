@@ -66,12 +66,7 @@ def test_hook_replaces_activations_2_components() -> None:
         fwd_hooks=[
             (
                 "blocks.0.hook_mlp_out",
-                partial(
-                    replace_activations_hook,
-                    sparse_autoencoder=autoencoder,
-                    component_idx=1,
-                    n_components=2,
-                ),
+                partial(replace_activations_hook, sparse_autoencoder=autoencoder, component_idx=1),
             )
         ],
     )
