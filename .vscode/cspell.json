@@ -51,7 +51,6 @@
         "jaxtyping",
         "kaiming",
         "keepdim",
-        "logit",
         "lognormal",
         "loguniform",
         "loguniformvalues",
@@ -74,7 +73,6 @@
         "neox",
         "nonlinerity",
         "numel",
-        "onebit",
         "openwebtext",
         "optim",
         "penality",
@@ -118,7 +116,6 @@
         "venv",
         "virtualenv",
         "virtualenvs",
-        "wandb",
-        "zoadam"
+        "wandb"
     ]
 }

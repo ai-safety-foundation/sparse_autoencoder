@@ -7,12 +7,9 @@
     readme="README.md"
     version="0.0.0"
 
-    # Note: Zstandard is required for downloading datasets such as The Pile
     [tool.poetry.dependencies]
         datasets=">=2.15.0"
-        deepspeed={version=">=0.12.6", extras=["deepspeed"], optional=false}
         einops=">=0.6"
-        mpi4py={version=">=3.1.5", extras=["deepspeed"], optional=true}
         pydantic=">=2.5.2"
         python=">=3.10, <3.12"
         strenum=">=0.4.15"
@@ -20,7 +17,7 @@
         torch=">=2.1.1"
         transformers=">=4.35.2"
         wandb=">=0.16.1"
-        zstandard=">=0.22.0"
+        zstandard=">=0.22.0"    # Required for downloading datasets such as The Pile
 
     [tool.poetry.group]
         [tool.poetry.group.dev.dependencies]
@@ -56,9 +53,6 @@
             pygments=">=2.17.2"
             pymdown-extensions=">=10.5"
             pytkdocs-tweaks=">=0.0.7"
-
-[tool.poetry.extras]
-    deepspeed=["deepspeed", "mpi4py"]
 
 [tool.poetry.scripts]
     join-sae-sweep='sparse_autoencoder.train.join_sweep:run'

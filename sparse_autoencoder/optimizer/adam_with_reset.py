@@ -42,7 +42,7 @@ class AdamWithReset(Adam, AbstractOptimizerWithReset):
         lr: float | Float[Tensor, Axis.names(Axis.SINGLE_ITEM)] = 1e-3,
         betas: tuple[float, float] = (0.9, 0.999),
         eps: float = 1e-8,
-        weight_decay: float = 0.0,
+        weight_decay: float = 0,
         *,
         amsgrad: bool = False,
         foreach: bool | None = None,
