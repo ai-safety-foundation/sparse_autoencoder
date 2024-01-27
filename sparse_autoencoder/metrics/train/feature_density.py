@@ -6,6 +6,7 @@ from torch import Tensor
 from torchmetrics import Metric
 
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 class FeatureDensityMetric(Metric):
@@ -43,13 +44,18 @@ class FeatureDensityMetric(Metric):
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
-    def __init__(self, num_learned_features: PositiveInt, num_components: PositiveInt = 1) -> None:
+    def __init__(
+        self, num_learned_features: PositiveInt, num_components: PositiveInt | None = None
+    ) -> None:
         """Initialise the metric."""
         super().__init__()
 
         self.add_state(
             "neuron_fired_count",
-            default=torch.empty((num_components, num_learned_features), dtype=torch.int64),
+            default=torch.empty(
+                size=shape_with_optional_dimensions(num_components, num_learned_features),
+                dtype=torch.int64,
+            ),
             dist_reduce_fx="sum",
         )
 

@@ -6,6 +6,7 @@ from torch import Tensor
 from torchmetrics import Metric
 
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 class L0NormMetric(Metric):
@@ -55,13 +56,13 @@ class L0NormMetric(Metric):
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
-    def __init__(self, num_components: PositiveInt = 1) -> None:
+    def __init__(self, num_components: PositiveInt | None = None) -> None:
         """Initialize the metric."""
         super().__init__()
 
         self.add_state(
             "active_neurons_count",
-            default=torch.empty(num_components, dtype=torch.int64),
+            default=torch.empty(shape_with_optional_dimensions(num_components), dtype=torch.int64),
             dist_reduce_fx="sum",
         )
 
@@ -93,5 +94,8 @@ class L0NormMetric(Metric):
     def compute(
         self,
     ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]:
-        """Compute the metric."""
+        """Compute the metric.
+
+        Note that torchmetrics converts shape `[0]` tensors into scalars (shape `0`).
+        """
         return self.active_neurons_count / self.num_activation_vectors

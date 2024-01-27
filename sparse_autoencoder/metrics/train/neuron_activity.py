@@ -8,6 +8,7 @@ from torch import Tensor
 from torchmetrics import Metric
 
 from sparse_autoencoder.tensor_types import Axis
+from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
 class NeuronActivityMetric(Metric):
@@ -48,7 +49,7 @@ class NeuronActivityMetric(Metric):
     def __init__(
         self,
         num_learned_features: PositiveInt,
-        num_components: PositiveInt = 1,
+        num_components: PositiveInt | None = None,
         threshold_is_dead_portion_fires: Annotated[float, Field(strict=True, ge=0, le=1)] = 0.0,
     ) -> None:
         """Initialise the metric.
@@ -65,7 +66,10 @@ class NeuronActivityMetric(Metric):
 
         self.add_state(
             "neuron_fired_count",
-            default=torch.empty((num_components, num_learned_features), dtype=torch.int64),
+            default=torch.empty(
+                shape_with_optional_dimensions(num_components, num_learned_features),
+                dtype=torch.int64,
+            ),
             dist_reduce_fx="sum",
         )
 
@@ -99,7 +103,10 @@ class NeuronActivityMetric(Metric):
         self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.int64)
 
     def compute(self) -> Int64[Tensor, Axis.COMPONENT_OPTIONAL]:
-        """Compute the metric."""
+        """Compute the metric.
+
+        Note that torchmetrics converts shape `[0]` tensors into scalars (shape `0`).
+        """
         threshold_activations: Float[Tensor, Axis.SINGLE_ITEM] = (
             self._threshold_is_dead_portion_fires * self.num_activation_vectors
         )
