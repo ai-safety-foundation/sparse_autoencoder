@@ -1,7 +1,7 @@
 """Neuron activity metric."""
 from typing import Annotated
 
-from jaxtyping import Bool, Float, Float64, Int64
+from jaxtyping import Bool, Float, Int64
 from pydantic import Field, NonNegativeFloat, PositiveInt, validate_call
 import torch
 from torch import Tensor
@@ -38,7 +38,7 @@ class NeuronActivityMetric(Metric):
     _threshold_is_dead_portion_fires: NonNegativeFloat
 
     # State
-    neuron_fired_count: Float64[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
+    neuron_fired_count: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
@@ -64,7 +64,7 @@ class NeuronActivityMetric(Metric):
             "neuron_fired_count",
             default=torch.empty(
                 shape_with_optional_dimensions(num_components, num_learned_features),
-                dtype=torch.float64,  # Float not int, so that it can be reduced
+                dtype=torch.float,  # Float not int, so that it can be reduced
             ),
             dist_reduce_fx="sum",
         )
@@ -96,7 +96,7 @@ class NeuronActivityMetric(Metric):
             Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ] = torch.gt(learned_activations, 0)
 
-        self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.float64)
+        self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.float)
 
     def compute(self) -> Int64[Tensor, Axis.COMPONENT_OPTIONAL]:
         """Compute the metric.
