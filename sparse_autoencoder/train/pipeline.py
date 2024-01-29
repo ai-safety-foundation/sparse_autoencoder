@@ -12,7 +12,6 @@ from lightning.pytorch.loggers import WandbLogger
 from pydantic import NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn.parallel import DataParallel
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
@@ -31,6 +30,7 @@ from sparse_autoencoder.source_model.store_activations_hook import store_activat
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(gettempdir()) / "sparse_autoencoder"
@@ -73,7 +73,7 @@ class Pipeline:
     source_dataset: SourceDataset
     """Source dataset to generate activation data from (tokenized prompts)."""
 
-    source_model: HookedTransformer | DataParallel[HookedTransformer]
+    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer]
     """Source model to get activations from."""
 
     total_activations_trained_on: int = 0
@@ -93,7 +93,7 @@ class Pipeline:
         cache_names: list[str],
         layer: NonNegativeInt,
         source_dataset: SourceDataset,
-        source_model: HookedTransformer | DataParallel[HookedTransformer],
+        source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
         n_input_features: int,
         n_learned_features: int,
         run_name: str = "sparse_autoencoder",

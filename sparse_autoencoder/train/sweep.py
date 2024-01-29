@@ -23,6 +23,7 @@ from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
     SweepConfig,
 )
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> ActivationResampler:
@@ -50,7 +51,9 @@ def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> Activ
     )
 
 
-def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransformer:
+def setup_source_model(
+    hyperparameters: RuntimeHyperparameters,
+) -> HookedTransformer | DataParallelWithModelAttributes[HookedTransformer]:
     """Setup the source model using HookedTransformer.
 
     Args:
@@ -59,10 +62,12 @@ def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransfo
     Returns:
         The initialized source model.
     """
-    return HookedTransformer.from_pretrained(
+    model = HookedTransformer.from_pretrained(
         hyperparameters["source_model"]["name"],
         dtype=hyperparameters["source_model"]["dtype"],
     )
+
+    return DataParallelWithModelAttributes(model)
 
 
 def setup_autoencoder_optimizer_scheduler(
