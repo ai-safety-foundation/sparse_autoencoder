@@ -1,6 +1,7 @@
 """Default pipeline."""
 from collections.abc import Iterator
 from functools import partial
+import logging
 from pathlib import Path
 from tempfile import gettempdir
 from typing import final
@@ -188,24 +189,38 @@ class Pipeline:
 
         return store
 
-    @validate_call(config={"arbitrary_types_allowed": True})
     def train_autoencoder(
-        self, activation_store: TensorActivationStore, train_batch_size: PositiveInt
+        self,
+        activation_store: TensorActivationStore,
+        train_batch_size: PositiveInt,
+        trainer: Trainer,
     ) -> Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
         """Train the sparse autoencoder.
 
         Args:
             activation_store: Activation store from the generate section.
             train_batch_size: Train batch size.
+            trainer: Lightning trainer.
 
         Returns:
             Number of times each neuron fired, for each component.
         """
         activations_dataloader = DataLoader(
-            activation_store,
-            batch_size=train_batch_size,
+            activation_store, batch_size=train_batch_size, num_workers=4, persistent_workers=False
         )
-        trainer = Trainer(logger=WandbLogger(), max_epochs=1)
+
+        # Setup the trainer with no logging
+        logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(logging.WARNING)
+        trainer = Trainer(
+            logger=WandbLogger(),
+            max_epochs=1,
+            enable_progress_bar=False,
+            enable_model_summary=False,
+            enable_checkpointing=False,
+            precision="16-mixed",
+        )
+
+        # Train
         trainer.fit(self.autoencoder, activations_dataloader)
         fired_count = self.autoencoder.neuron_fired_count.compute()
         self.autoencoder.neuron_fired_count.reset()
@@ -245,8 +260,6 @@ class Pipeline:
                     error_message = "Cannot reset the optimizer. "
                     raise TypeError(error_message)
 
-                # TODO: Consider moving this to the
-                # LitSparseAutoencoder to make sure we apply across all processes/nodes.
                 optimizer.reset_neurons_state(
                     parameter=parameter,
                     neuron_indices=component_parameter_update.dead_neuron_indices,
@@ -337,7 +350,6 @@ class Pipeline:
                 for c, val in zip(self.cache_names, loss_with_zero_ablation)  # type: ignore
             }
         )
-        # TODO: Log validation metric
 
     @final
     def save_checkpoint(self, *, is_final: bool = False) -> Path:
@@ -390,7 +402,6 @@ class Pipeline:
         store_size: int = max_store_size - max_store_size % (
             self.source_data_batch_size * self.source_dataset.context_size
         )
-
         with tqdm(
             desc="Activations trained on",
             total=max_activations,

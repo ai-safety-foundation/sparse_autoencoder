@@ -15,15 +15,11 @@ class NeuronFiredCountMetric(Metric):
     Example:
         >>> metric = NeuronFiredCountMetric(num_learned_features=3)
         >>> learned_activations = torch.tensor([
-        ...     [ # Batch 1
-        ...         [1., 0., 1.] # Component 1: learned features (2 active neurons)
-        ...     ],
-        ...     [ # Batch 2
-        ...         [0., 0., 0.] # Component 1: learned features (0 active neuron)
-        ...     ]
+        ...     [1., 0., 1.], # Batch 1 (single component): learned features (2 active neurons)
+        ...     [0., 0., 0.]  # Batch 2 (single component): learned features (0 active neuron)
         ... ])
         >>> metric.forward(learned_activations)
-        tensor([[1, 0, 1]])
+        tensor([1, 0, 1])
     """
 
     # Torchmetrics settings

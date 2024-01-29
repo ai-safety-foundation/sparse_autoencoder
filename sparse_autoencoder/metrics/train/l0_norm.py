@@ -18,12 +18,8 @@ class L0NormMetric(Metric):
     Examples:
         >>> metric = L0NormMetric()
         >>> learned_activations = torch.tensor([
-        ...     [ # Batch 1
-        ...         [1., 0., 1.] # Component 1: learned features (2 active neurons)
-        ...     ],
-        ...     [ # Batch 2
-        ...         [0., 1., 0.] # Component 1: learned features (1 active neuron)
-        ...     ]
+        ...     [1., 0., 1.], # Batch 1 (single component): learned features (2 active neurons)
+        ...     [0., 1., 0.]  # Batch 2 (single component): learned features (1 active neuron)
         ... ])
         >>> metric.forward(learned_activations)
         tensor(1.5000)

@@ -20,9 +20,6 @@
       (activity): ClasswiseWrapperWithMean(
         (metric): NeuronActivityMetric()
       )
-      (density): ClasswiseWrapperWithMean(
-        (metric): FeatureDensityMetric()
-      )
       (l0): ClasswiseWrapperWithMean(
         (metric): L0NormMetric()
       )

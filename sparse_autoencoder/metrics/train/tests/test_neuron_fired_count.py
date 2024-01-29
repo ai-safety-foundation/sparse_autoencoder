@@ -2,7 +2,6 @@
 import pytest
 import torch
 
-from sparse_autoencoder.metrics.train.neuron_activity import NeuronActivityMetric
 from sparse_autoencoder.metrics.train.neuron_fired_count import NeuronFiredCountMetric
 
 

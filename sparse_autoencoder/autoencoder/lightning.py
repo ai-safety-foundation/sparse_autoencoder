@@ -15,7 +15,6 @@ from sparse_autoencoder.autoencoder.model import (
 from sparse_autoencoder.metrics.loss.l1_absolute_loss import L1AbsoluteLoss
 from sparse_autoencoder.metrics.loss.l2_reconstruction_loss import L2ReconstructionLoss
 from sparse_autoencoder.metrics.loss.sae_loss import SparseAutoencoderLoss
-from sparse_autoencoder.metrics.train.feature_density import FeatureDensityMetric
 from sparse_autoencoder.metrics.train.l0_norm import L0NormMetric
 from sparse_autoencoder.metrics.train.neuron_activity import NeuronActivityMetric
 from sparse_autoencoder.metrics.train.neuron_fired_count import NeuronFiredCountMetric
@@ -46,7 +45,7 @@ class LitSparseAutoencoder(LightningModule):
         self.sparse_autoencoder = SparseAutoencoder(config)
 
         num_components = config.n_components or 1
-        add_component_names = partial(ClasswiseWrapperWithMean, labels=component_names)
+        add_component_names = partial(ClasswiseWrapperWithMean, component_names=component_names)
 
         # Create the loss & metrics
         l1_loss_metric = L1AbsoluteLoss(num_components)
@@ -59,23 +58,23 @@ class LitSparseAutoencoder(LightningModule):
 
         self.train_metrics = MetricCollection(
             {
-                "l0": add_component_names(L0NormMetric(num_components), prefix="train/l0_norm/"),
+                "l0": add_component_names(L0NormMetric(num_components), prefix="train/l0_norm"),
                 "activity": add_component_names(
                     NeuronActivityMetric(config.n_learned_features, num_components),
-                    prefix="train/neuron_activity/",
+                    prefix="train/neuron_activity",
                 ),
-                "density": add_component_names(
-                    FeatureDensityMetric(config.n_learned_features, num_components),
-                    prefix="train/feature_density/",
-                ),
-                "l1": add_component_names(l1_loss_metric, prefix="loss/l1_learned_activations/"),
-                "l2": add_component_names(l2_loss_metric, prefix="loss/l2_reconstruction/"),
-                "loss": add_component_names(self.loss_metric, prefix="loss/total/"),
+                "l1": add_component_names(l1_loss_metric, prefix="loss/l1_learned_activations"),
+                "l2": add_component_names(l2_loss_metric, prefix="loss/l2_reconstruction"),
+                "loss": add_component_names(self.loss_metric, prefix="loss/total"),
             },
             # Share state & updates across groups (to avoid e.g. computing l1 twice for both the
             # loss and l1 metrics). Note the metric that goes first must calculate all the states
             # needed by the rest of the group.
-            compute_groups=[["loss", "l1", "l2"], ["activity", "density"], ["l0"]],
+            compute_groups=[
+                ["loss", "l1", "l2"],
+                ["activity"],
+                ["l0"],
+            ],
         )
 
     def forward(  # type: ignore[override]

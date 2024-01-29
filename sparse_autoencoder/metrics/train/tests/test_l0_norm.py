@@ -56,8 +56,5 @@ def test_l0_norm_metric(
     metric = L0NormMetric(num_components)
     result = metric.forward(learned_activations)
 
-    print("answer")
-    print(result)
-
     assert result.shape == expected_output.shape
     assert torch.allclose(result, expected_output)
