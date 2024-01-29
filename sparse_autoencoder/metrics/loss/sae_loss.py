@@ -1,4 +1,6 @@
 """Sparse Autoencoder loss."""
+from typing import Any
+
 from jaxtyping import Float, Int64
 from pydantic import PositiveFloat, PositiveInt, validate_call
 import torch
@@ -111,7 +113,7 @@ class SparseAutoencoderLoss(Metric):
         decoded_activations: Float[
             Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
         ],
-        **kwargs,  # type: ignore # noqa: ANN003, ARG002 (allows combining with other metrics))
+        **kwargs: Any,  # type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics))
     ) -> None:
         """Update the metric."""
         absolute_loss = L1AbsoluteLoss.calculate_abs_sum(learned_activations)

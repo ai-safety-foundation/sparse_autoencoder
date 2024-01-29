@@ -1,4 +1,6 @@
 """Train batch feature density."""
+from typing import Any
+
 from jaxtyping import Bool, Float, Int64
 from pydantic import PositiveInt, validate_call
 import torch
@@ -70,7 +72,7 @@ class FeatureDensityMetric(Metric):
         learned_activations: Float[
             Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ],
-        **kwargs,  # type: ignore # noqa: ANN003, ARG002 (allows combining with other metrics)
+        **kwargs: Any,  # type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics)
     ) -> None:
         """Update the metric state.
 
