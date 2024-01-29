@@ -193,14 +193,12 @@ class Pipeline:
         self,
         activation_store: TensorActivationStore,
         train_batch_size: PositiveInt,
-        trainer: Trainer,
     ) -> Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
         """Train the sparse autoencoder.
 
         Args:
             activation_store: Activation store from the generate section.
             train_batch_size: Train batch size.
-            trainer: Lightning trainer.
 
         Returns:
             Number of times each neuron fired, for each component.
@@ -402,6 +400,11 @@ class Pipeline:
         store_size: int = max_store_size - max_store_size % (
             self.source_data_batch_size * self.source_dataset.context_size
         )
+
+        # Get the loss fn
+        loss_fn = self.autoencoder.loss_metric.clone()
+        loss_fn.keep_batch_dim(keep_batch_dim=True)
+
         with tqdm(
             desc="Activations trained on",
             total=max_activations,
@@ -429,7 +432,8 @@ class Pipeline:
                     parameter_updates = self.activation_resampler.step_resampler(
                         batch_neuron_activity=batch_neuron_activity,
                         activation_store=activation_store,
-                        autoencoder=self.autoencoder,
+                        autoencoder=self.autoencoder.sparse_autoencoder,
+                        loss_fn=self.autoencoder.loss_metric,
                         train_batch_size=train_batch_size,
                     )
 
