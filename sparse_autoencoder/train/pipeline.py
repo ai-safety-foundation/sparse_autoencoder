@@ -23,6 +23,8 @@ from sparse_autoencoder.activation_resampler.activation_resampler import (
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
+from sparse_autoencoder.metrics.validate.reconstruction_score import ReconstructionScoreMetric
+from sparse_autoencoder.metrics.wrappers.classwise import ClasswiseWrapperWithMean
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
@@ -132,6 +134,12 @@ class Pipeline:
         self.source_model = source_model
         self.n_input_features = n_input_features
         self.n_learned_features = n_learned_features
+
+        # Add validate metric
+        self.reconstruction_score = ClasswiseWrapperWithMean(
+            ReconstructionScoreMetric(len(cache_names)),
+            prefix="validation/reconstruction_score",
+        )
 
         # Create a stateful iterator
         source_dataloader = source_dataset.get_dataloader(
@@ -323,6 +331,9 @@ class Pipeline:
                         return_type="loss",
                         fwd_hooks=[(cache_name, zero_ablate_hook)],
                     )
+                    self.reconstruction_score.update(
+                        loss, loss_with_reconstruction, loss_with_zero_ablation
+                    )
 
                     losses[batch_idx, component_idx] = loss.sum()
                     losses_with_reconstruction[
@@ -348,6 +359,7 @@ class Pipeline:
                 for c, val in zip(self.cache_names, loss_with_zero_ablation)  # type: ignore
             }
         )
+        self.autoencoder.log("validation", self.reconstruction_score)
 
     @final
     def save_checkpoint(self, *, is_final: bool = False) -> Path:

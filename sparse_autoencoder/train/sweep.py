@@ -5,7 +5,6 @@ import sys
 import traceback
 
 import torch
-from torch.nn.parallel import DataParallel
 from transformer_lens import HookedTransformer
 from transformers import AutoTokenizer
 import wandb
@@ -203,7 +202,7 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
 
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
-    source_model: HookedTransformer | DataParallel[HookedTransformer],
+    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
     autoencoder: LitSparseAutoencoder,
     activation_resampler: ActivationResampler,
     source_data: SourceDataset,
