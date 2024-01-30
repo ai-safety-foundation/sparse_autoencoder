@@ -341,7 +341,7 @@ class Parameter(Generic[ParamType]):
 
 
 @dataclass(frozen=True)
-class NestedParameter(ABC):  # noqa: B024 (abstract so that we can check against it's type)
+class NestedParameter(ABC):  # noqa: B024 (abstract so that we can check against its type)
     """Nested Parameter.
 
     Example:
