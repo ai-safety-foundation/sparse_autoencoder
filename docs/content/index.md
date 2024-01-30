@@ -25,7 +25,6 @@ This library contains:
       customise and/or build your own:
       - Encoder, constrained unit norm decoder and tied bias PyTorch modules in
         [sparse_autoencoder.autoencoder][].
-      - L1 and L2 loss modules in [sparse_autoencoder.loss][].
       - Adam module with helper method to reset state in [sparse_autoencoder.optimizer][].
    2. **Activations data generator** using TransformerLens, with the underlying steps in case you
       want to customise the approach:
@@ -36,8 +35,8 @@ This library contains:
         [sparse_autoencoder.source_data][], that stream data from HuggingFace and pre-process
         (tokenize & shuffle).
    3. **Activation resampler** to help reduce the number of dead neurons.
-   4. **Metrics** that log at various stages of training (e.g. during training, resampling and
-      validation), and integrate with wandb.
+   4. **Metrics** that log at various stages of training (loss, train metrics and validation metrics)
+      , based on torchmetrics.
    5. **Training pipeline** that combines everything together, allowing you to run hyperparameter
       sweeps and view progress on wandb.
 
