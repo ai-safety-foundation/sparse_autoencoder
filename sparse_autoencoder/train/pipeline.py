@@ -498,7 +498,7 @@ class Pipeline:
         )
 
         # Get the loss fn
-        loss_fn = self.autoencoder.loss_metric.clone()
+        loss_fn = self.loss.clone()
         loss_fn.keep_batch_dim = True
 
         with tqdm(
