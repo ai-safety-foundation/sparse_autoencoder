@@ -218,7 +218,7 @@ class Pipeline:
         # Setup the trainer with no logging
         logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(logging.WARNING)
         trainer = Trainer(
-            logger=WandbLogger(),
+            logger=WandbLogger() if wandb.run is not None else None,
             max_epochs=1,
             enable_progress_bar=False,
             enable_model_summary=False,
