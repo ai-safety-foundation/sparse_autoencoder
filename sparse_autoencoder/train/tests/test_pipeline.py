@@ -230,8 +230,7 @@ class TestUpdateParameters:
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Set the optimizer state to all 1s
-        optimizer = pipeline_fixture.optimizers(use_pl_optimizer=False)
-        assert isinstance(optimizer, AdamWithReset)
+        optimizer = pipeline_fixture.optimizer
         model = pipeline_fixture.autoencoder
         optimizer.state[model.encoder.weight]["exp_avg"] = torch.ones_like(
             optimizer.state[model.encoder.weight]["exp_avg"], dtype=torch.float
@@ -278,53 +277,6 @@ class TestUpdateParameters:
                 dtype=torch.float,
             ),
         ), "Optimizer non-dead neuron state should not have changed after training."
-
-
-class TestValidateSAE:
-    """Test the validate_sae method."""
-
-    @pytest.mark.integration_test()
-    def test_validation_loss_calculated(self, pipeline_fixture: Pipeline) -> None:
-        """Test that the validation loss numbers are calculated."""
-
-        # Create a dummy metric, so we can retrieve the stored data afterwards
-        class StoreValidationMetric(AbstractValidationMetric):
-            """Dummy metric to store the data."""
-
-            data: ValidationMetricData | None
-
-            def calculate(self, data: ValidationMetricData) -> list[MetricResult]:
-                """Store the data."""
-                self.data = data
-                return []
-
-        dummy_metric = StoreValidationMetric()
-        pipeline_fixture.metrics.validation_metrics.append(dummy_metric)
-
-        # Run the validation loop
-        store_size: int = 100
-        pipeline_fixture.generate_activations(store_size)
-        pipeline_fixture.validate_sae(store_size)
-
-        # Check the loss is created
-        assert (
-            dummy_metric.data is not None
-        ), "Dummy metric should have stored the data from the validation loop."
-        assert (
-            dummy_metric.data.source_model_loss is not None
-        ), "Source model loss should be calculated."
-        assert (
-            dummy_metric.data.source_model_loss_with_reconstruction is not None
-        ), "Source model loss with reconstruction should be calculated."
-        assert (
-            dummy_metric.data.source_model_loss_with_zero_ablation is not None
-        ), "Source model loss with zero ablation should be calculated."
-
-        # Check the dimensions are correct
-        ndim_with_component = 2
-        assert dummy_metric.data.source_model_loss.ndim == ndim_with_component
-        assert dummy_metric.data.source_model_loss_with_reconstruction.ndim == ndim_with_component
-        assert dummy_metric.data.source_model_loss_with_zero_ablation.ndim == ndim_with_component
 
 
 class TestSaveCheckpoint:

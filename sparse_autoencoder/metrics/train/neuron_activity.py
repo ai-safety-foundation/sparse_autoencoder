@@ -78,7 +78,7 @@ class NeuronActivityMetric(Metric):
     def update(
         self,
         learned_activations: Float[
-            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ],
         **kwargs: Any,  # type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics)
     ) -> None:
@@ -93,7 +93,7 @@ class NeuronActivityMetric(Metric):
 
         # Count the number of active neurons in the batch
         neuron_has_fired: Bool[
-            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ] = torch.gt(learned_activations, 0)
 
         self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.float)

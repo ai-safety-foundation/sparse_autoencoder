@@ -1,14 +1,11 @@
 """Default pipeline."""
 from collections.abc import Iterator
 from functools import partial
-import logging
 from pathlib import Path
 from tempfile import gettempdir
 from typing import final
 
 from jaxtyping import Float, Int, Int64
-from lightning import Trainer
-from lightning.pytorch.loggers import WandbLogger
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt, validate_call
 import torch
 from torch import Tensor
@@ -31,7 +28,6 @@ from sparse_autoencoder.metrics.loss.l2_reconstruction_loss import L2Reconstruct
 from sparse_autoencoder.metrics.loss.sae_loss import SparseAutoencoderLoss
 from sparse_autoencoder.metrics.train.l0_norm import L0NormMetric
 from sparse_autoencoder.metrics.train.neuron_activity import NeuronActivityMetric
-from sparse_autoencoder.metrics.train.neuron_fired_count import NeuronFiredCountMetric
 from sparse_autoencoder.metrics.validate.reconstruction_score import ReconstructionScoreMetric
 from sparse_autoencoder.metrics.wrappers.classwise import ClasswiseWrapperWithMean
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
@@ -41,7 +37,6 @@ from sparse_autoencoder.source_model.store_activations_hook import store_activat
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
-from sparse_autoencoder.utils import data_parallel
 from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
@@ -110,19 +105,19 @@ class Pipeline:
     def __init__(
         self,
         activation_resampler: ActivationResampler | None,
-        autoencoder: SparseAutoencoder,
+        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
         cache_names: list[str],
-        layer: NonNegativeInt,
         l1_coefficient: PositiveFloat,
+        layer: NonNegativeInt,
+        n_learned_features: int,
+        n_input_features: int,
         optimizer: AdamWithReset,
         source_dataset: SourceDataset,
         source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
-        n_input_features: int,
-        n_learned_features: int,
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
-        lr_scheduler: LRScheduler | None = None,
         log_frequency: PositiveInt = 100,
+        lr_scheduler: LRScheduler | None = None,
         num_workers_data_loading: NonNegativeInt = 0,
         source_data_batch_size: PositiveInt = 12,
     ) -> None:
@@ -132,20 +127,20 @@ class Pipeline:
             activation_resampler: Activation resampler to use.
             autoencoder: Sparse autoencoder to train.
             cache_names: Names of the cache hook points to use in the source model.
+            l1_coefficient: L1 coefficient.
             layer: Layer to stope the source model at (if we don't need activations after this
                 layer).
-            l1_coefficient: L1 coefficient.
+            n_learned_features: Number of learned features in the sparse autoencoder.
+            n_input_features: Number of input features in the sparse autoencoder.
             optimizer: Optimizer to use.
             source_dataset: Source dataset to get data from.
             source_model: Source model to get activations from.
-            n_input_features: Number of input features in the sparse autoencoder.
-            n_learned_features: Number of learned features in the sparse autoencoder.
             run_name: Name of the run for saving checkpoints.
             checkpoint_directory: Directory to save checkpoints to.
-            lr_scheduler: Learning rate scheduler to use.
             log_frequency: Frequency at which to log metrics (in steps)
-            source_data_batch_size: Batch size for the source data.
+            lr_scheduler: Learning rate scheduler to use.
             num_workers_data_loading: Number of workers to use for data loading.
+            source_data_batch_size: Batch size for the source data.
         """
         self.activation_resampler = activation_resampler
         self.autoencoder = autoencoder
@@ -318,11 +313,8 @@ class Pipeline:
                 and int(self.total_activations_trained_on / train_batch_size) % self.log_frequency
                 == 0
             ):
-                log = {}
-                for metric_result in metrics:
-                    log.update(metric_result.wandb_log)
                 wandb.log(
-                    log,
+                    metric_results,
                     step=self.total_activations_trained_on,
                     commit=True,
                 )

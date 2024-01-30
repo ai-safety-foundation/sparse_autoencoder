@@ -15,7 +15,9 @@ from sparse_autoencoder.activation_resampler.activation_resampler import Activat
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset
+from sparse_autoencoder.source_data.pretokenized_dataset import PreTokenizedDataset
 from sparse_autoencoder.source_data.text_dataset import TextDataset
+from sparse_autoencoder.train.pipeline import Pipeline
 from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
     SweepConfig,

@@ -7,6 +7,7 @@ from jaxtyping import Bool, Float, Int64
 from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
+from torch.nn.parallel import DataParallel
 from torch.utils.data import DataLoader
 from torchmetrics import Metric
 
@@ -206,7 +207,7 @@ class ActivationResampler:
     def compute_loss_and_get_activations(
         self,
         store: ActivationStore,
-        autoencoder: SparseAutoencoder,
+        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
         loss_fn: Metric,
         train_batch_size: int,
     ) -> LossInputActivationsTuple:
@@ -439,7 +440,7 @@ class ActivationResampler:
     def resample_dead_neurons(
         self,
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder,
+        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
         loss_fn: Metric,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults]:
@@ -529,7 +530,7 @@ class ActivationResampler:
         self,
         batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder,
+        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
         loss_fn: Metric,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults] | None:

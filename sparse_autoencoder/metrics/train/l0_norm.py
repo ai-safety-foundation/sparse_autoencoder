@@ -73,7 +73,7 @@ class L0NormMetric(Metric):
     def update(
         self,
         learned_activations: Float[
-            Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ],
         **kwargs: Any,  # type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics)
     ) -> None:
