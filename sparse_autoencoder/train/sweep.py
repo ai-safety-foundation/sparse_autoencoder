@@ -11,23 +11,16 @@ from transformer_lens import HookedTransformer
 from transformers import AutoTokenizer
 import wandb
 
-from sparse_autoencoder import (
-    ActivationResampler,
-    AdamWithReset,
-    L2ReconstructionLoss,
-    LearnedActivationsL1Loss,
-    LossReducer,
-    Pipeline,
-    PreTokenizedDataset,
-    SparseAutoencoder,
-)
-from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
+from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
+from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset
 from sparse_autoencoder.source_data.text_dataset import TextDataset
 from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
     SweepConfig,
 )
+from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> ActivationResampler:
@@ -55,7 +48,9 @@ def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> Activ
     )
 
 
-def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransformer:
+def setup_source_model(
+    hyperparameters: RuntimeHyperparameters,
+) -> HookedTransformer | DataParallelWithModelAttributes[HookedTransformer]:
     """Setup the source model using HookedTransformer.
 
     Args:
@@ -64,10 +59,12 @@ def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransfo
     Returns:
         The initialized source model.
     """
-    return HookedTransformer.from_pretrained(
+    model = HookedTransformer.from_pretrained(
         hyperparameters["source_model"]["name"],
         dtype=hyperparameters["source_model"]["dtype"],
     )
+
+    return DataParallelWithModelAttributes(model)
 
 
 def setup_autoencoder_optimizer_scheduler(
@@ -118,23 +115,6 @@ def setup_autoencoder_optimizer_scheduler(
             )
 
     return (model, optim, lr_scheduler)
-
-
-def setup_loss_function(hyperparameters: RuntimeHyperparameters) -> LossReducer:
-    """Setup the loss function for the autoencoder.
-
-    Args:
-        hyperparameters: The hyperparameters dictionary.
-
-    Returns:
-        The combined loss function.
-    """
-    return LossReducer(
-        LearnedActivationsL1Loss(
-            l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
-        ),
-        L2ReconstructionLoss(),
-    )
 
 
 def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
@@ -243,9 +223,8 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
 
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
-    source_model: HookedTransformer | DataParallel[HookedTransformer],
+    source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
     autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
-    loss: LossReducer,
     optimizer: AdamWithReset,
     lr_scheduler: LRScheduler | None,
     activation_resampler: ActivationResampler,
@@ -258,7 +237,6 @@ def run_training_pipeline(
         hyperparameters: The hyperparameters dictionary.
         source_model: The source model.
         autoencoder: The sparse autoencoder.
-        loss: The loss function.
         optimizer: The optimizer.
         lr_scheduler: Learning rate scheduler.
         activation_resampler: The activation resampler.
@@ -280,7 +258,7 @@ def run_training_pipeline(
         cache_names=cache_names,
         checkpoint_directory=checkpoint_path,
         layer=stop_layer,
-        loss=loss,
+        l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
         optimizer=optimizer,
         source_data_batch_size=hyperparameters["pipeline"]["source_data_batch_size"],
         source_dataset=source_data,
@@ -320,10 +298,6 @@ def train() -> None:
         autoencoder, optimizer, lr_scheduler = setup_autoencoder_optimizer_scheduler(
             hyperparameters
         )
-
-        # Set up the loss function
-        loss_function = setup_loss_function(hyperparameters)
-
         # Set up the activation resampler
         activation_resampler = setup_activation_resampler(hyperparameters)
 
@@ -335,7 +309,6 @@ def train() -> None:
             hyperparameters=hyperparameters,
             source_model=source_model,
             autoencoder=autoencoder,
-            loss=loss_function,
             optimizer=optimizer,
             lr_scheduler=lr_scheduler,
             activation_resampler=activation_resampler,

@@ -43,5 +43,6 @@
   "rewrap.wrappingColumn": 100,
   "pylint.ignorePatterns": [
     "*"
-  ]
+  ],
+  "pythonTestExplorer.testFramework": "pytest"
 }

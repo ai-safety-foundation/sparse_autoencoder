@@ -7,15 +7,14 @@ from jaxtyping import Bool, Float, Int64
 from pydantic import Field, NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn.parallel import DataParallel
 from torch.utils.data import DataLoader
+from torchmetrics import Metric
 
 from sparse_autoencoder.activation_resampler.utils.component_slice_tensor import (
     get_component_slice_tensor,
 )
 from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.loss.abstract_loss import AbstractLoss
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
 
@@ -207,8 +206,8 @@ class ActivationResampler:
     def compute_loss_and_get_activations(
         self,
         store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
-        loss_fn: AbstractLoss,
+        autoencoder: SparseAutoencoder,
+        loss_fn: Metric,
         train_batch_size: int,
     ) -> LossInputActivationsTuple:
         """Compute the loss on a random subset of inputs.
@@ -237,7 +236,7 @@ class ActivationResampler:
             dataloader = DataLoader(store, batch_size=train_batch_size)
             n_inputs = self._resample_dataset_size
             n_batches_required: int = n_inputs // train_batch_size
-            model_device: torch.device = get_model_device(autoencoder)
+            model_device = get_model_device(autoencoder)
 
             for batch_idx, batch in enumerate(iter(dataloader)):
                 input_activations_batches.append(batch)
@@ -440,8 +439,8 @@ class ActivationResampler:
     def resample_dead_neurons(
         self,
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
-        loss_fn: AbstractLoss,
+        autoencoder: SparseAutoencoder,
+        loss_fn: Metric,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults]:
         """Resample dead neurons.
@@ -530,8 +529,8 @@ class ActivationResampler:
         self,
         batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
-        loss_fn: AbstractLoss,
+        autoencoder: SparseAutoencoder,
+        loss_fn: Metric,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults] | None:
         """Step the resampler, collating neuron activity and resampling if necessary.

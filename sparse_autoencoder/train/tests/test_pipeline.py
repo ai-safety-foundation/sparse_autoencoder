@@ -1,4 +1,5 @@
 """Test the pipeline module."""
+import os
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
 
@@ -6,25 +7,14 @@ import pytest
 import torch
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder import (
-    AdamWithReset,
-    L2ReconstructionLoss,
-    LearnedActivationsL1Loss,
-    LossReducer,
-    Pipeline,
-    SparseAutoencoder,
-)
+from sparse_autoencoder import Pipeline
 from sparse_autoencoder.activation_resampler.activation_resampler import (
     ActivationResampler,
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
-from sparse_autoencoder.metrics.abstract_metric import MetricResult
-from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
-    AbstractValidationMetric,
-    ValidationMetricData,
-)
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
+from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.mock_dataset import MockDataset
 
 
@@ -35,39 +25,32 @@ if TYPE_CHECKING:
 @pytest.fixture()
 def pipeline_fixture() -> Pipeline:
     """Fixture to create a Pipeline instance for testing."""
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
     device = torch.device("cpu")
     src_model = HookedTransformer.from_pretrained("tiny-stories-1M", device=device)
-    autoencoder = SparseAutoencoder(
-        SparseAutoencoderConfig(
-            n_input_features=src_model.cfg.d_model,
-            n_learned_features=int(src_model.cfg.d_model * 2),
-            n_components=2,
-        )
+    config = SparseAutoencoderConfig(
+        n_input_features=src_model.cfg.d_model,
+        n_learned_features=int(src_model.cfg.d_model * 2),
+        n_components=2,
     )
-    loss = LossReducer(
-        LearnedActivationsL1Loss(
-            l1_coefficient=0.001,
-        ),
-        L2ReconstructionLoss(),
-    )
+    autoencoder = SparseAutoencoder(config)
     optimizer = AdamWithReset(
         params=autoencoder.parameters(),
         named_parameters=autoencoder.named_parameters(),
         has_components_dim=True,
     )
+
     source_data = MockDataset(context_size=10)
-    activation_resampler = ActivationResampler(
-        n_learned_features=autoencoder.config.n_learned_features
-    )
+    activation_resampler = ActivationResampler(config.n_learned_features)
 
     return Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,
         cache_names=["blocks.0.hook_mlp_out", "blocks.1.hook_mlp_out"],
         layer=1,
-        loss=loss,
-        optimizer=optimizer,
         source_dataset=source_data,
+        optimizer=optimizer,
+        l1_coefficient=0.0001,
         source_model=src_model,
         source_data_batch_size=10,
         n_input_features=src_model.cfg.d_model,
@@ -247,7 +230,8 @@ class TestUpdateParameters:
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Set the optimizer state to all 1s
-        optimizer = pipeline_fixture.optimizer
+        optimizer = pipeline_fixture.optimizers(use_pl_optimizer=False)
+        assert isinstance(optimizer, AdamWithReset)
         model = pipeline_fixture.autoencoder
         optimizer.state[model.encoder.weight]["exp_avg"] = torch.ones_like(
             optimizer.state[model.encoder.weight]["exp_avg"], dtype=torch.float
