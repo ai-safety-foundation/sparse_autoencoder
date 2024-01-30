@@ -347,22 +347,26 @@ class Pipeline:
                     ] = loss_with_zero_ablation.sum()
 
         # Log
-        self.autoencoder.log_dict(
-            {f"validation/source_model_losses/{c}": val for c, val in zip(self.cache_names, losses)}
-        )
-        self.autoencoder.log_dict(
-            {
-                f"validation/source_model_losses_with_reconstruction/{c}": val
-                for c, val in zip(self.cache_names, loss_with_reconstruction)  # type: ignore
-            }
-        )
-        self.autoencoder.log_dict(
-            {
-                f"validation/source_model_losses_with_zero_ablation/{c}": val
-                for c, val in zip(self.cache_names, loss_with_zero_ablation)  # type: ignore
-            }
-        )
-        self.autoencoder.log("validation", self.reconstruction_score)
+        if wandb.run is not None:
+            self.autoencoder.log_dict(
+                {
+                    f"validation/source_model_losses/{c}": val
+                    for c, val in zip(self.cache_names, losses)
+                }
+            )
+            self.autoencoder.log_dict(
+                {
+                    f"validation/source_model_losses_with_reconstruction/{c}": val
+                    for c, val in zip(self.cache_names, loss_with_reconstruction)  # type: ignore
+                }
+            )
+            self.autoencoder.log_dict(
+                {
+                    f"validation/source_model_losses_with_zero_ablation/{c}": val
+                    for c, val in zip(self.cache_names, loss_with_zero_ablation)  # type: ignore
+                }
+            )
+            self.autoencoder.log("validation", self.reconstruction_score)
 
     @final
     def save_checkpoint(self, *, is_final: bool = False) -> Path:
