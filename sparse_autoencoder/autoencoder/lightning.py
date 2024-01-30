@@ -6,6 +6,7 @@ from lightning.pytorch import LightningModule
 from torch import Tensor
 from torch.optim.optimizer import Optimizer
 from torchmetrics import MetricCollection
+import wandb
 
 from sparse_autoencoder.autoencoder.model import (
     ForwardPassResult,
@@ -103,7 +104,9 @@ class LitSparseAutoencoder(LightningModule):
             learned_activations=output.learned_activations,
             decoded_activations=output.decoded_activations,
         )
-        self.log_dict(train_metrics)
+
+        if wandb.run is not None:
+            self.log_dict(train_metrics)
 
         # Neuron activity
         self.neuron_fired_count.update(learned_activations=output.learned_activations)

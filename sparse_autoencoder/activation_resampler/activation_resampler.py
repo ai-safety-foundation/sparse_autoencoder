@@ -17,7 +17,6 @@ from sparse_autoencoder.activation_store.base_store import ActivationStore
 from sparse_autoencoder.autoencoder.model import SparseAutoencoder
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
-from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
 
 
 @dataclass
@@ -207,7 +206,7 @@ class ActivationResampler:
     def compute_loss_and_get_activations(
         self,
         store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder,
         loss_fn: Metric,
         train_batch_size: int,
     ) -> LossInputActivationsTuple:
@@ -440,7 +439,7 @@ class ActivationResampler:
     def resample_dead_neurons(
         self,
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder,
         loss_fn: Metric,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults]:
@@ -530,7 +529,7 @@ class ActivationResampler:
         self,
         batch_neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
         activation_store: ActivationStore,
-        autoencoder: SparseAutoencoder | DataParallelWithModelAttributes[SparseAutoencoder],
+        autoencoder: SparseAutoencoder,
         loss_fn: Metric,
         train_batch_size: int,
     ) -> list[ParameterUpdateResults] | None:

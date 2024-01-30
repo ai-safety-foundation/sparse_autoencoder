@@ -201,7 +201,7 @@ class Pipeline:
         self,
         activation_store: TensorActivationStore,
         train_batch_size: PositiveInt,
-    ) -> Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
+    ) -> Int[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
         """Train the sparse autoencoder.
 
         Args:
@@ -243,24 +243,27 @@ class Pipeline:
         """
         for component_idx, component_parameter_update in enumerate(parameter_updates):
             # Update the weights and biases
-            self.autoencoder.encoder.update_dictionary_vectors(
+            self.autoencoder.sparse_autoencoder.encoder.update_dictionary_vectors(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_encoder_weight_updates,
                 component_idx=component_idx,
             )
-            self.autoencoder.encoder.update_bias(
+            self.autoencoder.sparse_autoencoder.encoder.update_bias(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_encoder_bias_updates,
                 component_idx=component_idx,
             )
-            self.autoencoder.decoder.update_dictionary_vectors(
+            self.autoencoder.sparse_autoencoder.decoder.update_dictionary_vectors(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_decoder_weight_updates,
                 component_idx=component_idx,
             )
 
             # Reset the optimizer
-            for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
+            for (
+                parameter,
+                axis,
+            ) in self.autoencoder.sparse_autoencoder.reset_optimizer_parameter_details:
                 optimizer = self.autoencoder.optimizers(use_pl_optimizer=False)
                 if not isinstance(optimizer, AdamWithReset):
                     error_message = "Cannot reset the optimizer. "
@@ -375,11 +378,11 @@ class Pipeline:
 
         # Wandb
         if wandb.run is not None:
-            self.autoencoder.save_to_wandb(name)
+            self.autoencoder.sparse_autoencoder.save_to_wandb(name)
 
         # Local
         local_path = self.checkpoint_directory / f"{name}.pt"
-        self.autoencoder.save(local_path)
+        self.autoencoder.sparse_autoencoder.save(local_path)
         return local_path
 
     @validate_call

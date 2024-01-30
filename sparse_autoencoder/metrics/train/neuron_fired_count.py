@@ -1,7 +1,7 @@
 """Neuron fired count metric."""
 from typing import Any
 
-from jaxtyping import Bool, Float, Int64
+from jaxtyping import Bool, Float, Int
 from pydantic import PositiveInt, validate_call
 import torch
 from torch import Tensor
@@ -30,7 +30,7 @@ class NeuronFiredCountMetric(Metric):
     plot_lower_bound: float | None = 0.0
 
     # State
-    neuron_fired_count: Int64[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
+    neuron_fired_count: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
 
     @validate_call
     def __init__(
@@ -47,9 +47,9 @@ class NeuronFiredCountMetric(Metric):
         super().__init__()
         self.add_state(
             "neuron_fired_count",
-            default=torch.empty(
+            default=torch.zeros(
                 shape_with_optional_dimensions(num_components, num_learned_features),
-                dtype=torch.int64,
+                dtype=torch.float,  # Float is needed for dist reduce to work
             ),
             dist_reduce_fx="sum",
         )
@@ -71,8 +71,8 @@ class NeuronFiredCountMetric(Metric):
             Tensor, Axis.names(Axis.PROCESS_BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
         ] = torch.gt(learned_activations, 0)
 
-        self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.int64)
+        self.neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.float)
 
-    def compute(self) -> Int64[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
+    def compute(self) -> Int[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]:
         """Compute the metric."""
-        return self.neuron_fired_count
+        return self.neuron_fired_count.to(dtype=torch.int64)

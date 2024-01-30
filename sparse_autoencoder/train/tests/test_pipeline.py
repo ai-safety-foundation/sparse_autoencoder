@@ -1,4 +1,5 @@
 """Test the pipeline module."""
+import os
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
 
@@ -25,21 +26,21 @@ if TYPE_CHECKING:
 @pytest.fixture()
 def pipeline_fixture() -> Pipeline:
     """Fixture to create a Pipeline instance for testing."""
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
     device = torch.device("cpu")
     src_model = HookedTransformer.from_pretrained("tiny-stories-1M", device=device)
+    config = SparseAutoencoderConfig(
+        n_input_features=src_model.cfg.d_model,
+        n_learned_features=int(src_model.cfg.d_model * 2),
+        n_components=2,
+    )
     autoencoder = LitSparseAutoencoder(
-        config=SparseAutoencoderConfig(
-            n_input_features=src_model.cfg.d_model,
-            n_learned_features=int(src_model.cfg.d_model * 2),
-            n_components=2,
-        ),
+        config=config,
         component_names=["mlp1", "mlp2"],
     )
 
     source_data = MockDataset(context_size=10)
-    activation_resampler = ActivationResampler(
-        n_learned_features=autoencoder.config.n_learned_features
-    )
+    activation_resampler = ActivationResampler(n_learned_features=config.n_learned_features)
 
     return Pipeline(
         activation_resampler=activation_resampler,
@@ -138,14 +139,14 @@ class TestTrainAutoencoder:
         model = pipeline_fixture.autoencoder
 
         # Get the weights before training
-        weights_before = model.encoder.weight.clone().detach()
+        weights_before = model.sparse_autoencoder.encoder.weight.clone().detach()
 
         # Train the model
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Check that the weights have changed
         assert not torch.allclose(
-            weights_before, model.encoder.weight
+            weights_before, model.sparse_autoencoder.encoder.weight
         ), "Weights should have changed after training."
 
 
@@ -160,9 +161,15 @@ class TestUpdateParameters:
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Get the weights and biases before training
-        encoder_weight_before = pipeline_fixture.autoencoder.encoder.weight.clone().detach()
-        encoder_bias_before = pipeline_fixture.autoencoder.encoder.bias.clone().detach()
-        decoder_weight_before = pipeline_fixture.autoencoder.decoder.weight.clone().detach()
+        encoder_weight_before = (
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight.clone().detach()
+        )
+        encoder_bias_before = (
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias.clone().detach()
+        )
+        decoder_weight_before = (
+            pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight.clone().detach()
+        )
 
         # Update the parameters
         dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
@@ -193,29 +200,33 @@ class TestUpdateParameters:
         # Check the weights and biases have changed for the dead neuron idx only
         assert not torch.allclose(
             encoder_weight_before[0, dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.weight[0, dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight[0, dead_neuron_indices],
         ), "Encoder weights should have changed after training."
         assert torch.allclose(
             encoder_weight_before[0, ~dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.weight[0, ~dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight[0, ~dead_neuron_indices],
         ), "Encoder weights should not have changed after training."
 
         assert not torch.allclose(
             encoder_bias_before[0, dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.bias[0, dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias[0, dead_neuron_indices],
         ), "Encoder biases should have changed after training."
         assert torch.allclose(
             encoder_bias_before[0, ~dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.bias[0, ~dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias[0, ~dead_neuron_indices],
         ), "Encoder biases should not have changed after training."
 
         assert not torch.allclose(
             decoder_weight_before[0, :, dead_neuron_indices],
-            pipeline_fixture.autoencoder.decoder.weight[0, :, dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight[
+                0, :, dead_neuron_indices
+            ],
         ), "Decoder weights should have changed after training."
         assert torch.allclose(
             decoder_weight_before[0, :, ~dead_neuron_indices],
-            pipeline_fixture.autoencoder.decoder.weight[0, :, ~dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight[
+                0, :, ~dead_neuron_indices
+            ],
         ), "Decoder weights should not have changed after training."
 
     @pytest.mark.integration_test()
@@ -228,7 +239,7 @@ class TestUpdateParameters:
         # Set the optimizer state to all 1s
         optimizer = pipeline_fixture.autoencoder.optimizers(use_pl_optimizer=False)
         assert isinstance(optimizer, AdamWithReset)
-        model = pipeline_fixture.autoencoder
+        model = pipeline_fixture.autoencoder.sparse_autoencoder
         optimizer.state[model.encoder.weight]["exp_avg"] = torch.ones_like(
             optimizer.state[model.encoder.weight]["exp_avg"], dtype=torch.float
         )
@@ -243,15 +254,21 @@ class TestUpdateParameters:
                 ParameterUpdateResults(
                     dead_neuron_indices=dead_neuron_indices,
                     dead_encoder_weight_updates=torch.zeros_like(
-                        pipeline_fixture.autoencoder.encoder.weight[0, dead_neuron_indices],
+                        pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight[
+                            0, dead_neuron_indices
+                        ],
                         dtype=torch.float,
                     ),
                     dead_encoder_bias_updates=torch.zeros_like(
-                        pipeline_fixture.autoencoder.encoder.bias[0, dead_neuron_indices],
+                        pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias[
+                            0, dead_neuron_indices
+                        ],
                         dtype=torch.float,
                     ),
                     dead_decoder_weight_updates=torch.zeros_like(
-                        pipeline_fixture.autoencoder.decoder.weight[0, :, dead_neuron_indices],
+                        pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight[
+                            0, :, dead_neuron_indices
+                        ],
                         dtype=torch.float,
                     ),
                 )

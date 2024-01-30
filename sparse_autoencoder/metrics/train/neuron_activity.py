@@ -62,9 +62,9 @@ class NeuronActivityMetric(Metric):
 
         self.add_state(
             "neuron_fired_count",
-            default=torch.empty(
+            default=torch.zeros(
                 shape_with_optional_dimensions(num_components, num_learned_features),
-                dtype=torch.float,  # Float not int, so that it can be reduced
+                dtype=torch.float,  # Float is needed for dist reduce to work
             ),
             dist_reduce_fx="sum",
         )

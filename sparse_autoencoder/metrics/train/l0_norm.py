@@ -50,7 +50,7 @@ class L0NormMetric(Metric):
     plot_lower_bound: float | None = 0.0
 
     # State
-    active_neurons_count: Int64[Tensor, Axis.COMPONENT_OPTIONAL]
+    active_neurons_count: Float[Tensor, Axis.COMPONENT_OPTIONAL]
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
@@ -60,8 +60,8 @@ class L0NormMetric(Metric):
 
         self.add_state(
             "active_neurons_count",
-            default=torch.empty(shape_with_optional_dimensions(num_components), dtype=torch.int64),
-            dist_reduce_fx="sum",
+            default=torch.zeros(shape_with_optional_dimensions(num_components), dtype=torch.float),
+            dist_reduce_fx="sum",  # Float is needed for dist reduce to work
         )
 
         self.add_state(

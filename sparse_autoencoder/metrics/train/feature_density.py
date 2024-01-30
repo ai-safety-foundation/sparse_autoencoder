@@ -42,7 +42,7 @@ class FeatureDensityMetric(Metric):
     plot_upper_bound: float | None = 1.0
 
     # State
-    neuron_fired_count: Int64[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
+    neuron_fired_count: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)]
     num_activation_vectors: Int64[Tensor, Axis.SINGLE_ITEM]
 
     @validate_call
@@ -54,9 +54,9 @@ class FeatureDensityMetric(Metric):
 
         self.add_state(
             "neuron_fired_count",
-            default=torch.empty(
+            default=torch.zeros(
                 size=shape_with_optional_dimensions(num_components, num_learned_features),
-                dtype=torch.int64,
+                dtype=torch.float,  # Float is needed for dist reduce to work
             ),
             dist_reduce_fx="sum",
         )
