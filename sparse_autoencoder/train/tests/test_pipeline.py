@@ -1,4 +1,5 @@
 """Test the pipeline module."""
+import os
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
 
@@ -6,25 +7,14 @@ import pytest
 import torch
 from transformer_lens import HookedTransformer
 
-from sparse_autoencoder import (
-    AdamWithReset,
-    L2ReconstructionLoss,
-    LearnedActivationsL1Loss,
-    LossReducer,
-    Pipeline,
-    SparseAutoencoder,
-)
+from sparse_autoencoder import Pipeline
 from sparse_autoencoder.activation_resampler.activation_resampler import (
     ActivationResampler,
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
-from sparse_autoencoder.metrics.abstract_metric import MetricResult
-from sparse_autoencoder.metrics.validate.abstract_validate_metric import (
-    AbstractValidationMetric,
-    ValidationMetricData,
-)
+from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
+from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.mock_dataset import MockDataset
 
 
@@ -35,39 +25,32 @@ if TYPE_CHECKING:
 @pytest.fixture()
 def pipeline_fixture() -> Pipeline:
     """Fixture to create a Pipeline instance for testing."""
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
     device = torch.device("cpu")
     src_model = HookedTransformer.from_pretrained("tiny-stories-1M", device=device)
-    autoencoder = SparseAutoencoder(
-        SparseAutoencoderConfig(
-            n_input_features=src_model.cfg.d_model,
-            n_learned_features=int(src_model.cfg.d_model * 2),
-            n_components=2,
-        )
+    config = SparseAutoencoderConfig(
+        n_input_features=src_model.cfg.d_model,
+        n_learned_features=int(src_model.cfg.d_model * 2),
+        n_components=2,
     )
-    loss = LossReducer(
-        LearnedActivationsL1Loss(
-            l1_coefficient=0.001,
-        ),
-        L2ReconstructionLoss(),
-    )
+    autoencoder = SparseAutoencoder(config)
     optimizer = AdamWithReset(
         params=autoencoder.parameters(),
         named_parameters=autoencoder.named_parameters(),
         has_components_dim=True,
     )
+
     source_data = MockDataset(context_size=10)
-    activation_resampler = ActivationResampler(
-        n_learned_features=autoencoder.config.n_learned_features
-    )
+    activation_resampler = ActivationResampler(config.n_learned_features)
 
     return Pipeline(
         activation_resampler=activation_resampler,
         autoencoder=autoencoder,
         cache_names=["blocks.0.hook_mlp_out", "blocks.1.hook_mlp_out"],
         layer=1,
-        loss=loss,
-        optimizer=optimizer,
         source_dataset=source_data,
+        optimizer=optimizer,
+        l1_coefficient=0.0001,
         source_model=src_model,
         source_data_batch_size=10,
         n_input_features=src_model.cfg.d_model,
@@ -294,53 +277,6 @@ class TestUpdateParameters:
                 dtype=torch.float,
             ),
         ), "Optimizer non-dead neuron state should not have changed after training."
-
-
-class TestValidateSAE:
-    """Test the validate_sae method."""
-
-    @pytest.mark.integration_test()
-    def test_validation_loss_calculated(self, pipeline_fixture: Pipeline) -> None:
-        """Test that the validation loss numbers are calculated."""
-
-        # Create a dummy metric, so we can retrieve the stored data afterwards
-        class StoreValidationMetric(AbstractValidationMetric):
-            """Dummy metric to store the data."""
-
-            data: ValidationMetricData | None
-
-            def calculate(self, data: ValidationMetricData) -> list[MetricResult]:
-                """Store the data."""
-                self.data = data
-                return []
-
-        dummy_metric = StoreValidationMetric()
-        pipeline_fixture.metrics.validation_metrics.append(dummy_metric)
-
-        # Run the validation loop
-        store_size: int = 100
-        pipeline_fixture.generate_activations(store_size)
-        pipeline_fixture.validate_sae(store_size)
-
-        # Check the loss is created
-        assert (
-            dummy_metric.data is not None
-        ), "Dummy metric should have stored the data from the validation loop."
-        assert (
-            dummy_metric.data.source_model_loss is not None
-        ), "Source model loss should be calculated."
-        assert (
-            dummy_metric.data.source_model_loss_with_reconstruction is not None
-        ), "Source model loss with reconstruction should be calculated."
-        assert (
-            dummy_metric.data.source_model_loss_with_zero_ablation is not None
-        ), "Source model loss with zero ablation should be calculated."
-
-        # Check the dimensions are correct
-        ndim_with_component = 2
-        assert dummy_metric.data.source_model_loss.ndim == ndim_with_component
-        assert dummy_metric.data.source_model_loss_with_reconstruction.ndim == ndim_with_component
-        assert dummy_metric.data.source_model_loss_with_zero_ablation.ndim == ndim_with_component
 
 
 class TestSaveCheckpoint:

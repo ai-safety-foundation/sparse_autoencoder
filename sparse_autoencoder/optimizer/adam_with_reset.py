@@ -3,7 +3,6 @@
 This reset method is useful when resampling dead neurons during training.
 """
 from collections.abc import Iterator
-from typing import final
 
 from jaxtyping import Float, Int
 from torch import Tensor
@@ -11,12 +10,10 @@ from torch.nn.parameter import Parameter
 from torch.optim import Adam
 from torch.optim.optimizer import params_t
 
-from sparse_autoencoder.optimizer.abstract_optimizer import AbstractOptimizerWithReset
 from sparse_autoencoder.tensor_types import Axis
 
 
-@final
-class AdamWithReset(Adam, AbstractOptimizerWithReset):
+class AdamWithReset(Adam):
     """Adam Optimizer with a reset method.
 
     The :meth:`reset_state_all_parameters` and :meth:`reset_neurons_state` methods are useful when

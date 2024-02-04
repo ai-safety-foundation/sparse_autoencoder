@@ -15,11 +15,3 @@
   )
   '''
 # ---
-# name: test_setup_loss_function
-  '''
-  LossReducer(
-    (0): LearnedActivationsL1Loss(l1_coefficient=0.0001)
-    (1): L2ReconstructionLoss()
-  )
-  '''
-# ---
