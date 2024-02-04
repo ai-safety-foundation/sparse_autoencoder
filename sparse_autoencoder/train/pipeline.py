@@ -185,12 +185,15 @@ class Pipeline:
                 ["l0"],
             ],
         )
+        self.train_metrics.to(get_model_device(self.autoencoder))
 
         # Add validate metric
         self.reconstruction_score = ClasswiseWrapperWithMean(
             ReconstructionScoreMetric(len(cache_names)),
+            component_names=cache_names,
             prefix="validation/reconstruction_score",
         )
+        self.reconstruction_score.to(get_model_device(self.autoencoder))
 
         # Create a stateful iterator
         source_dataloader = source_dataset.get_dataloader(
@@ -361,25 +364,27 @@ class Pipeline:
         Args:
             validation_n_activations: Number of activations to use for validation.
         """
-        losses_shape = (
-            validation_n_activations // self.source_data_batch_size,
-            self.n_components,
+        n_batches = validation_n_activations // (
+            self.source_data_batch_size * self.source_dataset.context_size
         )
         source_model_device = get_model_device(self.source_model)
 
         # Create the metric data stores
-        losses: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)] = torch.empty(
-            losses_shape, device=source_model_device
+        losses: Float[Tensor, Axis.COMPONENT] = torch.zeros(
+            self.n_components, device=source_model_device
         )
-        losses_with_reconstruction: Float[
-            Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
-        ] = torch.empty(losses_shape, device=source_model_device)
-        losses_with_zero_ablation: Float[
-            Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
-        ] = torch.empty(losses_shape, device=source_model_device)
+        losses_with_reconstruction: Float[Tensor, Axis.COMPONENT] = torch.zeros(
+            self.n_components, device=source_model_device
+        )
+        losses_with_zero_ablation: Float[Tensor, Axis.COMPONENT] = torch.zeros(
+            self.n_components, device=source_model_device
+        )
+        reconstruction_scores: Float[Tensor, Axis.COMPONENT] = torch.zeros(
+            self.n_components, device=source_model_device
+        )
 
         for component_idx, cache_name in enumerate(self.cache_names):
-            for batch_idx in range(losses.shape[0]):
+            for _batch_idx in range(n_batches):
                 batch = next(self.source_data)
 
                 input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
@@ -396,7 +401,9 @@ class Pipeline:
                 )
 
                 with torch.no_grad():
-                    loss = self.source_model.forward(input_ids, return_type="loss")
+                    loss: Float[
+                        Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)
+                    ] = self.source_model.forward(input_ids, return_type="loss")
                     loss_with_reconstruction = self.source_model.run_with_hooks(
                         input_ids,
                         return_type="loss",
@@ -408,38 +415,36 @@ class Pipeline:
                         ],
                     )
                     loss_with_zero_ablation = self.source_model.run_with_hooks(
-                        input_ids,
-                        return_type="loss",
-                        fwd_hooks=[(cache_name, zero_ablate_hook)],
-                    )
-                    self.reconstruction_score.update(
-                        loss, loss_with_reconstruction, loss_with_zero_ablation
+                        input_ids, return_type="loss", fwd_hooks=[(cache_name, zero_ablate_hook)]
                     )
 
-                    losses[batch_idx, component_idx] = loss.sum()
-                    losses_with_reconstruction[
-                        batch_idx, component_idx
-                    ] = loss_with_reconstruction.sum()
-                    losses_with_zero_ablation[
-                        batch_idx, component_idx
-                    ] = loss_with_zero_ablation.sum()
+                    self.reconstruction_score.update(
+                        source_model_loss=loss,
+                        source_model_loss_with_reconstruction=loss_with_reconstruction,
+                        source_model_loss_with_zero_ablation=loss_with_zero_ablation,
+                        component_idx=component_idx,
+                    )
+
+                    losses[component_idx] += loss.sum()
+                    losses_with_reconstruction[component_idx] += loss_with_reconstruction.sum()
+                    losses_with_zero_ablation[component_idx] += loss_with_zero_ablation.sum()
 
         # Log
         if wandb.run is not None:
             log = {
                 f"validation/source_model_losses/{c}": val
-                for c, val in zip(self.cache_names, losses)
+                for c, val in zip(self.cache_names, losses / n_batches)
             }
             log.update(
                 {
                     f"validation/source_model_losses_with_reconstruction/{c}": val
-                    for c, val in zip(self.cache_names, loss_with_reconstruction)  # type: ignore
+                    for c, val in zip(self.cache_names, losses_with_reconstruction / n_batches)
                 }
             )
             log.update(
                 {
                     f"validation/source_model_losses_with_zero_ablation/{c}": val
-                    for c, val in zip(self.cache_names, loss_with_zero_ablation)  # type: ignore
+                    for c, val in zip(self.cache_names, losses_with_zero_ablation / n_batches)
                 }
             )
             log.update(self.reconstruction_score.compute())

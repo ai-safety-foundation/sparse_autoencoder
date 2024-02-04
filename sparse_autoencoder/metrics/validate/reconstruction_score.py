@@ -66,21 +66,13 @@ class ReconstructionScoreMetric(Metric):
             default=torch.zeros(num_components),
             dist_reduce_fx="sum",
         )
-        self.add_state(
-            "num_activation_vectors",
-            default=torch.tensor(0, dtype=torch.int64),
-            dist_reduce_fx="sum",
-        )
 
     def update(
         self,
-        source_model_loss: Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)],
-        source_model_loss_with_reconstruction: Float[
-            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
-        ],
-        source_model_loss_with_zero_ablation: Float[
-            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)
-        ],
+        source_model_loss: Float[Tensor, Axis.COMPONENT_OPTIONAL],
+        source_model_loss_with_reconstruction: Float[Tensor, Axis.COMPONENT_OPTIONAL],
+        source_model_loss_with_zero_ablation: Float[Tensor, Axis.COMPONENT_OPTIONAL],
+        component_idx: int = 0,
     ) -> None:
         """Update the metric state.
 
@@ -88,24 +80,26 @@ class ReconstructionScoreMetric(Metric):
             source_model_loss: Loss with no changes to the source model.
             source_model_loss_with_reconstruction: Loss with SAE reconstruction.
             source_model_loss_with_zero_ablation: Loss with zero ablation.
+            component_idx: Component idx.
         """
-        self.source_model_loss += source_model_loss.sum(0)
-        self.source_model_loss_with_zero_ablation += source_model_loss_with_zero_ablation.sum(0)
-        self.source_model_loss_with_reconstruction += source_model_loss_with_reconstruction.sum(0)
-        self.num_activation_vectors += source_model_loss.shape[0]
+        self.source_model_loss[component_idx] += source_model_loss.sum()
+        self.source_model_loss_with_zero_ablation[
+            component_idx
+        ] += source_model_loss_with_zero_ablation.sum()
+        self.source_model_loss_with_reconstruction[
+            component_idx
+        ] += source_model_loss_with_reconstruction.sum()
 
     def compute(
         self,
-    ) -> Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)]:
+    ) -> Float[Tensor, Axis.COMPONENT_OPTIONAL]:
         """Compute the metric."""
-        zero_ablate_loss_minus_reconstruction_loss: Float[
-            Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)
-        ] = (
+        zero_ablate_loss_minus_reconstruction_loss: Float[Tensor, Axis.COMPONENT_OPTIONAL] = (
             self.source_model_loss_with_zero_ablation - self.source_model_loss_with_reconstruction
-        ) / self.num_activation_vectors
+        )
 
-        zero_ablate_loss_minus_default_loss: Float[Tensor, Axis.names(Axis.COMPONENT_OPTIONAL)] = (
+        zero_ablate_loss_minus_default_loss: Float[Tensor, Axis.COMPONENT_OPTIONAL] = (
             self.source_model_loss_with_zero_ablation - self.source_model_loss
-        ) / self.num_activation_vectors
+        )
 
         return zero_ablate_loss_minus_reconstruction_loss / zero_ablate_loss_minus_default_loss

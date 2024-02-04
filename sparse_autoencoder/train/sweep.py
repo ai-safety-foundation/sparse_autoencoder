@@ -8,6 +8,7 @@ import torch
 from torch.nn.parallel import DataParallel
 from torch.optim.lr_scheduler import CosineAnnealingLR, LRScheduler, ReduceLROnPlateau
 from transformer_lens import HookedTransformer
+from transformer_lens.utils import get_device
 from transformers import AutoTokenizer
 import wandb
 
@@ -90,6 +91,8 @@ def setup_autoencoder_optimizer_scheduler(
     )
 
     model = SparseAutoencoder(config)
+
+    model.to(get_device())
 
     optim = AdamWithReset(
         params=model.parameters(),
