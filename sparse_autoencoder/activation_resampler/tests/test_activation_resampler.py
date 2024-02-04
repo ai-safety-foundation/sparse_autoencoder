@@ -56,7 +56,9 @@ def loss_fn() -> SparseAutoencoderLoss:
 
 
 @pytest.fixture()
-def activation_resampler_single_item_triggers() -> ActivationResampler:
+def activation_resampler_single_item_triggers(
+    autoencoder_model: SparseAutoencoder,
+) -> ActivationResampler:
     """Activation resampler where any call to step will result in resampling."""
     return ActivationResampler(
         n_activations_activity_collate=1,
@@ -64,6 +66,7 @@ def activation_resampler_single_item_triggers() -> ActivationResampler:
         resample_dataset_size=1,
         resample_interval=1,
         threshold_is_dead_portion_fires=0.0,
+        encoder_weight_reference=autoencoder_model.encoder.weight,
     )
 
 
@@ -75,16 +78,21 @@ class TestInit:
         [(100, 50, 50), (100, 100, 0)],
     )
     def test_neuron_activity_window_start(
-        self, resample_interval: int, n_steps_collate: int, expected_window_start: int
+        self,
+        resample_interval: int,
+        n_steps_collate: int,
+        expected_window_start: int,
+        autoencoder_model: SparseAutoencoder,
     ) -> None:
         """Test the neuron activity window start is set correctly."""
         resampler = ActivationResampler(
             n_learned_features=10,
             resample_interval=resample_interval,
             n_activations_activity_collate=n_steps_collate,
+            encoder_weight_reference=autoencoder_model.encoder.weight,
         )
 
-        assert resampler._neuron_activity_window_start == expected_window_start
+        assert resampler.start_collecting_neuron_activity_process == expected_window_start
 
 
 class TestComputeLossAndGetActivations:
@@ -101,6 +109,7 @@ class TestComputeLossAndGetActivations:
             n_components=DEFAULT_N_COMPONENTS,
             n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=DEFAULT_N_ACTIVATIONS_STORE,
+            encoder_weight_reference=autoencoder_model.encoder.weight,
         )
 
         loss, input_activations = resampler.compute_loss_and_get_activations(
@@ -130,6 +139,7 @@ class TestComputeLossAndGetActivations:
             ActivationResampler(
                 resample_dataset_size=DEFAULT_N_ACTIVATIONS_STORE + 1,
                 n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+                encoder_weight_reference=autoencoder_model.encoder.weight,
             ).compute_loss_and_get_activations(
                 store=full_activation_store,
                 autoencoder=autoencoder_model,
@@ -281,7 +291,6 @@ class TestResampleDeadNeurons:
         self,
         full_activation_store: ActivationStore,
         autoencoder_model: SparseAutoencoder,
-        loss_fn: SparseAutoencoderLoss,
     ) -> None:
         """Check it doesn't change anything if there are no dead neurons."""
         neuron_activity = torch.ones(
@@ -293,13 +302,14 @@ class TestResampleDeadNeurons:
             n_activations_activity_collate=10,
             n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=100,
+            encoder_weight_reference=autoencoder_model.encoder.weight,
         )
         updates = resampler.forward(
+            input_activations=full_activation_store[:],
             learned_activations=neuron_activity,
-            activation_store=full_activation_store,
-            autoencoder=autoencoder_model,
-            loss_fn=loss_fn,
-            train_batch_size=10,
+            loss=torch.zeros(
+                (len(full_activation_store), DEFAULT_N_COMPONENTS, DEFAULT_N_INPUT_FEATURES)
+            ),
         )
 
         assert updates is not None, "Should have updated"
@@ -317,7 +327,6 @@ class TestResampleDeadNeurons:
         self,
         autoencoder_model: SparseAutoencoder,
         full_activation_store: ActivationStore,
-        loss_fn: SparseAutoencoderLoss,
     ) -> None:
         """Check it updates a dead neuron's parameters."""
         neuron_activity = torch.ones(
@@ -333,17 +342,18 @@ class TestResampleDeadNeurons:
         current_parameters = autoencoder_model.state_dict()
         resampler = ActivationResampler(
             resample_interval=10,
-            n_activations_activity_collate=10,
             n_components=DEFAULT_N_COMPONENTS,
+            n_activations_activity_collate=10,
             n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=100,
+            encoder_weight_reference=autoencoder_model.encoder.weight,
         )
         parameter_updates = resampler.forward(
+            input_activations=full_activation_store[:],
             learned_activations=neuron_activity,
-            activation_store=full_activation_store,
-            autoencoder=autoencoder_model,
-            loss_fn=loss_fn,
-            train_batch_size=10,
+            loss=torch.ones(
+                (len(full_activation_store), DEFAULT_N_COMPONENTS, DEFAULT_N_INPUT_FEATURES)
+            ),
         )
         assert parameter_updates is not None, "Should have updated"
 
@@ -406,27 +416,25 @@ class TestStepResampler:
     def test_gets_dead_neuron_indices(
         self,
         neuron_activity: Int64[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)],
-        threshold: float,
         expected_indices: list[Tensor],
         full_activation_store: ActivationStore,
         autoencoder_model: SparseAutoencoder,
-        loss_fn: SparseAutoencoderLoss,
     ) -> None:
         """Test the dead neuron indices match manually created examples."""
         resampler = ActivationResampler(
-            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+            resample_interval=10,
             n_components=DEFAULT_N_COMPONENTS,
-            resample_interval=1,
-            n_activations_activity_collate=1,
-            resample_dataset_size=1,
-            threshold_is_dead_portion_fires=threshold,
+            n_activations_activity_collate=10,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+            resample_dataset_size=100,
+            encoder_weight_reference=autoencoder_model.encoder.weight,
         )
         res = resampler.forward(
-            neuron_activity,
-            full_activation_store,
-            autoencoder_model,
-            loss_fn,
-            train_batch_size=10,
+            input_activations=full_activation_store[:],
+            learned_activations=neuron_activity,
+            loss=torch.zeros(
+                (len(full_activation_store), DEFAULT_N_COMPONENTS, DEFAULT_N_INPUT_FEATURES)
+            ),
         )
         assert res is not None
 
@@ -454,13 +462,10 @@ class TestStepResampler:
     def test_max_updates(
         self,
         *,
-        max_n_resamples: int,
-        resample_interval: int,
         total_activations_seen: int,
         should_update: bool,
         assert_fail_message: str,
         autoencoder_model: SparseAutoencoder,
-        loss_fn: SparseAutoencoderLoss,
     ) -> None:
         """Check if max_updates, resample_interval and n_steps_collate are respected."""
         # Create neuron activity to log (with one dead neuron)
@@ -470,12 +475,12 @@ class TestStepResampler:
         neuron_activity_batch_size_1[0][2] = 0
 
         resampler = ActivationResampler(
-            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
-            resample_interval=resample_interval,
-            max_n_resamples=max_n_resamples,
-            n_activations_activity_collate=1,
+            resample_interval=10,
             n_components=DEFAULT_N_COMPONENTS,
-            resample_dataset_size=1,
+            n_activations_activity_collate=10,
+            n_learned_features=DEFAULT_N_LEARNED_FEATURES,
+            resample_dataset_size=100,
+            encoder_weight_reference=autoencoder_model.encoder.weight,
         )
 
         for activation_seen_count in range(1, total_activations_seen + 1):
@@ -490,11 +495,13 @@ class TestStepResampler:
             )
 
             updates = resampler.forward(
-                learned_activations=neuron_activity_batch_size_1,
-                activation_store=activation_store,
-                autoencoder=autoencoder_model,
-                loss_fn=loss_fn,
-                train_batch_size=1,
+                input_activations=activation_store[:],
+                learned_activations=torch.ones(
+                    (1, DEFAULT_N_COMPONENTS, DEFAULT_N_LEARNED_FEATURES)
+                ),
+                loss=torch.zeros(
+                    (len(activation_store), DEFAULT_N_COMPONENTS, DEFAULT_N_INPUT_FEATURES)
+                ),
             )
 
             if activation_seen_count == total_activations_seen:

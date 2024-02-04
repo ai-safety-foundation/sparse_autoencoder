@@ -4,9 +4,9 @@ from functools import partial
 import logging
 from pathlib import Path
 from tempfile import gettempdir
-from typing import final
+from typing import TYPE_CHECKING, final
 
-from jaxtyping import Float, Int, Int64
+from jaxtyping import Float, Int
 from lightning import Trainer
 from lightning.pytorch.loggers import WandbLogger
 from pydantic import NonNegativeInt, PositiveInt, validate_call
@@ -17,22 +17,20 @@ from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 import wandb
 
-from sparse_autoencoder.activation_resampler.activation_resampler import (
-    ActivationResampler,
-    ParameterUpdateResults,
-)
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
 from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
 from sparse_autoencoder.metrics.validate.reconstruction_score import ReconstructionScoreMetric
 from sparse_autoencoder.metrics.wrappers.classwise import ClasswiseWrapperWithMean
-from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset, TorchTokenizedPrompts
 from sparse_autoencoder.source_model.replace_activations_hook import replace_activations_hook
 from sparse_autoencoder.source_model.store_activations_hook import store_activations_hook
 from sparse_autoencoder.source_model.zero_ablate_hook import zero_ablate_hook
-from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.train.utils.get_model_device import get_model_device
 from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
+
+
+if TYPE_CHECKING:
+    from sparse_autoencoder.tensor_types import Axis
 
 
 DEFAULT_CHECKPOINT_DIRECTORY: Path = Path(gettempdir()) / "sparse_autoencoder"
@@ -44,9 +42,6 @@ class Pipeline:
     Includes all the key functionality to train a sparse autoencoder, with a specific set of
         hyperparameters.
     """
-
-    activation_resampler: ActivationResampler | None
-    """Activation resampler to use."""
 
     autoencoder: LitSparseAutoencoder
     """Sparse autoencoder to train."""
@@ -90,7 +85,6 @@ class Pipeline:
     @validate_call(config={"arbitrary_types_allowed": True})
     def __init__(
         self,
-        activation_resampler: ActivationResampler | None,
         autoencoder: LitSparseAutoencoder,
         cache_names: list[str],
         layer: NonNegativeInt,
@@ -107,7 +101,6 @@ class Pipeline:
         """Initialize the pipeline.
 
         Args:
-            activation_resampler: Activation resampler to use.
             autoencoder: Sparse autoencoder to train.
             cache_names: Names of the cache hook points to use in the source model.
             layer: Layer to stope the source model at (if we don't need activations after this
@@ -122,7 +115,6 @@ class Pipeline:
             num_workers_data_loading: Number of CPU workers for the dataloader.
             source_data_batch_size: Batch size for the source data.
         """
-        self.activation_resampler = activation_resampler
         self.autoencoder = autoencoder
         self.cache_names = cache_names
         self.checkpoint_directory = checkpoint_directory
@@ -203,7 +195,7 @@ class Pipeline:
         self,
         activation_store: TensorActivationStore,
         train_batch_size: PositiveInt,
-    ) -> Int[Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)]:
+    ) -> None:
         """Train the sparse autoencoder.
 
         Args:
@@ -217,7 +209,7 @@ class Pipeline:
             activation_store, batch_size=train_batch_size, num_workers=4, persistent_workers=False
         )
 
-        # Setup the trainer with no logging
+        # Setup the trainer with no console logging
         logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(logging.WARNING)
         trainer = Trainer(
             logger=WandbLogger() if wandb.run is not None else None,
@@ -227,56 +219,7 @@ class Pipeline:
             enable_checkpointing=False,
             precision="16-mixed",
         )
-
-        # Train
         trainer.fit(self.autoencoder, activations_dataloader)
-        fired_count = self.autoencoder.neuron_fired_count.compute()
-        self.autoencoder.neuron_fired_count.reset()
-        return fired_count
-
-    def update_parameters(self, parameter_updates: list[ParameterUpdateResults]) -> None:
-        """Update the parameters of the model from the results of the resampler.
-
-        Args:
-            parameter_updates: Parameter updates from the resampler.
-
-        Raises:
-            TypeError: If the optimizer is not an AdamWithReset.
-        """
-        for component_idx, component_parameter_update in enumerate(parameter_updates):
-            # Update the weights and biases
-            self.autoencoder.sparse_autoencoder.encoder.update_dictionary_vectors(
-                component_parameter_update.dead_neuron_indices,
-                component_parameter_update.dead_encoder_weight_updates,
-                component_idx=component_idx,
-            )
-            self.autoencoder.sparse_autoencoder.encoder.update_bias(
-                component_parameter_update.dead_neuron_indices,
-                component_parameter_update.dead_encoder_bias_updates,
-                component_idx=component_idx,
-            )
-            self.autoencoder.sparse_autoencoder.decoder.update_dictionary_vectors(
-                component_parameter_update.dead_neuron_indices,
-                component_parameter_update.dead_decoder_weight_updates,
-                component_idx=component_idx,
-            )
-
-            # Reset the optimizer
-            for (
-                parameter,
-                axis,
-            ) in self.autoencoder.sparse_autoencoder.reset_optimizer_parameter_details:
-                optimizer = self.autoencoder.optimizers(use_pl_optimizer=False)
-                if not isinstance(optimizer, AdamWithReset):
-                    error_message = "Cannot reset the optimizer. "
-                    raise TypeError(error_message)
-
-                optimizer.reset_neurons_state(
-                    parameter=parameter,
-                    neuron_indices=component_parameter_update.dead_neuron_indices,
-                    axis=axis,
-                    component_idx=component_idx,
-                )
 
     @validate_call
     def validate_sae(self, validation_n_activations: PositiveInt) -> None:
@@ -438,38 +381,9 @@ class Pipeline:
                 last_validated += n_activation_vectors_in_store
                 last_checkpoint += n_activation_vectors_in_store
 
-                # Train
+                # Train & resample if needed
                 progress_bar.set_postfix({"stage": "train"})
-                batch_neuron_activity: Int64[
-                    Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
-                ] = self.train_autoencoder(activation_store, train_batch_size=train_batch_size)
-
-                # Resample dead neurons (if needed)
-                progress_bar.set_postfix({"stage": "resample"})
-                if self.activation_resampler is not None:
-                    # Get the updates
-                    parameter_updates = self.activation_resampler.forward(
-                        learned_activations=batch_neuron_activity,
-                        activation_store=activation_store,
-                        autoencoder=self.autoencoder.sparse_autoencoder,
-                        loss_fn=self.autoencoder.loss_fn,
-                        train_batch_size=train_batch_size,
-                    )
-
-                    if parameter_updates is not None:
-                        if wandb.run is not None:
-                            wandb.log(
-                                {
-                                    "resample/dead_neurons": [
-                                        len(update.dead_neuron_indices)
-                                        for update in parameter_updates
-                                    ]
-                                },
-                                commit=False,
-                            )
-
-                        # Update the parameters
-                        self.update_parameters(parameter_updates)
+                self.train_autoencoder(activation_store, train_batch_size=train_batch_size)
 
                 # Get validation metrics (if needed)
                 progress_bar.set_postfix({"stage": "validate"})

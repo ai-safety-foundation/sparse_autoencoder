@@ -13,8 +13,10 @@ from sparse_autoencoder.activation_resampler.activation_resampler import (
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
-from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
+from sparse_autoencoder.autoencoder.lightning import (
+    LitSparseAutoencoder,
+    LitSparseAutoencoderConfig,
+)
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.mock_dataset import MockDataset
 
@@ -29,21 +31,16 @@ def pipeline_fixture() -> Pipeline:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     device = torch.device("cpu")
     src_model = HookedTransformer.from_pretrained("tiny-stories-1M", device=device)
-    config = SparseAutoencoderConfig(
+    config = LitSparseAutoencoderConfig(
         n_input_features=src_model.cfg.d_model,
         n_learned_features=int(src_model.cfg.d_model * 2),
         n_components=2,
+        component_names=["mlp_o", "mlp_1"],
     )
-    autoencoder = LitSparseAutoencoder(
-        config=config,
-        component_names=["mlp1", "mlp2"],
-    )
-
+    autoencoder = LitSparseAutoencoder(config=config)
     source_data = MockDataset(context_size=10)
-    activation_resampler = ActivationResampler(n_learned_features=config.n_learned_features)
 
     return Pipeline(
-        activation_resampler=activation_resampler,
         autoencoder=autoencoder,
         cache_names=["blocks.0.hook_mlp_out", "blocks.1.hook_mlp_out"],
         layer=1,
@@ -116,21 +113,6 @@ class TestTrainAutoencoder:
     """Test the train_autoencoder method."""
 
     @pytest.mark.integration_test()
-    def test_learned_activations_fired_count(self, pipeline_fixture: Pipeline) -> None:
-        """Test that the learned activations fired count is updated correctly."""
-        store_size: int = 1000
-        store = pipeline_fixture.generate_activations(store_size)
-        fired_count = pipeline_fixture.train_autoencoder(store, store_size)
-
-        assert (
-            fired_count.max().item() <= store_size
-        ), "Fired count should not be greater than sample size."
-
-        assert fired_count.min().item() >= 0, "Fired count should not be negative."
-
-        assert fired_count.sum().item() > 0, "Some neurons should have fired."
-
-    @pytest.mark.integration_test()
     def test_learns_with_backwards_pass(self, pipeline_fixture: Pipeline) -> None:
         """Test that the autoencoder learns with a backwards pass."""
         store_size: int = 1000
@@ -174,7 +156,7 @@ class TestUpdateParameters:
         # Update the parameters
         dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
 
-        pipeline_fixture.update_parameters(
+        pipeline_fixture.autoencoder.update_parameters(
             [
                 ParameterUpdateResults(
                     dead_neuron_indices=dead_neuron_indices,
@@ -249,7 +231,7 @@ class TestUpdateParameters:
 
         # Update the parameters
         dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
-        pipeline_fixture.update_parameters(
+        pipeline_fixture.autoencoder.update_parameters(
             [
                 ParameterUpdateResults(
                     dead_neuron_indices=dead_neuron_indices,
@@ -319,7 +301,7 @@ class TestRunPipeline:
         """Test that the run_pipeline method calls all the other methods."""
         pipeline_fixture.validate_sae = MagicMock(spec=Pipeline.validate_sae)  # type: ignore
         pipeline_fixture.save_checkpoint = MagicMock(spec=Pipeline.save_checkpoint)  # type: ignore
-        pipeline_fixture.activation_resampler.forward = MagicMock(  # type: ignore
+        pipeline_fixture.autoencoder.activation_resampler.forward = MagicMock(  # type: ignore
             spec=ActivationResampler.forward, return_value=None
         )
 
@@ -349,7 +331,7 @@ class TestRunPipeline:
             pipeline_fixture.save_checkpoint.call_count == checkpoint_expected_calls
         ), f"Checkpoint should have been called {checkpoint_expected_calls} times."
 
-        assert (pipeline_fixture.activation_resampler) is not None
+        assert (pipeline_fixture.autoencoder.activation_resampler) is not None
         assert (
-            pipeline_fixture.activation_resampler.forward.call_count == total_loops
+            pipeline_fixture.autoencoder.activation_resampler.forward.call_count == total_loops
         ), f"Resampler should have been called {total_loops} times."

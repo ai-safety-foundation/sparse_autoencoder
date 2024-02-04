@@ -26,7 +26,7 @@ from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
 
 
-class SparseAutoencoderConfig(BaseModel, frozen=True):
+class SparseAutoencoderConfig(BaseModel):
     """SAE model config."""
 
     n_input_features: PositiveInt

@@ -89,9 +89,9 @@ class ActivationResampler(Metric):
     _n_components: int
     _threshold_is_dead_portion_fires: float
     _max_n_resamples: int
-    _resample_interval_process: int
-    _start_collecting_neuron_activity_process: int
-    _start_collecting_loss_process: int
+    resample_interval_process: int
+    start_collecting_neuron_activity_process: int
+    start_collecting_loss_process: int
 
     # Encoder weight reference
     _encoder_weight: Float[Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)]
@@ -161,12 +161,12 @@ class ActivationResampler(Metric):
         self._n_components = n_components
         self._threshold_is_dead_portion_fires = threshold_is_dead_portion_fires
         self._max_n_resamples = max_n_resamples
-        self._resample_interval_process = resample_interval // world_size
-        self._start_collecting_neuron_activity_process = (
-            self._resample_interval_process - n_activations_activity_collate // world_size
+        self.resample_interval_process = resample_interval // world_size
+        self.start_collecting_neuron_activity_process = (
+            self.resample_interval_process - n_activations_activity_collate // world_size
         )
-        self._start_collecting_loss_process = (
-            self._resample_interval_process - process_resample_dataset_size
+        self.start_collecting_loss_process = (
+            self.resample_interval_process - process_resample_dataset_size
         )
 
         # Encoder weight reference
@@ -188,14 +188,18 @@ class ActivationResampler(Metric):
             input_activations: Input activations to the SAE.
             learned_activations: Learned activations from the SAE.
             loss: Loss per input activation.
+
+        Raises:
+            TypeError: If the loss or input activations are not lists (e.g. from unsync having not
+                been called).
         """
-        if self._n_activations_seen_process >= self._start_collecting_neuron_activity_process:
+        if self._n_activations_seen_process >= self.start_collecting_neuron_activity_process:
             neuron_has_fired: Bool[
                 Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
             ] = torch.gt(learned_activations, 0)
             self._neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.bfloat16)
 
-        if self._n_activations_seen_process >= self._start_collecting_loss_process:
+        if self._n_activations_seen_process >= self.start_collecting_loss_process:
             # Typecast
             if not isinstance(self._loss, list) or not isinstance(self._input_activations, list):
                 raise TypeError
@@ -424,9 +428,13 @@ class ActivationResampler(Metric):
         Returns:
             A list of parameter update results (for each component that the SAE is being trained
             on), if an update is needed.
+
+        Raises:
+            TypeError: If the loss or input activations are not lists (e.g. from unsync having not
+                been called).
         """
         # Resample if needed
-        if self._n_activations_seen_process >= self._resample_interval_process:
+        if self._n_activations_seen_process >= self.resample_interval_process:
             with torch.no_grad():
                 # Initialise results
                 parameter_update_results: list[ParameterUpdateResults] = []
@@ -468,8 +476,8 @@ class ActivationResampler(Metric):
                         renormalized_input, "dead_neuron input_feature -> input_feature dead_neuron"
                     )
 
-                    # For the corresponding encoder vector, renormalize the input vector to equal the
-                    # average norm of the encoder weights for alive neurons times 0.2. Set the
+                    # For the corresponding encoder vector, renormalize the input vector to equal
+                    # the average norm of the encoder weights for alive neurons times 0.2. Set the
                     # corresponding encoder bias element to zero.
                     encoder_weight: Float[
                         Tensor, Axis.names(Axis.LEARNT_FEATURE, Axis.INPUT_OUTPUT_FEATURE)
@@ -540,7 +548,7 @@ class ActivationResampler(Metric):
             f"n_components={self._n_components}, "
             f"threshold_is_dead_portion_fires={self._threshold_is_dead_portion_fires}, "
             f"max_n_resamples={self._max_n_resamples}, "
-            f"resample_interval={self._resample_interval_process}, "
-            f"start_collecting_neuron_activity={self._start_collecting_neuron_activity_process}, "
-            f"start_collecting_loss={self._start_collecting_loss_process}"
+            f"resample_interval={self.resample_interval_process}, "
+            f"start_collecting_neuron_activity={self.start_collecting_neuron_activity_process}, "
+            f"start_collecting_loss={self.start_collecting_loss_process}"
         )
