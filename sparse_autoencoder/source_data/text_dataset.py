@@ -151,7 +151,7 @@ class TextDataset(SourceDataset[GenericTextDataBatch]):
                 is set.
             n_shards: Number of shards to split the dataset into. A high number is recommended
                 here to allow for flexible distributed training of SAEs across nodes (where e.g.
-                each node fetches it's own shard).
+                each node fetches its own shard).
             revision: Branch to push to.
             private: Whether to save the dataset privately.
 
