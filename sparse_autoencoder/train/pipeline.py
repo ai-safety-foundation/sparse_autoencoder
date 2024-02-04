@@ -379,9 +379,6 @@ class Pipeline:
         losses_with_zero_ablation: Float[Tensor, Axis.COMPONENT] = torch.zeros(
             self.n_components, device=source_model_device
         )
-        reconstruction_scores: Float[Tensor, Axis.COMPONENT] = torch.zeros(
-            self.n_components, device=source_model_device
-        )
 
         for component_idx, cache_name in enumerate(self.cache_names):
             for _batch_idx in range(n_batches):
