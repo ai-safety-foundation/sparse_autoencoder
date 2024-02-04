@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../l1_absolute_loss/">
       
       
-        <link rel="next" href="../feature_density/">
+        <link rel="next" href="../sae_loss/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>capacity - Sparse Autoencoder</title>
+        <title>l2_reconstruction_loss - Sparse Autoencoder</title>
       
     
     
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#capacity-metrics" class="md-skip">
+        <a href="#l2-reconstruction-loss" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              capacity
+              l2_reconstruction_loss
             
           </span>
         </div>
@@ -862,24 +862,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_1" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../loss/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -896,7 +898,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_4_1">
             <span class="md-nav__icon md-icon"></span>
             loss
@@ -910,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/l1_absolute_loss/" class="md-nav__link">
+      <a href="../l1_absolute_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -923,103 +925,6 @@
   
 
               
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../loss/l2_reconstruction_loss/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    l2_reconstruction_loss
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../loss/sae_loss/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    sae_loss
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_2" checked>
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    train
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_4_2" id="__nav_4_4_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_4_2">
-            <span class="md-nav__icon md-icon"></span>
-            train
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -1041,7 +946,7 @@
           
   
   <span class="md-ellipsis">
-    capacity
+    l2_reconstruction_loss
   </span>
   
 
@@ -1052,7 +957,7 @@
         
   
   <span class="md-ellipsis">
-    capacity
+    l2_reconstruction_loss
   </span>
   
 
@@ -1074,26 +979,35 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss" class="md-nav__link">
     <span class="md-ellipsis">
-      capacity
+      l2_reconstruction_loss
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss" class="md-nav__link">
     <span class="md-ellipsis">
-      CapacityMetric
+      L2ReconstructionLoss
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CapacityMetric">
+    <nav class="md-nav" aria-label="L2ReconstructionLoss">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.__init__" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.keep_batch_dim" class="md-nav__link">
+    <span class="md-ellipsis">
+      keep_batch_dim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       __init__
     </span>
@@ -1102,16 +1016,16 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.capacities" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.calculate_mse" class="md-nav__link">
     <span class="md-ellipsis">
-      capacities
+      calculate_mse
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.compute" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.compute" class="md-nav__link">
     <span class="md-ellipsis">
       compute
     </span>
@@ -1120,7 +1034,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.update" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.update" class="md-nav__link">
     <span class="md-ellipsis">
       update
     </span>
@@ -1149,7 +1063,102 @@
   
   
     <li class="md-nav__item">
-      <a href="../feature_density/" class="md-nav__link">
+      <a href="../sae_loss/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    sae_loss
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../train/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    train
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4_2" id="__nav_4_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            train
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../train/capacity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    capacity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1170,7 +1179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../l0_norm/" class="md-nav__link">
+      <a href="../../train/l0_norm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1191,7 +1200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../neuron_activity/" class="md-nav__link">
+      <a href="../../train/neuron_activity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1212,7 +1221,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../neuron_fired_count/" class="md-nav__link">
+      <a href="../../train/neuron_fired_count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2255,26 +2264,35 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss" class="md-nav__link">
     <span class="md-ellipsis">
-      capacity
+      l2_reconstruction_loss
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss" class="md-nav__link">
     <span class="md-ellipsis">
-      CapacityMetric
+      L2ReconstructionLoss
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CapacityMetric">
+    <nav class="md-nav" aria-label="L2ReconstructionLoss">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.__init__" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.keep_batch_dim" class="md-nav__link">
+    <span class="md-ellipsis">
+      keep_batch_dim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       __init__
     </span>
@@ -2283,16 +2301,16 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.capacities" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.calculate_mse" class="md-nav__link">
     <span class="md-ellipsis">
-      capacities
+      calculate_mse
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.compute" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.compute" class="md-nav__link">
     <span class="md-ellipsis">
       compute
     </span>
@@ -2301,7 +2319,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.update" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.update" class="md-nav__link">
     <span class="md-ellipsis">
       update
     </span>
@@ -2329,17 +2347,17 @@
                   
 
 
-<h1 id="capacity-metrics">Capacity Metrics<a class="headerlink" href="#capacity-metrics" title="Permanent link">¤</a></h1>
+<h1 id="l2-reconstruction-loss">L2 Reconstruction loss<a class="headerlink" href="#l2-reconstruction-loss" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.metrics.train.capacity"></a>
+<a id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss"></a>
   <div class="doc doc-contents first">
   
-      <p>Capacity Metrics.</p>
+      <p>L2 Reconstruction loss.</p>
 
   
 
@@ -2356,11 +2374,11 @@
 
 
 
-<h2 id="sparse_autoencoder.metrics.train.capacity.CapacityMetric" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>CapacityMetric</code>
+<h2 id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>L2ReconstructionLoss</code>
 
 
-<a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric" class="headerlink" title="Permanent link">¤</a></h2>
+<a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss" class="headerlink" title="Permanent link">¤</a></h2>
 
 
   <div class="doc doc-contents ">
@@ -2368,48 +2386,46 @@
             Bases: <code><span title="torchmetrics.Metric">Metric</span></code></p>
 
   
-      <p>Capacities metric.</p>
-<p>Measure the capacity of a set of features as defined in <a href="https://arxiv.org/pdf/2210.01892.pdf">Polysemanticity and Capacity in Neural
-Networks</a>.</p>
-<p>Capacity is intuitively measuring the 'proportion of a dimension' assigned to a feature.
-Formally it's the ratio of the squared dot product of a feature with itself to the sum of its
-squared dot products of all features.</p>
+      <p>L2 Reconstruction loss (MSE).</p>
+<p>L2 reconstruction loss is calculated as the sum squared error between each each input vector
+and it's corresponding decoded vector. The original paper found that models trained with some
+loss functions such as cross-entropy loss generally prefer to represent features
+polysemantically, whereas models trained with L2 may achieve the same loss for both
+polysemantic and monosemantic representations of true features.</p>
 
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>This is memory intensive as it requires caching all learned activations for a batch.</p>
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>import torch
+loss = L2ReconstructionLoss(num_components=1)
+source_activations = torch.tensor([
+...     [ # Batch 1
+...         [4., 2.] # Component 1
+...     ],
+...     [ # Batch 2
+...         [2., 0.] # Component 1
+...     ]
+... ])
+decoded_activations = torch.tensor([
+...     [ # Batch 1
+...         [2., 0.] # Component 1 (MSE of 4)
+...     ],
+...     [ # Batch 2
+...         [0., 0.] # Component 1 (MSE of 2)
+...     ]
+... ])
+loss.forward(
+...     decoded_activations=decoded_activations, source_activations=source_activations
+... )
+tensor(3.)</p>
+</blockquote>
+</blockquote>
+</blockquote>
 </details>
-
-
-<p><strong>Examples:</strong></p>
-    <p>If the features are orthogonal, the capacity is 1.</p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">CapacityMetric</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">learned_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
-<span class="gp">... </span>    <span class="p">[</span> <span class="c1"># Batch 1</span>
-<span class="gp">... </span>        <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span> <span class="c1"># Component 1: learned features</span>
-<span class="gp">... </span>    <span class="p">],</span>
-<span class="gp">... </span>    <span class="p">[</span> <span class="c1"># Batch 2</span>
-<span class="gp">... </span>        <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span> <span class="c1"># Component 1: learned features (orthogonal)</span>
-<span class="gp">... </span>    <span class="p">]</span>
-<span class="gp">... </span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
-<span class="go">tensor([[1., 1.]])</span>
-</code></pre></div>
-    <p>If they are all the same, the capacity is 1/n.</p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">learned_activations</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
-<span class="gp">... </span>    <span class="p">[</span> <span class="c1"># Batch 1</span>
-<span class="gp">... </span>        <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span> <span class="c1"># Component 1: learned features</span>
-<span class="gp">... </span>    <span class="p">],</span>
-<span class="gp">... </span>    <span class="p">[</span> <span class="c1"># Batch 2</span>
-<span class="gp">... </span>        <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span> <span class="c1"># Component 1: learned features (same)</span>
-<span class="gp">... </span>    <span class="p">]</span>
-<span class="gp">... </span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
-<span class="go">tensor([[0.5000, 0.5000]])</span>
-</code></pre></div>
-
             <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
+              <summary>Source code in <code>sparse_autoencoder/metrics/loss/l2_reconstruction_loss.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 13</span>
 <span class="normal"> 14</span>
 <span class="normal"> 15</span>
@@ -2536,133 +2552,181 @@ squared dot products of all features.</p>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CapacityMetric</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Capacities metric.</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">L2ReconstructionLoss</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;L2 Reconstruction loss (MSE).</span>
 
-<span class="sd">    Measure the capacity of a set of features as defined in [Polysemanticity and Capacity in Neural</span>
-<span class="sd">    Networks](https://arxiv.org/pdf/2210.01892.pdf).</span>
+<span class="sd">    L2 reconstruction loss is calculated as the sum squared error between each each input vector</span>
+<span class="sd">    and it&#39;s corresponding decoded vector. The original paper found that models trained with some</span>
+<span class="sd">    loss functions such as cross-entropy loss generally prefer to represent features</span>
+<span class="sd">    polysemantically, whereas models trained with L2 may achieve the same loss for both</span>
+<span class="sd">    polysemantic and monosemantic representations of true features.</span>
 
-<span class="sd">    Capacity is intuitively measuring the &#39;proportion of a dimension&#39; assigned to a feature.</span>
-<span class="sd">    Formally it&#39;s the ratio of the squared dot product of a feature with itself to the sum of its</span>
-<span class="sd">    squared dot products of all features.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        This is memory intensive as it requires caching all learned activations for a batch.</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        If the features are orthogonal, the capacity is 1.</span>
-
-<span class="sd">        &gt;&gt;&gt; metric = CapacityMetric()</span>
-<span class="sd">        &gt;&gt;&gt; learned_activations = torch.tensor([</span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; loss = L2ReconstructionLoss(num_components=1)</span>
+<span class="sd">        &gt;&gt;&gt; source_activations = torch.tensor([</span>
 <span class="sd">        ...     [ # Batch 1</span>
-<span class="sd">        ...         [1., 0., 1.] # Component 1: learned features</span>
+<span class="sd">        ...         [4., 2.] # Component 1</span>
 <span class="sd">        ...     ],</span>
 <span class="sd">        ...     [ # Batch 2</span>
-<span class="sd">        ...         [0., 1., 0.] # Component 1: learned features (orthogonal)</span>
+<span class="sd">        ...         [2., 0.] # Component 1</span>
 <span class="sd">        ...     ]</span>
 <span class="sd">        ... ])</span>
-<span class="sd">        &gt;&gt;&gt; metric.forward(learned_activations)</span>
-<span class="sd">        tensor([[1., 1.]])</span>
-
-<span class="sd">        If they are all the same, the capacity is 1/n.</span>
-
-<span class="sd">        &gt;&gt;&gt; learned_activations = torch.tensor([</span>
+<span class="sd">        &gt;&gt;&gt; decoded_activations = torch.tensor([</span>
 <span class="sd">        ...     [ # Batch 1</span>
-<span class="sd">        ...         [1., 1., 1.] # Component 1: learned features</span>
+<span class="sd">        ...         [2., 0.] # Component 1 (MSE of 4)</span>
 <span class="sd">        ...     ],</span>
 <span class="sd">        ...     [ # Batch 2</span>
-<span class="sd">        ...         [1., 1., 1.] # Component 1: learned features (same)</span>
+<span class="sd">        ...         [0., 0.] # Component 1 (MSE of 2)</span>
 <span class="sd">        ...     ]</span>
 <span class="sd">        ... ])</span>
-<span class="sd">        &gt;&gt;&gt; metric.forward(learned_activations)</span>
-<span class="sd">        tensor([[0.5000, 0.5000]])</span>
+<span class="sd">        &gt;&gt;&gt; loss.forward(</span>
+<span class="sd">        ...     decoded_activations=decoded_activations, source_activations=source_activations</span>
+<span class="sd">        ... )</span>
+<span class="sd">        tensor(3.)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Torchmetrics settings</span>
-    <span class="n">is_differentiable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">is_differentiable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">higher_is_better</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">full_state_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">plot_lower_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">plot_upper_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="c1"># Settings</span>
+    <span class="n">_num_components</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keep_batch_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to keep the batch dimension in the loss output.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keep_batch_dim</span>
+
+    <span class="nd">@keep_batch_dim</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">keep_batch_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set whether to keep the batch dimension in the loss output.</span>
+
+<span class="sd">        When setting this we need to change the state to either a list if keeping the batch</span>
+<span class="sd">        dimension (so we can accumulate all the losses and concatenate them at the end along this</span>
+<span class="sd">        dimension). Alternatively it should be a tensor if not keeping the batch dimension (so we</span>
+<span class="sd">        can sum the losses over the batch dimension during update and then take the mean).</span>
+
+<span class="sd">        By doing this in a setter we allow changing of this setting after the metric is initialised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keep_batch_dim</span> <span class="o">=</span> <span class="n">keep_batch_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Reset the metric to update the state</span>
+        <span class="k">if</span> <span class="n">keep_batch_dim</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+                <span class="s2">&quot;mse&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+                <span class="s2">&quot;mse&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span><span class="p">),</span>
+                <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="c1"># State</span>
-    <span class="n">learned_activations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
-        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)]</span>
-    <span class="p">]</span>
+    <span class="n">mse</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]</span>
+    <span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">num_activation_vectors</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the metric.&quot;&quot;&quot;</span>
+    <span class="nd">@validate_call</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the L2 reconstruction loss.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span><span class="s2">&quot;learned_activations&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">=</span> <span class="n">num_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span> <span class="o">=</span> <span class="n">keep_batch_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+            <span class="s2">&quot;num_activation_vectors&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">calculate_mse</span><span class="p">(</span>
+        <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the MSE.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">decoded_activations</span> <span class="o">-</span> <span class="n">source_activations</span><span class="p">)</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
         <span class="p">],</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics)</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the metric state.</span>
 
+<span class="sd">        If we&#39;re keeping the batch dimension, we simply take the mse of the activations</span>
+<span class="sd">        (over the features dimension) and then append this tensor to a list. Then during compute we</span>
+<span class="sd">        just concatenate and return this list. This is useful for e.g. getting L1 loss by batch item</span>
+<span class="sd">        when resampling neurons (see the neuron resampler for details).</span>
+
+<span class="sd">        By contrast if we&#39;re averaging over the batch dimension, we sum the activations over the</span>
+<span class="sd">        batch dimension during update (on each process), and then divide by the number of activation</span>
+<span class="sd">        vectors on compute to get the mean.</span>
+
 <span class="sd">        Args:</span>
-<span class="sd">            learned_activations: The learned activations.</span>
+<span class="sd">            decoded_activations: The decoded activations from the autoencoder.</span>
+<span class="sd">            source_activations: The source activations from the autoencoder.</span>
 <span class="sd">            **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+        <span class="n">mse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_mse</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">source_activations</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">capacities</span><span class="p">(</span>
-        <span class="n">features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
-        <span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate capacities.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">+=</span> <span class="n">mse</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span> <span class="o">+=</span> <span class="n">source_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="sd">        Example:</span>
-<span class="sd">            &gt;&gt;&gt; import torch</span>
-<span class="sd">            &gt;&gt;&gt; orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])</span>
-<span class="sd">            &gt;&gt;&gt; orthogonal_caps = CapacityMetric.capacities(orthogonal_features)</span>
-<span class="sd">            &gt;&gt;&gt; orthogonal_caps</span>
-<span class="sd">            tensor([[1., 1., 1.]])</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            features: A collection of features.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A 1D tensor of capacities, where each element is the capacity of the corresponding</span>
-<span class="sd">            feature.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">squared_dot_products</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-                <span class="n">features</span><span class="p">,</span>
-                <span class="n">features</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;batch_1 ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                    batch_2 ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">                    -&gt; ... batch_1 batch_2&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="o">**</span> <span class="mi">2</span>
-        <span class="p">)</span>
-
-        <span class="n">sum_of_sq_dot</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">squared_dot_products</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">diagonal</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span>
-            <span class="n">squared_dot_products</span><span class="p">,</span> <span class="n">dim1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=</span><span class="mi">2</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">diagonal</span> <span class="o">/</span> <span class="n">sum_of_sq_dot</span>
-
-    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]:</span>
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the metric.&quot;&quot;&quot;</span>
-        <span class="n">batch_learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacities</span><span class="p">(</span><span class="n">batch_learned_activations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span>
+        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2676,146 +2740,49 @@ squared dot products of all features.</p>
 
 
 
+<div class="doc doc-object doc-attribute">
 
 
 
-<div class="doc doc-object doc-function">
+<h3 id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.keep_batch_dim" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">keep_batch_dim</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
 
-
-
-<h3 id="sparse_autoencoder.metrics.train.capacity.CapacityMetric.__init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
-
-<a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.__init__" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.keep_batch_dim" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Initialize the metric.</p>
-
-          <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the metric.&quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span><span class="s2">&quot;learned_activations&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
-</code></pre></div></td></tr></table></div>
-          </details>
+      <p>Whether to keep the batch dimension in the loss output.</p>
   </div>
 
 </div>
 
 
+
+
 <div class="doc doc-object doc-function">
 
 
 
-<h3 id="sparse_autoencoder.metrics.train.capacity.CapacityMetric.capacities" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">capacities</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
-  </span>
+<h3 id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">num_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">keep_batch_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.capacities" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Calculate capacities.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>import torch
-orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])
-orthogonal_caps = CapacityMetric.capacities(orthogonal_features)
-orthogonal_caps
-tensor([[1., 1., 1.]])</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>features</code></td>
-          <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A collection of features.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>)]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A 1D tensor of capacities, where each element is the capacity of the corresponding</p>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>)]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>feature.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      <p>Initialise the L2 reconstruction loss.</p>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/l2_reconstruction_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
@@ -2830,9 +2797,50 @@ tensor([[1., 1., 1.]])</p>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">num_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the L2 reconstruction loss.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">=</span> <span class="n">num_components</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span> <span class="o">=</span> <span class="n">keep_batch_dim</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+        <span class="s2">&quot;num_activation_vectors&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.calculate_mse" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">calculate_mse</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">source_activations</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.calculate_mse" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculate the MSE.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/l2_reconstruction_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
@@ -2842,58 +2850,17 @@ tensor([[1., 1., 1.]])</p>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">capacities</span><span class="p">(</span>
-    <span class="n">features</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">calculate_mse</span><span class="p">(</span>
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
     <span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate capacities.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; orthogonal_features = torch.tensor([[[1., 0., 0.]], [[0., 1., 0.]], [[0., 0., 1.]]])</span>
-<span class="sd">        &gt;&gt;&gt; orthogonal_caps = CapacityMetric.capacities(orthogonal_features)</span>
-<span class="sd">        &gt;&gt;&gt; orthogonal_caps</span>
-<span class="sd">        tensor([[1., 1., 1.]])</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        features: A collection of features.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        A 1D tensor of capacities, where each element is the capacity of the corresponding</span>
-<span class="sd">        feature.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">squared_dot_products</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">einops</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-            <span class="n">features</span><span class="p">,</span>
-            <span class="n">features</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;batch_1 ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
-<span class="s2">                batch_2 ... </span><span class="si">{</span><span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="si">}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">                -&gt; ... batch_1 batch_2&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="o">**</span> <span class="mi">2</span>
-    <span class="p">)</span>
-
-    <span class="n">sum_of_sq_dot</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">squared_dot_products</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">diagonal</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span>
-        <span class="n">squared_dot_products</span><span class="p">,</span> <span class="n">dim1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=</span><span class="mi">2</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">diagonal</span> <span class="o">/</span> <span class="n">sum_of_sq_dot</span>
+    <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the MSE.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">decoded_activations</span> <span class="o">-</span> <span class="n">source_activations</span><span class="p">)</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -2905,10 +2872,10 @@ tensor([[1., 1., 1.]])</p>
 
 
 
-<h3 id="sparse_autoencoder.metrics.train.capacity.CapacityMetric.compute" class="doc doc-heading">
+<h3 id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.compute" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">compute</span><span class="p">()</span></code>
 
-<a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.compute" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.compute" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
@@ -2916,24 +2883,20 @@ tensor([[1., 1., 1.]])</p>
       <p>Compute the metric.</p>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">)]:</span>
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/l2_reconstruction_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the metric.&quot;&quot;&quot;</span>
-    <span class="n">batch_learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learned_activations</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacities</span><span class="p">(</span><span class="n">batch_learned_activations</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span>
+        <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -2945,15 +2908,22 @@ tensor([[1., 1., 1.]])</p>
 
 
 
-<h3 id="sparse_autoencoder.metrics.train.capacity.CapacityMetric.update" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.update" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">source_activations</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.metrics.train.capacity.CapacityMetric.update" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#sparse_autoencoder.metrics.loss.l2_reconstruction_loss.L2ReconstructionLoss.update" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
       <p>Update the metric state.</p>
+<p>If we're keeping the batch dimension, we simply take the mse of the activations
+(over the features dimension) and then append this tensor to a list. Then during compute we
+just concatenate and return this list. This is useful for e.g. getting L1 loss by batch item
+when resampling neurons (see the neuron resampler for details).</p>
+<p>By contrast if we're averaging over the batch dimension, we sum the activations over the
+batch dimension during update (on each process), and then divide by the number of activation
+vectors on compute to get the mean.</p>
 
 
 
@@ -2969,13 +2939,27 @@ tensor([[1., 1., 1.]])</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>learned_activations</code></td>
+          <td><code>decoded_activations</code></td>
           <td>
-                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.LEARNT_FEATURE">LEARNT_FEATURE</a>)]</code>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The learned activations.</p>
+              <p>The decoded activations from the autoencoder.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>source_activations</code></td>
+          <td>
+                <code><span title="jaxtyping.Float">Float</span>[<span title="torch.Tensor">Tensor</span>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.names" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.names">names</a>(<a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.BATCH" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.BATCH">BATCH</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.COMPONENT_OPTIONAL">COMPONENT_OPTIONAL</a>, <a class="autorefs autorefs-internal" title="sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE" href="../../../tensor_types/#sparse_autoencoder.tensor_types.Axis.INPUT_OUTPUT_FEATURE">INPUT_OUTPUT_FEATURE</a>)]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The source activations from the autoencoder.</p>
             </div>
           </td>
           <td>
@@ -3000,34 +2984,72 @@ tensor([[1., 1., 1.]])</p>
   </table>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/metrics/train/capacity.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/l2_reconstruction_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
-        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics)</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the metric state.</span>
 
+<span class="sd">    If we&#39;re keeping the batch dimension, we simply take the mse of the activations</span>
+<span class="sd">    (over the features dimension) and then append this tensor to a list. Then during compute we</span>
+<span class="sd">    just concatenate and return this list. This is useful for e.g. getting L1 loss by batch item</span>
+<span class="sd">    when resampling neurons (see the neuron resampler for details).</span>
+
+<span class="sd">    By contrast if we&#39;re averaging over the batch dimension, we sum the activations over the</span>
+<span class="sd">    batch dimension during update (on each process), and then divide by the number of activation</span>
+<span class="sd">    vectors on compute to get the mean.</span>
+
 <span class="sd">    Args:</span>
-<span class="sd">        learned_activations: The learned activations.</span>
+<span class="sd">        decoded_activations: The decoded activations from the autoencoder.</span>
+<span class="sd">        source_activations: The source activations from the autoencoder.</span>
 <span class="sd">        **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">learned_activations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_mse</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">source_activations</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">+=</span> <span class="n">mse</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span> <span class="o">+=</span> <span class="n">source_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

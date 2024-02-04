@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../get_model_device/">
+        <link rel="prev" href="../l2_reconstruction_loss/">
       
       
-        <link rel="next" href="../wandb_sweep_types/">
+        <link rel="next" href="../../train/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>round_down - Sparse Autoencoder</title>
+        <title>sae_loss - Sparse Autoencoder</title>
       
     
     
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#round-down-to-the-nearest-multiple" class="md-skip">
+        <a href="#sparse-autoencoder-loss" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              round_down
+              sae_loss
             
           </span>
         </div>
@@ -815,24 +815,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -849,7 +851,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
             metrics
@@ -860,24 +862,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_1" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/loss/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -894,7 +898,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_4_1">
             <span class="md-nav__icon md-icon"></span>
             loss
@@ -908,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/loss/l1_absolute_loss/" class="md-nav__link">
+      <a href="../l1_absolute_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -929,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/loss/l2_reconstruction_loss/" class="md-nav__link">
+      <a href="../l2_reconstruction_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -947,10 +951,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../metrics/loss/sae_loss/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    sae_loss
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -959,6 +983,86 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      sae_loss
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss" class="md-nav__link">
+    <span class="md-ellipsis">
+      SparseAutoencoderLoss
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SparseAutoencoderLoss">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.keep_batch_dim" class="md-nav__link">
+    <span class="md-ellipsis">
+      keep_batch_dim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.compute" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -993,7 +1097,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/train/" class="md-nav__link ">
+            <a href="../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1024,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/capacity/" class="md-nav__link">
+      <a href="../../train/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1045,7 +1149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/feature_density/" class="md-nav__link">
+      <a href="../../train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1066,7 +1170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/l0_norm/" class="md-nav__link">
+      <a href="../../train/l0_norm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1087,7 +1191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/neuron_activity/" class="md-nav__link">
+      <a href="../../train/neuron_activity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1108,7 +1212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/train/neuron_fired_count/" class="md-nav__link">
+      <a href="../../train/neuron_fired_count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1151,7 +1255,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/validate/" class="md-nav__link ">
+            <a href="../../validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1182,7 +1286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/validate/reconstruction_score/" class="md-nav__link">
+      <a href="../../validate/reconstruction_score/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1225,7 +1329,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metrics/wrappers/" class="md-nav__link ">
+            <a href="../../wrappers/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1256,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metrics/wrappers/classwise/" class="md-nav__link">
+      <a href="../../wrappers/classwise/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1659,26 +1763,24 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1695,7 +1797,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_9">
             <span class="md-nav__icon md-icon"></span>
             train
@@ -1709,7 +1811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../join_sweep/" class="md-nav__link">
+      <a href="../../../train/join_sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1730,7 +1832,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pipeline/" class="md-nav__link">
+      <a href="../../../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1751,7 +1853,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sweep/" class="md-nav__link">
+      <a href="../../../train/sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1772,7 +1874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sweep_config/" class="md-nav__link">
+      <a href="../../../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1790,26 +1892,24 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9_5" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1826,7 +1926,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_9_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_9_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_9_5">
             <span class="md-nav__icon md-icon"></span>
             utils
@@ -1840,7 +1940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../get_model_device/" class="md-nav__link">
+      <a href="../../../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1858,30 +1958,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    round_down
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../train/utils/round_down/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1890,44 +1970,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train.utils.round_down" class="md-nav__link">
-    <span class="md-ellipsis">
-      round_down
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train.utils.round_down.round_to_multiple" class="md-nav__link">
-    <span class="md-ellipsis">
-      round_to_multiple
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1940,7 +1982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../wandb_sweep_types/" class="md-nav__link">
+      <a href="../../../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2213,20 +2255,62 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train.utils.round_down" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss" class="md-nav__link">
     <span class="md-ellipsis">
-      round_down
+      sae_loss
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.train.utils.round_down.round_to_multiple" class="md-nav__link">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss" class="md-nav__link">
     <span class="md-ellipsis">
-      round_to_multiple
+      SparseAutoencoderLoss
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="SparseAutoencoderLoss">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.keep_batch_dim" class="md-nav__link">
+    <span class="md-ellipsis">
+      keep_batch_dim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.compute" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2245,17 +2329,17 @@
                   
 
 
-<h1 id="round-down-to-the-nearest-multiple">Round down to the nearest multiple<a class="headerlink" href="#round-down-to-the-nearest-multiple" title="Permanent link">¤</a></h1>
+<h1 id="sparse-autoencoder-loss">Sparse Autoencoder loss<a class="headerlink" href="#sparse-autoencoder-loss" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.train.utils.round_down"></a>
+<a id="sparse_autoencoder.metrics.loss.sae_loss"></a>
   <div class="doc doc-contents first">
   
-      <p>Round down to the nearest multiple.</p>
+      <p>Sparse Autoencoder loss.</p>
 
   
 
@@ -2268,184 +2352,519 @@
 
 
 
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>SparseAutoencoderLoss</code>
+
+
+<a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="torchmetrics.Metric">Metric</span></code></p>
+
+  
+      <p>Sparse Autoencoder loss.</p>
+<p>This is the same as composing <code>L1AbsoluteLoss() * l1_coefficient + L2ReconstructionLoss()</code>. It
+is separated out so that you can use all three metrics (l1, l2, total loss) in the same
+<code>MetricCollection</code> and they will then share state (to avoid calculating the same thing twice).</p>
+
+            <details class="quote">
+              <summary>Source code in <code>sparse_autoencoder/metrics/loss/sae_loss.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderLoss</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Autoencoder loss.</span>
+
+<span class="sd">    This is the same as composing `L1AbsoluteLoss() * l1_coefficient + L2ReconstructionLoss()`. It</span>
+<span class="sd">    is separated out so that you can use all three metrics (l1, l2, total loss) in the same</span>
+<span class="sd">    `MetricCollection` and they will then share state (to avoid calculating the same thing twice).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Torchmetrics settings</span>
+    <span class="n">is_differentiable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">higher_is_better</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">full_state_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">plot_lower_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c1"># Settings</span>
+    <span class="n">_num_components</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_l1_coefficient</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">keep_batch_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to keep the batch dimension in the loss output.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keep_batch_dim</span>
+
+    <span class="nd">@keep_batch_dim</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">keep_batch_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set whether to keep the batch dimension in the loss output.</span>
+
+<span class="sd">        When setting this we need to change the state to either a list if keeping the batch</span>
+<span class="sd">        dimension (so we can accumulate all the losses and concatenate them at the end along this</span>
+<span class="sd">        dimension). Alternatively it should be a tensor if not keeping the batch dimension (so we</span>
+<span class="sd">        can sum the losses over the batch dimension during update and then take the mean).</span>
+
+<span class="sd">        By doing this in a setter we allow changing of this setting after the metric is initialised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keep_batch_dim</span> <span class="o">=</span> <span class="n">keep_batch_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Reset the metric to update the state</span>
+        <span class="k">if</span> <span class="n">keep_batch_dim</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+                <span class="s2">&quot;mse&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+                <span class="s2">&quot;absolute_loss&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+                <span class="s2">&quot;mse&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span><span class="p">),</span>
+                <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+                <span class="s2">&quot;absolute_loss&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span><span class="p">),</span>
+                <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c1"># State</span>
+    <span class="n">absolute_loss</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]</span>
+    <span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">mse</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span>
+        <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">)]</span>
+    <span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">num_activation_vectors</span><span class="p">:</span> <span class="n">Int64</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">SINGLE_ITEM</span><span class="p">]</span>
+
+    <span class="nd">@validate_call</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">l1_coefficient</span><span class="p">:</span> <span class="n">PositiveFloat</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the metric.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">=</span> <span class="n">num_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span> <span class="o">=</span> <span class="n">keep_batch_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_l1_coefficient</span> <span class="o">=</span> <span class="n">l1_coefficient</span>
+
+        <span class="c1"># Add the state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+            <span class="s2">&quot;num_activation_vectors&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics))</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the metric.&quot;&quot;&quot;</span>
+        <span class="n">absolute_loss</span> <span class="o">=</span> <span class="n">L1AbsoluteLoss</span><span class="o">.</span><span class="n">calculate_abs_sum</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+        <span class="n">mse</span> <span class="o">=</span> <span class="n">L2ReconstructionLoss</span><span class="o">.</span><span class="n">calculate_mse</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">source_activations</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">absolute_loss</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span> <span class="o">+=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">+=</span> <span class="n">mse</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span> <span class="o">+=</span> <span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the metric.&quot;&quot;&quot;</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span>
+        <span class="p">)</span>
+
+        <span class="n">l2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">l1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l1_coefficient</span> <span class="o">+</span> <span class="n">l2</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.keep_batch_dim" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">keep_batch_dim</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.keep_batch_dim" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Whether to keep the batch dimension in the loss output.</p>
+  </div>
+
+</div>
+
+
 
 
 <div class="doc doc-object doc-function">
 
 
 
-<h2 id="sparse_autoencoder.train.utils.round_down.round_to_multiple" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">round_to_multiple</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">multiple</span><span class="p">)</span></code>
+<h3 id="sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">num_components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">l1_coefficient</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">keep_batch_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
-<a href="#sparse_autoencoder.train.utils.round_down.round_to_multiple" class="headerlink" title="Permanent link">¤</a></h2>
+<a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.__init__" class="headerlink" title="Permanent link">¤</a></h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Round down to the nearest multiple.</p>
-<p>Helper function for creating default values.</p>
-
-<details class="example" open>
-  <summary>Example</summary>
-  <blockquote>
-<blockquote>
-<blockquote>
-<p>round_to_multiple(1023, 100)
-1000</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</details>
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>value</code></td>
-          <td>
-                <code>int | float</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The value to round down.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>multiple</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The multiple to round down to.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The value rounded down to the nearest multiple.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>ValueError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If <code>value</code> is less than <code>multiple</code>.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      <p>Initialise the metric.</p>
 
           <details class="quote">
-            <summary>Source code in <code>sparse_autoencoder/train/utils/round_down.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">round_to_multiple</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">multiple</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: PYI041</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Round down to the nearest multiple.</span>
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/sae_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validate_call</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">num_components</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">l1_coefficient</span><span class="p">:</span> <span class="n">PositiveFloat</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">keep_batch_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the metric.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_num_components</span> <span class="o">=</span> <span class="n">num_components</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span> <span class="o">=</span> <span class="n">keep_batch_dim</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_l1_coefficient</span> <span class="o">=</span> <span class="n">l1_coefficient</span>
 
-<span class="sd">    Helper function for creating default values.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; round_to_multiple(1023, 100)</span>
-<span class="sd">        1000</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        value: The value to round down.</span>
-<span class="sd">        multiple: The multiple to round down to.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The value rounded down to the nearest multiple.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If `value` is less than `multiple`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">int_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">int_value</span> <span class="o">&lt;</span> <span class="n">multiple</span><span class="p">:</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">=}</span><span class="s2"> must be greater than or equal to </span><span class="si">{</span><span class="n">multiple</span><span class="si">=}</span><span class="s2">&quot;</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">int_value</span> <span class="o">-</span> <span class="n">int_value</span> <span class="o">%</span> <span class="n">multiple</span>
+    <span class="c1"># Add the state</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span>
+        <span class="s2">&quot;num_activation_vectors&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">dist_reduce_fx</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
 
 </div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.compute" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">compute</span><span class="p">()</span></code>
+
+<a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.compute" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Compute the metric.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/sae_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the metric.&quot;&quot;&quot;</span>
+    <span class="n">l1</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span>
+        <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span>
+    <span class="p">)</span>
+
+    <span class="n">l2</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span>
+        <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">l1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l1_coefficient</span> <span class="o">+</span> <span class="n">l2</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.update" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">source_activations</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.update" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Update the metric.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/sae_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># type: ignore # noqa: ARG002, ANN401 (allows combining with other metrics))</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the metric.&quot;&quot;&quot;</span>
+    <span class="n">absolute_loss</span> <span class="o">=</span> <span class="n">L1AbsoluteLoss</span><span class="o">.</span><span class="n">calculate_abs_sum</span><span class="p">(</span><span class="n">learned_activations</span><span class="p">)</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">L2ReconstructionLoss</span><span class="o">.</span><span class="n">calculate_mse</span><span class="p">(</span><span class="n">decoded_activations</span><span class="p">,</span> <span class="n">source_activations</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_batch_dim</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">absolute_loss</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">absolute_loss</span> <span class="o">+=</span> <span class="n">absolute_loss</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mse</span> <span class="o">+=</span> <span class="n">mse</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_activation_vectors</span> <span class="o">+=</span> <span class="n">learned_activations</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
 
 
 
