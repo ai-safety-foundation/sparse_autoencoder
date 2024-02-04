@@ -2049,11 +2049,11 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="utils/" class="md-nav__link ">
+            <a href="training_runs/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
-    utils
+    training_runs
   </span>
   
 
@@ -2068,6 +2068,80 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_11">
+            <span class="md-nav__icon md-icon"></span>
+            training_runs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="training_runs/gpt2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    gpt2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_12" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="utils/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    utils
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_12" id="__nav_4_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_12">
             <span class="md-nav__icon md-icon"></span>
             utils
           </label>
@@ -11407,7 +11481,7 @@ method to efficiently tune hyperparameters.</p>
   
       <p>L2 Reconstruction loss.</p>
 <p>L2 reconstruction loss is calculated as the sum squared error between each each input vector
-and it's corresponding decoded vector. The original paper found that models trained with some
+and its corresponding decoded vector. The original paper found that models trained with some
 loss functions such as cross-entropy loss generally prefer to represent features
 polysemantically, whereas models trained with L2 may achieve the same loss for both
 polysemantic and monosemantic representations of true features.</p>
@@ -11511,7 +11585,7 @@ tensor([8.5000, 2.5000])</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;L2 Reconstruction loss.</span>
 
 <span class="sd">    L2 reconstruction loss is calculated as the sum squared error between each each input vector</span>
-<span class="sd">    and it&#39;s corresponding decoded vector. The original paper found that models trained with some</span>
+<span class="sd">    and its corresponding decoded vector. The original paper found that models trained with some</span>
 <span class="sd">    loss functions such as cross-entropy loss generally prefer to represent features</span>
 <span class="sd">    polysemantically, whereas models trained with L2 may achieve the same loss for both</span>
 <span class="sd">    polysemantic and monosemantic representations of true features.</span>
@@ -14437,7 +14511,7 @@ MyNestedParameter().to_dict()
 <span class="normal">378</span>
 <span class="normal">379</span>
 <span class="normal">380</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">NestedParameter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>  <span class="c1"># noqa: B024 (abstract so that we can check against it&#39;s type)</span>
+<span class="k">class</span> <span class="nc">NestedParameter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>  <span class="c1"># noqa: B024 (abstract so that we can check against its type)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Nested Parameter.</span>
 
 <span class="sd">    Example:</span>
@@ -24376,7 +24450,7 @@ store.shuffle()
 <span class="sd">                is set.</span>
 <span class="sd">            n_shards: Number of shards to split the dataset into. A high number is recommended</span>
 <span class="sd">                here to allow for flexible distributed training of SAEs across nodes (where e.g.</span>
-<span class="sd">                each node fetches it&#39;s own shard).</span>
+<span class="sd">                each node fetches its own shard).</span>
 <span class="sd">            revision: Branch to push to.</span>
 <span class="sd">            private: Whether to save the dataset privately.</span>
 
@@ -24970,7 +25044,7 @@ is set.</p>
             <div class="doc-md-description">
               <p>Number of shards to split the dataset into. A high number is recommended
 here to allow for flexible distributed training of SAEs across nodes (where e.g.
-each node fetches it's own shard).</p>
+each node fetches its own shard).</p>
             </div>
           </td>
           <td>
@@ -25121,7 +25195,7 @@ each node fetches it's own shard).</p>
 <span class="sd">            is set.</span>
 <span class="sd">        n_shards: Number of shards to split the dataset into. A high number is recommended</span>
 <span class="sd">            here to allow for flexible distributed training of SAEs across nodes (where e.g.</span>
-<span class="sd">            each node fetches it&#39;s own shard).</span>
+<span class="sd">            each node fetches its own shard).</span>
 <span class="sd">        revision: Branch to push to.</span>
 <span class="sd">        private: Whether to save the dataset privately.</span>
 

@@ -11,25 +11,25 @@
       
       
       
-        <link rel="prev" href="../model/">
+        <link rel="prev" href="../train/utils/wandb_sweep_types/">
       
       
-        <link rel="next" href="../../loss/">
+        <link rel="next" href="gpt2/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
     
     
       
-        <title>types - Sparse Autoencoder</title>
+        <title>training_runs - Sparse Autoencoder</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,19 +48,19 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../css/material_extra.css">
+      <link rel="stylesheet" href="../../css/material_extra.css">
     
-      <link rel="stylesheet" href="../../../css/custom_formatting.css">
+      <link rel="stylesheet" href="../../css/custom_formatting.css">
     
-      <link rel="stylesheet" href="../../../css/ansi-colours.css">
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="../../../css/jupyter-cells.css">
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="../../../css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#autoencoder-types" class="md-skip">
+        <a href="#training-runs" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../.." title="Sparse Autoencoder" class="md-header__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              types
+              training_runs
             
           </span>
         </div>
@@ -235,7 +235,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
+    <a href="../.." title="Sparse Autoencoder" class="md-nav__button md-logo" aria-label="Sparse Autoencoder" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -265,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -285,7 +285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../demo/" class="md-nav__link">
+      <a href="../../demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -305,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../pre-process-datasets/" class="md-nav__link">
+      <a href="../../pre-process-datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -378,7 +378,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../activation_resampler/" class="md-nav__link ">
+            <a href="../activation_resampler/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -409,7 +409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_resampler/activation_resampler/" class="md-nav__link">
+      <a href="../activation_resampler/activation_resampler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -444,7 +444,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../activation_resampler/utils/" class="md-nav__link ">
+            <a href="../activation_resampler/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -475,7 +475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
+      <a href="../activation_resampler/utils/component_slice_tensor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -526,7 +526,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../activation_store/" class="md-nav__link ">
+            <a href="../activation_store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -557,7 +557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/base_store/" class="md-nav__link">
+      <a href="../activation_store/base_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -578,7 +578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../activation_store/tensor_store/" class="md-nav__link">
+      <a href="../activation_store/tensor_store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -604,26 +604,24 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../autoencoder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -640,7 +638,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
             autoencoder
@@ -668,7 +666,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../components/" class="md-nav__link ">
+            <a href="../autoencoder/components/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -699,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/linear_encoder/" class="md-nav__link">
+      <a href="../autoencoder/components/linear_encoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -720,7 +718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/tied_bias/" class="md-nav__link">
+      <a href="../autoencoder/components/tied_bias/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -741,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/unit_norm_decoder/" class="md-nav__link">
+      <a href="../autoencoder/components/unit_norm_decoder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -770,7 +768,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../model/" class="md-nav__link">
+      <a href="../autoencoder/model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -788,30 +786,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    types
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../autoencoder/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -820,68 +798,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types" class="md-nav__link">
-    <span class="md-ellipsis">
-      types
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" class="md-nav__link">
-    <span class="md-ellipsis">
-      ResetOptimizerParameterDetails
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ResetOptimizerParameterDetails">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.axis" class="md-nav__link">
-    <span class="md-ellipsis">
-      axis
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.parameter" class="md-nav__link">
-    <span class="md-ellipsis">
-      parameter
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -916,7 +832,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../loss/" class="md-nav__link ">
+            <a href="../loss/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -947,7 +863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/abstract_loss/" class="md-nav__link">
+      <a href="../loss/abstract_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -968,7 +884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/decoded_activations_l2/" class="md-nav__link">
+      <a href="../loss/decoded_activations_l2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -989,7 +905,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/learned_activations_l1/" class="md-nav__link">
+      <a href="../loss/learned_activations_l1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1010,7 +926,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../loss/reducer/" class="md-nav__link">
+      <a href="../loss/reducer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1053,7 +969,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/" class="md-nav__link ">
+            <a href="../metrics/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1084,7 +1000,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/abstract_metric/" class="md-nav__link">
+      <a href="../metrics/abstract_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1105,7 +1021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/metrics_container/" class="md-nav__link">
+      <a href="../metrics/metrics_container/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1140,7 +1056,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/train/" class="md-nav__link ">
+            <a href="../metrics/train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1171,7 +1087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/train/abstract_train_metric/" class="md-nav__link">
+      <a href="../metrics/train/abstract_train_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1192,7 +1108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/train/capacity/" class="md-nav__link">
+      <a href="../metrics/train/capacity/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1213,7 +1129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/train/feature_density/" class="md-nav__link">
+      <a href="../metrics/train/feature_density/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1234,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/train/l0_norm_metric/" class="md-nav__link">
+      <a href="../metrics/train/l0_norm_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1255,7 +1171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/train/neuron_activity_metric/" class="md-nav__link">
+      <a href="../metrics/train/neuron_activity_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1298,7 +1214,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/utils/" class="md-nav__link ">
+            <a href="../metrics/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1329,7 +1245,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/utils/add_component_axis_if_missing/" class="md-nav__link">
+      <a href="../metrics/utils/add_component_axis_if_missing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1350,7 +1266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/utils/find_metric_result/" class="md-nav__link">
+      <a href="../metrics/utils/find_metric_result/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1393,7 +1309,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metrics/validate/" class="md-nav__link ">
+            <a href="../metrics/validate/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1424,7 +1340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/validate/abstract_validate_metric/" class="md-nav__link">
+      <a href="../metrics/validate/abstract_validate_metric/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1445,7 +1361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/validate/model_reconstruction_score/" class="md-nav__link">
+      <a href="../metrics/validate/model_reconstruction_score/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1496,7 +1412,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../optimizer/" class="md-nav__link ">
+            <a href="../optimizer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1527,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../optimizer/abstract_optimizer/" class="md-nav__link">
+      <a href="../optimizer/abstract_optimizer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1548,7 +1464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../optimizer/adam_with_reset/" class="md-nav__link">
+      <a href="../optimizer/adam_with_reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1591,7 +1507,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../source_data/" class="md-nav__link ">
+            <a href="../source_data/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1622,7 +1538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_data/abstract_dataset/" class="md-nav__link">
+      <a href="../source_data/abstract_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1643,7 +1559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_data/mock_dataset/" class="md-nav__link">
+      <a href="../source_data/mock_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1664,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_data/pretokenized_dataset/" class="md-nav__link">
+      <a href="../source_data/pretokenized_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1685,7 +1601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_data/text_dataset/" class="md-nav__link">
+      <a href="../source_data/text_dataset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1728,7 +1644,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../source_model/" class="md-nav__link ">
+            <a href="../source_model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1759,7 +1675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_model/replace_activations_hook/" class="md-nav__link">
+      <a href="../source_model/replace_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1780,7 +1696,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_model/reshape_activations/" class="md-nav__link">
+      <a href="../source_model/reshape_activations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1801,7 +1717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_model/store_activations_hook/" class="md-nav__link">
+      <a href="../source_model/store_activations_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1822,7 +1738,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../source_model/zero_ablate_hook/" class="md-nav__link">
+      <a href="../source_model/zero_ablate_hook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1851,7 +1767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tensor_types/" class="md-nav__link">
+      <a href="../tensor_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1886,7 +1802,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../train/" class="md-nav__link ">
+            <a href="../train/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1917,7 +1833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/join_sweep/" class="md-nav__link">
+      <a href="../train/join_sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1938,7 +1854,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/pipeline/" class="md-nav__link">
+      <a href="../train/pipeline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1959,7 +1875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/sweep/" class="md-nav__link">
+      <a href="../train/sweep/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1980,7 +1896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/sweep_config/" class="md-nav__link">
+      <a href="../train/sweep_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2015,7 +1931,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../train/utils/" class="md-nav__link ">
+            <a href="../train/utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2046,7 +1962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/utils/get_model_device/" class="md-nav__link">
+      <a href="../train/utils/get_model_device/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2067,7 +1983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/utils/round_down/" class="md-nav__link">
+      <a href="../train/utils/round_down/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2088,7 +2004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../train/utils/wandb_sweep_types/" class="md-nav__link">
+      <a href="../train/utils/wandb_sweep_types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2122,24 +2038,26 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_11" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../training_runs/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   <span class="md-ellipsis">
@@ -2150,13 +2068,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_11" id="__nav_4_11_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_4_11" id="__nav_4_11_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_11">
             <span class="md-nav__icon md-icon"></span>
             training_runs
@@ -2170,7 +2088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../training_runs/gpt2/" class="md-nav__link">
+      <a href="gpt2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2213,7 +2131,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../utils/" class="md-nav__link ">
+            <a href="../utils/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2244,7 +2162,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/tensor_shape/" class="md-nav__link">
+      <a href="../utils/tensor_shape/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2280,7 +2198,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2300,7 +2218,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../citation/" class="md-nav__link">
+      <a href="../../citation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2340,44 +2258,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types" class="md-nav__link">
+  <a href="#sparse_autoencoder.training_runs" class="md-nav__link">
     <span class="md-ellipsis">
-      types
+      training_runs
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" class="md-nav__link">
-    <span class="md-ellipsis">
-      ResetOptimizerParameterDetails
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ResetOptimizerParameterDetails">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.axis" class="md-nav__link">
-    <span class="md-ellipsis">
-      axis
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.parameter" class="md-nav__link">
-    <span class="md-ellipsis">
-      parameter
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2396,17 +2281,17 @@
                   
 
 
-<h1 id="autoencoder-types">Autoencoder types<a class="headerlink" href="#autoencoder-types" title="Permanent link">¤</a></h1>
+<h1 id="training-runs">Training runs<a class="headerlink" href="#training-runs" title="Permanent link">¤</a></h1>
 
 
 <div class="doc doc-object doc-module">
 
 
 
-<a id="sparse_autoencoder.autoencoder.types"></a>
+<a id="sparse_autoencoder.training_runs"></a>
   <div class="doc doc-contents first">
   
-      <p>Autoencoder types.</p>
+      <p>Training runs.</p>
 
   
 
@@ -2418,117 +2303,6 @@
 
 
 
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>ResetOptimizerParameterDetails</code>
-
-
-<a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails" class="headerlink" title="Permanent link">¤</a></h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="typing.NamedTuple">NamedTuple</span></code></p>
-
-  
-      <p>Reset Optimizer Parameter Details.</p>
-<p>Details of a parameter that should be reset in the optimizer, when resetting
-its corresponding dictionary vectors.</p>
-
-            <details class="quote">
-              <summary>Source code in <code>sparse_autoencoder/autoencoder/types.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ResetOptimizerParameterDetails</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset Optimizer Parameter Details.</span>
-
-<span class="sd">    Details of a parameter that should be reset in the optimizer, when resetting</span>
-<span class="sd">    its corresponding dictionary vectors.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter to reset.&quot;&quot;&quot;</span>
-
-    <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Axis of the parameter to reset.&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.axis" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">axis</span><span class="p">:</span> <span class="nb">int</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.axis" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Axis of the parameter to reset.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.parameter" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#sparse_autoencoder.autoencoder.types.ResetOptimizerParameterDetails.parameter" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Parameter to reset.</p>
-  </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-  </div>
-
-
-</div>
 
 
 
@@ -2584,14 +2358,14 @@ its corresponding dictionary vectors.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
       
-        <script src="../../../javascript/custom_formatting.js"></script>
+        <script src="../../javascript/custom_formatting.js"></script>
       
-        <script src="../../../javascript/mathjax.js"></script>
+        <script src="../../javascript/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
