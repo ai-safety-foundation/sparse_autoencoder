@@ -14,7 +14,7 @@ class L2ReconstructionLoss(AbstractLoss):
     """L2 Reconstruction loss.
 
     L2 reconstruction loss is calculated as the sum squared error between each each input vector
-    and it's corresponding decoded vector. The original paper found that models trained with some
+    and its corresponding decoded vector. The original paper found that models trained with some
     loss functions such as cross-entropy loss generally prefer to represent features
     polysemantically, whereas models trained with L2 may achieve the same loss for both
     polysemantic and monosemantic representations of true features.
