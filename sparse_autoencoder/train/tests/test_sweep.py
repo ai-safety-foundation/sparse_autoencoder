@@ -78,5 +78,5 @@ def test_setup_autoencoder(
     dummy_hyperparameters: RuntimeHyperparameters, snapshot: SnapshotSession
 ) -> None:
     """Test the setup_autoencoder function."""
-    autoencoder, _, _ = setup_autoencoder_optimizer_scheduler(dummy_hyperparameters)
+    autoencoder = setup_autoencoder_optimizer_scheduler(dummy_hyperparameters)
     assert snapshot == str(autoencoder), "Autoencoder string representation has changed."

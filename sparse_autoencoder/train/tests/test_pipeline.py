@@ -13,7 +13,8 @@ from sparse_autoencoder.activation_resampler.activation_resampler import (
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
+from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
+from sparse_autoencoder.autoencoder.model import SparseAutoencoderConfig
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
 from sparse_autoencoder.source_data.mock_dataset import MockDataset
 
@@ -33,15 +34,13 @@ def pipeline_fixture() -> Pipeline:
         n_learned_features=int(src_model.cfg.d_model * 2),
         n_components=2,
     )
-    autoencoder = SparseAutoencoder(config)
-    optimizer = AdamWithReset(
-        params=autoencoder.parameters(),
-        named_parameters=autoencoder.named_parameters(),
-        has_components_dim=True,
+    autoencoder = LitSparseAutoencoder(
+        config=config,
+        component_names=["mlp1", "mlp2"],
     )
 
     source_data = MockDataset(context_size=10)
-    activation_resampler = ActivationResampler(config.n_learned_features)
+    activation_resampler = ActivationResampler(n_learned_features=config.n_learned_features)
 
     return Pipeline(
         activation_resampler=activation_resampler,
@@ -49,8 +48,6 @@ def pipeline_fixture() -> Pipeline:
         cache_names=["blocks.0.hook_mlp_out", "blocks.1.hook_mlp_out"],
         layer=1,
         source_dataset=source_data,
-        optimizer=optimizer,
-        l1_coefficient=0.0001,
         source_model=src_model,
         source_data_batch_size=10,
         n_input_features=src_model.cfg.d_model,
@@ -142,14 +139,14 @@ class TestTrainAutoencoder:
         model = pipeline_fixture.autoencoder
 
         # Get the weights before training
-        weights_before = model.encoder.weight.clone().detach()
+        weights_before = model.sparse_autoencoder.encoder.weight.clone().detach()
 
         # Train the model
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Check that the weights have changed
         assert not torch.allclose(
-            weights_before, model.encoder.weight
+            weights_before, model.sparse_autoencoder.encoder.weight
         ), "Weights should have changed after training."
 
 
@@ -164,9 +161,15 @@ class TestUpdateParameters:
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Get the weights and biases before training
-        encoder_weight_before = pipeline_fixture.autoencoder.encoder.weight.clone().detach()
-        encoder_bias_before = pipeline_fixture.autoencoder.encoder.bias.clone().detach()
-        decoder_weight_before = pipeline_fixture.autoencoder.decoder.weight.clone().detach()
+        encoder_weight_before = (
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight.clone().detach()
+        )
+        encoder_bias_before = (
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias.clone().detach()
+        )
+        decoder_weight_before = (
+            pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight.clone().detach()
+        )
 
         # Update the parameters
         dead_neuron_indices = torch.tensor([1, 2], dtype=torch.int64)
@@ -197,29 +200,33 @@ class TestUpdateParameters:
         # Check the weights and biases have changed for the dead neuron idx only
         assert not torch.allclose(
             encoder_weight_before[0, dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.weight[0, dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight[0, dead_neuron_indices],
         ), "Encoder weights should have changed after training."
         assert torch.allclose(
             encoder_weight_before[0, ~dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.weight[0, ~dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight[0, ~dead_neuron_indices],
         ), "Encoder weights should not have changed after training."
 
         assert not torch.allclose(
             encoder_bias_before[0, dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.bias[0, dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias[0, dead_neuron_indices],
         ), "Encoder biases should have changed after training."
         assert torch.allclose(
             encoder_bias_before[0, ~dead_neuron_indices],
-            pipeline_fixture.autoencoder.encoder.bias[0, ~dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias[0, ~dead_neuron_indices],
         ), "Encoder biases should not have changed after training."
 
         assert not torch.allclose(
             decoder_weight_before[0, :, dead_neuron_indices],
-            pipeline_fixture.autoencoder.decoder.weight[0, :, dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight[
+                0, :, dead_neuron_indices
+            ],
         ), "Decoder weights should have changed after training."
         assert torch.allclose(
             decoder_weight_before[0, :, ~dead_neuron_indices],
-            pipeline_fixture.autoencoder.decoder.weight[0, :, ~dead_neuron_indices],
+            pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight[
+                0, :, ~dead_neuron_indices
+            ],
         ), "Decoder weights should not have changed after training."
 
     @pytest.mark.integration_test()
@@ -230,8 +237,9 @@ class TestUpdateParameters:
         pipeline_fixture.train_autoencoder(store, store_size)
 
         # Set the optimizer state to all 1s
-        optimizer = pipeline_fixture.optimizer
-        model = pipeline_fixture.autoencoder
+        optimizer = pipeline_fixture.autoencoder.optimizers(use_pl_optimizer=False)
+        assert isinstance(optimizer, AdamWithReset)
+        model = pipeline_fixture.autoencoder.sparse_autoencoder
         optimizer.state[model.encoder.weight]["exp_avg"] = torch.ones_like(
             optimizer.state[model.encoder.weight]["exp_avg"], dtype=torch.float
         )
@@ -246,15 +254,21 @@ class TestUpdateParameters:
                 ParameterUpdateResults(
                     dead_neuron_indices=dead_neuron_indices,
                     dead_encoder_weight_updates=torch.zeros_like(
-                        pipeline_fixture.autoencoder.encoder.weight[0, dead_neuron_indices],
+                        pipeline_fixture.autoencoder.sparse_autoencoder.encoder.weight[
+                            0, dead_neuron_indices
+                        ],
                         dtype=torch.float,
                     ),
                     dead_encoder_bias_updates=torch.zeros_like(
-                        pipeline_fixture.autoencoder.encoder.bias[0, dead_neuron_indices],
+                        pipeline_fixture.autoencoder.sparse_autoencoder.encoder.bias[
+                            0, dead_neuron_indices
+                        ],
                         dtype=torch.float,
                     ),
                     dead_decoder_weight_updates=torch.zeros_like(
-                        pipeline_fixture.autoencoder.decoder.weight[0, :, dead_neuron_indices],
+                        pipeline_fixture.autoencoder.sparse_autoencoder.decoder.weight[
+                            0, :, dead_neuron_indices
+                        ],
                         dtype=torch.float,
                     ),
                 )
@@ -305,8 +319,8 @@ class TestRunPipeline:
         """Test that the run_pipeline method calls all the other methods."""
         pipeline_fixture.validate_sae = MagicMock(spec=Pipeline.validate_sae)  # type: ignore
         pipeline_fixture.save_checkpoint = MagicMock(spec=Pipeline.save_checkpoint)  # type: ignore
-        pipeline_fixture.activation_resampler.step_resampler = MagicMock(  # type: ignore
-            spec=ActivationResampler.step_resampler, return_value=None
+        pipeline_fixture.activation_resampler.forward = MagicMock(  # type: ignore
+            spec=ActivationResampler.forward, return_value=None
         )
 
         store_size = 1000
@@ -337,5 +351,5 @@ class TestRunPipeline:
 
         assert (pipeline_fixture.activation_resampler) is not None
         assert (
-            pipeline_fixture.activation_resampler.step_resampler.call_count == total_loops
+            pipeline_fixture.activation_resampler.forward.call_count == total_loops
         ), f"Resampler should have been called {total_loops} times."

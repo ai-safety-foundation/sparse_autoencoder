@@ -84,7 +84,7 @@ class TestInit:
             n_activations_activity_collate=n_steps_collate,
         )
 
-        assert resampler.neuron_activity_window_start == expected_window_start
+        assert resampler._neuron_activity_window_start == expected_window_start
 
 
 class TestComputeLossAndGetActivations:
@@ -294,8 +294,8 @@ class TestResampleDeadNeurons:
             n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=100,
         )
-        updates = resampler.step_resampler(
-            batch_neuron_activity=neuron_activity,
+        updates = resampler.forward(
+            learned_activations=neuron_activity,
             activation_store=full_activation_store,
             autoencoder=autoencoder_model,
             loss_fn=loss_fn,
@@ -338,8 +338,8 @@ class TestResampleDeadNeurons:
             n_learned_features=DEFAULT_N_LEARNED_FEATURES,
             resample_dataset_size=100,
         )
-        parameter_updates = resampler.step_resampler(
-            batch_neuron_activity=neuron_activity,
+        parameter_updates = resampler.forward(
+            learned_activations=neuron_activity,
             activation_store=full_activation_store,
             autoencoder=autoencoder_model,
             loss_fn=loss_fn,
@@ -421,7 +421,7 @@ class TestStepResampler:
             resample_dataset_size=1,
             threshold_is_dead_portion_fires=threshold,
         )
-        res = resampler.step_resampler(
+        res = resampler.forward(
             neuron_activity,
             full_activation_store,
             autoencoder_model,
@@ -489,8 +489,8 @@ class TestStepResampler:
                 n_components=DEFAULT_N_COMPONENTS,
             )
 
-            updates = resampler.step_resampler(
-                batch_neuron_activity=neuron_activity_batch_size_1,
+            updates = resampler.forward(
+                learned_activations=neuron_activity_batch_size_1,
                 activation_store=activation_store,
                 autoencoder=autoencoder_model,
                 loss_fn=loss_fn,

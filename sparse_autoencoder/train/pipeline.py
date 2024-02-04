@@ -1,18 +1,18 @@
 """Default pipeline."""
 from collections.abc import Iterator
 from functools import partial
+import logging
 from pathlib import Path
 from tempfile import gettempdir
 from typing import final
 
 from jaxtyping import Float, Int, Int64
-from pydantic import NonNegativeInt, PositiveFloat, PositiveInt, validate_call
+from lightning import Trainer
+from lightning.pytorch.loggers import WandbLogger
+from pydantic import NonNegativeInt, PositiveInt, validate_call
 import torch
 from torch import Tensor
-from torch.nn.parallel import DataParallel
-from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
-from torchmetrics import MetricCollection
 from tqdm.auto import tqdm
 from transformer_lens import HookedTransformer
 import wandb
@@ -22,12 +22,7 @@ from sparse_autoencoder.activation_resampler.activation_resampler import (
     ParameterUpdateResults,
 )
 from sparse_autoencoder.activation_store.tensor_store import TensorActivationStore
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder
-from sparse_autoencoder.metrics.loss.l1_absolute_loss import L1AbsoluteLoss
-from sparse_autoencoder.metrics.loss.l2_reconstruction_loss import L2ReconstructionLoss
-from sparse_autoencoder.metrics.loss.sae_loss import SparseAutoencoderLoss
-from sparse_autoencoder.metrics.train.l0_norm import L0NormMetric
-from sparse_autoencoder.metrics.train.neuron_activity import NeuronActivityMetric
+from sparse_autoencoder.autoencoder.lightning import LitSparseAutoencoder
 from sparse_autoencoder.metrics.validate.reconstruction_score import ReconstructionScoreMetric
 from sparse_autoencoder.metrics.wrappers.classwise import ClasswiseWrapperWithMean
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
@@ -53,7 +48,7 @@ class Pipeline:
     activation_resampler: ActivationResampler | None
     """Activation resampler to use."""
 
-    autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder]
+    autoencoder: LitSparseAutoencoder
     """Sparse autoencoder to train."""
 
     n_input_features: int
@@ -70,15 +65,6 @@ class Pipeline:
 
     log_frequency: int
     """Frequency at which to log metrics (in steps)."""
-
-    loss: SparseAutoencoderLoss
-    """Loss function to use."""
-
-    train_metrics: MetricCollection
-    """Metrics to use."""
-
-    optimizer: AdamWithReset
-    """Optimizer to use."""
 
     progress_bar: tqdm | None
     """Progress bar for the pipeline."""
@@ -105,19 +91,16 @@ class Pipeline:
     def __init__(
         self,
         activation_resampler: ActivationResampler | None,
-        autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
+        autoencoder: LitSparseAutoencoder,
         cache_names: list[str],
-        l1_coefficient: PositiveFloat,
         layer: NonNegativeInt,
-        n_learned_features: int,
-        n_input_features: int,
-        optimizer: AdamWithReset,
         source_dataset: SourceDataset,
         source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
+        n_input_features: int,
+        n_learned_features: int,
         run_name: str = "sparse_autoencoder",
         checkpoint_directory: Path = DEFAULT_CHECKPOINT_DIRECTORY,
         log_frequency: PositiveInt = 100,
-        lr_scheduler: LRScheduler | None = None,
         num_workers_data_loading: NonNegativeInt = 0,
         source_data_batch_size: PositiveInt = 12,
     ) -> None:
@@ -127,19 +110,16 @@ class Pipeline:
             activation_resampler: Activation resampler to use.
             autoencoder: Sparse autoencoder to train.
             cache_names: Names of the cache hook points to use in the source model.
-            l1_coefficient: L1 coefficient.
             layer: Layer to stope the source model at (if we don't need activations after this
                 layer).
-            n_learned_features: Number of learned features in the sparse autoencoder.
-            n_input_features: Number of input features in the sparse autoencoder.
-            optimizer: Optimizer to use.
             source_dataset: Source dataset to get data from.
             source_model: Source model to get activations from.
+            n_input_features: Number of input features in the sparse autoencoder.
+            n_learned_features: Number of learned features in the sparse autoencoder.
             run_name: Name of the run for saving checkpoints.
             checkpoint_directory: Directory to save checkpoints to.
             log_frequency: Frequency at which to log metrics (in steps)
-            lr_scheduler: Learning rate scheduler to use.
-            num_workers_data_loading: Number of workers to use for data loading.
+            num_workers_data_loading: Number of CPU workers for the dataloader.
             source_data_batch_size: Batch size for the source data.
         """
         self.activation_resampler = activation_resampler
@@ -148,44 +128,12 @@ class Pipeline:
         self.checkpoint_directory = checkpoint_directory
         self.layer = layer
         self.log_frequency = log_frequency
-        self.optimizer = optimizer
-        self.lr_scheduler = lr_scheduler
         self.run_name = run_name
         self.source_data_batch_size = source_data_batch_size
         self.source_dataset = source_dataset
         self.source_model = source_model
         self.n_input_features = n_input_features
         self.n_learned_features = n_learned_features
-        self.num_workers_data_loading = num_workers_data_loading
-
-        num_components = len(cache_names)
-        config = autoencoder.config
-        add_component_names = partial(ClasswiseWrapperWithMean, component_names=cache_names)
-        l1_loss_metric = L1AbsoluteLoss(num_components)
-        l2_loss_metric = L2ReconstructionLoss(num_components)
-        self.loss = SparseAutoencoderLoss(num_components, l1_coefficient)
-
-        self.train_metrics = MetricCollection(
-            {
-                "l0": add_component_names(L0NormMetric(num_components), prefix="train/l0_norm"),
-                "activity": add_component_names(
-                    NeuronActivityMetric(config.n_learned_features, num_components),
-                    prefix="train/neuron_activity",
-                ),
-                "l1": add_component_names(l1_loss_metric, prefix="loss/l1_learned_activations"),
-                "l2": add_component_names(l2_loss_metric, prefix="loss/l2_reconstruction"),
-                "loss": add_component_names(self.loss, prefix="loss/total"),
-            },
-            # Share state & updates across groups (to avoid e.g. computing l1 twice for both the
-            # loss and l1 metrics). Note the metric that goes first must calculate all the states
-            # needed by the rest of the group.
-            compute_groups=[
-                ["loss", "l1", "l2"],
-                ["activity"],
-                ["l0"],
-            ],
-        )
-        self.train_metrics.to(get_model_device(self.autoencoder))
 
         # Add validate metric
         self.reconstruction_score = ClasswiseWrapperWithMean(
@@ -265,92 +213,65 @@ class Pipeline:
         Returns:
             Number of times each neuron fired, for each component.
         """
-        autoencoder_device = get_model_device(self.autoencoder)
-
         activations_dataloader = DataLoader(
-            activation_store, batch_size=train_batch_size, num_workers=self.num_workers_data_loading
+            activation_store, batch_size=train_batch_size, num_workers=4, persistent_workers=False
         )
 
-        learned_activations_fired_count: Int64[
-            Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
-        ] = torch.zeros(
-            (self.n_components, self.n_learned_features),
-            dtype=torch.int64,
-            device=torch.device("cpu"),
+        # Setup the trainer with no logging
+        logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(logging.WARNING)
+        trainer = Trainer(
+            logger=WandbLogger() if wandb.run is not None else None,
+            max_epochs=1,
+            enable_progress_bar=False,
+            enable_model_summary=False,
+            enable_checkpointing=False,
+            precision="16-mixed",
         )
 
-        for store_batch in activations_dataloader:
-            # Zero the gradients
-            self.optimizer.zero_grad()
-
-            # Move the batch to the device (in place)
-            batch = store_batch.detach().to(autoencoder_device)
-
-            # Forward pass
-            learned_activations, reconstructed_activations = self.autoencoder.forward(batch)
-
-            # Get loss & metrics
-            metric_results = self.train_metrics.forward(
-                source_activations=batch,
-                learned_activations=learned_activations,
-                decoded_activations=reconstructed_activations,
-            )
-            loss = metric_results["loss/total/mean"]
-
-            # Store count of how many neurons have fired
-            with torch.no_grad():
-                fired = learned_activations > 0
-                learned_activations_fired_count.add_(fired.sum(dim=0).cpu())
-
-            # Backwards pass
-            loss.backward()
-            self.optimizer.step()
-            self.autoencoder.post_backwards_hook()
-            if self.lr_scheduler is not None:
-                self.lr_scheduler.step()
-
-            # Log training metrics
-            self.total_activations_trained_on += train_batch_size
-            if (
-                wandb.run is not None
-                and int(self.total_activations_trained_on / train_batch_size) % self.log_frequency
-                == 0
-            ):
-                wandb.log(
-                    metric_results,
-                    step=self.total_activations_trained_on,
-                    commit=True,
-                )
-
-        return learned_activations_fired_count
+        # Train
+        trainer.fit(self.autoencoder, activations_dataloader)
+        fired_count = self.autoencoder.neuron_fired_count.compute()
+        self.autoencoder.neuron_fired_count.reset()
+        return fired_count
 
     def update_parameters(self, parameter_updates: list[ParameterUpdateResults]) -> None:
         """Update the parameters of the model from the results of the resampler.
 
         Args:
             parameter_updates: Parameter updates from the resampler.
+
+        Raises:
+            TypeError: If the optimizer is not an AdamWithReset.
         """
         for component_idx, component_parameter_update in enumerate(parameter_updates):
             # Update the weights and biases
-            self.autoencoder.encoder.update_dictionary_vectors(
+            self.autoencoder.sparse_autoencoder.encoder.update_dictionary_vectors(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_encoder_weight_updates,
                 component_idx=component_idx,
             )
-            self.autoencoder.encoder.update_bias(
+            self.autoencoder.sparse_autoencoder.encoder.update_bias(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_encoder_bias_updates,
                 component_idx=component_idx,
             )
-            self.autoencoder.decoder.update_dictionary_vectors(
+            self.autoencoder.sparse_autoencoder.decoder.update_dictionary_vectors(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_decoder_weight_updates,
                 component_idx=component_idx,
             )
 
             # Reset the optimizer
-            for parameter, axis in self.autoencoder.reset_optimizer_parameter_details:
-                self.optimizer.reset_neurons_state(
+            for (
+                parameter,
+                axis,
+            ) in self.autoencoder.sparse_autoencoder.reset_optimizer_parameter_details:
+                optimizer = self.autoencoder.optimizers(use_pl_optimizer=False)
+                if not isinstance(optimizer, AdamWithReset):
+                    error_message = "Cannot reset the optimizer. "
+                    raise TypeError(error_message)
+
+                optimizer.reset_neurons_state(
                     parameter=parameter,
                     neuron_indices=component_parameter_update.dead_neuron_indices,
                     axis=axis,
@@ -461,11 +382,11 @@ class Pipeline:
 
         # Wandb
         if wandb.run is not None:
-            self.autoencoder.save_to_wandb(name)
+            self.autoencoder.sparse_autoencoder.save_to_wandb(name)
 
         # Local
         local_path = self.checkpoint_directory / f"{name}.pt"
-        self.autoencoder.save(local_path)
+        self.autoencoder.sparse_autoencoder.save(local_path)
         return local_path
 
     @validate_call
@@ -500,7 +421,7 @@ class Pipeline:
         )
 
         # Get the loss fn
-        loss_fn = self.loss.clone()
+        loss_fn = self.autoencoder.loss_fn.clone()
         loss_fn.keep_batch_dim = True
 
         with tqdm(
@@ -527,11 +448,11 @@ class Pipeline:
                 progress_bar.set_postfix({"stage": "resample"})
                 if self.activation_resampler is not None:
                     # Get the updates
-                    parameter_updates = self.activation_resampler.step_resampler(
-                        batch_neuron_activity=batch_neuron_activity,
+                    parameter_updates = self.activation_resampler.forward(
+                        learned_activations=batch_neuron_activity,
                         activation_store=activation_store,
-                        autoencoder=self.autoencoder,
-                        loss_fn=loss_fn,
+                        autoencoder=self.autoencoder.sparse_autoencoder,
+                        loss_fn=self.autoencoder.loss_fn,
                         train_batch_size=train_batch_size,
                     )
 
