@@ -5,16 +5,14 @@ import sys
 import traceback
 
 import torch
-from torch.nn.parallel import DataParallel
-from torch.optim.lr_scheduler import CosineAnnealingLR, LRScheduler, ReduceLROnPlateau
 from transformer_lens import HookedTransformer
-from transformer_lens.utils import get_device
 from transformers import AutoTokenizer
 import wandb
 
-from sparse_autoencoder.activation_resampler.activation_resampler import ActivationResampler
-from sparse_autoencoder.autoencoder.model import SparseAutoencoder, SparseAutoencoderConfig
-from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
+from sparse_autoencoder.autoencoder.lightning import (
+    LitSparseAutoencoder,
+    LitSparseAutoencoderConfig,
+)
 from sparse_autoencoder.source_data.abstract_dataset import SourceDataset
 from sparse_autoencoder.source_data.pretokenized_dataset import PreTokenizedDataset
 from sparse_autoencoder.source_data.text_dataset import TextDataset
@@ -24,31 +22,6 @@ from sparse_autoencoder.train.sweep_config import (
     SweepConfig,
 )
 from sparse_autoencoder.utils.data_parallel import DataParallelWithModelAttributes
-
-
-def setup_activation_resampler(hyperparameters: RuntimeHyperparameters) -> ActivationResampler:
-    """Setup the activation resampler for the autoencoder.
-
-    Args:
-        hyperparameters: The hyperparameters dictionary.
-
-    Returns:
-        ActivationResampler: The initialized activation resampler.
-    """
-    return ActivationResampler(
-        n_learned_features=hyperparameters["autoencoder"]["expansion_factor"]
-        * hyperparameters["source_model"]["hook_dimension"],
-        resample_interval=hyperparameters["activation_resampler"]["resample_interval"],
-        max_n_resamples=hyperparameters["activation_resampler"]["max_n_resamples"],
-        n_activations_activity_collate=hyperparameters["activation_resampler"][
-            "n_activations_activity_collate"
-        ],
-        resample_dataset_size=hyperparameters["activation_resampler"]["resample_dataset_size"],
-        threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
-            "threshold_is_dead_portion_fires"
-        ],
-        n_components=len(hyperparameters["source_model"]["cache_names"]),
-    )
 
 
 def setup_source_model(
@@ -70,9 +43,9 @@ def setup_source_model(
     return DataParallelWithModelAttributes(model)
 
 
-def setup_autoencoder_optimizer_scheduler(
+def setup_autoencoder(
     hyperparameters: RuntimeHyperparameters,
-) -> tuple[SparseAutoencoder, AdamWithReset, LRScheduler | None]:
+) -> LitSparseAutoencoder:
     """Setup the sparse autoencoder.
 
     Args:
@@ -84,42 +57,24 @@ def setup_autoencoder_optimizer_scheduler(
     autoencoder_input_dim: int = hyperparameters["source_model"]["hook_dimension"]
     expansion_factor = hyperparameters["autoencoder"]["expansion_factor"]
 
-    config = SparseAutoencoderConfig(
+    config = LitSparseAutoencoderConfig(
         n_input_features=autoencoder_input_dim,
         n_learned_features=autoencoder_input_dim * expansion_factor,
         n_components=len(hyperparameters["source_model"]["cache_names"]),
+        component_names=hyperparameters["source_model"]["cache_names"],
+        l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
+        resample_interval=hyperparameters["activation_resampler"]["resample_interval"],
+        max_n_resamples=hyperparameters["activation_resampler"]["max_n_resamples"],
+        resample_dead_neurons_dataset_size=hyperparameters["activation_resampler"][
+            "n_activations_activity_collate"
+        ],
+        resample_loss_dataset_size=hyperparameters["activation_resampler"]["resample_dataset_size"],
+        resample_threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
+            "threshold_is_dead_portion_fires"
+        ],
     )
 
-    model = SparseAutoencoder(config)
-
-    model.to(get_device())
-
-    optim = AdamWithReset(
-        params=model.parameters(),
-        named_parameters=model.named_parameters(),
-        lr=hyperparameters["optimizer"]["lr"],
-        betas=(
-            hyperparameters["optimizer"]["adam_beta_1"],
-            hyperparameters["optimizer"]["adam_beta_2"],
-        ),
-        weight_decay=hyperparameters["optimizer"]["adam_weight_decay"],
-        amsgrad=hyperparameters["optimizer"]["amsgrad"],
-        fused=hyperparameters["optimizer"]["fused"],
-        has_components_dim=True,
-    )
-
-    lr_scheduler: LRScheduler | None = None
-    if "lr_scheduler" in hyperparameters["optimizer"]:
-        if hyperparameters["optimizer"]["lr_scheduler"] == "reduce_on_plateau":
-            lr_scheduler = ReduceLROnPlateau(optimizer=optim, patience=10)  # type: ignore
-
-        elif hyperparameters["optimizer"]["lr_scheduler"] == "cosine_annealing":
-            lr_scheduler = CosineAnnealingLR(
-                optimizer=optim,
-                T_max=10,
-            )
-
-    return (model, optim, lr_scheduler)
+    return LitSparseAutoencoder(config)
 
 
 def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
@@ -229,10 +184,7 @@ def stop_layer_from_cache_names(cache_names: list[str]) -> int:
 def run_training_pipeline(
     hyperparameters: RuntimeHyperparameters,
     source_model: HookedTransformer | DataParallelWithModelAttributes[HookedTransformer],
-    autoencoder: SparseAutoencoder | DataParallel[SparseAutoencoder],
-    optimizer: AdamWithReset,
-    lr_scheduler: LRScheduler | None,
-    activation_resampler: ActivationResampler,
+    autoencoder: LitSparseAutoencoder,
     source_data: SourceDataset,
     run_name: str,
 ) -> None:
@@ -242,9 +194,6 @@ def run_training_pipeline(
         hyperparameters: The hyperparameters dictionary.
         source_model: The source model.
         autoencoder: The sparse autoencoder.
-        optimizer: The optimizer.
-        lr_scheduler: Learning rate scheduler.
-        activation_resampler: The activation resampler.
         source_data: The source data.
         run_name: The name of the run.
     """
@@ -258,20 +207,16 @@ def run_training_pipeline(
     stop_layer = stop_layer_from_cache_names(cache_names)
 
     pipeline = Pipeline(
-        activation_resampler=activation_resampler,
         autoencoder=autoencoder,
         cache_names=cache_names,
         checkpoint_directory=checkpoint_path,
         layer=stop_layer,
-        l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
-        optimizer=optimizer,
         source_data_batch_size=hyperparameters["pipeline"]["source_data_batch_size"],
         source_dataset=source_data,
         source_model=source_model,
         log_frequency=hyperparameters["pipeline"]["log_frequency"],
         run_name=run_name,
         num_workers_data_loading=hyperparameters["pipeline"]["num_workers_data_loading"],
-        lr_scheduler=lr_scheduler,
         n_input_features=hyperparameters["source_model"]["hook_dimension"],
         n_learned_features=int(
             hyperparameters["autoencoder"]["expansion_factor"]
@@ -300,11 +245,7 @@ def train() -> None:
         source_model = setup_source_model(hyperparameters)
 
         # Set up the autoencoder, optimizer and learning rate scheduler
-        autoencoder, optimizer, lr_scheduler = setup_autoencoder_optimizer_scheduler(
-            hyperparameters
-        )
-        # Set up the activation resampler
-        activation_resampler = setup_activation_resampler(hyperparameters)
+        autoencoder = setup_autoencoder(hyperparameters)
 
         # Set up the source data
         source_data = setup_source_data(hyperparameters)
@@ -314,9 +255,6 @@ def train() -> None:
             hyperparameters=hyperparameters,
             source_model=source_model,
             autoencoder=autoencoder,
-            optimizer=optimizer,
-            lr_scheduler=lr_scheduler,
-            activation_resampler=activation_resampler,
             source_data=source_data,
             run_name=run_name,
         )

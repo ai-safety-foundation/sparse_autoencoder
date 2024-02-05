@@ -142,3 +142,22 @@ class SparseAutoencoderLoss(Metric):
         )
 
         return l1 * self._l1_coefficient + l2
+
+    def forward(  # type: ignore[override] (narrowing)
+        self,
+        source_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+        learned_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
+        ],
+        decoded_activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Tensor:
+        """Forward pass."""
+        return super().forward(
+            source_activations=source_activations,
+            learned_activations=learned_activations,
+            decoded_activations=decoded_activations,
+        )

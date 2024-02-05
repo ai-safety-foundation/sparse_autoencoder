@@ -143,6 +143,9 @@ docs/content/reference
 wandb/
 artifacts/
 
+# Lightning
+lightning_logs
+
 # Scratch files
 scratch.py
 scratch.ipynb
