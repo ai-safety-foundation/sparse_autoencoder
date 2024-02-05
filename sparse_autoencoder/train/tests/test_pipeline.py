@@ -305,22 +305,19 @@ class TestRunPipeline:
             spec=ActivationResampler.forward, return_value=None
         )
 
-        store_size = 1000
-        context_size = pipeline_fixture.source_dataset.context_size
-        train_batch_size = store_size // context_size
-
         total_loops = 5
-        validate_expected_calls = 2
-        checkpoint_expected_calls = 6  # Includes final
 
         pipeline_fixture.run_pipeline(
-            train_batch_size=train_batch_size,
-            max_store_size=store_size,
-            max_activations=store_size * 5,
-            validation_n_activations=store_size,
-            validate_frequency=store_size * context_size * (total_loops // validate_expected_calls),
-            checkpoint_frequency=store_size,
+            train_batch_size=1_000,
+            max_store_size=1_000,
+            max_activations=5_000,
+            validation_n_activations=1_000,
+            validate_frequency=2_000,
+            checkpoint_frequency=1_000,
         )
+
+        validate_expected_calls = 2
+        checkpoint_expected_calls = 6  # Includes final
 
         # Check the number of calls
         assert (
