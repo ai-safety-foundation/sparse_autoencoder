@@ -124,7 +124,6 @@ class LitSparseAutoencoder(LightningModule):
 
         self.activation_resampler = ActivationResampler(
             n_learned_features=config.n_learned_features,
-            encoder_weight_reference=self.model.encoder.weight,
             n_components=num_components,
             resample_interval=config.resample_interval,
             max_n_resamples=config.max_n_resamples,
@@ -218,6 +217,7 @@ class LitSparseAutoencoder(LightningModule):
             input_activations=batch,
             learned_activations=output.learned_activations,
             loss=loss,
+            encoder_weight_reference=self.sparse_autoencoder.encoder.weight,
         )
         if parameter_updates is not None:
             self.update_parameters(parameter_updates)
