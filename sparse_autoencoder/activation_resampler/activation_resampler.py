@@ -149,7 +149,7 @@ class ActivationResampler(Metric):
         # State setup (note half precision is used as it's sufficient for resampling purposes)
         self.add_state(
             "_neuron_fired_count",
-            torch.zeros((n_components, n_learned_features), dtype=torch.bfloat16),
+            torch.zeros((n_components, n_learned_features)),
             "sum",
         )
         self.add_state("_loss", [], "cat")
@@ -199,7 +199,7 @@ class ActivationResampler(Metric):
             neuron_has_fired: Bool[
                 Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
             ] = torch.gt(learned_activations, 0)
-            self._neuron_fired_count += neuron_has_fired.sum(dim=0, dtype=torch.bfloat16)
+            self._neuron_fired_count += neuron_has_fired.sum(dim=0)
 
         if self._n_activations_seen_process >= self.start_collecting_loss_process:
             # Typecast
@@ -207,8 +207,8 @@ class ActivationResampler(Metric):
                 raise TypeError
 
             # Append
-            self._loss.append(loss.to(dtype=torch.bfloat16))
-            self._input_activations.append(input_activations.to(dtype=torch.bfloat16))
+            self._loss.append(loss)
+            self._input_activations.append(input_activations)
 
         self._n_activations_seen_process += len(learned_activations)
         self._encoder_weight = encoder_weight_reference

@@ -244,6 +244,9 @@ class Pipeline:
             self.n_components, device=source_model_device
         )
 
+        sae_model = self.autoencoder.sparse_autoencoder.clone()
+        sae_model.to(source_model_device)
+
         for component_idx, cache_name in enumerate(self.cache_names):
             for _batch_idx in range(n_batches):
                 batch = next(self.source_data)
@@ -256,7 +259,7 @@ class Pipeline:
                 self.source_model.remove_all_hook_fns()
                 replacement_hook = partial(
                     replace_activations_hook,
-                    sparse_autoencoder=self.autoencoder,
+                    sparse_autoencoder=sae_model,
                     component_idx=component_idx,
                     n_components=self.n_components,
                 )

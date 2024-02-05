@@ -318,7 +318,7 @@ class TestRunPipeline:
             max_store_size=store_size,
             max_activations=store_size * 5,
             validation_n_activations=store_size,
-            validate_frequency=store_size * (total_loops // validate_expected_calls),
+            validate_frequency=store_size * context_size * (total_loops // validate_expected_calls),
             checkpoint_frequency=store_size,
         )
 

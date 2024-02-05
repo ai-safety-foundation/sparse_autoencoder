@@ -152,17 +152,17 @@ class LitSparseAutoencoder(LightningModule):
         """
         for component_idx, component_parameter_update in enumerate(parameter_updates):
             # Update the weights and biases
-            self.model.encoder.update_dictionary_vectors(
+            self.sparse_autoencoder.encoder.update_dictionary_vectors(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_encoder_weight_updates,
                 component_idx=component_idx,
             )
-            self.model.encoder.update_bias(
+            self.sparse_autoencoder.encoder.update_bias(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_encoder_bias_updates,
                 component_idx=component_idx,
             )
-            self.model.decoder.update_dictionary_vectors(
+            self.sparse_autoencoder.decoder.update_dictionary_vectors(
                 component_parameter_update.dead_neuron_indices,
                 component_parameter_update.dead_decoder_weight_updates,
                 component_idx=component_idx,
@@ -172,7 +172,7 @@ class LitSparseAutoencoder(LightningModule):
             for (
                 parameter,
                 axis,
-            ) in self.autoencoder.sparse_autoencoder.reset_optimizer_parameter_details:
+            ) in self.reset_optimizer_parameter_details:
                 optimizer = self.optimizers(use_pl_optimizer=False)
                 if not isinstance(optimizer, AdamWithReset):
                     error_message = "Cannot reset the optimizer. "
@@ -240,4 +240,4 @@ class LitSparseAutoencoder(LightningModule):
     @property
     def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:
         """Reset optimizer parameter details."""
-        return self.model.reset_optimizer_parameter_details
+        return self.sparse_autoencoder.reset_optimizer_parameter_details
