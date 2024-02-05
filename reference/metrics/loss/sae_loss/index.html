@@ -768,6 +768,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../autoencoder/lightning/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    lightning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../autoencoder/model/" class="md-nav__link">
         
   
@@ -1040,6 +1061,15 @@
   <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.compute" class="md-nav__link">
     <span class="md-ellipsis">
       compute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      forward
     </span>
   </a>
   
@@ -2301,6 +2331,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      forward
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.update" class="md-nav__link">
     <span class="md-ellipsis">
       update
@@ -2504,7 +2543,26 @@ is separated out so that you can use all three metrics (l1, l2, total loss) in t
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
-<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderLoss</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SparseAutoencoderLoss</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sparse Autoencoder loss.</span>
 
 <span class="sd">    This is the same as composing `L1AbsoluteLoss() * l1_coefficient + L2ReconstructionLoss()`. It</span>
@@ -2634,6 +2692,25 @@ is separated out so that you can use all three metrics (l1, l2, total loss) in t
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">l1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l1_coefficient</span> <span class="o">+</span> <span class="n">l2</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>  <span class="c1"># type: ignore[override] (narrowing)</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+            <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+        <span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span>
+            <span class="n">source_activations</span><span class="o">=</span><span class="n">source_activations</span><span class="p">,</span>
+            <span class="n">learned_activations</span><span class="o">=</span><span class="n">learned_activations</span><span class="p">,</span>
+            <span class="n">decoded_activations</span><span class="o">=</span><span class="n">decoded_activations</span><span class="p">,</span>
+        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2780,6 +2857,64 @@ is separated out so that you can use all three metrics (l1, l2, total loss) in t
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">l1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l1_coefficient</span> <span class="o">+</span> <span class="n">l2</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.forward" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">source_activations</span><span class="p">,</span> <span class="n">learned_activations</span><span class="p">,</span> <span class="n">decoded_activations</span><span class="p">)</span></code>
+
+<a href="#sparse_autoencoder.metrics.loss.sae_loss.SparseAutoencoderLoss.forward" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Forward pass.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>sparse_autoencoder/metrics/loss/sae_loss.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>  <span class="c1"># type: ignore[override] (narrowing)</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">learned_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">LEARNT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">decoded_activations</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span>
+        <span class="n">Tensor</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">Axis</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">COMPONENT_OPTIONAL</span><span class="p">,</span> <span class="n">Axis</span><span class="o">.</span><span class="n">INPUT_OUTPUT_FEATURE</span><span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward pass.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span>
+        <span class="n">source_activations</span><span class="o">=</span><span class="n">source_activations</span><span class="p">,</span>
+        <span class="n">learned_activations</span><span class="o">=</span><span class="n">learned_activations</span><span class="p">,</span>
+        <span class="n">decoded_activations</span><span class="o">=</span><span class="n">decoded_activations</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>

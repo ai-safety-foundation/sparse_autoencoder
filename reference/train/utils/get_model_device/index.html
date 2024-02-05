@@ -768,6 +768,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../autoencoder/lightning/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    lightning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../autoencoder/model/" class="md-nav__link">
         
   
@@ -2300,7 +2321,7 @@
         <tr>
           <td><code>model</code></td>
           <td>
-                <code><span title="torch.nn.Module">Module</span> | <span title="torch.nn.parallel.DataParallel">DataParallel</span></code>
+                <code><span title="torch.nn.Module">Module</span> | <span title="torch.nn.parallel.DataParallel">DataParallel</span> | <span title="lightning.LightningModule">LightningModule</span></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2327,7 +2348,7 @@
     <tbody>
         <tr>
           <td>
-                <code><span title="torch.device">device</span></code>
+                <code><span title="torch.device">device</span> | None</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -2364,8 +2385,7 @@
 
           <details class="quote">
             <summary>Source code in <code>sparse_autoencoder/train/utils/get_model_device.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
-<span class="normal"> 8</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
@@ -2386,7 +2406,12 @@
 <span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
-<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_device</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Module</span> <span class="o">|</span> <span class="n">DataParallel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_device</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Module</span> <span class="o">|</span> <span class="n">DataParallel</span> <span class="o">|</span> <span class="n">LightningModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the device on which a PyTorch model is on.</span>
 
 <span class="sd">    Args:</span>
@@ -2401,6 +2426,10 @@
     <span class="c1"># Deepspeed models already have a device property, so just return that</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">device</span>
+
+    <span class="c1"># Tensors for lightning should not have device set (as lightning will handle this)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">LightningModule</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="c1"># Check if the model has parameters</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
