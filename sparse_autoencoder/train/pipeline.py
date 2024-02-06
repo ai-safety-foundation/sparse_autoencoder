@@ -1,6 +1,8 @@
 """Default pipeline."""
 from collections.abc import Iterator
 from functools import partial
+
+import itertools
 import logging
 from pathlib import Path
 from tempfile import gettempdir
@@ -139,7 +141,7 @@ class Pipeline:
         source_dataloader = source_dataset.get_dataloader(
             source_data_batch_size, num_workers=num_workers_data_loading
         )
-        self.source_data = iter(source_dataloader)
+        self.source_data = itertools.cycle(source_dataloader)
 
     @validate_call
     def generate_activations(self, store_size: PositiveInt) -> TensorActivationStore:
