@@ -175,6 +175,8 @@ class Pipeline:
             hook = partial(store_activations_hook, store=store, component_idx=component_idx)
             self.source_model.add_hook(cache_name, hook)
 
+        print("Generate Process Begin")
+
         # Loop through the dataloader until the store reaches the desired size
         with torch.no_grad():
             while len(store) < store_size:
