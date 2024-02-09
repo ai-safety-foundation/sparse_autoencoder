@@ -8,7 +8,8 @@ from jaxtyping import Float, Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Adam
-from torch.optim.optimizer import params_t
+try: from torch.optim.optimizer import params_t
+except ImportError: from torch.optim.optimizer import ParamsT as params_t
 
 from sparse_autoencoder.tensor_types import Axis
 
