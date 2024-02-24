@@ -14,7 +14,7 @@ from sparse_autoencoder.tensor_types import Axis
 def store_activations_hook(
     value: Float[Tensor, Axis.names(Axis.ANY)],
     hook: HookPoint,  # noqa: ARG001
-    store: ActivationStore,
+    store: ActivationStore | list[Tensor],
     reshape_method: ReshapeActivationsFunction = reshape_to_last_dimension,
     component_idx: int = 0,
 ) -> Float[Tensor, Axis.names(Axis.ANY)]:
@@ -65,7 +65,10 @@ def store_activations_hook(
         Tensor, Axis.names(Axis.STORE_BATCH, Axis.INPUT_OUTPUT_FEATURE)
     ] = reshape_method(value)
 
-    store.extend(reshaped, component_idx=component_idx)
+    if isinstance(store, ActivationStore):
+        store.extend(reshaped, component_idx=component_idx)
+    else:
+        store.append(reshaped)
 
     # Return the unmodified value
     return value
