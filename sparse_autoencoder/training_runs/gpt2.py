@@ -37,7 +37,7 @@ def train() -> None:
 
     model = LitSparseAutoencoder(config)
 
-    trainer = Trainer()
+    trainer = Trainer(max_epochs=1, precision=16)
 
     dataset = PreTokenizedDataset(
         dataset_path="alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2",
