@@ -66,6 +66,10 @@ class SparseAutoencoderState(BaseModel, arbitrary_types_allowed=True):
 class ForwardPassResult(NamedTuple):
     """SAE model forward pass result."""
 
+    input_activations: Float[
+        Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+    ]
+
     learned_activations: Float[
         Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
     ]
@@ -182,7 +186,7 @@ class SparseAutoencoder(Module):
         x = self.decoder(learned_activations)
         decoded_activations = self.post_decoder_bias(x)
 
-        return ForwardPassResult(learned_activations, decoded_activations)
+        return ForwardPassResult(x, learned_activations, decoded_activations)
 
     def initialize_tied_parameters(self) -> None:
         """Initialize the tied parameters."""

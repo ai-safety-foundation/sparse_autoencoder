@@ -2,7 +2,7 @@
 from functools import partial
 from typing import Any
 
-from jaxtyping import Float
+from jaxtyping import Float, Int
 from lightning.pytorch import LightningModule
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveInt
 from torch import Tensor
@@ -27,15 +27,20 @@ from sparse_autoencoder.metrics.train.l0_norm import L0NormMetric
 from sparse_autoencoder.metrics.train.neuron_activity import NeuronActivityMetric
 from sparse_autoencoder.metrics.wrappers.classwise import ClasswiseWrapperWithMean
 from sparse_autoencoder.optimizer.adam_with_reset import AdamWithReset
+from sparse_autoencoder.source_model.model import GenerateActivationsSourceModel
 from sparse_autoencoder.tensor_types import Axis
 
 
 class LitSparseAutoencoderConfig(SparseAutoencoderConfig):
     """PyTorch Lightning Sparse Autoencoder config."""
 
+    source_model_name: str
+
     component_names: list[str]
 
-    l1_coefficient: float = 0.001
+    l1_coefficient: float = 0.0001
+
+    learning_rate: float = 0.0001
 
     resample_interval: PositiveInt = 200000000
 
@@ -67,6 +72,8 @@ class LitSparseAutoencoderConfig(SparseAutoencoderConfig):
 class LitSparseAutoencoder(LightningModule):
     """Lightning Sparse Autoencoder."""
 
+    source_model: GenerateActivationsSourceModel
+
     sparse_autoencoder: SparseAutoencoder
 
     config: LitSparseAutoencoderConfig
@@ -81,6 +88,10 @@ class LitSparseAutoencoder(LightningModule):
     ):
         """Initialise the module."""
         super().__init__()
+        self.source_model = GenerateActivationsSourceModel(
+            model_name=config.source_model_name,
+            hook_names=config.component_names,
+        )
         self.sparse_autoencoder = SparseAutoencoder(config)
         self.config = config
 
@@ -133,13 +144,13 @@ class LitSparseAutoencoder(LightningModule):
         )
 
     def forward(  # type: ignore[override]
-        self,
-        inputs: Float[
-            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
-        ],
+        self, input_tokens: Int[Tensor, Axis.names(Axis.BATCH, Axis.POSITION)]
     ) -> ForwardPassResult:
         """Forward pass."""
-        return self.sparse_autoencoder.forward(inputs)
+        activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT, Axis.INPUT_OUTPUT_FEATURE)
+        ] = self.source_model.forward(input_tokens)
+        return self.sparse_autoencoder.forward(activations)
 
     def update_parameters(self, parameter_updates: list[ParameterUpdateResults]) -> None:
         """Update the parameters of the model from the results of the resampler.
@@ -187,24 +198,27 @@ class LitSparseAutoencoder(LightningModule):
 
     def training_step(  # type: ignore[override]
         self,
-        batch: Float[
-            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        batch: dict[
+            str,
+            Float[
+                Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+            ],
         ],
         batch_idx: int | None = None,  # noqa: ARG002
     ) -> Float[Tensor, Axis.SINGLE_ITEM]:
         """Training step."""
         # Forward pass
-        output: ForwardPassResult = self.forward(batch)
+        output: ForwardPassResult = self.forward(batch["input_ids"])
 
         # Metrics & loss
         train_metrics = self.train_metrics.forward(
-            source_activations=batch,
+            source_activations=output.input_activations,
             learned_activations=output.learned_activations,
             decoded_activations=output.decoded_activations,
         )
 
         loss = self.loss_fn.forward(
-            source_activations=batch,
+            source_activations=output.input_activations,
             learned_activations=output.learned_activations,
             decoded_activations=output.decoded_activations,
         )
@@ -214,7 +228,7 @@ class LitSparseAutoencoder(LightningModule):
 
         # Resample dead neurons
         parameter_updates = self.activation_resampler.forward(
-            input_activations=batch,
+            input_activations=output.input_activations,
             learned_activations=output.learned_activations,
             loss=loss,
             encoder_weight_reference=self.sparse_autoencoder.encoder.weight,
@@ -235,6 +249,7 @@ class LitSparseAutoencoder(LightningModule):
             self.sparse_autoencoder.parameters(),
             named_parameters=self.sparse_autoencoder.named_parameters(),
             has_components_dim=True,
+            lr=self.config.learning_rate,
         )
 
     @property

@@ -10,20 +10,13 @@ poetry run python sparse_autoencoder/training_runs/gpt2.py
 """
 import os
 
-from sparse_autoencoder import (
-    ActivationResamplerHyperparameters,
-    AutoencoderHyperparameters,
-    Hyperparameters,
-    LossHyperparameters,
-    Method,
-    OptimizerHyperparameters,
-    Parameter,
-    PipelineHyperparameters,
-    SourceDataHyperparameters,
-    SourceModelHyperparameters,
-    SweepConfig,
-    sweep,
+from lightning import Trainer
+
+from sparse_autoencoder.autoencoder.lightning import (
+    LitSparseAutoencoder,
+    LitSparseAutoencoderConfig,
 )
+from sparse_autoencoder.source_data.pretokenized_dataset import PreTokenizedDataset
 
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -31,42 +24,30 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 def train() -> None:
     """Train."""
-    sweep_config = SweepConfig(
-        parameters=Hyperparameters(
-            loss=LossHyperparameters(
-                l1_coefficient=Parameter(values=[0.0001]),
-            ),
-            optimizer=OptimizerHyperparameters(
-                lr=Parameter(value=0.0001),
-            ),
-            source_model=SourceModelHyperparameters(
-                name=Parameter("gpt2"),
-                cache_names=Parameter(
-                    value=[f"blocks.{layer}.hook_mlp_out" for layer in range(12)]
-                ),
-                hook_dimension=Parameter(768),
-            ),
-            source_data=SourceDataHyperparameters(
-                dataset_path=Parameter("alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2"),
-                context_size=Parameter(256),
-                pre_tokenized=Parameter(value=True),
-                pre_download=Parameter(value=True),
-                # Total dataset is c.7bn activations (64 files)
-                # C. 1.5TB needed to store all activations
-                dataset_files=Parameter(
-                    [f"data/train-{str(i).zfill(5)}-of-00064.parquet" for i in range(20)]
-                ),
-            ),
-            autoencoder=AutoencoderHyperparameters(expansion_factor=Parameter(values=[32, 64])),
-            pipeline=PipelineHyperparameters(),
-            activation_resampler=ActivationResamplerHyperparameters(
-                threshold_is_dead_portion_fires=Parameter(1e-5),
-            ),
-        ),
-        method=Method.GRID,
+    # Also set resampler threshold dead to 1e-5?
+    config = LitSparseAutoencoderConfig(
+        source_model_name="gpt2",
+        component_names=[f"blocks.{layer}.hook_mlp_out" for layer in range(12)],
+        l1_coefficient=0.0001,
+        learning_rate=0.0001,
+        n_input_features=768,
+        n_learned_features=32 * 768,
+        n_components=12,
     )
 
-    sweep(sweep_config=sweep_config)
+    model = LitSparseAutoencoder(config)
+
+    trainer = Trainer()
+
+    dataset = PreTokenizedDataset(
+        dataset_path="alancooney/sae-monology-pile-uncopyrighted-tokenizer-gpt2",
+        dataset_files=[f"data/train-{str(i).zfill(5)}-of-00064.parquet" for i in range(1)],
+        pre_download=True,
+    )
+
+    dataloader = dataset.get_dataloader(batch_size=32, num_workers=2)
+
+    trainer.fit(model, train_dataloaders=dataloader)
 
 
 if __name__ == "__main__":
