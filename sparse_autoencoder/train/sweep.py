@@ -197,7 +197,7 @@ def run_training_pipeline(
         source_data: The source data.
         run_name: The name of the run.
     """
-    checkpoint_path = Path("../../.checkpoints")
+    checkpoint_path = Path(__file__).parent.parent.parent / ".checkpoints"
     checkpoint_path.mkdir(exist_ok=True)
 
     random_seed = hyperparameters["random_seed"]
