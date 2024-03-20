@@ -38,13 +38,13 @@ from sparse_autoencoder.tensor_types import Axis
         ),
     ],
 )
-def test_l2_reconstruction_loss(
+def test_l1_absolute_loss(
     learned_activations: Float[
         Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.LEARNT_FEATURE)
     ],
     expected_loss: Float[Tensor, Axis.COMPONENT_OPTIONAL],
 ) -> None:
-    """Test the L2 reconstruction loss."""
+    """Test the L1 absolute loss."""
     num_components: int = learned_activations.shape[1] if learned_activations.ndim == 3 else 1  # noqa: PLR2004
     l1 = L1AbsoluteLoss(num_components)
 
