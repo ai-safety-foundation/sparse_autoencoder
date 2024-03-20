@@ -2583,7 +2583,7 @@
 <span class="sd">        source_data: The source data.</span>
 <span class="sd">        run_name: The name of the run.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../.checkpoints&quot;</span><span class="p">)</span>
+    <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;.checkpoints&quot;</span>
     <span class="n">checkpoint_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">random_seed</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;random_seed&quot;</span><span class="p">]</span>
