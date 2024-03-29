@@ -2,6 +2,7 @@
 
 This reset method is useful when resampling dead neurons during training.
 """
+
 from collections.abc import Iterable, Iterator
 from typing import Any
 
@@ -17,6 +18,7 @@ from sparse_autoencoder.tensor_types import Axis
 # params_t was renamed to ParamsT in PyTorch 2.2, which caused import errors
 # Copied from PyTorch 2.2 with modifications for better style
 ParamsT: TypeAlias = Iterable[Tensor] | Iterable[dict[str, Any]]
+
 
 class AdamWithReset(Adam):
     """Adam Optimizer with a reset method.
