@@ -4,14 +4,15 @@ This reset method is useful when resampling dead neurons during training.
 """
 from collections.abc import Iterable, Iterator
 from typing import Any
-from typing_extensions import TypeAlias
 
 from jaxtyping import Float, Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Adam
+from typing_extensions import TypeAlias
 
 from sparse_autoencoder.tensor_types import Axis
+
 
 # params_t was renamed to ParamsT in PyTorch 2.2, which caused import errors
 # Copied from PyTorch 2.2 with modifications for better style
