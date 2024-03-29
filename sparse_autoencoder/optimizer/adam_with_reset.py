@@ -12,10 +12,11 @@ from torch.optim import Adam
 from sparse_autoencoder.tensor_types import Axis
 
 # params_t was renamed to ParamsT in PyTorch 2.2, which caused import errors
-# Copied from PyTorch 2.1
-from typing import Union, Iterable, Dict, Any
+# Copied from PyTorch 2.1 with modifications for better style
+from collections.abc import Iterable
+from typing import Any
 from typing_extensions import TypeAlias
-params_t: TypeAlias = Union[Iterable[Tensor], Iterable[Dict[str, Any]]]
+params_t: TypeAlias = Iterable[Tensor] | Iterable[dict[str, Any]]
 
 class AdamWithReset(Adam):
     """Adam Optimizer with a reset method.
