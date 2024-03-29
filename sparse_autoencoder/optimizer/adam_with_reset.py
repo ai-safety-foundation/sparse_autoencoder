@@ -8,10 +8,14 @@ from jaxtyping import Float, Int
 from torch import Tensor
 from torch.nn.parameter import Parameter
 from torch.optim import Adam
-from torch.optim.optimizer import params_t
 
 from sparse_autoencoder.tensor_types import Axis
 
+# params_t was renamed to ParamsT in PyTorch 2.2, which caused import errors
+# Copied from PyTorch 2.1
+from typing import Union, Iterable, Dict, Any
+from typing_extensions import TypeAlias
+params_t: TypeAlias = Union[Iterable[Tensor], Iterable[Dict[str, Any]]]
 
 class AdamWithReset(Adam):
     """Adam Optimizer with a reset method.
