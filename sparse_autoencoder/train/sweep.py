@@ -76,7 +76,7 @@ def setup_autoencoder(
         type=type,
     )
 
-    return LitSparseAutoencoder(config).cuda()
+    return LitSparseAutoencoder(config)
 
 
 def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:
