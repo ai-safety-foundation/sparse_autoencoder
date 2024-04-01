@@ -82,12 +82,20 @@ class AutoencoderHyperparameters(NestedParameter):
     Size of the learned features relative to the input features. A good expansion factor to start
     with is typically 2-4.
     """
+    
+    type: Parameter[str] = field(default=Parameter("unit_norm_decoder"))
+    """Type of the autoencoder
+    
+    Default is unit_norm_decoder
+    """
 
 
 class AutoencoderRuntimeHyperparameters(TypedDict):
     """Autoencoder runtime hyperparameters."""
 
     expansion_factor: int
+    
+    type: str
 
 
 @dataclass(frozen=True)

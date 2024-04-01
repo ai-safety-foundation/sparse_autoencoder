@@ -56,6 +56,7 @@ def setup_autoencoder(
     """
     autoencoder_input_dim: int = hyperparameters["source_model"]["hook_dimension"]
     expansion_factor = hyperparameters["autoencoder"]["expansion_factor"]
+    type = hyperparameters["autoencoder"]["type"]
 
     config = LitSparseAutoencoderConfig(
         n_input_features=autoencoder_input_dim,
@@ -72,9 +73,10 @@ def setup_autoencoder(
         resample_threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
             "threshold_is_dead_portion_fires"
         ],
+        type=type,
     )
 
-    return LitSparseAutoencoder(config)
+    return LitSparseAutoencoder(config).cuda()
 
 
 def setup_source_data(hyperparameters: RuntimeHyperparameters) -> SourceDataset:

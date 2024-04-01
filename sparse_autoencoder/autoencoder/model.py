@@ -21,6 +21,8 @@ import wandb
 from sparse_autoencoder.autoencoder.components.linear_encoder import LinearEncoder
 from sparse_autoencoder.autoencoder.components.tied_bias import TiedBias, TiedBiasPosition
 from sparse_autoencoder.autoencoder.components.unit_norm_decoder import UnitNormDecoder
+from sparse_autoencoder.autoencoder.components.tanh_encoder import TanhEncoder
+from sparse_autoencoder.autoencoder.components.linear_decoder import LinearDecoder
 from sparse_autoencoder.autoencoder.types import ResetOptimizerParameterDetails
 from sparse_autoencoder.tensor_types import Axis
 from sparse_autoencoder.utils.tensor_shape import shape_with_optional_dimensions
@@ -47,6 +49,11 @@ class SparseAutoencoderConfig(BaseModel):
     This is useful if you want to train the SAE on several components of the source model at once.
     If `None`, the SAE is assumed to be trained on just one component (in this case the model won't
     contain a component axis in any of the parameters).
+    """
+    
+    type: str = "unit_norm_decoder"
+    """
+    TODO
     """
 
 
@@ -103,10 +110,10 @@ class SparseAutoencoder(Module):
     pre_encoder_bias: TiedBias
     """Pre-Encoder Bias."""
 
-    encoder: LinearEncoder
+    encoder: LinearEncoder | TanhEncoder
     """Encoder."""
 
-    decoder: UnitNormDecoder
+    decoder: UnitNormDecoder | LinearDecoder
     """Decoder."""
 
     post_decoder_bias: TiedBias
@@ -149,17 +156,32 @@ class SparseAutoencoder(Module):
         # Initialize the components
         self.pre_encoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.PRE_ENCODER)
 
-        self.encoder = LinearEncoder(
-            input_features=config.n_input_features,
-            learnt_features=config.n_learned_features,
-            n_components=config.n_components,
-        )
+        if config.type == "unit_norm_decoder":
+            self.encoder = LinearEncoder(
+                input_features=config.n_input_features,
+                learnt_features=config.n_learned_features,
+                n_components=config.n_components,
+            )
 
-        self.decoder = UnitNormDecoder(
-            learnt_features=config.n_learned_features,
-            decoded_features=config.n_input_features,
-            n_components=config.n_components,
-        )
+            self.decoder = UnitNormDecoder(
+                learnt_features=config.n_learned_features,
+                decoded_features=config.n_input_features,
+                n_components=config.n_components,
+            )
+        elif config.type == "tanh_encoder":
+            self.encoder = TanhEncoder(
+                input_features=config.n_input_features,
+                learnt_features=config.n_learned_features,
+                n_components=config.n_components,
+            )
+
+            self.decoder = LinearDecoder(
+                learnt_features=config.n_learned_features,
+                decoded_features=config.n_input_features,
+                n_components=config.n_components,
+            )
+        else:
+            raise ValueError(f"Unknown SAE type: {config.type}")
 
         self.post_decoder_bias = TiedBias(self.tied_bias, TiedBiasPosition.POST_DECODER)
 
@@ -217,7 +239,8 @@ class SparseAutoencoder(Module):
 
         This can be used to e.g. constrain weights to unit norm.
         """
-        self.decoder.constrain_weights_unit_norm()
+        if self.config.type == "unit_norm_decoder":
+            self.decoder.constrain_weights_unit_norm()
 
     @staticmethod
     @validate_call
