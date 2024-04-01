@@ -63,6 +63,7 @@ def setup_autoencoder(
         n_components=len(hyperparameters["source_model"]["cache_names"]),
         component_names=hyperparameters["source_model"]["cache_names"],
         l1_coefficient=hyperparameters["loss"]["l1_coefficient"],
+        normalize_by_input_norm=hyperparameters["loss"]["normalize_by_input_norm"],
         resample_interval=hyperparameters["activation_resampler"]["resample_interval"],
         max_n_resamples=hyperparameters["activation_resampler"]["max_n_resamples"],
         resample_dead_neurons_dataset_size=hyperparameters["activation_resampler"][
@@ -72,6 +73,7 @@ def setup_autoencoder(
         resample_threshold_is_dead_portion_fires=hyperparameters["activation_resampler"][
             "threshold_is_dead_portion_fires"
         ],
+        type=hyperparameters["autoencoder"]["type"],
     )
 
     return LitSparseAutoencoder(config)

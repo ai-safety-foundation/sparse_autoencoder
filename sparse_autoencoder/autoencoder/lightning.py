@@ -46,6 +46,8 @@ class LitSparseAutoencoderConfig(SparseAutoencoderConfig):
     resample_loss_dataset_size: PositiveInt = 819200
 
     resample_threshold_is_dead_portion_fires: NonNegativeFloat = 0.0
+    
+    normalize_by_input_norm: bool = False
 
     def model_post_init(self, __context: Any) -> None:  # noqa: ANN401
         """Model post init validation.
@@ -91,7 +93,7 @@ class LitSparseAutoencoder(LightningModule):
 
         # Create the loss & metrics
         self.loss_fn = SparseAutoencoderLoss(
-            num_components, config.l1_coefficient, keep_batch_dim=True
+            num_components, config.l1_coefficient, keep_batch_dim=True, config.normalize_by_input_norm
         )
 
         self.train_metrics = MetricCollection(
