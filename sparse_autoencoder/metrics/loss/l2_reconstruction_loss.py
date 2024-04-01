@@ -17,8 +17,13 @@ class L2ReconstructionLoss(Metric):
     and it's corresponding decoded vector. The original paper found that models trained with some
     loss functions such as cross-entropy loss generally prefer to represent features
     polysemantically, whereas models trained with L2 may achieve the same loss for both
-    polysemantic and monosemantic representations of true features.
-
+    polysemantic and monosemantic representations of true features. 
+    
+    You have the option to set L2 reconstruction loss to normalize the input activations before
+    calculating the loss. This can be useful because the input vectors can vary in magnitude and
+    normalizing them can help to ensure that the loss is not dominated by the magnitude of the
+    activations.
+    
     Example:
         >>> import torch
         >>> loss = L2ReconstructionLoss(num_components=1)
@@ -53,6 +58,7 @@ class L2ReconstructionLoss(Metric):
     # Settings
     _num_components: int
     _keep_batch_dim: bool
+    _normalize_by_input_norm: bool
 
     @property
     def keep_batch_dim(self) -> bool:
@@ -97,11 +103,13 @@ class L2ReconstructionLoss(Metric):
         num_components: PositiveInt = 1,
         *,
         keep_batch_dim: bool = False,
+        normalize_by_input_norm: bool = False,
     ) -> None:
         """Initialise the L2 reconstruction loss."""
         super().__init__()
         self._num_components = num_components
         self.keep_batch_dim = keep_batch_dim
+        self._normalize_by_input_norm = normalize_by_input_norm
         self.add_state(
             "num_activation_vectors",
             default=torch.tensor(0, dtype=torch.int64),
@@ -119,6 +127,16 @@ class L2ReconstructionLoss(Metric):
     ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL)]:
         """Calculate the MSE."""
         return (decoded_activations - source_activations).pow(2).mean(dim=-1)
+    
+    @staticmethod
+    def normalize_input(
+        activations: Float[
+            Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)
+        ],
+    ) -> Float[Tensor, Axis.names(Axis.BATCH, Axis.COMPONENT_OPTIONAL, Axis.INPUT_OUTPUT_FEATURE)]:
+        """Normalize the input activations."""
+        activation_norm = activations.norm(dim=-1, keepdim=True)
+        return activations / activation_norm
 
     def update(
         self,
@@ -146,6 +164,10 @@ class L2ReconstructionLoss(Metric):
             source_activations: The source activations from the autoencoder.
             **kwargs: Ignored keyword arguments (to allow use with other metrics in a collection).
         """
+        if self._normalize_by_input_norm:
+            decoded_activations = self.normalize_input(decoded_activations)
+            source_activations = self.normalize_input(source_activations)
+        
         mse = self.calculate_mse(decoded_activations, source_activations)
 
         if self.keep_batch_dim:

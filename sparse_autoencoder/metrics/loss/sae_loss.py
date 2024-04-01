@@ -29,6 +29,7 @@ class SparseAutoencoderLoss(Metric):
     # Settings
     _num_components: int
     _keep_batch_dim: bool
+    _normalize_by_input_norm: bool
     _l1_coefficient: float
 
     @property
@@ -88,11 +89,13 @@ class SparseAutoencoderLoss(Metric):
         l1_coefficient: PositiveFloat = 0.001,
         *,
         keep_batch_dim: bool = False,
+        normalize_by_input_norm: bool = False,
     ):
         """Initialise the metric."""
         super().__init__()
         self._num_components = num_components
         self.keep_batch_dim = keep_batch_dim
+        self._normalize_by_input_norm = normalize_by_input_norm
         self._l1_coefficient = l1_coefficient
 
         # Add the state
@@ -117,6 +120,9 @@ class SparseAutoencoderLoss(Metric):
     ) -> None:
         """Update the metric."""
         absolute_loss = L1AbsoluteLoss.calculate_abs_sum(learned_activations)
+        if self._normalize_by_input_norm:
+            source_activations = L2ReconstructionLoss.normalize_input(source_activations)
+            decoded_activations = L2ReconstructionLoss.normalize_input(decoded_activations)
         mse = L2ReconstructionLoss.calculate_mse(decoded_activations, source_activations)
 
         if self.keep_batch_dim:

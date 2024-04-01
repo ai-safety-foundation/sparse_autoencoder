@@ -111,11 +111,21 @@ class LossHyperparameters(NestedParameter):
     starting point for the L1 coefficient is 1e-3.
     """
 
+    normalize_by_input_norm: Parameter[bool] = field(default=Parameter(value=False))
+    """Normalize by input norm.
+    
+    Whether to normalize the input and source activations before calculating the L2 loss. This can
+    be useful because the input vectors can vary in magnitude and normalizing them can help to
+    ensure that the loss is not dominated by activations of high magnitudes (often uninterpretable
+    activations from the <|endoftext|> token).
+    """
 
 class LossRuntimeHyperparameters(TypedDict):
     """Loss runtime hyperparameters."""
 
     l1_coefficient: float
+    
+    normalize_by_input_norm: bool
 
 
 @dataclass(frozen=True)
