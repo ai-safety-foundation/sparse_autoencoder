@@ -186,15 +186,17 @@ class SparseAutoencoder(Module):
 
     def initialize_tied_parameters(self) -> None:
         """Initialize the tied parameters."""
-        # The tied bias is initialised as the geometric median of the dataset
-        self.tied_bias.data = self.geometric_median_dataset
+        # The tied bias is initialised as the geometric median of the dataset. Clone it, so that
+        # training the bias doesn't also overwrite the stored median (used again on reset).
+        self.tied_bias.data = self.geometric_median_dataset.clone()
 
     def reset_parameters(self) -> None:
         """Reset the parameters."""
         self.initialize_tied_parameters()
-        for module in self.network:
-            if "reset_parameters" in dir(module):
-                module.reset_parameters()
+        for module in self.children():
+            reset_module_parameters = getattr(module, "reset_parameters", None)
+            if callable(reset_module_parameters):
+                reset_module_parameters()
 
     @property
     def reset_optimizer_parameter_details(self) -> list[ResetOptimizerParameterDetails]:

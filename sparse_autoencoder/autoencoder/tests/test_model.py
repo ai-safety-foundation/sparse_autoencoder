@@ -28,6 +28,31 @@ def test_initialize_tied_bias() -> None:
     assert torch.allclose(model.tied_bias, geometric_median)
 
 
+def test_reset_parameters_restores_initial_state() -> None:
+    """Check reset_parameters restores the tied bias and re-initialises the weights."""
+    geometric_median = torch.tensor([1.0, 2.0, 3.0])
+    config = SparseAutoencoderConfig(n_input_features=3, n_learned_features=6, n_components=None)
+    model = SparseAutoencoder(config, geometric_median)
+
+    # Take an optimiser step, so the parameters move away from their initial values
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.1)
+    input_activations = torch.randn(8, 3)
+    _learned_activations, decoded_activations = model(input_activations)
+    (decoded_activations - input_activations).pow(2).mean().backward()
+    optimizer.step()
+    assert not torch.allclose(model.tied_bias, geometric_median)
+    assert torch.allclose(model.geometric_median_dataset, geometric_median)
+
+    encoder_weight_before_reset = model.encoder.weight.detach().clone()
+    model.reset_parameters()
+
+    assert torch.allclose(model.tied_bias, geometric_median)
+    assert torch.allclose(model.pre_encoder_bias.bias, geometric_median)
+    assert not torch.allclose(model.encoder.weight, encoder_weight_before_reset)
+    decoder_column_norms = model.decoder.weight.norm(dim=0)
+    assert torch.allclose(decoder_column_norms, torch.ones_like(decoder_column_norms))
+
+
 def test_encoded_decoded_shape_same() -> None:
     """Check the input and output are the same shape."""
     config = SparseAutoencoderConfig(n_input_features=3, n_learned_features=6, n_components=None)
